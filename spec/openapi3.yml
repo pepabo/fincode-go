@@ -1,0 +1,105 @@
+openapi: 3.0.3
+info:
+  title: Unofficial and insufficient fincode API Spec
+  version: 0.0.1
+servers:
+  - url: 'https://api.test.fincode.jp/v1'
+security:
+  - BearerAuth: []
+paths:
+  /customers:
+    post:      
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                phone_cc:
+                  type: string
+                phone_no:
+                  type: string
+                addr_city:
+                  type: string
+                addr_country:
+                  type: string
+                addr_line_1:
+                  type: string
+                addr_line_2:
+                  type: string
+                addr_line_3:
+                  type: string
+                addr_post_code:
+                  type: string
+                addr_state:
+                  type: string                                    
+              required: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  phone_cc:
+                    type: string
+                  phone_no:
+                    type: string
+                  addr_city:
+                    type: string
+                  addr_country:
+                    type: string
+                  addr_line_1:
+                    type: string
+                  addr_line_2:
+                    type: string
+                  addr_line_3:
+                    type: string
+                  addr_post_code:
+                    type: string
+                  addr_state:
+                    type: string
+                  card_registration:
+                    type: string
+                  derectdebit_registration:
+                    type: string
+                  created:
+                    type: string
+                    pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+                  updated:
+                    type: string
+                    pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error_code:
+                          type: string
+                        error_message:
+                          type: string
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
