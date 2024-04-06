@@ -15,6 +15,7 @@ import (
 	semconv "go.opentelemetry.io/otel/semconv/v1.19.0"
 	"go.opentelemetry.io/otel/trace"
 
+	"github.com/ogen-go/ogen/conv"
 	ht "github.com/ogen-go/ogen/http"
 	"github.com/ogen-go/ogen/ogenerrors"
 	"github.com/ogen-go/ogen/uri"
@@ -22,10 +23,14 @@ import (
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
+	// CustomersIDDelete invokes DELETE /customers/{id} operation.
+	//
+	// DELETE /customers/{id}
+	CustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (CustomersIDDeleteRes, error)
 	// CustomersPost invokes POST /customers operation.
 	//
 	// POST /customers
-	CustomersPost(ctx context.Context, request OptCustomersPostReq) (CustomersPostRes, error)
+	CustomersPost(ctx context.Context, request *CustomersPostReq) (CustomersPostRes, error)
 }
 
 // Client implements OAS client.
@@ -78,15 +83,135 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 	return u
 }
 
+// CustomersIDDelete invokes DELETE /customers/{id} operation.
+//
+// DELETE /customers/{id}
+func (c *Client) CustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (CustomersIDDeleteRes, error) {
+	res, err := c.sendCustomersIDDelete(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (res CustomersIDDeleteRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/customers/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersIDDelete",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/customers/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:BearerAuth"
+			switch err := c.securityBearerAuth(ctx, "CustomersIDDelete", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCustomersIDDeleteResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // CustomersPost invokes POST /customers operation.
 //
 // POST /customers
-func (c *Client) CustomersPost(ctx context.Context, request OptCustomersPostReq) (CustomersPostRes, error) {
+func (c *Client) CustomersPost(ctx context.Context, request *CustomersPostReq) (CustomersPostRes, error) {
 	res, err := c.sendCustomersPost(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCustomersPost(ctx context.Context, request OptCustomersPostReq) (res CustomersPostRes, err error) {
+func (c *Client) sendCustomersPost(ctx context.Context, request *CustomersPostReq) (res CustomersPostRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		semconv.HTTPMethodKey.String("POST"),
 		semconv.HTTPRouteKey.String("/customers"),

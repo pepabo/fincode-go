@@ -13,9 +13,16 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
+// CustomersIDDelete implements DELETE /customers/{id} operation.
+//
+// DELETE /customers/{id}
+func (UnimplementedHandler) CustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (r CustomersIDDeleteRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // CustomersPost implements POST /customers operation.
 //
 // POST /customers
-func (UnimplementedHandler) CustomersPost(ctx context.Context, req OptCustomersPostReq) (r CustomersPostRes, _ error) {
+func (UnimplementedHandler) CustomersPost(ctx context.Context, req *CustomersPostReq) (r CustomersPostRes, _ error) {
 	return r, ht.ErrNotImplemented
 }

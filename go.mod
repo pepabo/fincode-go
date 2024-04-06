@@ -3,6 +3,7 @@ module github.com/pepabo/fincode-go
 go 1.22.1
 
 require (
+	github.com/brianvoe/gofakeit/v6 v6.28.0
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
 	github.com/ogen-go/ogen v1.0.0

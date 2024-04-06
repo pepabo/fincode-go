@@ -16,6 +16,74 @@ func (s *BearerAuth) SetToken(val string) {
 	s.Token = val
 }
 
+type CustomersIDDeleteBadRequest struct {
+	Errors []CustomersIDDeleteBadRequestErrorsItem `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CustomersIDDeleteBadRequest) GetErrors() []CustomersIDDeleteBadRequestErrorsItem {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CustomersIDDeleteBadRequest) SetErrors(val []CustomersIDDeleteBadRequestErrorsItem) {
+	s.Errors = val
+}
+
+func (*CustomersIDDeleteBadRequest) customersIDDeleteRes() {}
+
+type CustomersIDDeleteBadRequestErrorsItem struct {
+	ErrorCode    string `json:"error_code"`
+	ErrorMessage string `json:"error_message"`
+}
+
+// GetErrorCode returns the value of ErrorCode.
+func (s *CustomersIDDeleteBadRequestErrorsItem) GetErrorCode() string {
+	return s.ErrorCode
+}
+
+// GetErrorMessage returns the value of ErrorMessage.
+func (s *CustomersIDDeleteBadRequestErrorsItem) GetErrorMessage() string {
+	return s.ErrorMessage
+}
+
+// SetErrorCode sets the value of ErrorCode.
+func (s *CustomersIDDeleteBadRequestErrorsItem) SetErrorCode(val string) {
+	s.ErrorCode = val
+}
+
+// SetErrorMessage sets the value of ErrorMessage.
+func (s *CustomersIDDeleteBadRequestErrorsItem) SetErrorMessage(val string) {
+	s.ErrorMessage = val
+}
+
+type CustomersIDDeleteOK struct {
+	ID         string `json:"id"`
+	DeleteFlag string `json:"delete_flag"`
+}
+
+// GetID returns the value of ID.
+func (s *CustomersIDDeleteOK) GetID() string {
+	return s.ID
+}
+
+// GetDeleteFlag returns the value of DeleteFlag.
+func (s *CustomersIDDeleteOK) GetDeleteFlag() string {
+	return s.DeleteFlag
+}
+
+// SetID sets the value of ID.
+func (s *CustomersIDDeleteOK) SetID(val string) {
+	s.ID = val
+}
+
+// SetDeleteFlag sets the value of DeleteFlag.
+func (s *CustomersIDDeleteOK) SetDeleteFlag(val string) {
+	s.DeleteFlag = val
+}
+
+func (*CustomersIDDeleteOK) customersIDDeleteRes() {}
+
 type CustomersPostBadRequest struct {
 	Errors []CustomersPostBadRequestErrorsItem `json:"errors"`
 }
@@ -33,215 +101,215 @@ func (s *CustomersPostBadRequest) SetErrors(val []CustomersPostBadRequestErrorsI
 func (*CustomersPostBadRequest) customersPostRes() {}
 
 type CustomersPostBadRequestErrorsItem struct {
-	ErrorCode    OptString `json:"error_code"`
-	ErrorMessage OptString `json:"error_message"`
+	ErrorCode    string `json:"error_code"`
+	ErrorMessage string `json:"error_message"`
 }
 
 // GetErrorCode returns the value of ErrorCode.
-func (s *CustomersPostBadRequestErrorsItem) GetErrorCode() OptString {
+func (s *CustomersPostBadRequestErrorsItem) GetErrorCode() string {
 	return s.ErrorCode
 }
 
 // GetErrorMessage returns the value of ErrorMessage.
-func (s *CustomersPostBadRequestErrorsItem) GetErrorMessage() OptString {
+func (s *CustomersPostBadRequestErrorsItem) GetErrorMessage() string {
 	return s.ErrorMessage
 }
 
 // SetErrorCode sets the value of ErrorCode.
-func (s *CustomersPostBadRequestErrorsItem) SetErrorCode(val OptString) {
+func (s *CustomersPostBadRequestErrorsItem) SetErrorCode(val string) {
 	s.ErrorCode = val
 }
 
 // SetErrorMessage sets the value of ErrorMessage.
-func (s *CustomersPostBadRequestErrorsItem) SetErrorMessage(val OptString) {
+func (s *CustomersPostBadRequestErrorsItem) SetErrorMessage(val string) {
 	s.ErrorMessage = val
 }
 
 type CustomersPostOK struct {
-	ID                      OptString `json:"id"`
-	Name                    OptString `json:"name"`
-	Email                   OptString `json:"email"`
-	PhoneCc                 OptString `json:"phone_cc"`
-	PhoneNo                 OptString `json:"phone_no"`
-	AddrCity                OptString `json:"addr_city"`
-	AddrCountry             OptString `json:"addr_country"`
-	AddrLine1               OptString `json:"addr_line_1"`
-	AddrLine2               OptString `json:"addr_line_2"`
-	AddrLine3               OptString `json:"addr_line_3"`
-	AddrPostCode            OptString `json:"addr_post_code"`
-	AddrState               OptString `json:"addr_state"`
-	CardRegistration        OptString `json:"card_registration"`
-	DerectdebitRegistration OptString `json:"derectdebit_registration"`
-	Created                 OptString `json:"created"`
-	Updated                 OptString `json:"updated"`
+	ID                      string       `json:"id"`
+	Name                    string       `json:"name"`
+	Email                   string       `json:"email"`
+	PhoneCc                 OptNilString `json:"phone_cc"`
+	PhoneNo                 OptNilString `json:"phone_no"`
+	AddrCity                OptNilString `json:"addr_city"`
+	AddrCountry             OptNilString `json:"addr_country"`
+	AddrLine1               OptNilString `json:"addr_line_1"`
+	AddrLine2               OptNilString `json:"addr_line_2"`
+	AddrLine3               OptNilString `json:"addr_line_3"`
+	AddrPostCode            OptNilString `json:"addr_post_code"`
+	AddrState               OptNilString `json:"addr_state"`
+	CardRegistration        OptNilString `json:"card_registration"`
+	DerectdebitRegistration OptNilString `json:"derectdebit_registration"`
+	Created                 OptNilString `json:"created"`
+	Updated                 OptNilString `json:"updated"`
 }
 
 // GetID returns the value of ID.
-func (s *CustomersPostOK) GetID() OptString {
+func (s *CustomersPostOK) GetID() string {
 	return s.ID
 }
 
 // GetName returns the value of Name.
-func (s *CustomersPostOK) GetName() OptString {
+func (s *CustomersPostOK) GetName() string {
 	return s.Name
 }
 
 // GetEmail returns the value of Email.
-func (s *CustomersPostOK) GetEmail() OptString {
+func (s *CustomersPostOK) GetEmail() string {
 	return s.Email
 }
 
 // GetPhoneCc returns the value of PhoneCc.
-func (s *CustomersPostOK) GetPhoneCc() OptString {
+func (s *CustomersPostOK) GetPhoneCc() OptNilString {
 	return s.PhoneCc
 }
 
 // GetPhoneNo returns the value of PhoneNo.
-func (s *CustomersPostOK) GetPhoneNo() OptString {
+func (s *CustomersPostOK) GetPhoneNo() OptNilString {
 	return s.PhoneNo
 }
 
 // GetAddrCity returns the value of AddrCity.
-func (s *CustomersPostOK) GetAddrCity() OptString {
+func (s *CustomersPostOK) GetAddrCity() OptNilString {
 	return s.AddrCity
 }
 
 // GetAddrCountry returns the value of AddrCountry.
-func (s *CustomersPostOK) GetAddrCountry() OptString {
+func (s *CustomersPostOK) GetAddrCountry() OptNilString {
 	return s.AddrCountry
 }
 
 // GetAddrLine1 returns the value of AddrLine1.
-func (s *CustomersPostOK) GetAddrLine1() OptString {
+func (s *CustomersPostOK) GetAddrLine1() OptNilString {
 	return s.AddrLine1
 }
 
 // GetAddrLine2 returns the value of AddrLine2.
-func (s *CustomersPostOK) GetAddrLine2() OptString {
+func (s *CustomersPostOK) GetAddrLine2() OptNilString {
 	return s.AddrLine2
 }
 
 // GetAddrLine3 returns the value of AddrLine3.
-func (s *CustomersPostOK) GetAddrLine3() OptString {
+func (s *CustomersPostOK) GetAddrLine3() OptNilString {
 	return s.AddrLine3
 }
 
 // GetAddrPostCode returns the value of AddrPostCode.
-func (s *CustomersPostOK) GetAddrPostCode() OptString {
+func (s *CustomersPostOK) GetAddrPostCode() OptNilString {
 	return s.AddrPostCode
 }
 
 // GetAddrState returns the value of AddrState.
-func (s *CustomersPostOK) GetAddrState() OptString {
+func (s *CustomersPostOK) GetAddrState() OptNilString {
 	return s.AddrState
 }
 
 // GetCardRegistration returns the value of CardRegistration.
-func (s *CustomersPostOK) GetCardRegistration() OptString {
+func (s *CustomersPostOK) GetCardRegistration() OptNilString {
 	return s.CardRegistration
 }
 
 // GetDerectdebitRegistration returns the value of DerectdebitRegistration.
-func (s *CustomersPostOK) GetDerectdebitRegistration() OptString {
+func (s *CustomersPostOK) GetDerectdebitRegistration() OptNilString {
 	return s.DerectdebitRegistration
 }
 
 // GetCreated returns the value of Created.
-func (s *CustomersPostOK) GetCreated() OptString {
+func (s *CustomersPostOK) GetCreated() OptNilString {
 	return s.Created
 }
 
 // GetUpdated returns the value of Updated.
-func (s *CustomersPostOK) GetUpdated() OptString {
+func (s *CustomersPostOK) GetUpdated() OptNilString {
 	return s.Updated
 }
 
 // SetID sets the value of ID.
-func (s *CustomersPostOK) SetID(val OptString) {
+func (s *CustomersPostOK) SetID(val string) {
 	s.ID = val
 }
 
 // SetName sets the value of Name.
-func (s *CustomersPostOK) SetName(val OptString) {
+func (s *CustomersPostOK) SetName(val string) {
 	s.Name = val
 }
 
 // SetEmail sets the value of Email.
-func (s *CustomersPostOK) SetEmail(val OptString) {
+func (s *CustomersPostOK) SetEmail(val string) {
 	s.Email = val
 }
 
 // SetPhoneCc sets the value of PhoneCc.
-func (s *CustomersPostOK) SetPhoneCc(val OptString) {
+func (s *CustomersPostOK) SetPhoneCc(val OptNilString) {
 	s.PhoneCc = val
 }
 
 // SetPhoneNo sets the value of PhoneNo.
-func (s *CustomersPostOK) SetPhoneNo(val OptString) {
+func (s *CustomersPostOK) SetPhoneNo(val OptNilString) {
 	s.PhoneNo = val
 }
 
 // SetAddrCity sets the value of AddrCity.
-func (s *CustomersPostOK) SetAddrCity(val OptString) {
+func (s *CustomersPostOK) SetAddrCity(val OptNilString) {
 	s.AddrCity = val
 }
 
 // SetAddrCountry sets the value of AddrCountry.
-func (s *CustomersPostOK) SetAddrCountry(val OptString) {
+func (s *CustomersPostOK) SetAddrCountry(val OptNilString) {
 	s.AddrCountry = val
 }
 
 // SetAddrLine1 sets the value of AddrLine1.
-func (s *CustomersPostOK) SetAddrLine1(val OptString) {
+func (s *CustomersPostOK) SetAddrLine1(val OptNilString) {
 	s.AddrLine1 = val
 }
 
 // SetAddrLine2 sets the value of AddrLine2.
-func (s *CustomersPostOK) SetAddrLine2(val OptString) {
+func (s *CustomersPostOK) SetAddrLine2(val OptNilString) {
 	s.AddrLine2 = val
 }
 
 // SetAddrLine3 sets the value of AddrLine3.
-func (s *CustomersPostOK) SetAddrLine3(val OptString) {
+func (s *CustomersPostOK) SetAddrLine3(val OptNilString) {
 	s.AddrLine3 = val
 }
 
 // SetAddrPostCode sets the value of AddrPostCode.
-func (s *CustomersPostOK) SetAddrPostCode(val OptString) {
+func (s *CustomersPostOK) SetAddrPostCode(val OptNilString) {
 	s.AddrPostCode = val
 }
 
 // SetAddrState sets the value of AddrState.
-func (s *CustomersPostOK) SetAddrState(val OptString) {
+func (s *CustomersPostOK) SetAddrState(val OptNilString) {
 	s.AddrState = val
 }
 
 // SetCardRegistration sets the value of CardRegistration.
-func (s *CustomersPostOK) SetCardRegistration(val OptString) {
+func (s *CustomersPostOK) SetCardRegistration(val OptNilString) {
 	s.CardRegistration = val
 }
 
 // SetDerectdebitRegistration sets the value of DerectdebitRegistration.
-func (s *CustomersPostOK) SetDerectdebitRegistration(val OptString) {
+func (s *CustomersPostOK) SetDerectdebitRegistration(val OptNilString) {
 	s.DerectdebitRegistration = val
 }
 
 // SetCreated sets the value of Created.
-func (s *CustomersPostOK) SetCreated(val OptString) {
+func (s *CustomersPostOK) SetCreated(val OptNilString) {
 	s.Created = val
 }
 
 // SetUpdated sets the value of Updated.
-func (s *CustomersPostOK) SetUpdated(val OptString) {
+func (s *CustomersPostOK) SetUpdated(val OptNilString) {
 	s.Updated = val
 }
 
 func (*CustomersPostOK) customersPostRes() {}
 
 type CustomersPostReq struct {
-	ID           OptString `json:"id"`
-	Name         OptString `json:"name"`
-	Email        OptString `json:"email"`
+	ID           string    `json:"id"`
+	Name         string    `json:"name"`
+	Email        string    `json:"email"`
 	PhoneCc      OptString `json:"phone_cc"`
 	PhoneNo      OptString `json:"phone_no"`
 	AddrCity     OptString `json:"addr_city"`
@@ -254,17 +322,17 @@ type CustomersPostReq struct {
 }
 
 // GetID returns the value of ID.
-func (s *CustomersPostReq) GetID() OptString {
+func (s *CustomersPostReq) GetID() string {
 	return s.ID
 }
 
 // GetName returns the value of Name.
-func (s *CustomersPostReq) GetName() OptString {
+func (s *CustomersPostReq) GetName() string {
 	return s.Name
 }
 
 // GetEmail returns the value of Email.
-func (s *CustomersPostReq) GetEmail() OptString {
+func (s *CustomersPostReq) GetEmail() string {
 	return s.Email
 }
 
@@ -314,17 +382,17 @@ func (s *CustomersPostReq) GetAddrState() OptString {
 }
 
 // SetID sets the value of ID.
-func (s *CustomersPostReq) SetID(val OptString) {
+func (s *CustomersPostReq) SetID(val string) {
 	s.ID = val
 }
 
 // SetName sets the value of Name.
-func (s *CustomersPostReq) SetName(val OptString) {
+func (s *CustomersPostReq) SetName(val string) {
 	s.Name = val
 }
 
 // SetEmail sets the value of Email.
-func (s *CustomersPostReq) SetEmail(val OptString) {
+func (s *CustomersPostReq) SetEmail(val string) {
 	s.Email = val
 }
 
@@ -373,38 +441,55 @@ func (s *CustomersPostReq) SetAddrState(val OptString) {
 	s.AddrState = val
 }
 
-// NewOptCustomersPostReq returns new OptCustomersPostReq with value set to v.
-func NewOptCustomersPostReq(v CustomersPostReq) OptCustomersPostReq {
-	return OptCustomersPostReq{
+// NewOptNilString returns new OptNilString with value set to v.
+func NewOptNilString(v string) OptNilString {
+	return OptNilString{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptCustomersPostReq is optional CustomersPostReq.
-type OptCustomersPostReq struct {
-	Value CustomersPostReq
+// OptNilString is optional nullable string.
+type OptNilString struct {
+	Value string
 	Set   bool
+	Null  bool
 }
 
-// IsSet returns true if OptCustomersPostReq was set.
-func (o OptCustomersPostReq) IsSet() bool { return o.Set }
+// IsSet returns true if OptNilString was set.
+func (o OptNilString) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptCustomersPostReq) Reset() {
-	var v CustomersPostReq
+func (o *OptNilString) Reset() {
+	var v string
 	o.Value = v
 	o.Set = false
+	o.Null = false
 }
 
 // SetTo sets value to v.
-func (o *OptCustomersPostReq) SetTo(v CustomersPostReq) {
+func (o *OptNilString) SetTo(v string) {
 	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilString) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilString) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v string
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptCustomersPostReq) Get() (v CustomersPostReq, ok bool) {
+func (o OptNilString) Get() (v string, ok bool) {
+	if o.Null {
+		return v, false
+	}
 	if !o.Set {
 		return v, false
 	}
@@ -412,7 +497,7 @@ func (o OptCustomersPostReq) Get() (v CustomersPostReq, ok bool) {
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptCustomersPostReq) Or(d CustomersPostReq) CustomersPostReq {
+func (o OptNilString) Or(d string) string {
 	if v, ok := o.Get(); ok {
 		return v
 	}
