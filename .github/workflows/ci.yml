@@ -26,6 +26,8 @@ jobs:
 
       - name: Run tests
         run: make ci
+        env:
+          FINCODE_API_SECRET_KEY: ${{ secrets.FINCODE_API_SECRET_KEY }}
 
       - name: Run octocov
         uses: k1LoW/octocov-action@v1
