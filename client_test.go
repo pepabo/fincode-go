@@ -2,27 +2,17 @@ package fincode
 
 import (
 	"context"
-	"os"
 	"testing"
 
 	"github.com/brianvoe/gofakeit/v6"
+	"github.com/pepabo/fincode-go/api"
 )
 
-const serverURL = "https://api.test.fincode.jp/v1"
-
-var _ SecuritySource = (*testSecuritySource)(nil)
-
-type testSecuritySource struct {
-	token string
-}
-
-func (t *testSecuritySource) BearerAuth(ctx context.Context, operationName string) (BearerAuth, error) {
-	return BearerAuth{Token: t.token}, nil
-}
+const testEndpoint = "https://api.test.fincode.jp/v1"
 
 func TestCustomers(t *testing.T) {
 	ctx := context.Background()
-	c, err := NewClient(serverURL, &testSecuritySource{token: os.Getenv("FINCODE_API_SECRET_KEY")})
+	c, err := New(Endpoint(testEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +22,7 @@ func TestCustomers(t *testing.T) {
 	email := faker.Email()
 
 	t.Run("Create customer", func(t *testing.T) {
-		res, err := c.CustomersPost(ctx, &CustomersPostReq{
+		res, err := c.CustomersPost(ctx, &api.CustomersPostReq{
 			ID:    id,
 			Name:  name,
 			Email: email,
@@ -40,7 +30,7 @@ func TestCustomers(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		v, ok := res.(*CustomersPostOK)
+		v, ok := res.(*api.CustomersPostOK)
 		if !ok {
 			t.Errorf("unexpected response type: %T", res)
 		}
@@ -50,13 +40,13 @@ func TestCustomers(t *testing.T) {
 	})
 
 	t.Run("Delete customer", func(t *testing.T) {
-		res, err := c.CustomersIDDelete(ctx, CustomersIDDeleteParams{
+		res, err := c.CustomersIDDelete(ctx, api.CustomersIDDeleteParams{
 			ID: id,
 		})
 		if err != nil {
 			t.Fatal(err)
 		}
-		v, ok := res.(*CustomersIDDeleteOK)
+		v, ok := res.(*api.CustomersIDDeleteOK)
 		if !ok {
 			t.Errorf("unexpected response type: %T", res)
 		}
