@@ -4,3 +4,6 @@ depsdev:
 build:
 	go generate ./...
 	go mod tidy
+
+test: build
+	go test ./...

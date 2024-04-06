@@ -10,6 +10,7 @@ paths:
   /customers:
     post:      
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -39,7 +40,10 @@ paths:
                   type: string
                 addr_state:
                   type: string                                    
-              required: []
+              required:
+                - id
+                - name
+                - email                
       responses:
         '200':
           description: OK
@@ -56,32 +60,49 @@ paths:
                     type: string
                   phone_cc:
                     type: string
+                    nullable: true
                   phone_no:
                     type: string
+                    nullable: true
                   addr_city:
                     type: string
+                    nullable: true
                   addr_country:
                     type: string
+                    nullable: true
                   addr_line_1:
                     type: string
+                    nullable: true
                   addr_line_2:
                     type: string
+                    nullable: true
                   addr_line_3:
                     type: string
+                    nullable: true
                   addr_post_code:
                     type: string
+                    nullable: true
                   addr_state:
                     type: string
+                    nullable: true
                   card_registration:
                     type: string
+                    nullable: true
                   derectdebit_registration:
                     type: string
+                    nullable: true
                   created:
                     type: string
+                    nullable: true
                     pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
                   updated:
                     type: string
+                    nullable: true
                     pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+                required:
+                  - id
+                  - name
+                  - email
         '400':
           description: Bad Request
           content:
@@ -98,6 +119,55 @@ paths:
                           type: string
                         error_message:
                           type: string
+                      required:
+                        - error_code
+                        - error_message
+                required:
+                  - errors
+  /customers/{id}:
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  delete_flag:
+                    type: string
+                required:
+                  - id
+                  - delete_flag
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error_code:
+                          type: string
+                        error_message:
+                          type: string
+                      required:
+                        - error_code
+                        - error_message
+                required:
+                  - errors
 components:
   securitySchemes:
     BearerAuth:

@@ -40,6 +40,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		s.notFound(w, r)
 		return
 	}
+	args := [1]string{}
 
 	// Static code generated router with unwrapped path search.
 	switch {
@@ -57,7 +58,6 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			}
 
 			if len(elem) == 0 {
-				// Leaf node.
 				switch r.Method {
 				case "POST":
 					s.handleCustomersPostRequest([0]string{}, elemIsEscaped, w, r)
@@ -66,6 +66,36 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				}
 
 				return
+			}
+			switch elem[0] {
+			case '/': // Prefix: "/"
+				origElem := elem
+				if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				// Param: "id"
+				// Leaf parameter
+				args[0] = elem
+				elem = ""
+
+				if len(elem) == 0 {
+					// Leaf node.
+					switch r.Method {
+					case "DELETE":
+						s.handleCustomersIDDeleteRequest([1]string{
+							args[0],
+						}, elemIsEscaped, w, r)
+					default:
+						s.notAllowed(w, r, "DELETE")
+					}
+
+					return
+				}
+
+				elem = origElem
 			}
 
 			elem = origElem
@@ -81,7 +111,7 @@ type Route struct {
 	operationID string
 	pathPattern string
 	count       int
-	args        [0]string
+	args        [1]string
 }
 
 // Name returns ogen operation name.
@@ -160,7 +190,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 			if len(elem) == 0 {
 				switch method {
 				case "POST":
-					// Leaf: CustomersPost
 					r.name = "CustomersPost"
 					r.summary = ""
 					r.operationID = ""
@@ -171,6 +200,38 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				default:
 					return
 				}
+			}
+			switch elem[0] {
+			case '/': // Prefix: "/"
+				origElem := elem
+				if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+					elem = elem[l:]
+				} else {
+					break
+				}
+
+				// Param: "id"
+				// Leaf parameter
+				args[0] = elem
+				elem = ""
+
+				if len(elem) == 0 {
+					switch method {
+					case "DELETE":
+						// Leaf: CustomersIDDelete
+						r.name = "CustomersIDDelete"
+						r.summary = ""
+						r.operationID = ""
+						r.pathPattern = "/customers/{id}"
+						r.args = args
+						r.count = 1
+						return r, true
+					default:
+						return
+					}
+				}
+
+				elem = origElem
 			}
 
 			elem = origElem

@@ -8,10 +8,14 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
+	// CustomersIDDelete implements DELETE /customers/{id} operation.
+	//
+	// DELETE /customers/{id}
+	CustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (CustomersIDDeleteRes, error)
 	// CustomersPost implements POST /customers operation.
 	//
 	// POST /customers
-	CustomersPost(ctx context.Context, req OptCustomersPostReq) (CustomersPostRes, error)
+	CustomersPost(ctx context.Context, req *CustomersPostReq) (CustomersPostRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and
