@@ -11,7 +11,7 @@ build:
 	go mod tidy
 
 test: build
-	go test ./...
+	go test ./... -coverprofile=coverage.out -covermode=count
 
 lint:
 	golangci-lint run ./...
