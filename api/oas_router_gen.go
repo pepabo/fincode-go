@@ -88,8 +88,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						s.handleCustomersIDDeleteRequest([1]string{
 							args[0],
 						}, elemIsEscaped, w, r)
+					case "GET":
+						s.handleCustomersIDGetRequest([1]string{
+							args[0],
+						}, elemIsEscaped, w, r)
 					default:
-						s.notAllowed(w, r, "DELETE")
+						s.notAllowed(w, r, "DELETE,GET")
 					}
 
 					return
@@ -220,6 +224,15 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					case "DELETE":
 						// Leaf: CustomersIDDelete
 						r.name = "CustomersIDDelete"
+						r.summary = ""
+						r.operationID = ""
+						r.pathPattern = "/customers/{id}"
+						r.args = args
+						r.count = 1
+						return r, true
+					case "GET":
+						// Leaf: CustomersIDGet
+						r.name = "CustomersIDGet"
 						r.summary = ""
 						r.operationID = ""
 						r.pathPattern = "/customers/{id}"

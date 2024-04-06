@@ -5,6 +5,10 @@ type CustomersIDDeleteRes interface {
 	customersIDDeleteRes()
 }
 
+type CustomersIDGetRes interface {
+	customersIDGetRes()
+}
+
 type CustomersPostRes interface {
 	customersPostRes()
 }

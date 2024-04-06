@@ -12,6 +12,10 @@ type Handler interface {
 	//
 	// DELETE /customers/{id}
 	CustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (CustomersIDDeleteRes, error)
+	// CustomersIDGet implements GET /customers/{id} operation.
+	//
+	// GET /customers/{id}
+	CustomersIDGet(ctx context.Context, params CustomersIDGetParams) (CustomersIDGetRes, error)
 	// CustomersPost implements POST /customers operation.
 	//
 	// POST /customers

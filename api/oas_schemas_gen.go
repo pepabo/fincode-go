@@ -84,6 +84,228 @@ func (s *CustomersIDDeleteOK) SetDeleteFlag(val string) {
 
 func (*CustomersIDDeleteOK) customersIDDeleteRes() {}
 
+type CustomersIDGetBadRequest struct {
+	Errors []CustomersIDGetBadRequestErrorsItem `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CustomersIDGetBadRequest) GetErrors() []CustomersIDGetBadRequestErrorsItem {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CustomersIDGetBadRequest) SetErrors(val []CustomersIDGetBadRequestErrorsItem) {
+	s.Errors = val
+}
+
+func (*CustomersIDGetBadRequest) customersIDGetRes() {}
+
+type CustomersIDGetBadRequestErrorsItem struct {
+	ErrorCode    string `json:"error_code"`
+	ErrorMessage string `json:"error_message"`
+}
+
+// GetErrorCode returns the value of ErrorCode.
+func (s *CustomersIDGetBadRequestErrorsItem) GetErrorCode() string {
+	return s.ErrorCode
+}
+
+// GetErrorMessage returns the value of ErrorMessage.
+func (s *CustomersIDGetBadRequestErrorsItem) GetErrorMessage() string {
+	return s.ErrorMessage
+}
+
+// SetErrorCode sets the value of ErrorCode.
+func (s *CustomersIDGetBadRequestErrorsItem) SetErrorCode(val string) {
+	s.ErrorCode = val
+}
+
+// SetErrorMessage sets the value of ErrorMessage.
+func (s *CustomersIDGetBadRequestErrorsItem) SetErrorMessage(val string) {
+	s.ErrorMessage = val
+}
+
+type CustomersIDGetOK struct {
+	ID                      string       `json:"id"`
+	Name                    string       `json:"name"`
+	Email                   string       `json:"email"`
+	PhoneCc                 OptNilString `json:"phone_cc"`
+	PhoneNo                 OptNilString `json:"phone_no"`
+	AddrCity                OptNilString `json:"addr_city"`
+	AddrCountry             OptNilString `json:"addr_country"`
+	AddrLine1               OptNilString `json:"addr_line_1"`
+	AddrLine2               OptNilString `json:"addr_line_2"`
+	AddrLine3               OptNilString `json:"addr_line_3"`
+	AddrPostCode            OptNilString `json:"addr_post_code"`
+	AddrState               OptNilString `json:"addr_state"`
+	CardRegistration        OptNilString `json:"card_registration"`
+	DerectdebitRegistration OptNilString `json:"derectdebit_registration"`
+	Created                 OptNilString `json:"created"`
+	Updated                 OptNilString `json:"updated"`
+}
+
+// GetID returns the value of ID.
+func (s *CustomersIDGetOK) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *CustomersIDGetOK) GetName() string {
+	return s.Name
+}
+
+// GetEmail returns the value of Email.
+func (s *CustomersIDGetOK) GetEmail() string {
+	return s.Email
+}
+
+// GetPhoneCc returns the value of PhoneCc.
+func (s *CustomersIDGetOK) GetPhoneCc() OptNilString {
+	return s.PhoneCc
+}
+
+// GetPhoneNo returns the value of PhoneNo.
+func (s *CustomersIDGetOK) GetPhoneNo() OptNilString {
+	return s.PhoneNo
+}
+
+// GetAddrCity returns the value of AddrCity.
+func (s *CustomersIDGetOK) GetAddrCity() OptNilString {
+	return s.AddrCity
+}
+
+// GetAddrCountry returns the value of AddrCountry.
+func (s *CustomersIDGetOK) GetAddrCountry() OptNilString {
+	return s.AddrCountry
+}
+
+// GetAddrLine1 returns the value of AddrLine1.
+func (s *CustomersIDGetOK) GetAddrLine1() OptNilString {
+	return s.AddrLine1
+}
+
+// GetAddrLine2 returns the value of AddrLine2.
+func (s *CustomersIDGetOK) GetAddrLine2() OptNilString {
+	return s.AddrLine2
+}
+
+// GetAddrLine3 returns the value of AddrLine3.
+func (s *CustomersIDGetOK) GetAddrLine3() OptNilString {
+	return s.AddrLine3
+}
+
+// GetAddrPostCode returns the value of AddrPostCode.
+func (s *CustomersIDGetOK) GetAddrPostCode() OptNilString {
+	return s.AddrPostCode
+}
+
+// GetAddrState returns the value of AddrState.
+func (s *CustomersIDGetOK) GetAddrState() OptNilString {
+	return s.AddrState
+}
+
+// GetCardRegistration returns the value of CardRegistration.
+func (s *CustomersIDGetOK) GetCardRegistration() OptNilString {
+	return s.CardRegistration
+}
+
+// GetDerectdebitRegistration returns the value of DerectdebitRegistration.
+func (s *CustomersIDGetOK) GetDerectdebitRegistration() OptNilString {
+	return s.DerectdebitRegistration
+}
+
+// GetCreated returns the value of Created.
+func (s *CustomersIDGetOK) GetCreated() OptNilString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *CustomersIDGetOK) GetUpdated() OptNilString {
+	return s.Updated
+}
+
+// SetID sets the value of ID.
+func (s *CustomersIDGetOK) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *CustomersIDGetOK) SetName(val string) {
+	s.Name = val
+}
+
+// SetEmail sets the value of Email.
+func (s *CustomersIDGetOK) SetEmail(val string) {
+	s.Email = val
+}
+
+// SetPhoneCc sets the value of PhoneCc.
+func (s *CustomersIDGetOK) SetPhoneCc(val OptNilString) {
+	s.PhoneCc = val
+}
+
+// SetPhoneNo sets the value of PhoneNo.
+func (s *CustomersIDGetOK) SetPhoneNo(val OptNilString) {
+	s.PhoneNo = val
+}
+
+// SetAddrCity sets the value of AddrCity.
+func (s *CustomersIDGetOK) SetAddrCity(val OptNilString) {
+	s.AddrCity = val
+}
+
+// SetAddrCountry sets the value of AddrCountry.
+func (s *CustomersIDGetOK) SetAddrCountry(val OptNilString) {
+	s.AddrCountry = val
+}
+
+// SetAddrLine1 sets the value of AddrLine1.
+func (s *CustomersIDGetOK) SetAddrLine1(val OptNilString) {
+	s.AddrLine1 = val
+}
+
+// SetAddrLine2 sets the value of AddrLine2.
+func (s *CustomersIDGetOK) SetAddrLine2(val OptNilString) {
+	s.AddrLine2 = val
+}
+
+// SetAddrLine3 sets the value of AddrLine3.
+func (s *CustomersIDGetOK) SetAddrLine3(val OptNilString) {
+	s.AddrLine3 = val
+}
+
+// SetAddrPostCode sets the value of AddrPostCode.
+func (s *CustomersIDGetOK) SetAddrPostCode(val OptNilString) {
+	s.AddrPostCode = val
+}
+
+// SetAddrState sets the value of AddrState.
+func (s *CustomersIDGetOK) SetAddrState(val OptNilString) {
+	s.AddrState = val
+}
+
+// SetCardRegistration sets the value of CardRegistration.
+func (s *CustomersIDGetOK) SetCardRegistration(val OptNilString) {
+	s.CardRegistration = val
+}
+
+// SetDerectdebitRegistration sets the value of DerectdebitRegistration.
+func (s *CustomersIDGetOK) SetDerectdebitRegistration(val OptNilString) {
+	s.DerectdebitRegistration = val
+}
+
+// SetCreated sets the value of Created.
+func (s *CustomersIDGetOK) SetCreated(val OptNilString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *CustomersIDGetOK) SetUpdated(val OptNilString) {
+	s.Updated = val
+}
+
+func (*CustomersIDGetOK) customersIDGetRes() {}
+
 type CustomersPostBadRequest struct {
 	Errors []CustomersPostBadRequestErrorsItem `json:"errors"`
 }

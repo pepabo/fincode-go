@@ -31,6 +31,93 @@ func (s *CustomersIDDeleteBadRequest) Validate() error {
 	return nil
 }
 
+func (s *CustomersIDGetBadRequest) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if s.Errors == nil {
+			return errors.New("nil is invalid value")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "errors",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *CustomersIDGetOK) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.Created.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "created",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Updated.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "updated",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
 func (s *CustomersPostBadRequest) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer

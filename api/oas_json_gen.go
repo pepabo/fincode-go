@@ -345,6 +345,577 @@ func (s *CustomersIDDeleteOK) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *CustomersIDGetBadRequest) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *CustomersIDGetBadRequest) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("errors")
+		e.ArrStart()
+		for _, elem := range s.Errors {
+			elem.Encode(e)
+		}
+		e.ArrEnd()
+	}
+}
+
+var jsonFieldsNameOfCustomersIDGetBadRequest = [1]string{
+	0: "errors",
+}
+
+// Decode decodes CustomersIDGetBadRequest from json.
+func (s *CustomersIDGetBadRequest) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CustomersIDGetBadRequest to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "errors":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				s.Errors = make([]CustomersIDGetBadRequestErrorsItem, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem CustomersIDGetBadRequestErrorsItem
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.Errors = append(s.Errors, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"errors\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode CustomersIDGetBadRequest")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfCustomersIDGetBadRequest) {
+					name = jsonFieldsNameOfCustomersIDGetBadRequest[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *CustomersIDGetBadRequest) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CustomersIDGetBadRequest) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *CustomersIDGetBadRequestErrorsItem) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *CustomersIDGetBadRequestErrorsItem) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("error_code")
+		e.Str(s.ErrorCode)
+	}
+	{
+		e.FieldStart("error_message")
+		e.Str(s.ErrorMessage)
+	}
+}
+
+var jsonFieldsNameOfCustomersIDGetBadRequestErrorsItem = [2]string{
+	0: "error_code",
+	1: "error_message",
+}
+
+// Decode decodes CustomersIDGetBadRequestErrorsItem from json.
+func (s *CustomersIDGetBadRequestErrorsItem) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CustomersIDGetBadRequestErrorsItem to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "error_code":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.ErrorCode = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_code\"")
+			}
+		case "error_message":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.ErrorMessage = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_message\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode CustomersIDGetBadRequestErrorsItem")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfCustomersIDGetBadRequestErrorsItem) {
+					name = jsonFieldsNameOfCustomersIDGetBadRequestErrorsItem[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *CustomersIDGetBadRequestErrorsItem) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CustomersIDGetBadRequestErrorsItem) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *CustomersIDGetOK) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *CustomersIDGetOK) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("id")
+		e.Str(s.ID)
+	}
+	{
+		e.FieldStart("name")
+		e.Str(s.Name)
+	}
+	{
+		e.FieldStart("email")
+		e.Str(s.Email)
+	}
+	{
+		if s.PhoneCc.Set {
+			e.FieldStart("phone_cc")
+			s.PhoneCc.Encode(e)
+		}
+	}
+	{
+		if s.PhoneNo.Set {
+			e.FieldStart("phone_no")
+			s.PhoneNo.Encode(e)
+		}
+	}
+	{
+		if s.AddrCity.Set {
+			e.FieldStart("addr_city")
+			s.AddrCity.Encode(e)
+		}
+	}
+	{
+		if s.AddrCountry.Set {
+			e.FieldStart("addr_country")
+			s.AddrCountry.Encode(e)
+		}
+	}
+	{
+		if s.AddrLine1.Set {
+			e.FieldStart("addr_line_1")
+			s.AddrLine1.Encode(e)
+		}
+	}
+	{
+		if s.AddrLine2.Set {
+			e.FieldStart("addr_line_2")
+			s.AddrLine2.Encode(e)
+		}
+	}
+	{
+		if s.AddrLine3.Set {
+			e.FieldStart("addr_line_3")
+			s.AddrLine3.Encode(e)
+		}
+	}
+	{
+		if s.AddrPostCode.Set {
+			e.FieldStart("addr_post_code")
+			s.AddrPostCode.Encode(e)
+		}
+	}
+	{
+		if s.AddrState.Set {
+			e.FieldStart("addr_state")
+			s.AddrState.Encode(e)
+		}
+	}
+	{
+		if s.CardRegistration.Set {
+			e.FieldStart("card_registration")
+			s.CardRegistration.Encode(e)
+		}
+	}
+	{
+		if s.DerectdebitRegistration.Set {
+			e.FieldStart("derectdebit_registration")
+			s.DerectdebitRegistration.Encode(e)
+		}
+	}
+	{
+		if s.Created.Set {
+			e.FieldStart("created")
+			s.Created.Encode(e)
+		}
+	}
+	{
+		if s.Updated.Set {
+			e.FieldStart("updated")
+			s.Updated.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfCustomersIDGetOK = [16]string{
+	0:  "id",
+	1:  "name",
+	2:  "email",
+	3:  "phone_cc",
+	4:  "phone_no",
+	5:  "addr_city",
+	6:  "addr_country",
+	7:  "addr_line_1",
+	8:  "addr_line_2",
+	9:  "addr_line_3",
+	10: "addr_post_code",
+	11: "addr_state",
+	12: "card_registration",
+	13: "derectdebit_registration",
+	14: "created",
+	15: "updated",
+}
+
+// Decode decodes CustomersIDGetOK from json.
+func (s *CustomersIDGetOK) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CustomersIDGetOK to nil")
+	}
+	var requiredBitSet [2]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "id":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.ID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"id\"")
+			}
+		case "name":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.Name = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"name\"")
+			}
+		case "email":
+			requiredBitSet[0] |= 1 << 2
+			if err := func() error {
+				v, err := d.Str()
+				s.Email = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"email\"")
+			}
+		case "phone_cc":
+			if err := func() error {
+				s.PhoneCc.Reset()
+				if err := s.PhoneCc.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"phone_cc\"")
+			}
+		case "phone_no":
+			if err := func() error {
+				s.PhoneNo.Reset()
+				if err := s.PhoneNo.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"phone_no\"")
+			}
+		case "addr_city":
+			if err := func() error {
+				s.AddrCity.Reset()
+				if err := s.AddrCity.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"addr_city\"")
+			}
+		case "addr_country":
+			if err := func() error {
+				s.AddrCountry.Reset()
+				if err := s.AddrCountry.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"addr_country\"")
+			}
+		case "addr_line_1":
+			if err := func() error {
+				s.AddrLine1.Reset()
+				if err := s.AddrLine1.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"addr_line_1\"")
+			}
+		case "addr_line_2":
+			if err := func() error {
+				s.AddrLine2.Reset()
+				if err := s.AddrLine2.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"addr_line_2\"")
+			}
+		case "addr_line_3":
+			if err := func() error {
+				s.AddrLine3.Reset()
+				if err := s.AddrLine3.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"addr_line_3\"")
+			}
+		case "addr_post_code":
+			if err := func() error {
+				s.AddrPostCode.Reset()
+				if err := s.AddrPostCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"addr_post_code\"")
+			}
+		case "addr_state":
+			if err := func() error {
+				s.AddrState.Reset()
+				if err := s.AddrState.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"addr_state\"")
+			}
+		case "card_registration":
+			if err := func() error {
+				s.CardRegistration.Reset()
+				if err := s.CardRegistration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_registration\"")
+			}
+		case "derectdebit_registration":
+			if err := func() error {
+				s.DerectdebitRegistration.Reset()
+				if err := s.DerectdebitRegistration.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"derectdebit_registration\"")
+			}
+		case "created":
+			if err := func() error {
+				s.Created.Reset()
+				if err := s.Created.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"created\"")
+			}
+		case "updated":
+			if err := func() error {
+				s.Updated.Reset()
+				if err := s.Updated.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"updated\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode CustomersIDGetOK")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [2]uint8{
+		0b00000111,
+		0b00000000,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfCustomersIDGetOK) {
+					name = jsonFieldsNameOfCustomersIDGetOK[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *CustomersIDGetOK) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CustomersIDGetOK) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *CustomersPostBadRequest) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
