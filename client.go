@@ -17,16 +17,16 @@ type clientConfig struct {
 // Option is a functional option for the fincode client.
 type Option func(*clientConfig) error
 
-// WitnEndpoint sets the endpoint of the fincode API.
-func WitnEndpoint(e string) Option {
+// Endpoint sets the endpoint of the fincode API.
+func Endpoint(e string) Option {
 	return func(c *clientConfig) error {
 		c.endpoint = e
 		return nil
 	}
 }
 
-// WithAPISecretKey sets the API secret key for the fincode API.
-func WithAPISecretKey(k string) Option {
+// APISecretKey sets the API secret key for the fincode API.
+func APISecretKey(k string) Option {
 	return func(c *clientConfig) error {
 		c.apiSecretKey = k
 		return nil

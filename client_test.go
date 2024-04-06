@@ -12,7 +12,7 @@ const testEndpoint = "https://api.test.fincode.jp/v1"
 
 func TestCustomers(t *testing.T) {
 	ctx := context.Background()
-	c, err := New(WitnEndpoint(testEndpoint))
+	c, err := New(Endpoint(testEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
