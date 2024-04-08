@@ -20,6 +20,13 @@ func (UnimplementedHandler) CustomersIDDelete(ctx context.Context, params Custom
 	return r, ht.ErrNotImplemented
 }
 
+// CustomersIDGet implements GET /customers/{id} operation.
+//
+// GET /customers/{id}
+func (UnimplementedHandler) CustomersIDGet(ctx context.Context, params CustomersIDGetParams) (r CustomersIDGetRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // CustomersPost implements POST /customers operation.
 //
 // POST /customers

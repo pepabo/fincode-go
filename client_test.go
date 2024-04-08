@@ -39,6 +39,22 @@ func TestCustomers(t *testing.T) {
 		}
 	})
 
+	t.Run("Get customer", func(t *testing.T) {
+		res, err := c.CustomersIDGet(ctx, api.CustomersIDGetParams{
+			ID: id,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.CustomersIDGetOK)
+		if !ok {
+			t.Errorf("unexpected response type: %T", res)
+		}
+		if want := id; v.ID != want {
+			t.Errorf("unexpected ID: got %q, want %q", v.ID, want)
+		}
+	})
+
 	t.Run("Delete customer", func(t *testing.T) {
 		res, err := c.CustomersIDDelete(ctx, api.CustomersIDDeleteParams{
 			ID: id,
