@@ -8,6 +8,7 @@
 <script>
 const endpoint = '{{ .Endpoint }}';
 window.onload = (event) => {
+  const customerID = '{{ .CustomerID }}';
   const fincode = Fincode('{{ .APIPublicKey }}');
   const button = document.querySelector("button");
   button.addEventListener("click", (event) => {
@@ -21,6 +22,7 @@ window.onload = (event) => {
     fincode.tokens(card,
       function (status, response) {
           if (200 === status) {
+              response.customer_id = customerID;
               postData(endpoint + '/card/register', response).then((data) => {
                   location.href = data.redirect_url;
               });

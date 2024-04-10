@@ -14,6 +14,9 @@ func TestScenario(t *testing.T) {
 		runn.T(t),
 		runn.SkipIncluded(true),
 		runn.Var("endpoint", ts.URL),
+		runn.Func("id", func() string {
+			return newID(t)
+		}),
 	}
 	o, err := runn.Load("testdata/scenarios/**/*.yml", opts...)
 	if err != nil {

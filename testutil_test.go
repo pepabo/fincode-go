@@ -1,7 +1,6 @@
 package fincode
 
 import (
-	"bytes"
 	"context"
 	"embed"
 	"encoding/json"
@@ -38,6 +37,7 @@ type tokenResponse struct {
 		Token string `json:"token"`
 	} `json:"list"`
 	SecurityCodeSet string `json:"security_code_set"`
+	CustomerID      string `json:"customer_id"`
 }
 
 func NewPaymentServer(t *testing.T) *httptest.Server {
@@ -57,18 +57,45 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 		"Endpoint":     ts.URL,
 		"APIPublicKey": os.Getenv("FINCODE_API_PUBLIC_KEY"),
 	}
-
 	{
-		buf := new(bytes.Buffer)
-		b, err := tmplFS.ReadFile("testdata/templates/card.html.tmpl")
-		if err != nil {
-			t.Fatal(err)
-		}
-		tmpl := template.Must(template.New("/card").Parse(string(b)))
-		if err := tmpl.Execute(buf, data); err != nil {
-			t.Fatal(err)
-		}
-		ts.Method(http.MethodGet).Path("/card").ResponseString(http.StatusOK, buf.String())
+		ts.Method(http.MethodGet).Path("/card").Handler(func(w http.ResponseWriter, r *http.Request) {
+			b, err := tmplFS.ReadFile("testdata/templates/card.html.tmpl")
+			if err != nil {
+				t.Fatal(err)
+			}
+			w.Header().Set("Content-Type", "text/html")
+			w.WriteHeader(http.StatusOK)
+
+			// Create customer
+			customerID := r.URL.Query().Get("customer_id")
+			res, err := c.CustomersPost(ctx, &api.CustomersPostReq{
+				ID:    customerID,
+				Name:  faker.Name(),
+				Email: faker.Email(),
+			})
+			if err != nil {
+				errorWithResponse(t, err, w)
+				return
+			}
+			_, ok := res.(*api.CustomersPostOK)
+			if !ok {
+				errorWithResponse(t, fmt.Errorf("unexpected response type: %T", res), w)
+				return
+			}
+			t.Cleanup(func() {
+				if _, err := c.CustomersIDDelete(ctx, api.CustomersIDDeleteParams{
+					ID: customerID,
+				}); err != nil {
+					t.Error(err)
+				}
+			})
+
+			data["CustomerID"] = customerID
+			tmpl := template.Must(template.New("/card").Parse(string(b)))
+			if err := tmpl.Execute(w, data); err != nil {
+				t.Fatal(err)
+			}
+		})
 	}
 	{
 		ts.Method(http.MethodPost).Path("/card/register").Handler(func(w http.ResponseWriter, r *http.Request) {
@@ -83,32 +110,8 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 				errorWithResponse(t, err, w)
 				return
 			}
-			// Create customer
-			customerID := newID(t)
+			customerID := res.CustomerID
 			var redirectURL string
-			{
-				res, err := c.CustomersPost(ctx, &api.CustomersPostReq{
-					ID:    customerID,
-					Name:  faker.Name(),
-					Email: faker.Email(),
-				})
-				if err != nil {
-					errorWithResponse(t, err, w)
-					return
-				}
-				_, ok := res.(*api.CustomersPostOK)
-				if !ok {
-					errorWithResponse(t, fmt.Errorf("unexpected response type: %T", res), w)
-					return
-				}
-				t.Cleanup(func() {
-					if _, err := c.CustomersIDDelete(ctx, api.CustomersIDDeleteParams{
-						ID: customerID,
-					}); err != nil {
-						t.Error(err)
-					}
-				})
-			}
 			// Create payment method
 			{
 				req := api.CustomersCustomerIDPaymentMethodsPostReq{
