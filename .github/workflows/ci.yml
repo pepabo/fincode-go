@@ -10,6 +10,8 @@ jobs:
   job-test:
     name: Test
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/k1low/runn:latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:

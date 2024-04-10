@@ -1,6 +1,6 @@
 module github.com/pepabo/fincode-go
 
-go 1.22.1
+go 1.22.2
 
 require (
 	github.com/brianvoe/gofakeit/v6 v6.28.0
@@ -164,5 +164,3 @@ require (
 	modernc.org/strutil v1.2.0 // indirect
 	modernc.org/token v1.1.0 // indirect
 )
-
-replace github.com/k1LoW/runn => ../../k1LoW/runn
