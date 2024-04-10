@@ -8,53 +8,7 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-func (s *CustomersIDDeleteBadRequest) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
-	if err := func() error {
-		if s.Errors == nil {
-			return errors.New("nil is invalid value")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "errors",
-			Error: err,
-		})
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
-func (s *CustomersIDGetBadRequest) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
-	if err := func() error {
-		if s.Errors == nil {
-			return errors.New("nil is invalid value")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "errors",
-			Error: err,
-		})
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
-func (s *CustomersIDGetOK) Validate() error {
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -118,20 +72,100 @@ func (s *CustomersIDGetOK) Validate() error {
 	return nil
 }
 
-func (s *CustomersPostBadRequest) Validate() error {
+func (s CustomersCustomerIDPaymentMethodsPostOK) Validate() error {
+	switch s.Type {
+	case PaymentMethodCardResponseCustomersCustomerIDPaymentMethodsPostOK:
+		if err := s.PaymentMethodCardResponse.Validate(); err != nil {
+			return err
+		}
+		return nil
+	case PaymentMethodDirectDebitResponseCustomersCustomerIDPaymentMethodsPostOK:
+		if err := s.PaymentMethodDirectDebitResponse.Validate(); err != nil {
+			return err
+		}
+		return nil
+	default:
+		return errors.Errorf("invalid type %q", s.Type)
+	}
+}
+
+func (s CustomersCustomerIDPaymentMethodsPostReq) Validate() error {
+	switch s.Type {
+	case PaymentMethodCardWith3DSecureCustomersCustomerIDPaymentMethodsPostReq:
+		if err := s.PaymentMethodCardWith3DSecure.Validate(); err != nil {
+			return err
+		}
+		return nil
+	case PaymentMethodCardWithout3DSecureCustomersCustomerIDPaymentMethodsPostReq:
+		if err := s.PaymentMethodCardWithout3DSecure.Validate(); err != nil {
+			return err
+		}
+		return nil
+	case PaymentMethodDirectDebitCustomersCustomerIDPaymentMethodsPostReq:
+		if err := s.PaymentMethodDirectDebit.Validate(); err != nil {
+			return err
+		}
+		return nil
+	default:
+		return errors.Errorf("invalid type %q", s.Type)
+	}
+}
+
+func (s *CustomersIDGetOK) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if s.Errors == nil {
-			return errors.New("nil is invalid value")
+		if value, ok := s.Created.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "errors",
+			Name:  "created",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Updated.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "updated",
 			Error: err,
 		})
 	}
@@ -203,4 +237,1329 @@ func (s *CustomersPostOK) Validate() error {
 		return &validate.Error{Fields: failures}
 	}
 	return nil
+}
+
+func (s *ErrorResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if s.Errors == nil {
+			return errors.New("nil is invalid value")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "errors",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *PaymentMethodCardResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.PayType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.ProcessDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "process_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Status.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.DefaultFlag.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "default_flag",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Created.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "created",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Updated.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "updated",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Card.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "card",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *PaymentMethodCardResponseCard) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.Expire.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "expire",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Type.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.TdsType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2Type.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2Status.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_status",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentMethodCardResponseCardTds2Status) Validate() error {
+	switch s {
+	case "AUTHENTICATING":
+		return nil
+	case "CHALLENGE":
+		return nil
+	case "ACTIVATED":
+		return nil
+	case "AUTHENTICATED":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardResponseCardTds2Type) Validate() error {
+	switch s {
+	case "2":
+		return nil
+	case "3":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardResponseCardTdsType) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "2":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardResponseCardType) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	case "2":
+		return nil
+	case "3":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardResponseDefaultFlag) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardResponsePayType) Validate() error {
+	switch s {
+	case "Card":
+		return nil
+	case "Directdebit":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardResponseStatus) Validate() error {
+	switch s {
+	case "INACTIVATED":
+		return nil
+	case "AWAITING_CUSTOMER_ACTION":
+		return nil
+	case "ACTIVATED":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentMethodCardWith3DSecure) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.PayType.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.DefaultFlag.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "default_flag",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.Card.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "card",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *PaymentMethodCardWith3DSecureCard) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.TdsType.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2Type.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2ShipNameInd.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_ship_name_ind",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2SuspiciousAccActivity.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_suspicious_acc_activity",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2ThreeDsReqAuthMethod.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_three_ds_req_auth_method",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2AddrMatch.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_addr_match",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2DeliveryTimeframe.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_delivery_timeframe",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2PreOrderPurchaseInd.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_pre_order_purchase_ind",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2ReorderItemsInd.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_reorder_items_ind",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Tds2ShipInd.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "tds2_ship_ind",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2AddrMatch) Validate() error {
+	switch s {
+	case "Y":
+		return nil
+	case "N":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) Validate() error {
+	switch s {
+	case "01":
+		return nil
+	case "02":
+		return nil
+	case "03":
+		return nil
+	case "04":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) Validate() error {
+	switch s {
+	case "01":
+		return nil
+	case "02":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) Validate() error {
+	switch s {
+	case "01":
+		return nil
+	case "02":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2ShipInd) Validate() error {
+	switch s {
+	case "01":
+		return nil
+	case "02":
+		return nil
+	case "03":
+		return nil
+	case "04":
+		return nil
+	case "05":
+		return nil
+	case "06":
+		return nil
+	case "07":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2ShipNameInd) Validate() error {
+	switch s {
+	case "01":
+		return nil
+	case "02":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) Validate() error {
+	switch s {
+	case "01":
+		return nil
+	case "02":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) Validate() error {
+	switch s {
+	case "01":
+		return nil
+	case "02":
+		return nil
+	case "03":
+		return nil
+	case "04":
+		return nil
+	case "05":
+		return nil
+	case "06":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTds2Type) Validate() error {
+	switch s {
+	case "2":
+		return nil
+	case "3":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureCardTdsType) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "2":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecureDefaultFlag) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWith3DSecurePayType) Validate() error {
+	switch s {
+	case "Card":
+		return nil
+	case "Directdebit":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentMethodCardWithout3DSecure) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.PayType.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.DefaultFlag.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "default_flag",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentMethodCardWithout3DSecureDefaultFlag) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodCardWithout3DSecurePayType) Validate() error {
+	switch s {
+	case "Card":
+		return nil
+	case "Directdebit":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentMethodDirectDebit) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.PayType.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.DefaultFlag.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "default_flag",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentMethodDirectDebitDefaultFlag) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodDirectDebitPayType) Validate() error {
+	switch s {
+	case "Card":
+		return nil
+	case "Directdebit":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentMethodDirectDebitResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.PayType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.ProcessDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "process_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.RedirectURLAccessedFlag.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "redirect_url_accessed_flag",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Status.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Created.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "created",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Updated.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "updated",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Directdebit.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "directdebit",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *PaymentMethodDirectDebitResponseDirectdebit) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.ApplicationType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "application_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.ExpectedBillableDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "expected_billable_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.LastWithdrawalDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "last_withdrawal_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.LastResultCode.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "last_result_code",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.BankType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "bank_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.AccountType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "account_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.PaperApplication.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "paper_application",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentMethodDirectDebitResponseDirectdebitAccountType) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodDirectDebitResponseDirectdebitApplicationType) Validate() error {
+	switch s {
+	case "ONLINE":
+		return nil
+	case "PAPER":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodDirectDebitResponseDirectdebitBankType) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodDirectDebitResponseDirectdebitLastResultCode) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	case "2":
+		return nil
+	case "3":
+		return nil
+	case "4":
+		return nil
+	case "8":
+		return nil
+	case "9":
+		return nil
+	case "E":
+		return nil
+	case "N":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentMethodDirectDebitResponseDirectdebitPaperApplication) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.PreregisteredDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "preregistered_date",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentMethodDirectDebitResponsePayType) Validate() error {
+	switch s {
+	case "Directdebit":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodDirectDebitResponseRedirectURLAccessedFlag) Validate() error {
+	switch s {
+	case "0":
+		return nil
+	case "1":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentMethodDirectDebitResponseStatus) Validate() error {
+	switch s {
+	case "INACTIVATED":
+		return nil
+	case "AWAITING_CUSTOMER_ACTION":
+		return nil
+	case "ACTIVATED":
+		return nil
+	case "FAILED":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
 }

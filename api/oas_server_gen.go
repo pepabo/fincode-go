@@ -8,6 +8,18 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
+	// CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete implements DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+	//
+	// DELETE /customers/{customer_id}/payment_methods/{payment_method_id}
+	CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, error)
+	// CustomersCustomerIDPaymentMethodsPaymentMethodIDGet implements GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+	//
+	// GET /customers/{customer_id}/payment_methods/{payment_method_id}
+	CustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, error)
+	// CustomersCustomerIDPaymentMethodsPost implements POST /customers/{customer_id}/payment_methods operation.
+	//
+	// POST /customers/{customer_id}/payment_methods
+	CustomersCustomerIDPaymentMethodsPost(ctx context.Context, req CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (CustomersCustomerIDPaymentMethodsPostRes, error)
 	// CustomersIDDelete implements DELETE /customers/{id} operation.
 	//
 	// DELETE /customers/{id}

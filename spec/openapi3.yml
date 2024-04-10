@@ -8,7 +8,7 @@ security:
   - BearerAuth: []
 paths:
   /customers:
-    post:      
+    post:
       requestBody:
         required: true
         content:
@@ -39,11 +39,11 @@ paths:
                 addr_post_code:
                   type: string
                 addr_state:
-                  type: string                                    
+                  type: string
               required:
                 - id
                 - name
-                - email                
+                - email
       responses:
         '200':
           description: OK
@@ -108,22 +108,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        error_code:
-                          type: string
-                        error_message:
-                          type: string
-                      required:
-                        - error_code
-                        - error_message
-                required:
-                  - errors
+                $ref: '#/components/schemas/ErrorResponse'
   /customers/{id}:
     get:
       parameters:
@@ -196,22 +181,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        error_code:
-                          type: string
-                        error_message:
-                          type: string
-                      required:
-                        - error_code
-                        - error_message
-                required:
-                  - errors
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       parameters:
         - name: id
@@ -239,23 +209,676 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /customers/{customer_id}/payment_methods:
+    post:
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/paymentMethodCardWith3DSecure'
+                - $ref: '#/components/schemas/paymentMethodCardWithout3DSecure'
+                - $ref: '#/components/schemas/paymentMethodDirectDebit'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/paymentMethodCardResponse'
+                  - $ref: '#/components/schemas/paymentMethodDirectDebitResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /customers/{customer_id}/payment_methods/{payment_method_id}:
+    get:
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: payment_method_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
                 type: object
                 properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        error_code:
-                          type: string
-                        error_message:
-                          type: string
-                      required:
-                        - error_code
-                        - error_message
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  phone_cc:
+                    type: string
+                    nullable: true
+                  phone_no:
+                    type: string
+                    nullable: true
+                  addr_city:
+                    type: string
+                    nullable: true
+                  addr_country:
+                    type: string
+                    nullable: true
+                  addr_line_1:
+                    type: string
+                    nullable: true
+                  addr_line_2:
+                    type: string
+                    nullable: true
+                  addr_line_3:
+                    type: string
+                    nullable: true
+                  addr_post_code:
+                    type: string
+                    nullable: true
+                  addr_state:
+                    type: string
+                    nullable: true
+                  card_registration:
+                    type: string
+                    nullable: true
+                  derectdebit_registration:
+                    type: string
+                    nullable: true
+                  created:
+                    type: string
+                    nullable: true
+                    pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+                  updated:
+                    type: string
+                    nullable: true
+                    pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
                 required:
-                  - errors
+                  - id
+                  - name
+                  - email
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      parameters:
+        - name: customer_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: payment_method_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  delete_flag:
+                    type: string
+                required:
+                  - id
+                  - delete_flag
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            required:
+              - error_code
+              - error_message
+            properties:
+              error_code:
+                type: string
+              error_message:
+                type: string
+    paymentMethodCardWith3DSecure:
+      type: object
+      required:
+        - pay_type
+        - default_flag
+        - card
+      properties:
+        pay_type:
+          type: string
+          enum:
+            - Card
+            - Directdebit
+        return_url:
+          type: string
+        return_url_on_failure:
+          type: string
+        default_flag:
+          type: string
+          enum:
+            - '0'
+            - '1'
+        client_field_1:
+          type: string
+          nullable: true
+        client_field_2:
+          type: string
+          nullable: true
+        client_field_3:
+          type: string
+          nullable: true
+        card:
+          type: object
+          required:
+            - token
+            - tds_type
+          properties:
+            token:
+              type: string
+            tds_type:
+              type: string
+              enum:
+                - '0'
+                - '2'
+            td_tenant_name:
+              type: string
+              nullable: true
+            tds2_type:
+              type: string
+              nullable: true
+              enum:
+                - '2'
+                - '3'
+            tds2_ch_acc_change:
+              type: string
+              nullable: true
+            tds2_ch_acc_date:
+              type: string
+              nullable: true
+            tds2_ch_acc_pw_change:
+              type: string
+              nullable: true
+            tds2_nb_purchase_account:
+              type: string
+              nullable: true
+            tds2_payment_acc_age:
+              type: string
+              nullable: true
+            tds2_provision_attempts_day:
+              type: string
+              nullable: true
+            tds2_ship_address_usage:
+              type: string
+              nullable: true
+            tds2_ship_name_ind:
+              type: string
+              nullable: true
+              enum:
+                - '01'
+                - '02'
+            tds2_suspicious_acc_activity:
+              type: string
+              nullable: true
+              enum:
+                - '01'
+                - '02'
+            tds2_txn_activity_day:
+              type: string
+              nullable: true
+            tds2_txn_activity_year:
+              type: string
+              nullable: true
+            tds2_three_ds_req_auth_data:
+              type: string
+              nullable: true
+            tds2_three_ds_req_auth_method:
+              type: string
+              nullable: true
+              enum:
+                - '01'
+                - '02'
+                - '03'
+                - '04'
+                - '05'
+                - '06'
+            tds2_three_ds_req_auth_timestamp:
+              type: string
+              nullable: true
+            tds2_addr_match:
+              type: string
+              nullable: true
+              enum:
+                - 'Y'
+                - 'N'
+            tds2_bill_addr_city:
+              type: string
+              nullable: true
+            tds2_bill_addr_country:
+              type: string
+              nullable: true
+            tds2_bill_addr_line1:
+              type: string
+              nullable: true
+            tds2_bill_addr_line2:
+              type: string
+              nullable: true
+            tds2_bill_addr_line3:
+              type: string
+              nullable: true
+            tds2_bill_addr_postal_code:
+              type: string
+              nullable: true
+            tds2_bill_addr_state:
+              type: string
+              nullable: true
+            tds2_email:
+              type: string
+              nullable: true
+            tds2_home_phone_cc:
+              type: string
+              nullable: true
+            tds2_home_phone_no:
+              type: string
+              nullable: true
+            tds2_mobile_phone_cc:
+              type: string
+              nullable: true
+            tds2_mobile_phone_no:
+              type: string
+              nullable: true
+            tds2_work_phone_cc:
+              type: string
+              nullable: true
+            tds2_work_phone_no:
+              type: string
+              nullable: true
+            tds2_ship_addr_city:
+              type: string
+              nullable: true
+            tds2_ship_addr_country:
+              type: string
+              nullable: true
+            tds2_ship_addr_line1:
+              type: string
+              nullable: true
+            tds2_ship_addr_line2:
+              type: string
+              nullable: true
+            tds2_ship_addr_line3:
+              type: string
+              nullable: true
+            tds2_ship_addr_post_code:
+              type: string
+              nullable: true
+            tds2_ship_addr_state:
+              type: string
+              nullable: true
+            tds2_delivery_email_address:
+              type: string
+              nullable: true
+            tds2_delivery_timeframe:
+              type: string
+              nullable: true
+              enum:
+                - '01'
+                - '02'
+                - '03'
+                - '04'
+            tds2_gift_card_amount:
+              type: string
+              nullable: true
+            tds2_gift_card_count:
+              type: string
+              nullable: true
+            tds2_gift_card_curr:
+              type: string
+              nullable: true
+            tds2_pre_order_date:
+              type: string
+              nullable: true
+            tds2_pre_order_purchase_ind:
+              type: string
+              nullable: true
+              enum:
+                - '01'
+                - '02'
+            tds2_reorder_items_ind:
+              type: string
+              nullable: true
+              enum:
+                - '01'
+                - '02'
+            tds2_ship_ind:              
+              type: string
+              nullable: true
+              enum:
+                - '01'
+                - '02'
+                - '03'
+                - '04'
+                - '05'
+                - '06'
+                - '07'
+            tds2_reccurring_expiry:
+              type: string
+              nullable: true
+            tds2_reccurring_frequncy:
+              type: string
+              nullable: true
+    paymentMethodCardWithout3DSecure:
+      type: object
+      required:
+        - pay_type
+        - default_flag
+        - card
+      properties:
+        pay_type:
+          type: string
+          enum:
+            - Card
+            - Directdebit
+        default_flag:
+          type: string
+          enum:
+            - '0'
+            - '1'
+        client_field_1:
+          type: string
+        client_field_2:
+          type: string
+        client_field_3:
+          type: string
+        card:
+          type: object
+          required:
+            - token
+          properties:
+            token:
+              type: string
+    paymentMethodDirectDebit:
+      type: object
+      required:
+        - pay_type
+        - default_flag
+        - directdebit
+      properties:
+        pay_type:
+          type: string
+          enum:
+            - Card
+            - Directdebit
+        default_flag:
+          type: string
+          enum:
+            - '0'
+            - '1'
+        client_field_1:
+          type: string
+        client_field_2:
+          type: string
+        client_field_3:
+          type: string
+        directdebit:
+          type: object
+          required:
+            - token
+          properties:
+            token:
+              type: string
+    paymentMethodCardResponse:
+      type: object
+      properties:
+        id: 
+          type: string
+        pay_type:
+          type: string
+          enum:
+            - Card
+            - Directdebit
+        customer_id:
+          type: string
+        process_date:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        redirect_url:
+          type: string
+        status:
+          type: string
+          enum:
+            - INACTIVATED
+            - AWAITING_CUSTOMER_ACTION
+            - ACTIVATED
+        return_url:
+          type: string
+        return_url_on_failure:
+          type: string
+        default_flag:
+          type: string
+          enum:
+            - '0'
+            - '1'
+        delete_flag:
+          type: string
+        client_field_1:
+          type: string
+          nullable: true
+        client_field_2:
+          type: string
+          nullable: true
+        client_field_3:
+          type: string
+          nullable: true
+        created:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        updated:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        card:
+          type: object
+          required:
+            - access_id
+          properties:
+            card_no:
+              type: string
+            expire:
+              type: string
+              pattern: '^(\d{4})$'
+            holder_name:
+              type: string
+            card_no_hash:
+              type: string
+            type:
+              type: string
+              enum:
+                - '0'
+                - '1'
+                - '2'
+                - '3'
+            brand:
+              type: string
+            error_code:
+              type: string
+              nullable: true
+            tds_type:
+              type: string
+              nullable: true
+              enum:
+                - '0'
+                - '2'
+            tds2_type:
+              type: string
+              nullable: true
+              enum:
+                - '2'
+                - '3'
+            tds2_status:
+              type: string
+              nullable: true
+              enum:
+                - 'AUTHENTICATING'
+                - 'CHALLENGE'
+                - 'ACTIVATED'
+                - 'AUTHENTICATED'
+            merchant_name:
+              type: string
+              nullable: true
+            access_id:
+              type: string
+            acs:
+              type: string
+              nullable: true
+    paymentMethodDirectDebitResponse:
+      type: object
+      properties:
+        id: 
+          type: string
+        pay_type:
+          type: string
+          enum:
+            - Directdebit
+        customer_id:
+          type: string
+        process_date:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        redirect_url:
+          type: string
+        redirect_url_accessed_flag:
+          type: string
+          enum:
+            - '0'
+            - '1'
+        status:
+          type: string
+          enum:
+            - INACTIVATED
+            - AWAITING_CUSTOMER_ACTION
+            - ACTIVATED
+            - FAILED
+        return_url:
+          type: string
+        # description:
+        #   oneOf:
+        #     - type: string
+        #     - type: number
+        #     - type: integer
+        #     - type: boolean
+        #     - type: array
+        #     - type: object
+        default_flag:
+          type: string
+        client_field_1:
+          type: string
+        client_field_2:
+          type: string
+        client_field_3:
+          type: string
+        created:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        updated:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        directdebit:
+          type: object
+          properties:
+            application_type:
+              type: string
+              enum:
+                - 'ONLINE'
+                - 'PAPER'
+            expected_billable_date:
+              type: string
+              pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+            last_withdrawal_date:
+              type: string
+              pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+            last_result_code:
+              type: string
+              enum:
+                - '0'
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '8'
+                - '9'
+                - 'E'
+                - 'N'
+            bank_type:
+              type: string
+              enum:
+                - '0'
+                - '1'
+            bank_code:
+              type: string
+            bank_name:
+              type: string
+            branch_code:
+              type: string
+            branch_name:
+              type: string
+            account_type:
+              type: string
+              enum:
+                - '0'
+                - '1'
+            account_number:
+              type: string
+            postal_account_number_1:
+              type: string
+            postal_account_number_2:
+              type: string
+            account_name:
+              type: string
+            account_name_kana:
+              type: string
+            paper_application:
+              type: object
+              properties:
+                preregistered_date:
+                  type: string
+                  pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+                request_form_id:
+                  type: string
+                paper_failure_description:
+                  type: string
   securitySchemes:
     BearerAuth:
       type: http

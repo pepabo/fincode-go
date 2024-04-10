@@ -23,6 +23,18 @@ import (
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
+	// CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete invokes DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+	//
+	// DELETE /customers/{customer_id}/payment_methods/{payment_method_id}
+	CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, error)
+	// CustomersCustomerIDPaymentMethodsPaymentMethodIDGet invokes GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+	//
+	// GET /customers/{customer_id}/payment_methods/{payment_method_id}
+	CustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, error)
+	// CustomersCustomerIDPaymentMethodsPost invokes POST /customers/{customer_id}/payment_methods operation.
+	//
+	// POST /customers/{customer_id}/payment_methods
+	CustomersCustomerIDPaymentMethodsPost(ctx context.Context, request CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (CustomersCustomerIDPaymentMethodsPostRes, error)
 	// CustomersIDDelete invokes DELETE /customers/{id} operation.
 	//
 	// DELETE /customers/{id}
@@ -85,6 +97,408 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 		return c.serverURL
 	}
 	return u
+}
+
+// CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete invokes DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+//
+// DELETE /customers/{customer_id}/payment_methods/{payment_method_id}
+func (c *Client) CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, error) {
+	res, err := c.sendCustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (res CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods/{payment_method_id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/payment_methods/"
+	{
+		// Encode "payment_method_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "payment_method_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.PaymentMethodID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:BearerAuth"
+			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CustomersCustomerIDPaymentMethodsPaymentMethodIDGet invokes GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+//
+// GET /customers/{customer_id}/payment_methods/{payment_method_id}
+func (c *Client) CustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, error) {
+	res, err := c.sendCustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (res CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods/{payment_method_id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/payment_methods/"
+	{
+		// Encode "payment_method_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "payment_method_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.PaymentMethodID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:BearerAuth"
+			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCustomersCustomerIDPaymentMethodsPaymentMethodIDGetResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CustomersCustomerIDPaymentMethodsPost invokes POST /customers/{customer_id}/payment_methods operation.
+//
+// POST /customers/{customer_id}/payment_methods
+func (c *Client) CustomersCustomerIDPaymentMethodsPost(ctx context.Context, request CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (CustomersCustomerIDPaymentMethodsPostRes, error) {
+	res, err := c.sendCustomersCustomerIDPaymentMethodsPost(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, request CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (res CustomersCustomerIDPaymentMethodsPostRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPost",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/payment_methods"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCustomersCustomerIDPaymentMethodsPostRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:BearerAuth"
+			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPost", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCustomersCustomerIDPaymentMethodsPostResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
 }
 
 // CustomersIDDelete invokes DELETE /customers/{id} operation.

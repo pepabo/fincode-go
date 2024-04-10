@@ -13,6 +13,9 @@ build:
 test: build
 	go test ./... -coverprofile=coverage.out -covermode=count
 
+test-scenario: build
+	go test ./... -v -run TestScenario
+
 lint:
 	golangci-lint run ./...
 

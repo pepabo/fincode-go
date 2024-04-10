@@ -2,6 +2,10 @@
 
 package api
 
+import (
+	"github.com/go-faster/errors"
+)
+
 type BearerAuth struct {
 	Token string
 }
@@ -16,45 +20,380 @@ func (s *BearerAuth) SetToken(val string) {
 	s.Token = val
 }
 
-type CustomersIDDeleteBadRequest struct {
-	Errors []CustomersIDDeleteBadRequestErrorsItem `json:"errors"`
+type CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOK struct {
+	ID         string `json:"id"`
+	DeleteFlag string `json:"delete_flag"`
 }
 
-// GetErrors returns the value of Errors.
-func (s *CustomersIDDeleteBadRequest) GetErrors() []CustomersIDDeleteBadRequestErrorsItem {
-	return s.Errors
+// GetID returns the value of ID.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOK) GetID() string {
+	return s.ID
 }
 
-// SetErrors sets the value of Errors.
-func (s *CustomersIDDeleteBadRequest) SetErrors(val []CustomersIDDeleteBadRequestErrorsItem) {
-	s.Errors = val
+// GetDeleteFlag returns the value of DeleteFlag.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOK) GetDeleteFlag() string {
+	return s.DeleteFlag
 }
 
-func (*CustomersIDDeleteBadRequest) customersIDDeleteRes() {}
-
-type CustomersIDDeleteBadRequestErrorsItem struct {
-	ErrorCode    string `json:"error_code"`
-	ErrorMessage string `json:"error_message"`
+// SetID sets the value of ID.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOK) SetID(val string) {
+	s.ID = val
 }
 
-// GetErrorCode returns the value of ErrorCode.
-func (s *CustomersIDDeleteBadRequestErrorsItem) GetErrorCode() string {
-	return s.ErrorCode
+// SetDeleteFlag sets the value of DeleteFlag.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOK) SetDeleteFlag(val string) {
+	s.DeleteFlag = val
 }
 
-// GetErrorMessage returns the value of ErrorMessage.
-func (s *CustomersIDDeleteBadRequestErrorsItem) GetErrorMessage() string {
-	return s.ErrorMessage
+func (*CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOK) customersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes() {
 }
 
-// SetErrorCode sets the value of ErrorCode.
-func (s *CustomersIDDeleteBadRequestErrorsItem) SetErrorCode(val string) {
-	s.ErrorCode = val
+type CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK struct {
+	ID                      string       `json:"id"`
+	Name                    string       `json:"name"`
+	Email                   string       `json:"email"`
+	PhoneCc                 OptNilString `json:"phone_cc"`
+	PhoneNo                 OptNilString `json:"phone_no"`
+	AddrCity                OptNilString `json:"addr_city"`
+	AddrCountry             OptNilString `json:"addr_country"`
+	AddrLine1               OptNilString `json:"addr_line_1"`
+	AddrLine2               OptNilString `json:"addr_line_2"`
+	AddrLine3               OptNilString `json:"addr_line_3"`
+	AddrPostCode            OptNilString `json:"addr_post_code"`
+	AddrState               OptNilString `json:"addr_state"`
+	CardRegistration        OptNilString `json:"card_registration"`
+	DerectdebitRegistration OptNilString `json:"derectdebit_registration"`
+	Created                 OptNilString `json:"created"`
+	Updated                 OptNilString `json:"updated"`
 }
 
-// SetErrorMessage sets the value of ErrorMessage.
-func (s *CustomersIDDeleteBadRequestErrorsItem) SetErrorMessage(val string) {
-	s.ErrorMessage = val
+// GetID returns the value of ID.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetID() string {
+	return s.ID
+}
+
+// GetName returns the value of Name.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetName() string {
+	return s.Name
+}
+
+// GetEmail returns the value of Email.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetEmail() string {
+	return s.Email
+}
+
+// GetPhoneCc returns the value of PhoneCc.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetPhoneCc() OptNilString {
+	return s.PhoneCc
+}
+
+// GetPhoneNo returns the value of PhoneNo.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetPhoneNo() OptNilString {
+	return s.PhoneNo
+}
+
+// GetAddrCity returns the value of AddrCity.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetAddrCity() OptNilString {
+	return s.AddrCity
+}
+
+// GetAddrCountry returns the value of AddrCountry.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetAddrCountry() OptNilString {
+	return s.AddrCountry
+}
+
+// GetAddrLine1 returns the value of AddrLine1.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetAddrLine1() OptNilString {
+	return s.AddrLine1
+}
+
+// GetAddrLine2 returns the value of AddrLine2.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetAddrLine2() OptNilString {
+	return s.AddrLine2
+}
+
+// GetAddrLine3 returns the value of AddrLine3.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetAddrLine3() OptNilString {
+	return s.AddrLine3
+}
+
+// GetAddrPostCode returns the value of AddrPostCode.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetAddrPostCode() OptNilString {
+	return s.AddrPostCode
+}
+
+// GetAddrState returns the value of AddrState.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetAddrState() OptNilString {
+	return s.AddrState
+}
+
+// GetCardRegistration returns the value of CardRegistration.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetCardRegistration() OptNilString {
+	return s.CardRegistration
+}
+
+// GetDerectdebitRegistration returns the value of DerectdebitRegistration.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetDerectdebitRegistration() OptNilString {
+	return s.DerectdebitRegistration
+}
+
+// GetCreated returns the value of Created.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetCreated() OptNilString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) GetUpdated() OptNilString {
+	return s.Updated
+}
+
+// SetID sets the value of ID.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetID(val string) {
+	s.ID = val
+}
+
+// SetName sets the value of Name.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetName(val string) {
+	s.Name = val
+}
+
+// SetEmail sets the value of Email.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetEmail(val string) {
+	s.Email = val
+}
+
+// SetPhoneCc sets the value of PhoneCc.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetPhoneCc(val OptNilString) {
+	s.PhoneCc = val
+}
+
+// SetPhoneNo sets the value of PhoneNo.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetPhoneNo(val OptNilString) {
+	s.PhoneNo = val
+}
+
+// SetAddrCity sets the value of AddrCity.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetAddrCity(val OptNilString) {
+	s.AddrCity = val
+}
+
+// SetAddrCountry sets the value of AddrCountry.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetAddrCountry(val OptNilString) {
+	s.AddrCountry = val
+}
+
+// SetAddrLine1 sets the value of AddrLine1.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetAddrLine1(val OptNilString) {
+	s.AddrLine1 = val
+}
+
+// SetAddrLine2 sets the value of AddrLine2.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetAddrLine2(val OptNilString) {
+	s.AddrLine2 = val
+}
+
+// SetAddrLine3 sets the value of AddrLine3.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetAddrLine3(val OptNilString) {
+	s.AddrLine3 = val
+}
+
+// SetAddrPostCode sets the value of AddrPostCode.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetAddrPostCode(val OptNilString) {
+	s.AddrPostCode = val
+}
+
+// SetAddrState sets the value of AddrState.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetAddrState(val OptNilString) {
+	s.AddrState = val
+}
+
+// SetCardRegistration sets the value of CardRegistration.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetCardRegistration(val OptNilString) {
+	s.CardRegistration = val
+}
+
+// SetDerectdebitRegistration sets the value of DerectdebitRegistration.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetDerectdebitRegistration(val OptNilString) {
+	s.DerectdebitRegistration = val
+}
+
+// SetCreated sets the value of Created.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetCreated(val OptNilString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) SetUpdated(val OptNilString) {
+	s.Updated = val
+}
+
+func (*CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) customersCustomerIDPaymentMethodsPaymentMethodIDGetRes() {
+}
+
+// CustomersCustomerIDPaymentMethodsPostOK represents sum type.
+type CustomersCustomerIDPaymentMethodsPostOK struct {
+	Type                             CustomersCustomerIDPaymentMethodsPostOKType // switch on this field
+	PaymentMethodCardResponse        PaymentMethodCardResponse
+	PaymentMethodDirectDebitResponse PaymentMethodDirectDebitResponse
+}
+
+// CustomersCustomerIDPaymentMethodsPostOKType is oneOf type of CustomersCustomerIDPaymentMethodsPostOK.
+type CustomersCustomerIDPaymentMethodsPostOKType string
+
+// Possible values for CustomersCustomerIDPaymentMethodsPostOKType.
+const (
+	PaymentMethodCardResponseCustomersCustomerIDPaymentMethodsPostOK        CustomersCustomerIDPaymentMethodsPostOKType = "PaymentMethodCardResponse"
+	PaymentMethodDirectDebitResponseCustomersCustomerIDPaymentMethodsPostOK CustomersCustomerIDPaymentMethodsPostOKType = "PaymentMethodDirectDebitResponse"
+)
+
+// IsPaymentMethodCardResponse reports whether CustomersCustomerIDPaymentMethodsPostOK is PaymentMethodCardResponse.
+func (s CustomersCustomerIDPaymentMethodsPostOK) IsPaymentMethodCardResponse() bool {
+	return s.Type == PaymentMethodCardResponseCustomersCustomerIDPaymentMethodsPostOK
+}
+
+// IsPaymentMethodDirectDebitResponse reports whether CustomersCustomerIDPaymentMethodsPostOK is PaymentMethodDirectDebitResponse.
+func (s CustomersCustomerIDPaymentMethodsPostOK) IsPaymentMethodDirectDebitResponse() bool {
+	return s.Type == PaymentMethodDirectDebitResponseCustomersCustomerIDPaymentMethodsPostOK
+}
+
+// SetPaymentMethodCardResponse sets CustomersCustomerIDPaymentMethodsPostOK to PaymentMethodCardResponse.
+func (s *CustomersCustomerIDPaymentMethodsPostOK) SetPaymentMethodCardResponse(v PaymentMethodCardResponse) {
+	s.Type = PaymentMethodCardResponseCustomersCustomerIDPaymentMethodsPostOK
+	s.PaymentMethodCardResponse = v
+}
+
+// GetPaymentMethodCardResponse returns PaymentMethodCardResponse and true boolean if CustomersCustomerIDPaymentMethodsPostOK is PaymentMethodCardResponse.
+func (s CustomersCustomerIDPaymentMethodsPostOK) GetPaymentMethodCardResponse() (v PaymentMethodCardResponse, ok bool) {
+	if !s.IsPaymentMethodCardResponse() {
+		return v, false
+	}
+	return s.PaymentMethodCardResponse, true
+}
+
+// NewPaymentMethodCardResponseCustomersCustomerIDPaymentMethodsPostOK returns new CustomersCustomerIDPaymentMethodsPostOK from PaymentMethodCardResponse.
+func NewPaymentMethodCardResponseCustomersCustomerIDPaymentMethodsPostOK(v PaymentMethodCardResponse) CustomersCustomerIDPaymentMethodsPostOK {
+	var s CustomersCustomerIDPaymentMethodsPostOK
+	s.SetPaymentMethodCardResponse(v)
+	return s
+}
+
+// SetPaymentMethodDirectDebitResponse sets CustomersCustomerIDPaymentMethodsPostOK to PaymentMethodDirectDebitResponse.
+func (s *CustomersCustomerIDPaymentMethodsPostOK) SetPaymentMethodDirectDebitResponse(v PaymentMethodDirectDebitResponse) {
+	s.Type = PaymentMethodDirectDebitResponseCustomersCustomerIDPaymentMethodsPostOK
+	s.PaymentMethodDirectDebitResponse = v
+}
+
+// GetPaymentMethodDirectDebitResponse returns PaymentMethodDirectDebitResponse and true boolean if CustomersCustomerIDPaymentMethodsPostOK is PaymentMethodDirectDebitResponse.
+func (s CustomersCustomerIDPaymentMethodsPostOK) GetPaymentMethodDirectDebitResponse() (v PaymentMethodDirectDebitResponse, ok bool) {
+	if !s.IsPaymentMethodDirectDebitResponse() {
+		return v, false
+	}
+	return s.PaymentMethodDirectDebitResponse, true
+}
+
+// NewPaymentMethodDirectDebitResponseCustomersCustomerIDPaymentMethodsPostOK returns new CustomersCustomerIDPaymentMethodsPostOK from PaymentMethodDirectDebitResponse.
+func NewPaymentMethodDirectDebitResponseCustomersCustomerIDPaymentMethodsPostOK(v PaymentMethodDirectDebitResponse) CustomersCustomerIDPaymentMethodsPostOK {
+	var s CustomersCustomerIDPaymentMethodsPostOK
+	s.SetPaymentMethodDirectDebitResponse(v)
+	return s
+}
+
+func (*CustomersCustomerIDPaymentMethodsPostOK) customersCustomerIDPaymentMethodsPostRes() {}
+
+// CustomersCustomerIDPaymentMethodsPostReq represents sum type.
+type CustomersCustomerIDPaymentMethodsPostReq struct {
+	Type                             CustomersCustomerIDPaymentMethodsPostReqType // switch on this field
+	PaymentMethodCardWith3DSecure    PaymentMethodCardWith3DSecure
+	PaymentMethodCardWithout3DSecure PaymentMethodCardWithout3DSecure
+	PaymentMethodDirectDebit         PaymentMethodDirectDebit
+}
+
+// CustomersCustomerIDPaymentMethodsPostReqType is oneOf type of CustomersCustomerIDPaymentMethodsPostReq.
+type CustomersCustomerIDPaymentMethodsPostReqType string
+
+// Possible values for CustomersCustomerIDPaymentMethodsPostReqType.
+const (
+	PaymentMethodCardWith3DSecureCustomersCustomerIDPaymentMethodsPostReq    CustomersCustomerIDPaymentMethodsPostReqType = "PaymentMethodCardWith3DSecure"
+	PaymentMethodCardWithout3DSecureCustomersCustomerIDPaymentMethodsPostReq CustomersCustomerIDPaymentMethodsPostReqType = "PaymentMethodCardWithout3DSecure"
+	PaymentMethodDirectDebitCustomersCustomerIDPaymentMethodsPostReq         CustomersCustomerIDPaymentMethodsPostReqType = "PaymentMethodDirectDebit"
+)
+
+// IsPaymentMethodCardWith3DSecure reports whether CustomersCustomerIDPaymentMethodsPostReq is PaymentMethodCardWith3DSecure.
+func (s CustomersCustomerIDPaymentMethodsPostReq) IsPaymentMethodCardWith3DSecure() bool {
+	return s.Type == PaymentMethodCardWith3DSecureCustomersCustomerIDPaymentMethodsPostReq
+}
+
+// IsPaymentMethodCardWithout3DSecure reports whether CustomersCustomerIDPaymentMethodsPostReq is PaymentMethodCardWithout3DSecure.
+func (s CustomersCustomerIDPaymentMethodsPostReq) IsPaymentMethodCardWithout3DSecure() bool {
+	return s.Type == PaymentMethodCardWithout3DSecureCustomersCustomerIDPaymentMethodsPostReq
+}
+
+// IsPaymentMethodDirectDebit reports whether CustomersCustomerIDPaymentMethodsPostReq is PaymentMethodDirectDebit.
+func (s CustomersCustomerIDPaymentMethodsPostReq) IsPaymentMethodDirectDebit() bool {
+	return s.Type == PaymentMethodDirectDebitCustomersCustomerIDPaymentMethodsPostReq
+}
+
+// SetPaymentMethodCardWith3DSecure sets CustomersCustomerIDPaymentMethodsPostReq to PaymentMethodCardWith3DSecure.
+func (s *CustomersCustomerIDPaymentMethodsPostReq) SetPaymentMethodCardWith3DSecure(v PaymentMethodCardWith3DSecure) {
+	s.Type = PaymentMethodCardWith3DSecureCustomersCustomerIDPaymentMethodsPostReq
+	s.PaymentMethodCardWith3DSecure = v
+}
+
+// GetPaymentMethodCardWith3DSecure returns PaymentMethodCardWith3DSecure and true boolean if CustomersCustomerIDPaymentMethodsPostReq is PaymentMethodCardWith3DSecure.
+func (s CustomersCustomerIDPaymentMethodsPostReq) GetPaymentMethodCardWith3DSecure() (v PaymentMethodCardWith3DSecure, ok bool) {
+	if !s.IsPaymentMethodCardWith3DSecure() {
+		return v, false
+	}
+	return s.PaymentMethodCardWith3DSecure, true
+}
+
+// NewPaymentMethodCardWith3DSecureCustomersCustomerIDPaymentMethodsPostReq returns new CustomersCustomerIDPaymentMethodsPostReq from PaymentMethodCardWith3DSecure.
+func NewPaymentMethodCardWith3DSecureCustomersCustomerIDPaymentMethodsPostReq(v PaymentMethodCardWith3DSecure) CustomersCustomerIDPaymentMethodsPostReq {
+	var s CustomersCustomerIDPaymentMethodsPostReq
+	s.SetPaymentMethodCardWith3DSecure(v)
+	return s
+}
+
+// SetPaymentMethodCardWithout3DSecure sets CustomersCustomerIDPaymentMethodsPostReq to PaymentMethodCardWithout3DSecure.
+func (s *CustomersCustomerIDPaymentMethodsPostReq) SetPaymentMethodCardWithout3DSecure(v PaymentMethodCardWithout3DSecure) {
+	s.Type = PaymentMethodCardWithout3DSecureCustomersCustomerIDPaymentMethodsPostReq
+	s.PaymentMethodCardWithout3DSecure = v
+}
+
+// GetPaymentMethodCardWithout3DSecure returns PaymentMethodCardWithout3DSecure and true boolean if CustomersCustomerIDPaymentMethodsPostReq is PaymentMethodCardWithout3DSecure.
+func (s CustomersCustomerIDPaymentMethodsPostReq) GetPaymentMethodCardWithout3DSecure() (v PaymentMethodCardWithout3DSecure, ok bool) {
+	if !s.IsPaymentMethodCardWithout3DSecure() {
+		return v, false
+	}
+	return s.PaymentMethodCardWithout3DSecure, true
+}
+
+// NewPaymentMethodCardWithout3DSecureCustomersCustomerIDPaymentMethodsPostReq returns new CustomersCustomerIDPaymentMethodsPostReq from PaymentMethodCardWithout3DSecure.
+func NewPaymentMethodCardWithout3DSecureCustomersCustomerIDPaymentMethodsPostReq(v PaymentMethodCardWithout3DSecure) CustomersCustomerIDPaymentMethodsPostReq {
+	var s CustomersCustomerIDPaymentMethodsPostReq
+	s.SetPaymentMethodCardWithout3DSecure(v)
+	return s
+}
+
+// SetPaymentMethodDirectDebit sets CustomersCustomerIDPaymentMethodsPostReq to PaymentMethodDirectDebit.
+func (s *CustomersCustomerIDPaymentMethodsPostReq) SetPaymentMethodDirectDebit(v PaymentMethodDirectDebit) {
+	s.Type = PaymentMethodDirectDebitCustomersCustomerIDPaymentMethodsPostReq
+	s.PaymentMethodDirectDebit = v
+}
+
+// GetPaymentMethodDirectDebit returns PaymentMethodDirectDebit and true boolean if CustomersCustomerIDPaymentMethodsPostReq is PaymentMethodDirectDebit.
+func (s CustomersCustomerIDPaymentMethodsPostReq) GetPaymentMethodDirectDebit() (v PaymentMethodDirectDebit, ok bool) {
+	if !s.IsPaymentMethodDirectDebit() {
+		return v, false
+	}
+	return s.PaymentMethodDirectDebit, true
+}
+
+// NewPaymentMethodDirectDebitCustomersCustomerIDPaymentMethodsPostReq returns new CustomersCustomerIDPaymentMethodsPostReq from PaymentMethodDirectDebit.
+func NewPaymentMethodDirectDebitCustomersCustomerIDPaymentMethodsPostReq(v PaymentMethodDirectDebit) CustomersCustomerIDPaymentMethodsPostReq {
+	var s CustomersCustomerIDPaymentMethodsPostReq
+	s.SetPaymentMethodDirectDebit(v)
+	return s
 }
 
 type CustomersIDDeleteOK struct {
@@ -83,47 +422,6 @@ func (s *CustomersIDDeleteOK) SetDeleteFlag(val string) {
 }
 
 func (*CustomersIDDeleteOK) customersIDDeleteRes() {}
-
-type CustomersIDGetBadRequest struct {
-	Errors []CustomersIDGetBadRequestErrorsItem `json:"errors"`
-}
-
-// GetErrors returns the value of Errors.
-func (s *CustomersIDGetBadRequest) GetErrors() []CustomersIDGetBadRequestErrorsItem {
-	return s.Errors
-}
-
-// SetErrors sets the value of Errors.
-func (s *CustomersIDGetBadRequest) SetErrors(val []CustomersIDGetBadRequestErrorsItem) {
-	s.Errors = val
-}
-
-func (*CustomersIDGetBadRequest) customersIDGetRes() {}
-
-type CustomersIDGetBadRequestErrorsItem struct {
-	ErrorCode    string `json:"error_code"`
-	ErrorMessage string `json:"error_message"`
-}
-
-// GetErrorCode returns the value of ErrorCode.
-func (s *CustomersIDGetBadRequestErrorsItem) GetErrorCode() string {
-	return s.ErrorCode
-}
-
-// GetErrorMessage returns the value of ErrorMessage.
-func (s *CustomersIDGetBadRequestErrorsItem) GetErrorMessage() string {
-	return s.ErrorMessage
-}
-
-// SetErrorCode sets the value of ErrorCode.
-func (s *CustomersIDGetBadRequestErrorsItem) SetErrorCode(val string) {
-	s.ErrorCode = val
-}
-
-// SetErrorMessage sets the value of ErrorMessage.
-func (s *CustomersIDGetBadRequestErrorsItem) SetErrorMessage(val string) {
-	s.ErrorMessage = val
-}
 
 type CustomersIDGetOK struct {
 	ID                      string       `json:"id"`
@@ -305,47 +603,6 @@ func (s *CustomersIDGetOK) SetUpdated(val OptNilString) {
 }
 
 func (*CustomersIDGetOK) customersIDGetRes() {}
-
-type CustomersPostBadRequest struct {
-	Errors []CustomersPostBadRequestErrorsItem `json:"errors"`
-}
-
-// GetErrors returns the value of Errors.
-func (s *CustomersPostBadRequest) GetErrors() []CustomersPostBadRequestErrorsItem {
-	return s.Errors
-}
-
-// SetErrors sets the value of Errors.
-func (s *CustomersPostBadRequest) SetErrors(val []CustomersPostBadRequestErrorsItem) {
-	s.Errors = val
-}
-
-func (*CustomersPostBadRequest) customersPostRes() {}
-
-type CustomersPostBadRequestErrorsItem struct {
-	ErrorCode    string `json:"error_code"`
-	ErrorMessage string `json:"error_message"`
-}
-
-// GetErrorCode returns the value of ErrorCode.
-func (s *CustomersPostBadRequestErrorsItem) GetErrorCode() string {
-	return s.ErrorCode
-}
-
-// GetErrorMessage returns the value of ErrorMessage.
-func (s *CustomersPostBadRequestErrorsItem) GetErrorMessage() string {
-	return s.ErrorMessage
-}
-
-// SetErrorCode sets the value of ErrorCode.
-func (s *CustomersPostBadRequestErrorsItem) SetErrorCode(val string) {
-	s.ErrorCode = val
-}
-
-// SetErrorMessage sets the value of ErrorMessage.
-func (s *CustomersPostBadRequestErrorsItem) SetErrorMessage(val string) {
-	s.ErrorMessage = val
-}
 
 type CustomersPostOK struct {
 	ID                      string       `json:"id"`
@@ -663,6 +920,811 @@ func (s *CustomersPostReq) SetAddrState(val OptString) {
 	s.AddrState = val
 }
 
+// Ref: #/components/schemas/ErrorResponse
+type ErrorResponse struct {
+	Errors []ErrorResponseErrorsItem `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ErrorResponse) GetErrors() []ErrorResponseErrorsItem {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ErrorResponse) SetErrors(val []ErrorResponseErrorsItem) {
+	s.Errors = val
+}
+
+func (*ErrorResponse) customersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes() {}
+func (*ErrorResponse) customersCustomerIDPaymentMethodsPaymentMethodIDGetRes()    {}
+func (*ErrorResponse) customersCustomerIDPaymentMethodsPostRes()                  {}
+func (*ErrorResponse) customersIDDeleteRes()                                      {}
+func (*ErrorResponse) customersIDGetRes()                                         {}
+func (*ErrorResponse) customersPostRes()                                          {}
+
+type ErrorResponseErrorsItem struct {
+	ErrorCode    string `json:"error_code"`
+	ErrorMessage string `json:"error_message"`
+}
+
+// GetErrorCode returns the value of ErrorCode.
+func (s *ErrorResponseErrorsItem) GetErrorCode() string {
+	return s.ErrorCode
+}
+
+// GetErrorMessage returns the value of ErrorMessage.
+func (s *ErrorResponseErrorsItem) GetErrorMessage() string {
+	return s.ErrorMessage
+}
+
+// SetErrorCode sets the value of ErrorCode.
+func (s *ErrorResponseErrorsItem) SetErrorCode(val string) {
+	s.ErrorCode = val
+}
+
+// SetErrorMessage sets the value of ErrorMessage.
+func (s *ErrorResponseErrorsItem) SetErrorMessage(val string) {
+	s.ErrorMessage = val
+}
+
+// NewOptNilPaymentMethodCardResponseCardTds2Status returns new OptNilPaymentMethodCardResponseCardTds2Status with value set to v.
+func NewOptNilPaymentMethodCardResponseCardTds2Status(v PaymentMethodCardResponseCardTds2Status) OptNilPaymentMethodCardResponseCardTds2Status {
+	return OptNilPaymentMethodCardResponseCardTds2Status{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardResponseCardTds2Status is optional nullable PaymentMethodCardResponseCardTds2Status.
+type OptNilPaymentMethodCardResponseCardTds2Status struct {
+	Value PaymentMethodCardResponseCardTds2Status
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardResponseCardTds2Status was set.
+func (o OptNilPaymentMethodCardResponseCardTds2Status) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardResponseCardTds2Status) Reset() {
+	var v PaymentMethodCardResponseCardTds2Status
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardResponseCardTds2Status) SetTo(v PaymentMethodCardResponseCardTds2Status) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardResponseCardTds2Status) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardResponseCardTds2Status) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardResponseCardTds2Status
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardResponseCardTds2Status) Get() (v PaymentMethodCardResponseCardTds2Status, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardResponseCardTds2Status) Or(d PaymentMethodCardResponseCardTds2Status) PaymentMethodCardResponseCardTds2Status {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardResponseCardTds2Type returns new OptNilPaymentMethodCardResponseCardTds2Type with value set to v.
+func NewOptNilPaymentMethodCardResponseCardTds2Type(v PaymentMethodCardResponseCardTds2Type) OptNilPaymentMethodCardResponseCardTds2Type {
+	return OptNilPaymentMethodCardResponseCardTds2Type{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardResponseCardTds2Type is optional nullable PaymentMethodCardResponseCardTds2Type.
+type OptNilPaymentMethodCardResponseCardTds2Type struct {
+	Value PaymentMethodCardResponseCardTds2Type
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardResponseCardTds2Type was set.
+func (o OptNilPaymentMethodCardResponseCardTds2Type) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardResponseCardTds2Type) Reset() {
+	var v PaymentMethodCardResponseCardTds2Type
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardResponseCardTds2Type) SetTo(v PaymentMethodCardResponseCardTds2Type) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardResponseCardTds2Type) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardResponseCardTds2Type) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardResponseCardTds2Type
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardResponseCardTds2Type) Get() (v PaymentMethodCardResponseCardTds2Type, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardResponseCardTds2Type) Or(d PaymentMethodCardResponseCardTds2Type) PaymentMethodCardResponseCardTds2Type {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardResponseCardTdsType returns new OptNilPaymentMethodCardResponseCardTdsType with value set to v.
+func NewOptNilPaymentMethodCardResponseCardTdsType(v PaymentMethodCardResponseCardTdsType) OptNilPaymentMethodCardResponseCardTdsType {
+	return OptNilPaymentMethodCardResponseCardTdsType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardResponseCardTdsType is optional nullable PaymentMethodCardResponseCardTdsType.
+type OptNilPaymentMethodCardResponseCardTdsType struct {
+	Value PaymentMethodCardResponseCardTdsType
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardResponseCardTdsType was set.
+func (o OptNilPaymentMethodCardResponseCardTdsType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardResponseCardTdsType) Reset() {
+	var v PaymentMethodCardResponseCardTdsType
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardResponseCardTdsType) SetTo(v PaymentMethodCardResponseCardTdsType) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardResponseCardTdsType) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardResponseCardTdsType) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardResponseCardTdsType
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardResponseCardTdsType) Get() (v PaymentMethodCardResponseCardTdsType, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardResponseCardTdsType) Or(d PaymentMethodCardResponseCardTdsType) PaymentMethodCardResponseCardTdsType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch returns new OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch(v PaymentMethodCardWith3DSecureCardTds2AddrMatch) OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch is optional nullable PaymentMethodCardWith3DSecureCardTds2AddrMatch.
+type OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch struct {
+	Value PaymentMethodCardWith3DSecureCardTds2AddrMatch
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2AddrMatch
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) SetTo(v PaymentMethodCardWith3DSecureCardTds2AddrMatch) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2AddrMatch
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) Get() (v PaymentMethodCardWith3DSecureCardTds2AddrMatch, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) Or(d PaymentMethodCardWith3DSecureCardTds2AddrMatch) PaymentMethodCardWith3DSecureCardTds2AddrMatch {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe returns new OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe(v PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe is optional nullable PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe.
+type OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe struct {
+	Value PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) SetTo(v PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) Get() (v PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) Or(d PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd returns new OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd(v PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd is optional nullable PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd.
+type OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd struct {
+	Value PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) SetTo(v PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) Get() (v PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) Or(d PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd returns new OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd(v PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd is optional nullable PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd.
+type OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd struct {
+	Value PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) SetTo(v PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) Get() (v PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) Or(d PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2ShipInd returns new OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2ShipInd(v PaymentMethodCardWith3DSecureCardTds2ShipInd) OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd is optional nullable PaymentMethodCardWith3DSecureCardTds2ShipInd.
+type OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd struct {
+	Value PaymentMethodCardWith3DSecureCardTds2ShipInd
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2ShipInd
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) SetTo(v PaymentMethodCardWith3DSecureCardTds2ShipInd) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2ShipInd
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) Get() (v PaymentMethodCardWith3DSecureCardTds2ShipInd, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) Or(d PaymentMethodCardWith3DSecureCardTds2ShipInd) PaymentMethodCardWith3DSecureCardTds2ShipInd {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd returns new OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd(v PaymentMethodCardWith3DSecureCardTds2ShipNameInd) OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd is optional nullable PaymentMethodCardWith3DSecureCardTds2ShipNameInd.
+type OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd struct {
+	Value PaymentMethodCardWith3DSecureCardTds2ShipNameInd
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2ShipNameInd
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) SetTo(v PaymentMethodCardWith3DSecureCardTds2ShipNameInd) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2ShipNameInd
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) Get() (v PaymentMethodCardWith3DSecureCardTds2ShipNameInd, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) Or(d PaymentMethodCardWith3DSecureCardTds2ShipNameInd) PaymentMethodCardWith3DSecureCardTds2ShipNameInd {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity returns new OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity(v PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity is optional nullable PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity.
+type OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity struct {
+	Value PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) SetTo(v PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) IsNull() bool {
+	return o.Null
+}
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) Get() (v PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) Or(d PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod returns new OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod(v PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod is optional nullable PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod.
+type OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod struct {
+	Value PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) SetTo(v PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) Get() (v PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) Or(d PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentMethodCardWith3DSecureCardTds2Type returns new OptNilPaymentMethodCardWith3DSecureCardTds2Type with value set to v.
+func NewOptNilPaymentMethodCardWith3DSecureCardTds2Type(v PaymentMethodCardWith3DSecureCardTds2Type) OptNilPaymentMethodCardWith3DSecureCardTds2Type {
+	return OptNilPaymentMethodCardWith3DSecureCardTds2Type{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentMethodCardWith3DSecureCardTds2Type is optional nullable PaymentMethodCardWith3DSecureCardTds2Type.
+type OptNilPaymentMethodCardWith3DSecureCardTds2Type struct {
+	Value PaymentMethodCardWith3DSecureCardTds2Type
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentMethodCardWith3DSecureCardTds2Type was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2Type) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2Type) Reset() {
+	var v PaymentMethodCardWith3DSecureCardTds2Type
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2Type) SetTo(v PaymentMethodCardWith3DSecureCardTds2Type) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2Type) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentMethodCardWith3DSecureCardTds2Type) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentMethodCardWith3DSecureCardTds2Type
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2Type) Get() (v PaymentMethodCardWith3DSecureCardTds2Type, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentMethodCardWith3DSecureCardTds2Type) Or(d PaymentMethodCardWith3DSecureCardTds2Type) PaymentMethodCardWith3DSecureCardTds2Type {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptNilString returns new OptNilString with value set to v.
 func NewOptNilString(v string) OptNilString {
 	return OptNilString{
@@ -726,6 +1788,650 @@ func (o OptNilString) Or(d string) string {
 	return d
 }
 
+// NewOptPaymentMethodCardResponseCard returns new OptPaymentMethodCardResponseCard with value set to v.
+func NewOptPaymentMethodCardResponseCard(v PaymentMethodCardResponseCard) OptPaymentMethodCardResponseCard {
+	return OptPaymentMethodCardResponseCard{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodCardResponseCard is optional PaymentMethodCardResponseCard.
+type OptPaymentMethodCardResponseCard struct {
+	Value PaymentMethodCardResponseCard
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodCardResponseCard was set.
+func (o OptPaymentMethodCardResponseCard) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodCardResponseCard) Reset() {
+	var v PaymentMethodCardResponseCard
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodCardResponseCard) SetTo(v PaymentMethodCardResponseCard) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodCardResponseCard) Get() (v PaymentMethodCardResponseCard, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodCardResponseCard) Or(d PaymentMethodCardResponseCard) PaymentMethodCardResponseCard {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodCardResponseCardType returns new OptPaymentMethodCardResponseCardType with value set to v.
+func NewOptPaymentMethodCardResponseCardType(v PaymentMethodCardResponseCardType) OptPaymentMethodCardResponseCardType {
+	return OptPaymentMethodCardResponseCardType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodCardResponseCardType is optional PaymentMethodCardResponseCardType.
+type OptPaymentMethodCardResponseCardType struct {
+	Value PaymentMethodCardResponseCardType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodCardResponseCardType was set.
+func (o OptPaymentMethodCardResponseCardType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodCardResponseCardType) Reset() {
+	var v PaymentMethodCardResponseCardType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodCardResponseCardType) SetTo(v PaymentMethodCardResponseCardType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodCardResponseCardType) Get() (v PaymentMethodCardResponseCardType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodCardResponseCardType) Or(d PaymentMethodCardResponseCardType) PaymentMethodCardResponseCardType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodCardResponseDefaultFlag returns new OptPaymentMethodCardResponseDefaultFlag with value set to v.
+func NewOptPaymentMethodCardResponseDefaultFlag(v PaymentMethodCardResponseDefaultFlag) OptPaymentMethodCardResponseDefaultFlag {
+	return OptPaymentMethodCardResponseDefaultFlag{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodCardResponseDefaultFlag is optional PaymentMethodCardResponseDefaultFlag.
+type OptPaymentMethodCardResponseDefaultFlag struct {
+	Value PaymentMethodCardResponseDefaultFlag
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodCardResponseDefaultFlag was set.
+func (o OptPaymentMethodCardResponseDefaultFlag) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodCardResponseDefaultFlag) Reset() {
+	var v PaymentMethodCardResponseDefaultFlag
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodCardResponseDefaultFlag) SetTo(v PaymentMethodCardResponseDefaultFlag) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodCardResponseDefaultFlag) Get() (v PaymentMethodCardResponseDefaultFlag, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodCardResponseDefaultFlag) Or(d PaymentMethodCardResponseDefaultFlag) PaymentMethodCardResponseDefaultFlag {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodCardResponsePayType returns new OptPaymentMethodCardResponsePayType with value set to v.
+func NewOptPaymentMethodCardResponsePayType(v PaymentMethodCardResponsePayType) OptPaymentMethodCardResponsePayType {
+	return OptPaymentMethodCardResponsePayType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodCardResponsePayType is optional PaymentMethodCardResponsePayType.
+type OptPaymentMethodCardResponsePayType struct {
+	Value PaymentMethodCardResponsePayType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodCardResponsePayType was set.
+func (o OptPaymentMethodCardResponsePayType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodCardResponsePayType) Reset() {
+	var v PaymentMethodCardResponsePayType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodCardResponsePayType) SetTo(v PaymentMethodCardResponsePayType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodCardResponsePayType) Get() (v PaymentMethodCardResponsePayType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodCardResponsePayType) Or(d PaymentMethodCardResponsePayType) PaymentMethodCardResponsePayType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodCardResponseStatus returns new OptPaymentMethodCardResponseStatus with value set to v.
+func NewOptPaymentMethodCardResponseStatus(v PaymentMethodCardResponseStatus) OptPaymentMethodCardResponseStatus {
+	return OptPaymentMethodCardResponseStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodCardResponseStatus is optional PaymentMethodCardResponseStatus.
+type OptPaymentMethodCardResponseStatus struct {
+	Value PaymentMethodCardResponseStatus
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodCardResponseStatus was set.
+func (o OptPaymentMethodCardResponseStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodCardResponseStatus) Reset() {
+	var v PaymentMethodCardResponseStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodCardResponseStatus) SetTo(v PaymentMethodCardResponseStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodCardResponseStatus) Get() (v PaymentMethodCardResponseStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodCardResponseStatus) Or(d PaymentMethodCardResponseStatus) PaymentMethodCardResponseStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponseDirectdebit returns new OptPaymentMethodDirectDebitResponseDirectdebit with value set to v.
+func NewOptPaymentMethodDirectDebitResponseDirectdebit(v PaymentMethodDirectDebitResponseDirectdebit) OptPaymentMethodDirectDebitResponseDirectdebit {
+	return OptPaymentMethodDirectDebitResponseDirectdebit{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponseDirectdebit is optional PaymentMethodDirectDebitResponseDirectdebit.
+type OptPaymentMethodDirectDebitResponseDirectdebit struct {
+	Value PaymentMethodDirectDebitResponseDirectdebit
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponseDirectdebit was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebit) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebit) Reset() {
+	var v PaymentMethodDirectDebitResponseDirectdebit
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebit) SetTo(v PaymentMethodDirectDebitResponseDirectdebit) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebit) Get() (v PaymentMethodDirectDebitResponseDirectdebit, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponseDirectdebit) Or(d PaymentMethodDirectDebitResponseDirectdebit) PaymentMethodDirectDebitResponseDirectdebit {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponseDirectdebitAccountType returns new OptPaymentMethodDirectDebitResponseDirectdebitAccountType with value set to v.
+func NewOptPaymentMethodDirectDebitResponseDirectdebitAccountType(v PaymentMethodDirectDebitResponseDirectdebitAccountType) OptPaymentMethodDirectDebitResponseDirectdebitAccountType {
+	return OptPaymentMethodDirectDebitResponseDirectdebitAccountType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponseDirectdebitAccountType is optional PaymentMethodDirectDebitResponseDirectdebitAccountType.
+type OptPaymentMethodDirectDebitResponseDirectdebitAccountType struct {
+	Value PaymentMethodDirectDebitResponseDirectdebitAccountType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponseDirectdebitAccountType was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitAccountType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitAccountType) Reset() {
+	var v PaymentMethodDirectDebitResponseDirectdebitAccountType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitAccountType) SetTo(v PaymentMethodDirectDebitResponseDirectdebitAccountType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitAccountType) Get() (v PaymentMethodDirectDebitResponseDirectdebitAccountType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitAccountType) Or(d PaymentMethodDirectDebitResponseDirectdebitAccountType) PaymentMethodDirectDebitResponseDirectdebitAccountType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponseDirectdebitApplicationType returns new OptPaymentMethodDirectDebitResponseDirectdebitApplicationType with value set to v.
+func NewOptPaymentMethodDirectDebitResponseDirectdebitApplicationType(v PaymentMethodDirectDebitResponseDirectdebitApplicationType) OptPaymentMethodDirectDebitResponseDirectdebitApplicationType {
+	return OptPaymentMethodDirectDebitResponseDirectdebitApplicationType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponseDirectdebitApplicationType is optional PaymentMethodDirectDebitResponseDirectdebitApplicationType.
+type OptPaymentMethodDirectDebitResponseDirectdebitApplicationType struct {
+	Value PaymentMethodDirectDebitResponseDirectdebitApplicationType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponseDirectdebitApplicationType was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitApplicationType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitApplicationType) Reset() {
+	var v PaymentMethodDirectDebitResponseDirectdebitApplicationType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitApplicationType) SetTo(v PaymentMethodDirectDebitResponseDirectdebitApplicationType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitApplicationType) Get() (v PaymentMethodDirectDebitResponseDirectdebitApplicationType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitApplicationType) Or(d PaymentMethodDirectDebitResponseDirectdebitApplicationType) PaymentMethodDirectDebitResponseDirectdebitApplicationType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponseDirectdebitBankType returns new OptPaymentMethodDirectDebitResponseDirectdebitBankType with value set to v.
+func NewOptPaymentMethodDirectDebitResponseDirectdebitBankType(v PaymentMethodDirectDebitResponseDirectdebitBankType) OptPaymentMethodDirectDebitResponseDirectdebitBankType {
+	return OptPaymentMethodDirectDebitResponseDirectdebitBankType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponseDirectdebitBankType is optional PaymentMethodDirectDebitResponseDirectdebitBankType.
+type OptPaymentMethodDirectDebitResponseDirectdebitBankType struct {
+	Value PaymentMethodDirectDebitResponseDirectdebitBankType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponseDirectdebitBankType was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitBankType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitBankType) Reset() {
+	var v PaymentMethodDirectDebitResponseDirectdebitBankType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitBankType) SetTo(v PaymentMethodDirectDebitResponseDirectdebitBankType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitBankType) Get() (v PaymentMethodDirectDebitResponseDirectdebitBankType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitBankType) Or(d PaymentMethodDirectDebitResponseDirectdebitBankType) PaymentMethodDirectDebitResponseDirectdebitBankType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponseDirectdebitLastResultCode returns new OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode with value set to v.
+func NewOptPaymentMethodDirectDebitResponseDirectdebitLastResultCode(v PaymentMethodDirectDebitResponseDirectdebitLastResultCode) OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode {
+	return OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode is optional PaymentMethodDirectDebitResponseDirectdebitLastResultCode.
+type OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode struct {
+	Value PaymentMethodDirectDebitResponseDirectdebitLastResultCode
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode) Reset() {
+	var v PaymentMethodDirectDebitResponseDirectdebitLastResultCode
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode) SetTo(v PaymentMethodDirectDebitResponseDirectdebitLastResultCode) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode) Get() (v PaymentMethodDirectDebitResponseDirectdebitLastResultCode, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode) Or(d PaymentMethodDirectDebitResponseDirectdebitLastResultCode) PaymentMethodDirectDebitResponseDirectdebitLastResultCode {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponseDirectdebitPaperApplication returns new OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication with value set to v.
+func NewOptPaymentMethodDirectDebitResponseDirectdebitPaperApplication(v PaymentMethodDirectDebitResponseDirectdebitPaperApplication) OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication {
+	return OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication is optional PaymentMethodDirectDebitResponseDirectdebitPaperApplication.
+type OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication struct {
+	Value PaymentMethodDirectDebitResponseDirectdebitPaperApplication
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication) Reset() {
+	var v PaymentMethodDirectDebitResponseDirectdebitPaperApplication
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication) SetTo(v PaymentMethodDirectDebitResponseDirectdebitPaperApplication) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication) Get() (v PaymentMethodDirectDebitResponseDirectdebitPaperApplication, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication) Or(d PaymentMethodDirectDebitResponseDirectdebitPaperApplication) PaymentMethodDirectDebitResponseDirectdebitPaperApplication {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponsePayType returns new OptPaymentMethodDirectDebitResponsePayType with value set to v.
+func NewOptPaymentMethodDirectDebitResponsePayType(v PaymentMethodDirectDebitResponsePayType) OptPaymentMethodDirectDebitResponsePayType {
+	return OptPaymentMethodDirectDebitResponsePayType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponsePayType is optional PaymentMethodDirectDebitResponsePayType.
+type OptPaymentMethodDirectDebitResponsePayType struct {
+	Value PaymentMethodDirectDebitResponsePayType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponsePayType was set.
+func (o OptPaymentMethodDirectDebitResponsePayType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponsePayType) Reset() {
+	var v PaymentMethodDirectDebitResponsePayType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponsePayType) SetTo(v PaymentMethodDirectDebitResponsePayType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponsePayType) Get() (v PaymentMethodDirectDebitResponsePayType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponsePayType) Or(d PaymentMethodDirectDebitResponsePayType) PaymentMethodDirectDebitResponsePayType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag returns new OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag with value set to v.
+func NewOptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag(v PaymentMethodDirectDebitResponseRedirectURLAccessedFlag) OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag {
+	return OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag is optional PaymentMethodDirectDebitResponseRedirectURLAccessedFlag.
+type OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag struct {
+	Value PaymentMethodDirectDebitResponseRedirectURLAccessedFlag
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag was set.
+func (o OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag) Reset() {
+	var v PaymentMethodDirectDebitResponseRedirectURLAccessedFlag
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag) SetTo(v PaymentMethodDirectDebitResponseRedirectURLAccessedFlag) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag) Get() (v PaymentMethodDirectDebitResponseRedirectURLAccessedFlag, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag) Or(d PaymentMethodDirectDebitResponseRedirectURLAccessedFlag) PaymentMethodDirectDebitResponseRedirectURLAccessedFlag {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentMethodDirectDebitResponseStatus returns new OptPaymentMethodDirectDebitResponseStatus with value set to v.
+func NewOptPaymentMethodDirectDebitResponseStatus(v PaymentMethodDirectDebitResponseStatus) OptPaymentMethodDirectDebitResponseStatus {
+	return OptPaymentMethodDirectDebitResponseStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentMethodDirectDebitResponseStatus is optional PaymentMethodDirectDebitResponseStatus.
+type OptPaymentMethodDirectDebitResponseStatus struct {
+	Value PaymentMethodDirectDebitResponseStatus
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentMethodDirectDebitResponseStatus was set.
+func (o OptPaymentMethodDirectDebitResponseStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentMethodDirectDebitResponseStatus) Reset() {
+	var v PaymentMethodDirectDebitResponseStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentMethodDirectDebitResponseStatus) SetTo(v PaymentMethodDirectDebitResponseStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentMethodDirectDebitResponseStatus) Get() (v PaymentMethodDirectDebitResponseStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentMethodDirectDebitResponseStatus) Or(d PaymentMethodDirectDebitResponseStatus) PaymentMethodDirectDebitResponseStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptString returns new OptString with value set to v.
 func NewOptString(v string) OptString {
 	return OptString{
@@ -770,4 +2476,2936 @@ func (o OptString) Or(d string) string {
 		return v
 	}
 	return d
+}
+
+// Ref: #/components/schemas/paymentMethodCardResponse
+type PaymentMethodCardResponse struct {
+	ID                 OptString                               `json:"id"`
+	PayType            OptPaymentMethodCardResponsePayType     `json:"pay_type"`
+	CustomerID         OptString                               `json:"customer_id"`
+	ProcessDate        OptString                               `json:"process_date"`
+	RedirectURL        OptString                               `json:"redirect_url"`
+	Status             OptPaymentMethodCardResponseStatus      `json:"status"`
+	ReturnURL          OptString                               `json:"return_url"`
+	ReturnURLOnFailure OptString                               `json:"return_url_on_failure"`
+	DefaultFlag        OptPaymentMethodCardResponseDefaultFlag `json:"default_flag"`
+	DeleteFlag         OptString                               `json:"delete_flag"`
+	ClientField1       OptNilString                            `json:"client_field_1"`
+	ClientField2       OptNilString                            `json:"client_field_2"`
+	ClientField3       OptNilString                            `json:"client_field_3"`
+	Created            OptString                               `json:"created"`
+	Updated            OptString                               `json:"updated"`
+	Card               OptPaymentMethodCardResponseCard        `json:"card"`
+}
+
+// GetID returns the value of ID.
+func (s *PaymentMethodCardResponse) GetID() OptString {
+	return s.ID
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentMethodCardResponse) GetPayType() OptPaymentMethodCardResponsePayType {
+	return s.PayType
+}
+
+// GetCustomerID returns the value of CustomerID.
+func (s *PaymentMethodCardResponse) GetCustomerID() OptString {
+	return s.CustomerID
+}
+
+// GetProcessDate returns the value of ProcessDate.
+func (s *PaymentMethodCardResponse) GetProcessDate() OptString {
+	return s.ProcessDate
+}
+
+// GetRedirectURL returns the value of RedirectURL.
+func (s *PaymentMethodCardResponse) GetRedirectURL() OptString {
+	return s.RedirectURL
+}
+
+// GetStatus returns the value of Status.
+func (s *PaymentMethodCardResponse) GetStatus() OptPaymentMethodCardResponseStatus {
+	return s.Status
+}
+
+// GetReturnURL returns the value of ReturnURL.
+func (s *PaymentMethodCardResponse) GetReturnURL() OptString {
+	return s.ReturnURL
+}
+
+// GetReturnURLOnFailure returns the value of ReturnURLOnFailure.
+func (s *PaymentMethodCardResponse) GetReturnURLOnFailure() OptString {
+	return s.ReturnURLOnFailure
+}
+
+// GetDefaultFlag returns the value of DefaultFlag.
+func (s *PaymentMethodCardResponse) GetDefaultFlag() OptPaymentMethodCardResponseDefaultFlag {
+	return s.DefaultFlag
+}
+
+// GetDeleteFlag returns the value of DeleteFlag.
+func (s *PaymentMethodCardResponse) GetDeleteFlag() OptString {
+	return s.DeleteFlag
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentMethodCardResponse) GetClientField1() OptNilString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentMethodCardResponse) GetClientField2() OptNilString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentMethodCardResponse) GetClientField3() OptNilString {
+	return s.ClientField3
+}
+
+// GetCreated returns the value of Created.
+func (s *PaymentMethodCardResponse) GetCreated() OptString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *PaymentMethodCardResponse) GetUpdated() OptString {
+	return s.Updated
+}
+
+// GetCard returns the value of Card.
+func (s *PaymentMethodCardResponse) GetCard() OptPaymentMethodCardResponseCard {
+	return s.Card
+}
+
+// SetID sets the value of ID.
+func (s *PaymentMethodCardResponse) SetID(val OptString) {
+	s.ID = val
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentMethodCardResponse) SetPayType(val OptPaymentMethodCardResponsePayType) {
+	s.PayType = val
+}
+
+// SetCustomerID sets the value of CustomerID.
+func (s *PaymentMethodCardResponse) SetCustomerID(val OptString) {
+	s.CustomerID = val
+}
+
+// SetProcessDate sets the value of ProcessDate.
+func (s *PaymentMethodCardResponse) SetProcessDate(val OptString) {
+	s.ProcessDate = val
+}
+
+// SetRedirectURL sets the value of RedirectURL.
+func (s *PaymentMethodCardResponse) SetRedirectURL(val OptString) {
+	s.RedirectURL = val
+}
+
+// SetStatus sets the value of Status.
+func (s *PaymentMethodCardResponse) SetStatus(val OptPaymentMethodCardResponseStatus) {
+	s.Status = val
+}
+
+// SetReturnURL sets the value of ReturnURL.
+func (s *PaymentMethodCardResponse) SetReturnURL(val OptString) {
+	s.ReturnURL = val
+}
+
+// SetReturnURLOnFailure sets the value of ReturnURLOnFailure.
+func (s *PaymentMethodCardResponse) SetReturnURLOnFailure(val OptString) {
+	s.ReturnURLOnFailure = val
+}
+
+// SetDefaultFlag sets the value of DefaultFlag.
+func (s *PaymentMethodCardResponse) SetDefaultFlag(val OptPaymentMethodCardResponseDefaultFlag) {
+	s.DefaultFlag = val
+}
+
+// SetDeleteFlag sets the value of DeleteFlag.
+func (s *PaymentMethodCardResponse) SetDeleteFlag(val OptString) {
+	s.DeleteFlag = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentMethodCardResponse) SetClientField1(val OptNilString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentMethodCardResponse) SetClientField2(val OptNilString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentMethodCardResponse) SetClientField3(val OptNilString) {
+	s.ClientField3 = val
+}
+
+// SetCreated sets the value of Created.
+func (s *PaymentMethodCardResponse) SetCreated(val OptString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *PaymentMethodCardResponse) SetUpdated(val OptString) {
+	s.Updated = val
+}
+
+// SetCard sets the value of Card.
+func (s *PaymentMethodCardResponse) SetCard(val OptPaymentMethodCardResponseCard) {
+	s.Card = val
+}
+
+type PaymentMethodCardResponseCard struct {
+	CardNo       OptString                                     `json:"card_no"`
+	Expire       OptString                                     `json:"expire"`
+	HolderName   OptString                                     `json:"holder_name"`
+	CardNoHash   OptString                                     `json:"card_no_hash"`
+	Type         OptPaymentMethodCardResponseCardType          `json:"type"`
+	Brand        OptString                                     `json:"brand"`
+	ErrorCode    OptNilString                                  `json:"error_code"`
+	TdsType      OptNilPaymentMethodCardResponseCardTdsType    `json:"tds_type"`
+	Tds2Type     OptNilPaymentMethodCardResponseCardTds2Type   `json:"tds2_type"`
+	Tds2Status   OptNilPaymentMethodCardResponseCardTds2Status `json:"tds2_status"`
+	MerchantName OptNilString                                  `json:"merchant_name"`
+	AccessID     string                                        `json:"access_id"`
+	Acs          OptNilString                                  `json:"acs"`
+}
+
+// GetCardNo returns the value of CardNo.
+func (s *PaymentMethodCardResponseCard) GetCardNo() OptString {
+	return s.CardNo
+}
+
+// GetExpire returns the value of Expire.
+func (s *PaymentMethodCardResponseCard) GetExpire() OptString {
+	return s.Expire
+}
+
+// GetHolderName returns the value of HolderName.
+func (s *PaymentMethodCardResponseCard) GetHolderName() OptString {
+	return s.HolderName
+}
+
+// GetCardNoHash returns the value of CardNoHash.
+func (s *PaymentMethodCardResponseCard) GetCardNoHash() OptString {
+	return s.CardNoHash
+}
+
+// GetType returns the value of Type.
+func (s *PaymentMethodCardResponseCard) GetType() OptPaymentMethodCardResponseCardType {
+	return s.Type
+}
+
+// GetBrand returns the value of Brand.
+func (s *PaymentMethodCardResponseCard) GetBrand() OptString {
+	return s.Brand
+}
+
+// GetErrorCode returns the value of ErrorCode.
+func (s *PaymentMethodCardResponseCard) GetErrorCode() OptNilString {
+	return s.ErrorCode
+}
+
+// GetTdsType returns the value of TdsType.
+func (s *PaymentMethodCardResponseCard) GetTdsType() OptNilPaymentMethodCardResponseCardTdsType {
+	return s.TdsType
+}
+
+// GetTds2Type returns the value of Tds2Type.
+func (s *PaymentMethodCardResponseCard) GetTds2Type() OptNilPaymentMethodCardResponseCardTds2Type {
+	return s.Tds2Type
+}
+
+// GetTds2Status returns the value of Tds2Status.
+func (s *PaymentMethodCardResponseCard) GetTds2Status() OptNilPaymentMethodCardResponseCardTds2Status {
+	return s.Tds2Status
+}
+
+// GetMerchantName returns the value of MerchantName.
+func (s *PaymentMethodCardResponseCard) GetMerchantName() OptNilString {
+	return s.MerchantName
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentMethodCardResponseCard) GetAccessID() string {
+	return s.AccessID
+}
+
+// GetAcs returns the value of Acs.
+func (s *PaymentMethodCardResponseCard) GetAcs() OptNilString {
+	return s.Acs
+}
+
+// SetCardNo sets the value of CardNo.
+func (s *PaymentMethodCardResponseCard) SetCardNo(val OptString) {
+	s.CardNo = val
+}
+
+// SetExpire sets the value of Expire.
+func (s *PaymentMethodCardResponseCard) SetExpire(val OptString) {
+	s.Expire = val
+}
+
+// SetHolderName sets the value of HolderName.
+func (s *PaymentMethodCardResponseCard) SetHolderName(val OptString) {
+	s.HolderName = val
+}
+
+// SetCardNoHash sets the value of CardNoHash.
+func (s *PaymentMethodCardResponseCard) SetCardNoHash(val OptString) {
+	s.CardNoHash = val
+}
+
+// SetType sets the value of Type.
+func (s *PaymentMethodCardResponseCard) SetType(val OptPaymentMethodCardResponseCardType) {
+	s.Type = val
+}
+
+// SetBrand sets the value of Brand.
+func (s *PaymentMethodCardResponseCard) SetBrand(val OptString) {
+	s.Brand = val
+}
+
+// SetErrorCode sets the value of ErrorCode.
+func (s *PaymentMethodCardResponseCard) SetErrorCode(val OptNilString) {
+	s.ErrorCode = val
+}
+
+// SetTdsType sets the value of TdsType.
+func (s *PaymentMethodCardResponseCard) SetTdsType(val OptNilPaymentMethodCardResponseCardTdsType) {
+	s.TdsType = val
+}
+
+// SetTds2Type sets the value of Tds2Type.
+func (s *PaymentMethodCardResponseCard) SetTds2Type(val OptNilPaymentMethodCardResponseCardTds2Type) {
+	s.Tds2Type = val
+}
+
+// SetTds2Status sets the value of Tds2Status.
+func (s *PaymentMethodCardResponseCard) SetTds2Status(val OptNilPaymentMethodCardResponseCardTds2Status) {
+	s.Tds2Status = val
+}
+
+// SetMerchantName sets the value of MerchantName.
+func (s *PaymentMethodCardResponseCard) SetMerchantName(val OptNilString) {
+	s.MerchantName = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentMethodCardResponseCard) SetAccessID(val string) {
+	s.AccessID = val
+}
+
+// SetAcs sets the value of Acs.
+func (s *PaymentMethodCardResponseCard) SetAcs(val OptNilString) {
+	s.Acs = val
+}
+
+type PaymentMethodCardResponseCardTds2Status string
+
+const (
+	PaymentMethodCardResponseCardTds2StatusAUTHENTICATING PaymentMethodCardResponseCardTds2Status = "AUTHENTICATING"
+	PaymentMethodCardResponseCardTds2StatusCHALLENGE      PaymentMethodCardResponseCardTds2Status = "CHALLENGE"
+	PaymentMethodCardResponseCardTds2StatusACTIVATED      PaymentMethodCardResponseCardTds2Status = "ACTIVATED"
+	PaymentMethodCardResponseCardTds2StatusAUTHENTICATED  PaymentMethodCardResponseCardTds2Status = "AUTHENTICATED"
+)
+
+// AllValues returns all PaymentMethodCardResponseCardTds2Status values.
+func (PaymentMethodCardResponseCardTds2Status) AllValues() []PaymentMethodCardResponseCardTds2Status {
+	return []PaymentMethodCardResponseCardTds2Status{
+		PaymentMethodCardResponseCardTds2StatusAUTHENTICATING,
+		PaymentMethodCardResponseCardTds2StatusCHALLENGE,
+		PaymentMethodCardResponseCardTds2StatusACTIVATED,
+		PaymentMethodCardResponseCardTds2StatusAUTHENTICATED,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardResponseCardTds2Status) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardResponseCardTds2StatusAUTHENTICATING:
+		return []byte(s), nil
+	case PaymentMethodCardResponseCardTds2StatusCHALLENGE:
+		return []byte(s), nil
+	case PaymentMethodCardResponseCardTds2StatusACTIVATED:
+		return []byte(s), nil
+	case PaymentMethodCardResponseCardTds2StatusAUTHENTICATED:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardResponseCardTds2Status) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardResponseCardTds2Status(data) {
+	case PaymentMethodCardResponseCardTds2StatusAUTHENTICATING:
+		*s = PaymentMethodCardResponseCardTds2StatusAUTHENTICATING
+		return nil
+	case PaymentMethodCardResponseCardTds2StatusCHALLENGE:
+		*s = PaymentMethodCardResponseCardTds2StatusCHALLENGE
+		return nil
+	case PaymentMethodCardResponseCardTds2StatusACTIVATED:
+		*s = PaymentMethodCardResponseCardTds2StatusACTIVATED
+		return nil
+	case PaymentMethodCardResponseCardTds2StatusAUTHENTICATED:
+		*s = PaymentMethodCardResponseCardTds2StatusAUTHENTICATED
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardResponseCardTds2Type string
+
+const (
+	PaymentMethodCardResponseCardTds2Type2 PaymentMethodCardResponseCardTds2Type = "2"
+	PaymentMethodCardResponseCardTds2Type3 PaymentMethodCardResponseCardTds2Type = "3"
+)
+
+// AllValues returns all PaymentMethodCardResponseCardTds2Type values.
+func (PaymentMethodCardResponseCardTds2Type) AllValues() []PaymentMethodCardResponseCardTds2Type {
+	return []PaymentMethodCardResponseCardTds2Type{
+		PaymentMethodCardResponseCardTds2Type2,
+		PaymentMethodCardResponseCardTds2Type3,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardResponseCardTds2Type) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardResponseCardTds2Type2:
+		return []byte(s), nil
+	case PaymentMethodCardResponseCardTds2Type3:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardResponseCardTds2Type) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardResponseCardTds2Type(data) {
+	case PaymentMethodCardResponseCardTds2Type2:
+		*s = PaymentMethodCardResponseCardTds2Type2
+		return nil
+	case PaymentMethodCardResponseCardTds2Type3:
+		*s = PaymentMethodCardResponseCardTds2Type3
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardResponseCardTdsType string
+
+const (
+	PaymentMethodCardResponseCardTdsType0 PaymentMethodCardResponseCardTdsType = "0"
+	PaymentMethodCardResponseCardTdsType2 PaymentMethodCardResponseCardTdsType = "2"
+)
+
+// AllValues returns all PaymentMethodCardResponseCardTdsType values.
+func (PaymentMethodCardResponseCardTdsType) AllValues() []PaymentMethodCardResponseCardTdsType {
+	return []PaymentMethodCardResponseCardTdsType{
+		PaymentMethodCardResponseCardTdsType0,
+		PaymentMethodCardResponseCardTdsType2,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardResponseCardTdsType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardResponseCardTdsType0:
+		return []byte(s), nil
+	case PaymentMethodCardResponseCardTdsType2:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardResponseCardTdsType) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardResponseCardTdsType(data) {
+	case PaymentMethodCardResponseCardTdsType0:
+		*s = PaymentMethodCardResponseCardTdsType0
+		return nil
+	case PaymentMethodCardResponseCardTdsType2:
+		*s = PaymentMethodCardResponseCardTdsType2
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardResponseCardType string
+
+const (
+	PaymentMethodCardResponseCardType0 PaymentMethodCardResponseCardType = "0"
+	PaymentMethodCardResponseCardType1 PaymentMethodCardResponseCardType = "1"
+	PaymentMethodCardResponseCardType2 PaymentMethodCardResponseCardType = "2"
+	PaymentMethodCardResponseCardType3 PaymentMethodCardResponseCardType = "3"
+)
+
+// AllValues returns all PaymentMethodCardResponseCardType values.
+func (PaymentMethodCardResponseCardType) AllValues() []PaymentMethodCardResponseCardType {
+	return []PaymentMethodCardResponseCardType{
+		PaymentMethodCardResponseCardType0,
+		PaymentMethodCardResponseCardType1,
+		PaymentMethodCardResponseCardType2,
+		PaymentMethodCardResponseCardType3,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardResponseCardType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardResponseCardType0:
+		return []byte(s), nil
+	case PaymentMethodCardResponseCardType1:
+		return []byte(s), nil
+	case PaymentMethodCardResponseCardType2:
+		return []byte(s), nil
+	case PaymentMethodCardResponseCardType3:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardResponseCardType) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardResponseCardType(data) {
+	case PaymentMethodCardResponseCardType0:
+		*s = PaymentMethodCardResponseCardType0
+		return nil
+	case PaymentMethodCardResponseCardType1:
+		*s = PaymentMethodCardResponseCardType1
+		return nil
+	case PaymentMethodCardResponseCardType2:
+		*s = PaymentMethodCardResponseCardType2
+		return nil
+	case PaymentMethodCardResponseCardType3:
+		*s = PaymentMethodCardResponseCardType3
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardResponseDefaultFlag string
+
+const (
+	PaymentMethodCardResponseDefaultFlag0 PaymentMethodCardResponseDefaultFlag = "0"
+	PaymentMethodCardResponseDefaultFlag1 PaymentMethodCardResponseDefaultFlag = "1"
+)
+
+// AllValues returns all PaymentMethodCardResponseDefaultFlag values.
+func (PaymentMethodCardResponseDefaultFlag) AllValues() []PaymentMethodCardResponseDefaultFlag {
+	return []PaymentMethodCardResponseDefaultFlag{
+		PaymentMethodCardResponseDefaultFlag0,
+		PaymentMethodCardResponseDefaultFlag1,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardResponseDefaultFlag) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardResponseDefaultFlag0:
+		return []byte(s), nil
+	case PaymentMethodCardResponseDefaultFlag1:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardResponseDefaultFlag) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardResponseDefaultFlag(data) {
+	case PaymentMethodCardResponseDefaultFlag0:
+		*s = PaymentMethodCardResponseDefaultFlag0
+		return nil
+	case PaymentMethodCardResponseDefaultFlag1:
+		*s = PaymentMethodCardResponseDefaultFlag1
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardResponsePayType string
+
+const (
+	PaymentMethodCardResponsePayTypeCard        PaymentMethodCardResponsePayType = "Card"
+	PaymentMethodCardResponsePayTypeDirectdebit PaymentMethodCardResponsePayType = "Directdebit"
+)
+
+// AllValues returns all PaymentMethodCardResponsePayType values.
+func (PaymentMethodCardResponsePayType) AllValues() []PaymentMethodCardResponsePayType {
+	return []PaymentMethodCardResponsePayType{
+		PaymentMethodCardResponsePayTypeCard,
+		PaymentMethodCardResponsePayTypeDirectdebit,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardResponsePayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardResponsePayTypeCard:
+		return []byte(s), nil
+	case PaymentMethodCardResponsePayTypeDirectdebit:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardResponsePayType) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardResponsePayType(data) {
+	case PaymentMethodCardResponsePayTypeCard:
+		*s = PaymentMethodCardResponsePayTypeCard
+		return nil
+	case PaymentMethodCardResponsePayTypeDirectdebit:
+		*s = PaymentMethodCardResponsePayTypeDirectdebit
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardResponseStatus string
+
+const (
+	PaymentMethodCardResponseStatusINACTIVATED            PaymentMethodCardResponseStatus = "INACTIVATED"
+	PaymentMethodCardResponseStatusAWAITINGCUSTOMERACTION PaymentMethodCardResponseStatus = "AWAITING_CUSTOMER_ACTION"
+	PaymentMethodCardResponseStatusACTIVATED              PaymentMethodCardResponseStatus = "ACTIVATED"
+)
+
+// AllValues returns all PaymentMethodCardResponseStatus values.
+func (PaymentMethodCardResponseStatus) AllValues() []PaymentMethodCardResponseStatus {
+	return []PaymentMethodCardResponseStatus{
+		PaymentMethodCardResponseStatusINACTIVATED,
+		PaymentMethodCardResponseStatusAWAITINGCUSTOMERACTION,
+		PaymentMethodCardResponseStatusACTIVATED,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardResponseStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardResponseStatusINACTIVATED:
+		return []byte(s), nil
+	case PaymentMethodCardResponseStatusAWAITINGCUSTOMERACTION:
+		return []byte(s), nil
+	case PaymentMethodCardResponseStatusACTIVATED:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardResponseStatus) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardResponseStatus(data) {
+	case PaymentMethodCardResponseStatusINACTIVATED:
+		*s = PaymentMethodCardResponseStatusINACTIVATED
+		return nil
+	case PaymentMethodCardResponseStatusAWAITINGCUSTOMERACTION:
+		*s = PaymentMethodCardResponseStatusAWAITINGCUSTOMERACTION
+		return nil
+	case PaymentMethodCardResponseStatusACTIVATED:
+		*s = PaymentMethodCardResponseStatusACTIVATED
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentMethodCardWith3DSecure
+type PaymentMethodCardWith3DSecure struct {
+	PayType            PaymentMethodCardWith3DSecurePayType     `json:"pay_type"`
+	ReturnURL          OptString                                `json:"return_url"`
+	ReturnURLOnFailure OptString                                `json:"return_url_on_failure"`
+	DefaultFlag        PaymentMethodCardWith3DSecureDefaultFlag `json:"default_flag"`
+	ClientField1       OptNilString                             `json:"client_field_1"`
+	ClientField2       OptNilString                             `json:"client_field_2"`
+	ClientField3       OptNilString                             `json:"client_field_3"`
+	Card               PaymentMethodCardWith3DSecureCard        `json:"card"`
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentMethodCardWith3DSecure) GetPayType() PaymentMethodCardWith3DSecurePayType {
+	return s.PayType
+}
+
+// GetReturnURL returns the value of ReturnURL.
+func (s *PaymentMethodCardWith3DSecure) GetReturnURL() OptString {
+	return s.ReturnURL
+}
+
+// GetReturnURLOnFailure returns the value of ReturnURLOnFailure.
+func (s *PaymentMethodCardWith3DSecure) GetReturnURLOnFailure() OptString {
+	return s.ReturnURLOnFailure
+}
+
+// GetDefaultFlag returns the value of DefaultFlag.
+func (s *PaymentMethodCardWith3DSecure) GetDefaultFlag() PaymentMethodCardWith3DSecureDefaultFlag {
+	return s.DefaultFlag
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentMethodCardWith3DSecure) GetClientField1() OptNilString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentMethodCardWith3DSecure) GetClientField2() OptNilString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentMethodCardWith3DSecure) GetClientField3() OptNilString {
+	return s.ClientField3
+}
+
+// GetCard returns the value of Card.
+func (s *PaymentMethodCardWith3DSecure) GetCard() PaymentMethodCardWith3DSecureCard {
+	return s.Card
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentMethodCardWith3DSecure) SetPayType(val PaymentMethodCardWith3DSecurePayType) {
+	s.PayType = val
+}
+
+// SetReturnURL sets the value of ReturnURL.
+func (s *PaymentMethodCardWith3DSecure) SetReturnURL(val OptString) {
+	s.ReturnURL = val
+}
+
+// SetReturnURLOnFailure sets the value of ReturnURLOnFailure.
+func (s *PaymentMethodCardWith3DSecure) SetReturnURLOnFailure(val OptString) {
+	s.ReturnURLOnFailure = val
+}
+
+// SetDefaultFlag sets the value of DefaultFlag.
+func (s *PaymentMethodCardWith3DSecure) SetDefaultFlag(val PaymentMethodCardWith3DSecureDefaultFlag) {
+	s.DefaultFlag = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentMethodCardWith3DSecure) SetClientField1(val OptNilString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentMethodCardWith3DSecure) SetClientField2(val OptNilString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentMethodCardWith3DSecure) SetClientField3(val OptNilString) {
+	s.ClientField3 = val
+}
+
+// SetCard sets the value of Card.
+func (s *PaymentMethodCardWith3DSecure) SetCard(val PaymentMethodCardWith3DSecureCard) {
+	s.Card = val
+}
+
+type PaymentMethodCardWith3DSecureCard struct {
+	Token                       string                                                           `json:"token"`
+	TdsType                     PaymentMethodCardWith3DSecureCardTdsType                         `json:"tds_type"`
+	TdTenantName                OptNilString                                                     `json:"td_tenant_name"`
+	Tds2Type                    OptNilPaymentMethodCardWith3DSecureCardTds2Type                  `json:"tds2_type"`
+	Tds2ChAccChange             OptNilString                                                     `json:"tds2_ch_acc_change"`
+	Tds2ChAccDate               OptNilString                                                     `json:"tds2_ch_acc_date"`
+	Tds2ChAccPwChange           OptNilString                                                     `json:"tds2_ch_acc_pw_change"`
+	Tds2NbPurchaseAccount       OptNilString                                                     `json:"tds2_nb_purchase_account"`
+	Tds2PaymentAccAge           OptNilString                                                     `json:"tds2_payment_acc_age"`
+	Tds2ProvisionAttemptsDay    OptNilString                                                     `json:"tds2_provision_attempts_day"`
+	Tds2ShipAddressUsage        OptNilString                                                     `json:"tds2_ship_address_usage"`
+	Tds2ShipNameInd             OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd           `json:"tds2_ship_name_ind"`
+	Tds2SuspiciousAccActivity   OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity `json:"tds2_suspicious_acc_activity"`
+	Tds2TxnActivityDay          OptNilString                                                     `json:"tds2_txn_activity_day"`
+	Tds2TxnActivityYear         OptNilString                                                     `json:"tds2_txn_activity_year"`
+	Tds2ThreeDsReqAuthData      OptNilString                                                     `json:"tds2_three_ds_req_auth_data"`
+	Tds2ThreeDsReqAuthMethod    OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod  `json:"tds2_three_ds_req_auth_method"`
+	Tds2ThreeDsReqAuthTimestamp OptNilString                                                     `json:"tds2_three_ds_req_auth_timestamp"`
+	Tds2AddrMatch               OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch             `json:"tds2_addr_match"`
+	Tds2BillAddrCity            OptNilString                                                     `json:"tds2_bill_addr_city"`
+	Tds2BillAddrCountry         OptNilString                                                     `json:"tds2_bill_addr_country"`
+	Tds2BillAddrLine1           OptNilString                                                     `json:"tds2_bill_addr_line1"`
+	Tds2BillAddrLine2           OptNilString                                                     `json:"tds2_bill_addr_line2"`
+	Tds2BillAddrLine3           OptNilString                                                     `json:"tds2_bill_addr_line3"`
+	Tds2BillAddrPostalCode      OptNilString                                                     `json:"tds2_bill_addr_postal_code"`
+	Tds2BillAddrState           OptNilString                                                     `json:"tds2_bill_addr_state"`
+	Tds2Email                   OptNilString                                                     `json:"tds2_email"`
+	Tds2HomePhoneCc             OptNilString                                                     `json:"tds2_home_phone_cc"`
+	Tds2HomePhoneNo             OptNilString                                                     `json:"tds2_home_phone_no"`
+	Tds2MobilePhoneCc           OptNilString                                                     `json:"tds2_mobile_phone_cc"`
+	Tds2MobilePhoneNo           OptNilString                                                     `json:"tds2_mobile_phone_no"`
+	Tds2WorkPhoneCc             OptNilString                                                     `json:"tds2_work_phone_cc"`
+	Tds2WorkPhoneNo             OptNilString                                                     `json:"tds2_work_phone_no"`
+	Tds2ShipAddrCity            OptNilString                                                     `json:"tds2_ship_addr_city"`
+	Tds2ShipAddrCountry         OptNilString                                                     `json:"tds2_ship_addr_country"`
+	Tds2ShipAddrLine1           OptNilString                                                     `json:"tds2_ship_addr_line1"`
+	Tds2ShipAddrLine2           OptNilString                                                     `json:"tds2_ship_addr_line2"`
+	Tds2ShipAddrLine3           OptNilString                                                     `json:"tds2_ship_addr_line3"`
+	Tds2ShipAddrPostCode        OptNilString                                                     `json:"tds2_ship_addr_post_code"`
+	Tds2ShipAddrState           OptNilString                                                     `json:"tds2_ship_addr_state"`
+	Tds2DeliveryEmailAddress    OptNilString                                                     `json:"tds2_delivery_email_address"`
+	Tds2DeliveryTimeframe       OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe     `json:"tds2_delivery_timeframe"`
+	Tds2GiftCardAmount          OptNilString                                                     `json:"tds2_gift_card_amount"`
+	Tds2GiftCardCount           OptNilString                                                     `json:"tds2_gift_card_count"`
+	Tds2GiftCardCurr            OptNilString                                                     `json:"tds2_gift_card_curr"`
+	Tds2PreOrderDate            OptNilString                                                     `json:"tds2_pre_order_date"`
+	Tds2PreOrderPurchaseInd     OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd   `json:"tds2_pre_order_purchase_ind"`
+	Tds2ReorderItemsInd         OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd       `json:"tds2_reorder_items_ind"`
+	Tds2ShipInd                 OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd               `json:"tds2_ship_ind"`
+	Tds2ReccurringExpiry        OptNilString                                                     `json:"tds2_reccurring_expiry"`
+	Tds2ReccurringFrequncy      OptNilString                                                     `json:"tds2_reccurring_frequncy"`
+}
+
+// GetToken returns the value of Token.
+func (s *PaymentMethodCardWith3DSecureCard) GetToken() string {
+	return s.Token
+}
+
+// GetTdsType returns the value of TdsType.
+func (s *PaymentMethodCardWith3DSecureCard) GetTdsType() PaymentMethodCardWith3DSecureCardTdsType {
+	return s.TdsType
+}
+
+// GetTdTenantName returns the value of TdTenantName.
+func (s *PaymentMethodCardWith3DSecureCard) GetTdTenantName() OptNilString {
+	return s.TdTenantName
+}
+
+// GetTds2Type returns the value of Tds2Type.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2Type() OptNilPaymentMethodCardWith3DSecureCardTds2Type {
+	return s.Tds2Type
+}
+
+// GetTds2ChAccChange returns the value of Tds2ChAccChange.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ChAccChange() OptNilString {
+	return s.Tds2ChAccChange
+}
+
+// GetTds2ChAccDate returns the value of Tds2ChAccDate.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ChAccDate() OptNilString {
+	return s.Tds2ChAccDate
+}
+
+// GetTds2ChAccPwChange returns the value of Tds2ChAccPwChange.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ChAccPwChange() OptNilString {
+	return s.Tds2ChAccPwChange
+}
+
+// GetTds2NbPurchaseAccount returns the value of Tds2NbPurchaseAccount.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2NbPurchaseAccount() OptNilString {
+	return s.Tds2NbPurchaseAccount
+}
+
+// GetTds2PaymentAccAge returns the value of Tds2PaymentAccAge.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2PaymentAccAge() OptNilString {
+	return s.Tds2PaymentAccAge
+}
+
+// GetTds2ProvisionAttemptsDay returns the value of Tds2ProvisionAttemptsDay.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ProvisionAttemptsDay() OptNilString {
+	return s.Tds2ProvisionAttemptsDay
+}
+
+// GetTds2ShipAddressUsage returns the value of Tds2ShipAddressUsage.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipAddressUsage() OptNilString {
+	return s.Tds2ShipAddressUsage
+}
+
+// GetTds2ShipNameInd returns the value of Tds2ShipNameInd.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipNameInd() OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd {
+	return s.Tds2ShipNameInd
+}
+
+// GetTds2SuspiciousAccActivity returns the value of Tds2SuspiciousAccActivity.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2SuspiciousAccActivity() OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity {
+	return s.Tds2SuspiciousAccActivity
+}
+
+// GetTds2TxnActivityDay returns the value of Tds2TxnActivityDay.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2TxnActivityDay() OptNilString {
+	return s.Tds2TxnActivityDay
+}
+
+// GetTds2TxnActivityYear returns the value of Tds2TxnActivityYear.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2TxnActivityYear() OptNilString {
+	return s.Tds2TxnActivityYear
+}
+
+// GetTds2ThreeDsReqAuthData returns the value of Tds2ThreeDsReqAuthData.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ThreeDsReqAuthData() OptNilString {
+	return s.Tds2ThreeDsReqAuthData
+}
+
+// GetTds2ThreeDsReqAuthMethod returns the value of Tds2ThreeDsReqAuthMethod.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ThreeDsReqAuthMethod() OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod {
+	return s.Tds2ThreeDsReqAuthMethod
+}
+
+// GetTds2ThreeDsReqAuthTimestamp returns the value of Tds2ThreeDsReqAuthTimestamp.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ThreeDsReqAuthTimestamp() OptNilString {
+	return s.Tds2ThreeDsReqAuthTimestamp
+}
+
+// GetTds2AddrMatch returns the value of Tds2AddrMatch.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2AddrMatch() OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch {
+	return s.Tds2AddrMatch
+}
+
+// GetTds2BillAddrCity returns the value of Tds2BillAddrCity.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2BillAddrCity() OptNilString {
+	return s.Tds2BillAddrCity
+}
+
+// GetTds2BillAddrCountry returns the value of Tds2BillAddrCountry.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2BillAddrCountry() OptNilString {
+	return s.Tds2BillAddrCountry
+}
+
+// GetTds2BillAddrLine1 returns the value of Tds2BillAddrLine1.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2BillAddrLine1() OptNilString {
+	return s.Tds2BillAddrLine1
+}
+
+// GetTds2BillAddrLine2 returns the value of Tds2BillAddrLine2.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2BillAddrLine2() OptNilString {
+	return s.Tds2BillAddrLine2
+}
+
+// GetTds2BillAddrLine3 returns the value of Tds2BillAddrLine3.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2BillAddrLine3() OptNilString {
+	return s.Tds2BillAddrLine3
+}
+
+// GetTds2BillAddrPostalCode returns the value of Tds2BillAddrPostalCode.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2BillAddrPostalCode() OptNilString {
+	return s.Tds2BillAddrPostalCode
+}
+
+// GetTds2BillAddrState returns the value of Tds2BillAddrState.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2BillAddrState() OptNilString {
+	return s.Tds2BillAddrState
+}
+
+// GetTds2Email returns the value of Tds2Email.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2Email() OptNilString {
+	return s.Tds2Email
+}
+
+// GetTds2HomePhoneCc returns the value of Tds2HomePhoneCc.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2HomePhoneCc() OptNilString {
+	return s.Tds2HomePhoneCc
+}
+
+// GetTds2HomePhoneNo returns the value of Tds2HomePhoneNo.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2HomePhoneNo() OptNilString {
+	return s.Tds2HomePhoneNo
+}
+
+// GetTds2MobilePhoneCc returns the value of Tds2MobilePhoneCc.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2MobilePhoneCc() OptNilString {
+	return s.Tds2MobilePhoneCc
+}
+
+// GetTds2MobilePhoneNo returns the value of Tds2MobilePhoneNo.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2MobilePhoneNo() OptNilString {
+	return s.Tds2MobilePhoneNo
+}
+
+// GetTds2WorkPhoneCc returns the value of Tds2WorkPhoneCc.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2WorkPhoneCc() OptNilString {
+	return s.Tds2WorkPhoneCc
+}
+
+// GetTds2WorkPhoneNo returns the value of Tds2WorkPhoneNo.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2WorkPhoneNo() OptNilString {
+	return s.Tds2WorkPhoneNo
+}
+
+// GetTds2ShipAddrCity returns the value of Tds2ShipAddrCity.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipAddrCity() OptNilString {
+	return s.Tds2ShipAddrCity
+}
+
+// GetTds2ShipAddrCountry returns the value of Tds2ShipAddrCountry.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipAddrCountry() OptNilString {
+	return s.Tds2ShipAddrCountry
+}
+
+// GetTds2ShipAddrLine1 returns the value of Tds2ShipAddrLine1.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipAddrLine1() OptNilString {
+	return s.Tds2ShipAddrLine1
+}
+
+// GetTds2ShipAddrLine2 returns the value of Tds2ShipAddrLine2.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipAddrLine2() OptNilString {
+	return s.Tds2ShipAddrLine2
+}
+
+// GetTds2ShipAddrLine3 returns the value of Tds2ShipAddrLine3.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipAddrLine3() OptNilString {
+	return s.Tds2ShipAddrLine3
+}
+
+// GetTds2ShipAddrPostCode returns the value of Tds2ShipAddrPostCode.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipAddrPostCode() OptNilString {
+	return s.Tds2ShipAddrPostCode
+}
+
+// GetTds2ShipAddrState returns the value of Tds2ShipAddrState.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipAddrState() OptNilString {
+	return s.Tds2ShipAddrState
+}
+
+// GetTds2DeliveryEmailAddress returns the value of Tds2DeliveryEmailAddress.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2DeliveryEmailAddress() OptNilString {
+	return s.Tds2DeliveryEmailAddress
+}
+
+// GetTds2DeliveryTimeframe returns the value of Tds2DeliveryTimeframe.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2DeliveryTimeframe() OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe {
+	return s.Tds2DeliveryTimeframe
+}
+
+// GetTds2GiftCardAmount returns the value of Tds2GiftCardAmount.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2GiftCardAmount() OptNilString {
+	return s.Tds2GiftCardAmount
+}
+
+// GetTds2GiftCardCount returns the value of Tds2GiftCardCount.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2GiftCardCount() OptNilString {
+	return s.Tds2GiftCardCount
+}
+
+// GetTds2GiftCardCurr returns the value of Tds2GiftCardCurr.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2GiftCardCurr() OptNilString {
+	return s.Tds2GiftCardCurr
+}
+
+// GetTds2PreOrderDate returns the value of Tds2PreOrderDate.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2PreOrderDate() OptNilString {
+	return s.Tds2PreOrderDate
+}
+
+// GetTds2PreOrderPurchaseInd returns the value of Tds2PreOrderPurchaseInd.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2PreOrderPurchaseInd() OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd {
+	return s.Tds2PreOrderPurchaseInd
+}
+
+// GetTds2ReorderItemsInd returns the value of Tds2ReorderItemsInd.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ReorderItemsInd() OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd {
+	return s.Tds2ReorderItemsInd
+}
+
+// GetTds2ShipInd returns the value of Tds2ShipInd.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ShipInd() OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd {
+	return s.Tds2ShipInd
+}
+
+// GetTds2ReccurringExpiry returns the value of Tds2ReccurringExpiry.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ReccurringExpiry() OptNilString {
+	return s.Tds2ReccurringExpiry
+}
+
+// GetTds2ReccurringFrequncy returns the value of Tds2ReccurringFrequncy.
+func (s *PaymentMethodCardWith3DSecureCard) GetTds2ReccurringFrequncy() OptNilString {
+	return s.Tds2ReccurringFrequncy
+}
+
+// SetToken sets the value of Token.
+func (s *PaymentMethodCardWith3DSecureCard) SetToken(val string) {
+	s.Token = val
+}
+
+// SetTdsType sets the value of TdsType.
+func (s *PaymentMethodCardWith3DSecureCard) SetTdsType(val PaymentMethodCardWith3DSecureCardTdsType) {
+	s.TdsType = val
+}
+
+// SetTdTenantName sets the value of TdTenantName.
+func (s *PaymentMethodCardWith3DSecureCard) SetTdTenantName(val OptNilString) {
+	s.TdTenantName = val
+}
+
+// SetTds2Type sets the value of Tds2Type.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2Type(val OptNilPaymentMethodCardWith3DSecureCardTds2Type) {
+	s.Tds2Type = val
+}
+
+// SetTds2ChAccChange sets the value of Tds2ChAccChange.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ChAccChange(val OptNilString) {
+	s.Tds2ChAccChange = val
+}
+
+// SetTds2ChAccDate sets the value of Tds2ChAccDate.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ChAccDate(val OptNilString) {
+	s.Tds2ChAccDate = val
+}
+
+// SetTds2ChAccPwChange sets the value of Tds2ChAccPwChange.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ChAccPwChange(val OptNilString) {
+	s.Tds2ChAccPwChange = val
+}
+
+// SetTds2NbPurchaseAccount sets the value of Tds2NbPurchaseAccount.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2NbPurchaseAccount(val OptNilString) {
+	s.Tds2NbPurchaseAccount = val
+}
+
+// SetTds2PaymentAccAge sets the value of Tds2PaymentAccAge.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2PaymentAccAge(val OptNilString) {
+	s.Tds2PaymentAccAge = val
+}
+
+// SetTds2ProvisionAttemptsDay sets the value of Tds2ProvisionAttemptsDay.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ProvisionAttemptsDay(val OptNilString) {
+	s.Tds2ProvisionAttemptsDay = val
+}
+
+// SetTds2ShipAddressUsage sets the value of Tds2ShipAddressUsage.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipAddressUsage(val OptNilString) {
+	s.Tds2ShipAddressUsage = val
+}
+
+// SetTds2ShipNameInd sets the value of Tds2ShipNameInd.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipNameInd(val OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) {
+	s.Tds2ShipNameInd = val
+}
+
+// SetTds2SuspiciousAccActivity sets the value of Tds2SuspiciousAccActivity.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2SuspiciousAccActivity(val OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) {
+	s.Tds2SuspiciousAccActivity = val
+}
+
+// SetTds2TxnActivityDay sets the value of Tds2TxnActivityDay.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2TxnActivityDay(val OptNilString) {
+	s.Tds2TxnActivityDay = val
+}
+
+// SetTds2TxnActivityYear sets the value of Tds2TxnActivityYear.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2TxnActivityYear(val OptNilString) {
+	s.Tds2TxnActivityYear = val
+}
+
+// SetTds2ThreeDsReqAuthData sets the value of Tds2ThreeDsReqAuthData.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ThreeDsReqAuthData(val OptNilString) {
+	s.Tds2ThreeDsReqAuthData = val
+}
+
+// SetTds2ThreeDsReqAuthMethod sets the value of Tds2ThreeDsReqAuthMethod.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ThreeDsReqAuthMethod(val OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) {
+	s.Tds2ThreeDsReqAuthMethod = val
+}
+
+// SetTds2ThreeDsReqAuthTimestamp sets the value of Tds2ThreeDsReqAuthTimestamp.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ThreeDsReqAuthTimestamp(val OptNilString) {
+	s.Tds2ThreeDsReqAuthTimestamp = val
+}
+
+// SetTds2AddrMatch sets the value of Tds2AddrMatch.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2AddrMatch(val OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) {
+	s.Tds2AddrMatch = val
+}
+
+// SetTds2BillAddrCity sets the value of Tds2BillAddrCity.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2BillAddrCity(val OptNilString) {
+	s.Tds2BillAddrCity = val
+}
+
+// SetTds2BillAddrCountry sets the value of Tds2BillAddrCountry.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2BillAddrCountry(val OptNilString) {
+	s.Tds2BillAddrCountry = val
+}
+
+// SetTds2BillAddrLine1 sets the value of Tds2BillAddrLine1.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2BillAddrLine1(val OptNilString) {
+	s.Tds2BillAddrLine1 = val
+}
+
+// SetTds2BillAddrLine2 sets the value of Tds2BillAddrLine2.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2BillAddrLine2(val OptNilString) {
+	s.Tds2BillAddrLine2 = val
+}
+
+// SetTds2BillAddrLine3 sets the value of Tds2BillAddrLine3.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2BillAddrLine3(val OptNilString) {
+	s.Tds2BillAddrLine3 = val
+}
+
+// SetTds2BillAddrPostalCode sets the value of Tds2BillAddrPostalCode.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2BillAddrPostalCode(val OptNilString) {
+	s.Tds2BillAddrPostalCode = val
+}
+
+// SetTds2BillAddrState sets the value of Tds2BillAddrState.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2BillAddrState(val OptNilString) {
+	s.Tds2BillAddrState = val
+}
+
+// SetTds2Email sets the value of Tds2Email.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2Email(val OptNilString) {
+	s.Tds2Email = val
+}
+
+// SetTds2HomePhoneCc sets the value of Tds2HomePhoneCc.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2HomePhoneCc(val OptNilString) {
+	s.Tds2HomePhoneCc = val
+}
+
+// SetTds2HomePhoneNo sets the value of Tds2HomePhoneNo.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2HomePhoneNo(val OptNilString) {
+	s.Tds2HomePhoneNo = val
+}
+
+// SetTds2MobilePhoneCc sets the value of Tds2MobilePhoneCc.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2MobilePhoneCc(val OptNilString) {
+	s.Tds2MobilePhoneCc = val
+}
+
+// SetTds2MobilePhoneNo sets the value of Tds2MobilePhoneNo.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2MobilePhoneNo(val OptNilString) {
+	s.Tds2MobilePhoneNo = val
+}
+
+// SetTds2WorkPhoneCc sets the value of Tds2WorkPhoneCc.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2WorkPhoneCc(val OptNilString) {
+	s.Tds2WorkPhoneCc = val
+}
+
+// SetTds2WorkPhoneNo sets the value of Tds2WorkPhoneNo.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2WorkPhoneNo(val OptNilString) {
+	s.Tds2WorkPhoneNo = val
+}
+
+// SetTds2ShipAddrCity sets the value of Tds2ShipAddrCity.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipAddrCity(val OptNilString) {
+	s.Tds2ShipAddrCity = val
+}
+
+// SetTds2ShipAddrCountry sets the value of Tds2ShipAddrCountry.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipAddrCountry(val OptNilString) {
+	s.Tds2ShipAddrCountry = val
+}
+
+// SetTds2ShipAddrLine1 sets the value of Tds2ShipAddrLine1.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipAddrLine1(val OptNilString) {
+	s.Tds2ShipAddrLine1 = val
+}
+
+// SetTds2ShipAddrLine2 sets the value of Tds2ShipAddrLine2.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipAddrLine2(val OptNilString) {
+	s.Tds2ShipAddrLine2 = val
+}
+
+// SetTds2ShipAddrLine3 sets the value of Tds2ShipAddrLine3.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipAddrLine3(val OptNilString) {
+	s.Tds2ShipAddrLine3 = val
+}
+
+// SetTds2ShipAddrPostCode sets the value of Tds2ShipAddrPostCode.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipAddrPostCode(val OptNilString) {
+	s.Tds2ShipAddrPostCode = val
+}
+
+// SetTds2ShipAddrState sets the value of Tds2ShipAddrState.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipAddrState(val OptNilString) {
+	s.Tds2ShipAddrState = val
+}
+
+// SetTds2DeliveryEmailAddress sets the value of Tds2DeliveryEmailAddress.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2DeliveryEmailAddress(val OptNilString) {
+	s.Tds2DeliveryEmailAddress = val
+}
+
+// SetTds2DeliveryTimeframe sets the value of Tds2DeliveryTimeframe.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2DeliveryTimeframe(val OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) {
+	s.Tds2DeliveryTimeframe = val
+}
+
+// SetTds2GiftCardAmount sets the value of Tds2GiftCardAmount.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2GiftCardAmount(val OptNilString) {
+	s.Tds2GiftCardAmount = val
+}
+
+// SetTds2GiftCardCount sets the value of Tds2GiftCardCount.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2GiftCardCount(val OptNilString) {
+	s.Tds2GiftCardCount = val
+}
+
+// SetTds2GiftCardCurr sets the value of Tds2GiftCardCurr.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2GiftCardCurr(val OptNilString) {
+	s.Tds2GiftCardCurr = val
+}
+
+// SetTds2PreOrderDate sets the value of Tds2PreOrderDate.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2PreOrderDate(val OptNilString) {
+	s.Tds2PreOrderDate = val
+}
+
+// SetTds2PreOrderPurchaseInd sets the value of Tds2PreOrderPurchaseInd.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2PreOrderPurchaseInd(val OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) {
+	s.Tds2PreOrderPurchaseInd = val
+}
+
+// SetTds2ReorderItemsInd sets the value of Tds2ReorderItemsInd.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ReorderItemsInd(val OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) {
+	s.Tds2ReorderItemsInd = val
+}
+
+// SetTds2ShipInd sets the value of Tds2ShipInd.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ShipInd(val OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) {
+	s.Tds2ShipInd = val
+}
+
+// SetTds2ReccurringExpiry sets the value of Tds2ReccurringExpiry.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ReccurringExpiry(val OptNilString) {
+	s.Tds2ReccurringExpiry = val
+}
+
+// SetTds2ReccurringFrequncy sets the value of Tds2ReccurringFrequncy.
+func (s *PaymentMethodCardWith3DSecureCard) SetTds2ReccurringFrequncy(val OptNilString) {
+	s.Tds2ReccurringFrequncy = val
+}
+
+type PaymentMethodCardWith3DSecureCardTds2AddrMatch string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2AddrMatchY PaymentMethodCardWith3DSecureCardTds2AddrMatch = "Y"
+	PaymentMethodCardWith3DSecureCardTds2AddrMatchN PaymentMethodCardWith3DSecureCardTds2AddrMatch = "N"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2AddrMatch values.
+func (PaymentMethodCardWith3DSecureCardTds2AddrMatch) AllValues() []PaymentMethodCardWith3DSecureCardTds2AddrMatch {
+	return []PaymentMethodCardWith3DSecureCardTds2AddrMatch{
+		PaymentMethodCardWith3DSecureCardTds2AddrMatchY,
+		PaymentMethodCardWith3DSecureCardTds2AddrMatchN,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2AddrMatch) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2AddrMatchY:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2AddrMatchN:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2AddrMatch) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2AddrMatch(data) {
+	case PaymentMethodCardWith3DSecureCardTds2AddrMatchY:
+		*s = PaymentMethodCardWith3DSecureCardTds2AddrMatchY
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2AddrMatchN:
+		*s = PaymentMethodCardWith3DSecureCardTds2AddrMatchN
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe01 PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe = "01"
+	PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe02 PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe = "02"
+	PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe03 PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe = "03"
+	PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe04 PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe = "04"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe values.
+func (PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) AllValues() []PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe {
+	return []PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe{
+		PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe01,
+		PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe02,
+		PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe03,
+		PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe04,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe01:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe02:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe03:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe04:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe(data) {
+	case PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe01:
+		*s = PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe01
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe02:
+		*s = PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe02
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe03:
+		*s = PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe03
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe04:
+		*s = PaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe04
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd01 PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd = "01"
+	PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd02 PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd = "02"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd values.
+func (PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) AllValues() []PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd {
+	return []PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd{
+		PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd01,
+		PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd02,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd01:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd02:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd(data) {
+	case PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd01:
+		*s = PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd01
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd02:
+		*s = PaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd02
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd01 PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd = "01"
+	PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd02 PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd = "02"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd values.
+func (PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) AllValues() []PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd {
+	return []PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd{
+		PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd01,
+		PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd02,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd01:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd02:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd(data) {
+	case PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd01:
+		*s = PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd01
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd02:
+		*s = PaymentMethodCardWith3DSecureCardTds2ReorderItemsInd02
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTds2ShipInd string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2ShipInd01 PaymentMethodCardWith3DSecureCardTds2ShipInd = "01"
+	PaymentMethodCardWith3DSecureCardTds2ShipInd02 PaymentMethodCardWith3DSecureCardTds2ShipInd = "02"
+	PaymentMethodCardWith3DSecureCardTds2ShipInd03 PaymentMethodCardWith3DSecureCardTds2ShipInd = "03"
+	PaymentMethodCardWith3DSecureCardTds2ShipInd04 PaymentMethodCardWith3DSecureCardTds2ShipInd = "04"
+	PaymentMethodCardWith3DSecureCardTds2ShipInd05 PaymentMethodCardWith3DSecureCardTds2ShipInd = "05"
+	PaymentMethodCardWith3DSecureCardTds2ShipInd06 PaymentMethodCardWith3DSecureCardTds2ShipInd = "06"
+	PaymentMethodCardWith3DSecureCardTds2ShipInd07 PaymentMethodCardWith3DSecureCardTds2ShipInd = "07"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2ShipInd values.
+func (PaymentMethodCardWith3DSecureCardTds2ShipInd) AllValues() []PaymentMethodCardWith3DSecureCardTds2ShipInd {
+	return []PaymentMethodCardWith3DSecureCardTds2ShipInd{
+		PaymentMethodCardWith3DSecureCardTds2ShipInd01,
+		PaymentMethodCardWith3DSecureCardTds2ShipInd02,
+		PaymentMethodCardWith3DSecureCardTds2ShipInd03,
+		PaymentMethodCardWith3DSecureCardTds2ShipInd04,
+		PaymentMethodCardWith3DSecureCardTds2ShipInd05,
+		PaymentMethodCardWith3DSecureCardTds2ShipInd06,
+		PaymentMethodCardWith3DSecureCardTds2ShipInd07,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2ShipInd) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd01:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd02:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd03:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd04:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd05:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd06:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd07:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2ShipInd) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2ShipInd(data) {
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd01:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipInd01
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd02:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipInd02
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd03:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipInd03
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd04:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipInd04
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd05:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipInd05
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd06:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipInd06
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipInd07:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipInd07
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTds2ShipNameInd string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2ShipNameInd01 PaymentMethodCardWith3DSecureCardTds2ShipNameInd = "01"
+	PaymentMethodCardWith3DSecureCardTds2ShipNameInd02 PaymentMethodCardWith3DSecureCardTds2ShipNameInd = "02"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2ShipNameInd values.
+func (PaymentMethodCardWith3DSecureCardTds2ShipNameInd) AllValues() []PaymentMethodCardWith3DSecureCardTds2ShipNameInd {
+	return []PaymentMethodCardWith3DSecureCardTds2ShipNameInd{
+		PaymentMethodCardWith3DSecureCardTds2ShipNameInd01,
+		PaymentMethodCardWith3DSecureCardTds2ShipNameInd02,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2ShipNameInd) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2ShipNameInd01:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipNameInd02:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2ShipNameInd) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2ShipNameInd(data) {
+	case PaymentMethodCardWith3DSecureCardTds2ShipNameInd01:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipNameInd01
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ShipNameInd02:
+		*s = PaymentMethodCardWith3DSecureCardTds2ShipNameInd02
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity01 PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity = "01"
+	PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity02 PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity = "02"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity values.
+func (PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) AllValues() []PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity {
+	return []PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity{
+		PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity01,
+		PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity02,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity01:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity02:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity(data) {
+	case PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity01:
+		*s = PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity01
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity02:
+		*s = PaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity02
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod01 PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod = "01"
+	PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod02 PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod = "02"
+	PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod03 PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod = "03"
+	PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod04 PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod = "04"
+	PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod05 PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod = "05"
+	PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod06 PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod = "06"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod values.
+func (PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) AllValues() []PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod {
+	return []PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod{
+		PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod01,
+		PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod02,
+		PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod03,
+		PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod04,
+		PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod05,
+		PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod06,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod01:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod02:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod03:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod04:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod05:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod06:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod(data) {
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod01:
+		*s = PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod01
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod02:
+		*s = PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod02
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod03:
+		*s = PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod03
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod04:
+		*s = PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod04
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod05:
+		*s = PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod05
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod06:
+		*s = PaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod06
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTds2Type string
+
+const (
+	PaymentMethodCardWith3DSecureCardTds2Type2 PaymentMethodCardWith3DSecureCardTds2Type = "2"
+	PaymentMethodCardWith3DSecureCardTds2Type3 PaymentMethodCardWith3DSecureCardTds2Type = "3"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTds2Type values.
+func (PaymentMethodCardWith3DSecureCardTds2Type) AllValues() []PaymentMethodCardWith3DSecureCardTds2Type {
+	return []PaymentMethodCardWith3DSecureCardTds2Type{
+		PaymentMethodCardWith3DSecureCardTds2Type2,
+		PaymentMethodCardWith3DSecureCardTds2Type3,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTds2Type) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTds2Type2:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTds2Type3:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTds2Type) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTds2Type(data) {
+	case PaymentMethodCardWith3DSecureCardTds2Type2:
+		*s = PaymentMethodCardWith3DSecureCardTds2Type2
+		return nil
+	case PaymentMethodCardWith3DSecureCardTds2Type3:
+		*s = PaymentMethodCardWith3DSecureCardTds2Type3
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureCardTdsType string
+
+const (
+	PaymentMethodCardWith3DSecureCardTdsType0 PaymentMethodCardWith3DSecureCardTdsType = "0"
+	PaymentMethodCardWith3DSecureCardTdsType2 PaymentMethodCardWith3DSecureCardTdsType = "2"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureCardTdsType values.
+func (PaymentMethodCardWith3DSecureCardTdsType) AllValues() []PaymentMethodCardWith3DSecureCardTdsType {
+	return []PaymentMethodCardWith3DSecureCardTdsType{
+		PaymentMethodCardWith3DSecureCardTdsType0,
+		PaymentMethodCardWith3DSecureCardTdsType2,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureCardTdsType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureCardTdsType0:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureCardTdsType2:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureCardTdsType) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureCardTdsType(data) {
+	case PaymentMethodCardWith3DSecureCardTdsType0:
+		*s = PaymentMethodCardWith3DSecureCardTdsType0
+		return nil
+	case PaymentMethodCardWith3DSecureCardTdsType2:
+		*s = PaymentMethodCardWith3DSecureCardTdsType2
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecureDefaultFlag string
+
+const (
+	PaymentMethodCardWith3DSecureDefaultFlag0 PaymentMethodCardWith3DSecureDefaultFlag = "0"
+	PaymentMethodCardWith3DSecureDefaultFlag1 PaymentMethodCardWith3DSecureDefaultFlag = "1"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecureDefaultFlag values.
+func (PaymentMethodCardWith3DSecureDefaultFlag) AllValues() []PaymentMethodCardWith3DSecureDefaultFlag {
+	return []PaymentMethodCardWith3DSecureDefaultFlag{
+		PaymentMethodCardWith3DSecureDefaultFlag0,
+		PaymentMethodCardWith3DSecureDefaultFlag1,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecureDefaultFlag) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecureDefaultFlag0:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecureDefaultFlag1:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecureDefaultFlag) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecureDefaultFlag(data) {
+	case PaymentMethodCardWith3DSecureDefaultFlag0:
+		*s = PaymentMethodCardWith3DSecureDefaultFlag0
+		return nil
+	case PaymentMethodCardWith3DSecureDefaultFlag1:
+		*s = PaymentMethodCardWith3DSecureDefaultFlag1
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWith3DSecurePayType string
+
+const (
+	PaymentMethodCardWith3DSecurePayTypeCard        PaymentMethodCardWith3DSecurePayType = "Card"
+	PaymentMethodCardWith3DSecurePayTypeDirectdebit PaymentMethodCardWith3DSecurePayType = "Directdebit"
+)
+
+// AllValues returns all PaymentMethodCardWith3DSecurePayType values.
+func (PaymentMethodCardWith3DSecurePayType) AllValues() []PaymentMethodCardWith3DSecurePayType {
+	return []PaymentMethodCardWith3DSecurePayType{
+		PaymentMethodCardWith3DSecurePayTypeCard,
+		PaymentMethodCardWith3DSecurePayTypeDirectdebit,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWith3DSecurePayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWith3DSecurePayTypeCard:
+		return []byte(s), nil
+	case PaymentMethodCardWith3DSecurePayTypeDirectdebit:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWith3DSecurePayType) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWith3DSecurePayType(data) {
+	case PaymentMethodCardWith3DSecurePayTypeCard:
+		*s = PaymentMethodCardWith3DSecurePayTypeCard
+		return nil
+	case PaymentMethodCardWith3DSecurePayTypeDirectdebit:
+		*s = PaymentMethodCardWith3DSecurePayTypeDirectdebit
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentMethodCardWithout3DSecure
+type PaymentMethodCardWithout3DSecure struct {
+	PayType      PaymentMethodCardWithout3DSecurePayType     `json:"pay_type"`
+	DefaultFlag  PaymentMethodCardWithout3DSecureDefaultFlag `json:"default_flag"`
+	ClientField1 OptString                                   `json:"client_field_1"`
+	ClientField2 OptString                                   `json:"client_field_2"`
+	ClientField3 OptString                                   `json:"client_field_3"`
+	Card         PaymentMethodCardWithout3DSecureCard        `json:"card"`
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentMethodCardWithout3DSecure) GetPayType() PaymentMethodCardWithout3DSecurePayType {
+	return s.PayType
+}
+
+// GetDefaultFlag returns the value of DefaultFlag.
+func (s *PaymentMethodCardWithout3DSecure) GetDefaultFlag() PaymentMethodCardWithout3DSecureDefaultFlag {
+	return s.DefaultFlag
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentMethodCardWithout3DSecure) GetClientField1() OptString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentMethodCardWithout3DSecure) GetClientField2() OptString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentMethodCardWithout3DSecure) GetClientField3() OptString {
+	return s.ClientField3
+}
+
+// GetCard returns the value of Card.
+func (s *PaymentMethodCardWithout3DSecure) GetCard() PaymentMethodCardWithout3DSecureCard {
+	return s.Card
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentMethodCardWithout3DSecure) SetPayType(val PaymentMethodCardWithout3DSecurePayType) {
+	s.PayType = val
+}
+
+// SetDefaultFlag sets the value of DefaultFlag.
+func (s *PaymentMethodCardWithout3DSecure) SetDefaultFlag(val PaymentMethodCardWithout3DSecureDefaultFlag) {
+	s.DefaultFlag = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentMethodCardWithout3DSecure) SetClientField1(val OptString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentMethodCardWithout3DSecure) SetClientField2(val OptString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentMethodCardWithout3DSecure) SetClientField3(val OptString) {
+	s.ClientField3 = val
+}
+
+// SetCard sets the value of Card.
+func (s *PaymentMethodCardWithout3DSecure) SetCard(val PaymentMethodCardWithout3DSecureCard) {
+	s.Card = val
+}
+
+type PaymentMethodCardWithout3DSecureCard struct {
+	Token string `json:"token"`
+}
+
+// GetToken returns the value of Token.
+func (s *PaymentMethodCardWithout3DSecureCard) GetToken() string {
+	return s.Token
+}
+
+// SetToken sets the value of Token.
+func (s *PaymentMethodCardWithout3DSecureCard) SetToken(val string) {
+	s.Token = val
+}
+
+type PaymentMethodCardWithout3DSecureDefaultFlag string
+
+const (
+	PaymentMethodCardWithout3DSecureDefaultFlag0 PaymentMethodCardWithout3DSecureDefaultFlag = "0"
+	PaymentMethodCardWithout3DSecureDefaultFlag1 PaymentMethodCardWithout3DSecureDefaultFlag = "1"
+)
+
+// AllValues returns all PaymentMethodCardWithout3DSecureDefaultFlag values.
+func (PaymentMethodCardWithout3DSecureDefaultFlag) AllValues() []PaymentMethodCardWithout3DSecureDefaultFlag {
+	return []PaymentMethodCardWithout3DSecureDefaultFlag{
+		PaymentMethodCardWithout3DSecureDefaultFlag0,
+		PaymentMethodCardWithout3DSecureDefaultFlag1,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWithout3DSecureDefaultFlag) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWithout3DSecureDefaultFlag0:
+		return []byte(s), nil
+	case PaymentMethodCardWithout3DSecureDefaultFlag1:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWithout3DSecureDefaultFlag) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWithout3DSecureDefaultFlag(data) {
+	case PaymentMethodCardWithout3DSecureDefaultFlag0:
+		*s = PaymentMethodCardWithout3DSecureDefaultFlag0
+		return nil
+	case PaymentMethodCardWithout3DSecureDefaultFlag1:
+		*s = PaymentMethodCardWithout3DSecureDefaultFlag1
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodCardWithout3DSecurePayType string
+
+const (
+	PaymentMethodCardWithout3DSecurePayTypeCard        PaymentMethodCardWithout3DSecurePayType = "Card"
+	PaymentMethodCardWithout3DSecurePayTypeDirectdebit PaymentMethodCardWithout3DSecurePayType = "Directdebit"
+)
+
+// AllValues returns all PaymentMethodCardWithout3DSecurePayType values.
+func (PaymentMethodCardWithout3DSecurePayType) AllValues() []PaymentMethodCardWithout3DSecurePayType {
+	return []PaymentMethodCardWithout3DSecurePayType{
+		PaymentMethodCardWithout3DSecurePayTypeCard,
+		PaymentMethodCardWithout3DSecurePayTypeDirectdebit,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodCardWithout3DSecurePayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodCardWithout3DSecurePayTypeCard:
+		return []byte(s), nil
+	case PaymentMethodCardWithout3DSecurePayTypeDirectdebit:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodCardWithout3DSecurePayType) UnmarshalText(data []byte) error {
+	switch PaymentMethodCardWithout3DSecurePayType(data) {
+	case PaymentMethodCardWithout3DSecurePayTypeCard:
+		*s = PaymentMethodCardWithout3DSecurePayTypeCard
+		return nil
+	case PaymentMethodCardWithout3DSecurePayTypeDirectdebit:
+		*s = PaymentMethodCardWithout3DSecurePayTypeDirectdebit
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentMethodDirectDebit
+type PaymentMethodDirectDebit struct {
+	PayType      PaymentMethodDirectDebitPayType     `json:"pay_type"`
+	DefaultFlag  PaymentMethodDirectDebitDefaultFlag `json:"default_flag"`
+	ClientField1 OptString                           `json:"client_field_1"`
+	ClientField2 OptString                           `json:"client_field_2"`
+	ClientField3 OptString                           `json:"client_field_3"`
+	Directdebit  PaymentMethodDirectDebitDirectdebit `json:"directdebit"`
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentMethodDirectDebit) GetPayType() PaymentMethodDirectDebitPayType {
+	return s.PayType
+}
+
+// GetDefaultFlag returns the value of DefaultFlag.
+func (s *PaymentMethodDirectDebit) GetDefaultFlag() PaymentMethodDirectDebitDefaultFlag {
+	return s.DefaultFlag
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentMethodDirectDebit) GetClientField1() OptString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentMethodDirectDebit) GetClientField2() OptString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentMethodDirectDebit) GetClientField3() OptString {
+	return s.ClientField3
+}
+
+// GetDirectdebit returns the value of Directdebit.
+func (s *PaymentMethodDirectDebit) GetDirectdebit() PaymentMethodDirectDebitDirectdebit {
+	return s.Directdebit
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentMethodDirectDebit) SetPayType(val PaymentMethodDirectDebitPayType) {
+	s.PayType = val
+}
+
+// SetDefaultFlag sets the value of DefaultFlag.
+func (s *PaymentMethodDirectDebit) SetDefaultFlag(val PaymentMethodDirectDebitDefaultFlag) {
+	s.DefaultFlag = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentMethodDirectDebit) SetClientField1(val OptString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentMethodDirectDebit) SetClientField2(val OptString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentMethodDirectDebit) SetClientField3(val OptString) {
+	s.ClientField3 = val
+}
+
+// SetDirectdebit sets the value of Directdebit.
+func (s *PaymentMethodDirectDebit) SetDirectdebit(val PaymentMethodDirectDebitDirectdebit) {
+	s.Directdebit = val
+}
+
+type PaymentMethodDirectDebitDefaultFlag string
+
+const (
+	PaymentMethodDirectDebitDefaultFlag0 PaymentMethodDirectDebitDefaultFlag = "0"
+	PaymentMethodDirectDebitDefaultFlag1 PaymentMethodDirectDebitDefaultFlag = "1"
+)
+
+// AllValues returns all PaymentMethodDirectDebitDefaultFlag values.
+func (PaymentMethodDirectDebitDefaultFlag) AllValues() []PaymentMethodDirectDebitDefaultFlag {
+	return []PaymentMethodDirectDebitDefaultFlag{
+		PaymentMethodDirectDebitDefaultFlag0,
+		PaymentMethodDirectDebitDefaultFlag1,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitDefaultFlag) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitDefaultFlag0:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitDefaultFlag1:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitDefaultFlag) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitDefaultFlag(data) {
+	case PaymentMethodDirectDebitDefaultFlag0:
+		*s = PaymentMethodDirectDebitDefaultFlag0
+		return nil
+	case PaymentMethodDirectDebitDefaultFlag1:
+		*s = PaymentMethodDirectDebitDefaultFlag1
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodDirectDebitDirectdebit struct {
+	Token string `json:"token"`
+}
+
+// GetToken returns the value of Token.
+func (s *PaymentMethodDirectDebitDirectdebit) GetToken() string {
+	return s.Token
+}
+
+// SetToken sets the value of Token.
+func (s *PaymentMethodDirectDebitDirectdebit) SetToken(val string) {
+	s.Token = val
+}
+
+type PaymentMethodDirectDebitPayType string
+
+const (
+	PaymentMethodDirectDebitPayTypeCard        PaymentMethodDirectDebitPayType = "Card"
+	PaymentMethodDirectDebitPayTypeDirectdebit PaymentMethodDirectDebitPayType = "Directdebit"
+)
+
+// AllValues returns all PaymentMethodDirectDebitPayType values.
+func (PaymentMethodDirectDebitPayType) AllValues() []PaymentMethodDirectDebitPayType {
+	return []PaymentMethodDirectDebitPayType{
+		PaymentMethodDirectDebitPayTypeCard,
+		PaymentMethodDirectDebitPayTypeDirectdebit,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitPayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitPayTypeCard:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitPayTypeDirectdebit:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitPayType) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitPayType(data) {
+	case PaymentMethodDirectDebitPayTypeCard:
+		*s = PaymentMethodDirectDebitPayTypeCard
+		return nil
+	case PaymentMethodDirectDebitPayTypeDirectdebit:
+		*s = PaymentMethodDirectDebitPayTypeDirectdebit
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentMethodDirectDebitResponse
+type PaymentMethodDirectDebitResponse struct {
+	ID                      OptString                                                  `json:"id"`
+	PayType                 OptPaymentMethodDirectDebitResponsePayType                 `json:"pay_type"`
+	CustomerID              OptString                                                  `json:"customer_id"`
+	ProcessDate             OptString                                                  `json:"process_date"`
+	RedirectURL             OptString                                                  `json:"redirect_url"`
+	RedirectURLAccessedFlag OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag `json:"redirect_url_accessed_flag"`
+	Status                  OptPaymentMethodDirectDebitResponseStatus                  `json:"status"`
+	ReturnURL               OptString                                                  `json:"return_url"`
+	DefaultFlag             OptString                                                  `json:"default_flag"`
+	ClientField1            OptString                                                  `json:"client_field_1"`
+	ClientField2            OptString                                                  `json:"client_field_2"`
+	ClientField3            OptString                                                  `json:"client_field_3"`
+	Created                 OptString                                                  `json:"created"`
+	Updated                 OptString                                                  `json:"updated"`
+	Directdebit             OptPaymentMethodDirectDebitResponseDirectdebit             `json:"directdebit"`
+}
+
+// GetID returns the value of ID.
+func (s *PaymentMethodDirectDebitResponse) GetID() OptString {
+	return s.ID
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentMethodDirectDebitResponse) GetPayType() OptPaymentMethodDirectDebitResponsePayType {
+	return s.PayType
+}
+
+// GetCustomerID returns the value of CustomerID.
+func (s *PaymentMethodDirectDebitResponse) GetCustomerID() OptString {
+	return s.CustomerID
+}
+
+// GetProcessDate returns the value of ProcessDate.
+func (s *PaymentMethodDirectDebitResponse) GetProcessDate() OptString {
+	return s.ProcessDate
+}
+
+// GetRedirectURL returns the value of RedirectURL.
+func (s *PaymentMethodDirectDebitResponse) GetRedirectURL() OptString {
+	return s.RedirectURL
+}
+
+// GetRedirectURLAccessedFlag returns the value of RedirectURLAccessedFlag.
+func (s *PaymentMethodDirectDebitResponse) GetRedirectURLAccessedFlag() OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag {
+	return s.RedirectURLAccessedFlag
+}
+
+// GetStatus returns the value of Status.
+func (s *PaymentMethodDirectDebitResponse) GetStatus() OptPaymentMethodDirectDebitResponseStatus {
+	return s.Status
+}
+
+// GetReturnURL returns the value of ReturnURL.
+func (s *PaymentMethodDirectDebitResponse) GetReturnURL() OptString {
+	return s.ReturnURL
+}
+
+// GetDefaultFlag returns the value of DefaultFlag.
+func (s *PaymentMethodDirectDebitResponse) GetDefaultFlag() OptString {
+	return s.DefaultFlag
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentMethodDirectDebitResponse) GetClientField1() OptString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentMethodDirectDebitResponse) GetClientField2() OptString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentMethodDirectDebitResponse) GetClientField3() OptString {
+	return s.ClientField3
+}
+
+// GetCreated returns the value of Created.
+func (s *PaymentMethodDirectDebitResponse) GetCreated() OptString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *PaymentMethodDirectDebitResponse) GetUpdated() OptString {
+	return s.Updated
+}
+
+// GetDirectdebit returns the value of Directdebit.
+func (s *PaymentMethodDirectDebitResponse) GetDirectdebit() OptPaymentMethodDirectDebitResponseDirectdebit {
+	return s.Directdebit
+}
+
+// SetID sets the value of ID.
+func (s *PaymentMethodDirectDebitResponse) SetID(val OptString) {
+	s.ID = val
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentMethodDirectDebitResponse) SetPayType(val OptPaymentMethodDirectDebitResponsePayType) {
+	s.PayType = val
+}
+
+// SetCustomerID sets the value of CustomerID.
+func (s *PaymentMethodDirectDebitResponse) SetCustomerID(val OptString) {
+	s.CustomerID = val
+}
+
+// SetProcessDate sets the value of ProcessDate.
+func (s *PaymentMethodDirectDebitResponse) SetProcessDate(val OptString) {
+	s.ProcessDate = val
+}
+
+// SetRedirectURL sets the value of RedirectURL.
+func (s *PaymentMethodDirectDebitResponse) SetRedirectURL(val OptString) {
+	s.RedirectURL = val
+}
+
+// SetRedirectURLAccessedFlag sets the value of RedirectURLAccessedFlag.
+func (s *PaymentMethodDirectDebitResponse) SetRedirectURLAccessedFlag(val OptPaymentMethodDirectDebitResponseRedirectURLAccessedFlag) {
+	s.RedirectURLAccessedFlag = val
+}
+
+// SetStatus sets the value of Status.
+func (s *PaymentMethodDirectDebitResponse) SetStatus(val OptPaymentMethodDirectDebitResponseStatus) {
+	s.Status = val
+}
+
+// SetReturnURL sets the value of ReturnURL.
+func (s *PaymentMethodDirectDebitResponse) SetReturnURL(val OptString) {
+	s.ReturnURL = val
+}
+
+// SetDefaultFlag sets the value of DefaultFlag.
+func (s *PaymentMethodDirectDebitResponse) SetDefaultFlag(val OptString) {
+	s.DefaultFlag = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentMethodDirectDebitResponse) SetClientField1(val OptString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentMethodDirectDebitResponse) SetClientField2(val OptString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentMethodDirectDebitResponse) SetClientField3(val OptString) {
+	s.ClientField3 = val
+}
+
+// SetCreated sets the value of Created.
+func (s *PaymentMethodDirectDebitResponse) SetCreated(val OptString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *PaymentMethodDirectDebitResponse) SetUpdated(val OptString) {
+	s.Updated = val
+}
+
+// SetDirectdebit sets the value of Directdebit.
+func (s *PaymentMethodDirectDebitResponse) SetDirectdebit(val OptPaymentMethodDirectDebitResponseDirectdebit) {
+	s.Directdebit = val
+}
+
+type PaymentMethodDirectDebitResponseDirectdebit struct {
+	ApplicationType      OptPaymentMethodDirectDebitResponseDirectdebitApplicationType  `json:"application_type"`
+	ExpectedBillableDate OptString                                                      `json:"expected_billable_date"`
+	LastWithdrawalDate   OptString                                                      `json:"last_withdrawal_date"`
+	LastResultCode       OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode   `json:"last_result_code"`
+	BankType             OptPaymentMethodDirectDebitResponseDirectdebitBankType         `json:"bank_type"`
+	BankCode             OptString                                                      `json:"bank_code"`
+	BankName             OptString                                                      `json:"bank_name"`
+	BranchCode           OptString                                                      `json:"branch_code"`
+	BranchName           OptString                                                      `json:"branch_name"`
+	AccountType          OptPaymentMethodDirectDebitResponseDirectdebitAccountType      `json:"account_type"`
+	AccountNumber        OptString                                                      `json:"account_number"`
+	PostalAccountNumber1 OptString                                                      `json:"postal_account_number_1"`
+	PostalAccountNumber2 OptString                                                      `json:"postal_account_number_2"`
+	AccountName          OptString                                                      `json:"account_name"`
+	AccountNameKana      OptString                                                      `json:"account_name_kana"`
+	PaperApplication     OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication `json:"paper_application"`
+}
+
+// GetApplicationType returns the value of ApplicationType.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetApplicationType() OptPaymentMethodDirectDebitResponseDirectdebitApplicationType {
+	return s.ApplicationType
+}
+
+// GetExpectedBillableDate returns the value of ExpectedBillableDate.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetExpectedBillableDate() OptString {
+	return s.ExpectedBillableDate
+}
+
+// GetLastWithdrawalDate returns the value of LastWithdrawalDate.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetLastWithdrawalDate() OptString {
+	return s.LastWithdrawalDate
+}
+
+// GetLastResultCode returns the value of LastResultCode.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetLastResultCode() OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode {
+	return s.LastResultCode
+}
+
+// GetBankType returns the value of BankType.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetBankType() OptPaymentMethodDirectDebitResponseDirectdebitBankType {
+	return s.BankType
+}
+
+// GetBankCode returns the value of BankCode.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetBankCode() OptString {
+	return s.BankCode
+}
+
+// GetBankName returns the value of BankName.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetBankName() OptString {
+	return s.BankName
+}
+
+// GetBranchCode returns the value of BranchCode.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetBranchCode() OptString {
+	return s.BranchCode
+}
+
+// GetBranchName returns the value of BranchName.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetBranchName() OptString {
+	return s.BranchName
+}
+
+// GetAccountType returns the value of AccountType.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetAccountType() OptPaymentMethodDirectDebitResponseDirectdebitAccountType {
+	return s.AccountType
+}
+
+// GetAccountNumber returns the value of AccountNumber.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetAccountNumber() OptString {
+	return s.AccountNumber
+}
+
+// GetPostalAccountNumber1 returns the value of PostalAccountNumber1.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetPostalAccountNumber1() OptString {
+	return s.PostalAccountNumber1
+}
+
+// GetPostalAccountNumber2 returns the value of PostalAccountNumber2.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetPostalAccountNumber2() OptString {
+	return s.PostalAccountNumber2
+}
+
+// GetAccountName returns the value of AccountName.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetAccountName() OptString {
+	return s.AccountName
+}
+
+// GetAccountNameKana returns the value of AccountNameKana.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetAccountNameKana() OptString {
+	return s.AccountNameKana
+}
+
+// GetPaperApplication returns the value of PaperApplication.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) GetPaperApplication() OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication {
+	return s.PaperApplication
+}
+
+// SetApplicationType sets the value of ApplicationType.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetApplicationType(val OptPaymentMethodDirectDebitResponseDirectdebitApplicationType) {
+	s.ApplicationType = val
+}
+
+// SetExpectedBillableDate sets the value of ExpectedBillableDate.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetExpectedBillableDate(val OptString) {
+	s.ExpectedBillableDate = val
+}
+
+// SetLastWithdrawalDate sets the value of LastWithdrawalDate.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetLastWithdrawalDate(val OptString) {
+	s.LastWithdrawalDate = val
+}
+
+// SetLastResultCode sets the value of LastResultCode.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetLastResultCode(val OptPaymentMethodDirectDebitResponseDirectdebitLastResultCode) {
+	s.LastResultCode = val
+}
+
+// SetBankType sets the value of BankType.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetBankType(val OptPaymentMethodDirectDebitResponseDirectdebitBankType) {
+	s.BankType = val
+}
+
+// SetBankCode sets the value of BankCode.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetBankCode(val OptString) {
+	s.BankCode = val
+}
+
+// SetBankName sets the value of BankName.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetBankName(val OptString) {
+	s.BankName = val
+}
+
+// SetBranchCode sets the value of BranchCode.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetBranchCode(val OptString) {
+	s.BranchCode = val
+}
+
+// SetBranchName sets the value of BranchName.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetBranchName(val OptString) {
+	s.BranchName = val
+}
+
+// SetAccountType sets the value of AccountType.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetAccountType(val OptPaymentMethodDirectDebitResponseDirectdebitAccountType) {
+	s.AccountType = val
+}
+
+// SetAccountNumber sets the value of AccountNumber.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetAccountNumber(val OptString) {
+	s.AccountNumber = val
+}
+
+// SetPostalAccountNumber1 sets the value of PostalAccountNumber1.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetPostalAccountNumber1(val OptString) {
+	s.PostalAccountNumber1 = val
+}
+
+// SetPostalAccountNumber2 sets the value of PostalAccountNumber2.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetPostalAccountNumber2(val OptString) {
+	s.PostalAccountNumber2 = val
+}
+
+// SetAccountName sets the value of AccountName.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetAccountName(val OptString) {
+	s.AccountName = val
+}
+
+// SetAccountNameKana sets the value of AccountNameKana.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetAccountNameKana(val OptString) {
+	s.AccountNameKana = val
+}
+
+// SetPaperApplication sets the value of PaperApplication.
+func (s *PaymentMethodDirectDebitResponseDirectdebit) SetPaperApplication(val OptPaymentMethodDirectDebitResponseDirectdebitPaperApplication) {
+	s.PaperApplication = val
+}
+
+type PaymentMethodDirectDebitResponseDirectdebitAccountType string
+
+const (
+	PaymentMethodDirectDebitResponseDirectdebitAccountType0 PaymentMethodDirectDebitResponseDirectdebitAccountType = "0"
+	PaymentMethodDirectDebitResponseDirectdebitAccountType1 PaymentMethodDirectDebitResponseDirectdebitAccountType = "1"
+)
+
+// AllValues returns all PaymentMethodDirectDebitResponseDirectdebitAccountType values.
+func (PaymentMethodDirectDebitResponseDirectdebitAccountType) AllValues() []PaymentMethodDirectDebitResponseDirectdebitAccountType {
+	return []PaymentMethodDirectDebitResponseDirectdebitAccountType{
+		PaymentMethodDirectDebitResponseDirectdebitAccountType0,
+		PaymentMethodDirectDebitResponseDirectdebitAccountType1,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitResponseDirectdebitAccountType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitResponseDirectdebitAccountType0:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitAccountType1:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitResponseDirectdebitAccountType) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitResponseDirectdebitAccountType(data) {
+	case PaymentMethodDirectDebitResponseDirectdebitAccountType0:
+		*s = PaymentMethodDirectDebitResponseDirectdebitAccountType0
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitAccountType1:
+		*s = PaymentMethodDirectDebitResponseDirectdebitAccountType1
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodDirectDebitResponseDirectdebitApplicationType string
+
+const (
+	PaymentMethodDirectDebitResponseDirectdebitApplicationTypeONLINE PaymentMethodDirectDebitResponseDirectdebitApplicationType = "ONLINE"
+	PaymentMethodDirectDebitResponseDirectdebitApplicationTypePAPER  PaymentMethodDirectDebitResponseDirectdebitApplicationType = "PAPER"
+)
+
+// AllValues returns all PaymentMethodDirectDebitResponseDirectdebitApplicationType values.
+func (PaymentMethodDirectDebitResponseDirectdebitApplicationType) AllValues() []PaymentMethodDirectDebitResponseDirectdebitApplicationType {
+	return []PaymentMethodDirectDebitResponseDirectdebitApplicationType{
+		PaymentMethodDirectDebitResponseDirectdebitApplicationTypeONLINE,
+		PaymentMethodDirectDebitResponseDirectdebitApplicationTypePAPER,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitResponseDirectdebitApplicationType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitResponseDirectdebitApplicationTypeONLINE:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitApplicationTypePAPER:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitResponseDirectdebitApplicationType) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitResponseDirectdebitApplicationType(data) {
+	case PaymentMethodDirectDebitResponseDirectdebitApplicationTypeONLINE:
+		*s = PaymentMethodDirectDebitResponseDirectdebitApplicationTypeONLINE
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitApplicationTypePAPER:
+		*s = PaymentMethodDirectDebitResponseDirectdebitApplicationTypePAPER
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodDirectDebitResponseDirectdebitBankType string
+
+const (
+	PaymentMethodDirectDebitResponseDirectdebitBankType0 PaymentMethodDirectDebitResponseDirectdebitBankType = "0"
+	PaymentMethodDirectDebitResponseDirectdebitBankType1 PaymentMethodDirectDebitResponseDirectdebitBankType = "1"
+)
+
+// AllValues returns all PaymentMethodDirectDebitResponseDirectdebitBankType values.
+func (PaymentMethodDirectDebitResponseDirectdebitBankType) AllValues() []PaymentMethodDirectDebitResponseDirectdebitBankType {
+	return []PaymentMethodDirectDebitResponseDirectdebitBankType{
+		PaymentMethodDirectDebitResponseDirectdebitBankType0,
+		PaymentMethodDirectDebitResponseDirectdebitBankType1,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitResponseDirectdebitBankType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitResponseDirectdebitBankType0:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitBankType1:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitResponseDirectdebitBankType) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitResponseDirectdebitBankType(data) {
+	case PaymentMethodDirectDebitResponseDirectdebitBankType0:
+		*s = PaymentMethodDirectDebitResponseDirectdebitBankType0
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitBankType1:
+		*s = PaymentMethodDirectDebitResponseDirectdebitBankType1
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodDirectDebitResponseDirectdebitLastResultCode string
+
+const (
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCode0 PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "0"
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCode1 PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "1"
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCode2 PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "2"
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCode3 PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "3"
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCode4 PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "4"
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCode8 PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "8"
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCode9 PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "9"
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCodeE PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "E"
+	PaymentMethodDirectDebitResponseDirectdebitLastResultCodeN PaymentMethodDirectDebitResponseDirectdebitLastResultCode = "N"
+)
+
+// AllValues returns all PaymentMethodDirectDebitResponseDirectdebitLastResultCode values.
+func (PaymentMethodDirectDebitResponseDirectdebitLastResultCode) AllValues() []PaymentMethodDirectDebitResponseDirectdebitLastResultCode {
+	return []PaymentMethodDirectDebitResponseDirectdebitLastResultCode{
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCode0,
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCode1,
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCode2,
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCode3,
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCode4,
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCode8,
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCode9,
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCodeE,
+		PaymentMethodDirectDebitResponseDirectdebitLastResultCodeN,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitResponseDirectdebitLastResultCode) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode0:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode1:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode2:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode3:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode4:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode8:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode9:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCodeE:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCodeN:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitResponseDirectdebitLastResultCode) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitResponseDirectdebitLastResultCode(data) {
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode0:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCode0
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode1:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCode1
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode2:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCode2
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode3:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCode3
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode4:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCode4
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode8:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCode8
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCode9:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCode9
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCodeE:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCodeE
+		return nil
+	case PaymentMethodDirectDebitResponseDirectdebitLastResultCodeN:
+		*s = PaymentMethodDirectDebitResponseDirectdebitLastResultCodeN
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodDirectDebitResponseDirectdebitPaperApplication struct {
+	PreregisteredDate       OptString `json:"preregistered_date"`
+	RequestFormID           OptString `json:"request_form_id"`
+	PaperFailureDescription OptString `json:"paper_failure_description"`
+}
+
+// GetPreregisteredDate returns the value of PreregisteredDate.
+func (s *PaymentMethodDirectDebitResponseDirectdebitPaperApplication) GetPreregisteredDate() OptString {
+	return s.PreregisteredDate
+}
+
+// GetRequestFormID returns the value of RequestFormID.
+func (s *PaymentMethodDirectDebitResponseDirectdebitPaperApplication) GetRequestFormID() OptString {
+	return s.RequestFormID
+}
+
+// GetPaperFailureDescription returns the value of PaperFailureDescription.
+func (s *PaymentMethodDirectDebitResponseDirectdebitPaperApplication) GetPaperFailureDescription() OptString {
+	return s.PaperFailureDescription
+}
+
+// SetPreregisteredDate sets the value of PreregisteredDate.
+func (s *PaymentMethodDirectDebitResponseDirectdebitPaperApplication) SetPreregisteredDate(val OptString) {
+	s.PreregisteredDate = val
+}
+
+// SetRequestFormID sets the value of RequestFormID.
+func (s *PaymentMethodDirectDebitResponseDirectdebitPaperApplication) SetRequestFormID(val OptString) {
+	s.RequestFormID = val
+}
+
+// SetPaperFailureDescription sets the value of PaperFailureDescription.
+func (s *PaymentMethodDirectDebitResponseDirectdebitPaperApplication) SetPaperFailureDescription(val OptString) {
+	s.PaperFailureDescription = val
+}
+
+type PaymentMethodDirectDebitResponsePayType string
+
+const (
+	PaymentMethodDirectDebitResponsePayTypeDirectdebit PaymentMethodDirectDebitResponsePayType = "Directdebit"
+)
+
+// AllValues returns all PaymentMethodDirectDebitResponsePayType values.
+func (PaymentMethodDirectDebitResponsePayType) AllValues() []PaymentMethodDirectDebitResponsePayType {
+	return []PaymentMethodDirectDebitResponsePayType{
+		PaymentMethodDirectDebitResponsePayTypeDirectdebit,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitResponsePayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitResponsePayTypeDirectdebit:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitResponsePayType) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitResponsePayType(data) {
+	case PaymentMethodDirectDebitResponsePayTypeDirectdebit:
+		*s = PaymentMethodDirectDebitResponsePayTypeDirectdebit
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodDirectDebitResponseRedirectURLAccessedFlag string
+
+const (
+	PaymentMethodDirectDebitResponseRedirectURLAccessedFlag0 PaymentMethodDirectDebitResponseRedirectURLAccessedFlag = "0"
+	PaymentMethodDirectDebitResponseRedirectURLAccessedFlag1 PaymentMethodDirectDebitResponseRedirectURLAccessedFlag = "1"
+)
+
+// AllValues returns all PaymentMethodDirectDebitResponseRedirectURLAccessedFlag values.
+func (PaymentMethodDirectDebitResponseRedirectURLAccessedFlag) AllValues() []PaymentMethodDirectDebitResponseRedirectURLAccessedFlag {
+	return []PaymentMethodDirectDebitResponseRedirectURLAccessedFlag{
+		PaymentMethodDirectDebitResponseRedirectURLAccessedFlag0,
+		PaymentMethodDirectDebitResponseRedirectURLAccessedFlag1,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitResponseRedirectURLAccessedFlag) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitResponseRedirectURLAccessedFlag0:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseRedirectURLAccessedFlag1:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitResponseRedirectURLAccessedFlag) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitResponseRedirectURLAccessedFlag(data) {
+	case PaymentMethodDirectDebitResponseRedirectURLAccessedFlag0:
+		*s = PaymentMethodDirectDebitResponseRedirectURLAccessedFlag0
+		return nil
+	case PaymentMethodDirectDebitResponseRedirectURLAccessedFlag1:
+		*s = PaymentMethodDirectDebitResponseRedirectURLAccessedFlag1
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentMethodDirectDebitResponseStatus string
+
+const (
+	PaymentMethodDirectDebitResponseStatusINACTIVATED            PaymentMethodDirectDebitResponseStatus = "INACTIVATED"
+	PaymentMethodDirectDebitResponseStatusAWAITINGCUSTOMERACTION PaymentMethodDirectDebitResponseStatus = "AWAITING_CUSTOMER_ACTION"
+	PaymentMethodDirectDebitResponseStatusACTIVATED              PaymentMethodDirectDebitResponseStatus = "ACTIVATED"
+	PaymentMethodDirectDebitResponseStatusFAILED                 PaymentMethodDirectDebitResponseStatus = "FAILED"
+)
+
+// AllValues returns all PaymentMethodDirectDebitResponseStatus values.
+func (PaymentMethodDirectDebitResponseStatus) AllValues() []PaymentMethodDirectDebitResponseStatus {
+	return []PaymentMethodDirectDebitResponseStatus{
+		PaymentMethodDirectDebitResponseStatusINACTIVATED,
+		PaymentMethodDirectDebitResponseStatusAWAITINGCUSTOMERACTION,
+		PaymentMethodDirectDebitResponseStatusACTIVATED,
+		PaymentMethodDirectDebitResponseStatusFAILED,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentMethodDirectDebitResponseStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentMethodDirectDebitResponseStatusINACTIVATED:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseStatusAWAITINGCUSTOMERACTION:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseStatusACTIVATED:
+		return []byte(s), nil
+	case PaymentMethodDirectDebitResponseStatusFAILED:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentMethodDirectDebitResponseStatus) UnmarshalText(data []byte) error {
+	switch PaymentMethodDirectDebitResponseStatus(data) {
+	case PaymentMethodDirectDebitResponseStatusINACTIVATED:
+		*s = PaymentMethodDirectDebitResponseStatusINACTIVATED
+		return nil
+	case PaymentMethodDirectDebitResponseStatusAWAITINGCUSTOMERACTION:
+		*s = PaymentMethodDirectDebitResponseStatusAWAITINGCUSTOMERACTION
+		return nil
+	case PaymentMethodDirectDebitResponseStatusACTIVATED:
+		*s = PaymentMethodDirectDebitResponseStatusACTIVATED
+		return nil
+	case PaymentMethodDirectDebitResponseStatusFAILED:
+		*s = PaymentMethodDirectDebitResponseStatusFAILED
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }

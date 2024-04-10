@@ -15,6 +15,307 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
+// CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams is parameters of DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+type CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams struct {
+	CustomerID      string
+	PaymentMethodID string
+}
+
+func unpackCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams(packed middleware.Parameters) (params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "payment_method_id",
+			In:   "path",
+		}
+		params.PaymentMethodID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams(args [2]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams, _ error) {
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode path: payment_method_id.
+	if err := func() error {
+		param := args[1]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[1])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "payment_method_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.PaymentMethodID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "payment_method_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams is parameters of GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+type CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams struct {
+	CustomerID      string
+	PaymentMethodID string
+}
+
+func unpackCustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams(packed middleware.Parameters) (params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "payment_method_id",
+			In:   "path",
+		}
+		params.PaymentMethodID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeCustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams(args [2]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams, _ error) {
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode path: payment_method_id.
+	if err := func() error {
+		param := args[1]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[1])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "payment_method_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.PaymentMethodID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "payment_method_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CustomersCustomerIDPaymentMethodsPostParams is parameters of POST /customers/{customer_id}/payment_methods operation.
+type CustomersCustomerIDPaymentMethodsPostParams struct {
+	CustomerID string
+}
+
+func unpackCustomersCustomerIDPaymentMethodsPostParams(packed middleware.Parameters) (params CustomersCustomerIDPaymentMethodsPostParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeCustomersCustomerIDPaymentMethodsPostParams(args [1]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDPaymentMethodsPostParams, _ error) {
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // CustomersIDDeleteParams is parameters of DELETE /customers/{id} operation.
 type CustomersIDDeleteParams struct {
 	ID string

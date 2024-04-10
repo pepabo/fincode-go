@@ -17,7 +17,7 @@ func TestCustomers(t *testing.T) {
 		t.Fatal(err)
 	}
 	faker := gofakeit.NewCrypto()
-	id := faker.UUID()
+	id := newID(t)
 	name := faker.Name()
 	email := faker.Email()
 
