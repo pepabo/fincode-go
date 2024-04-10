@@ -150,7 +150,7 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 			}
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(fmt.Sprintf(`{"redirect_url":"%s"}`, redirectURL)))
+			_, _ = w.Write([]byte(fmt.Sprintf(`{"redirect_url":"%s"}`, redirectURL)))
 		})
 	}
 	ts.Method(http.MethodPost).Path("/card/success").ResponseString(http.StatusOK, "Success")
@@ -173,5 +173,5 @@ func errorWithResponse(t *testing.T, err error, w http.ResponseWriter) {
 	t.Error(err)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusInternalServerError)
-	w.Write([]byte(fmt.Sprintf(`{"error":"internal server error: %v"}`, err)))
+	_, _ = w.Write([]byte(fmt.Sprintf(`{"error":"internal server error: %v"}`, err)))
 }
