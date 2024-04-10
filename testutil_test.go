@@ -84,7 +84,7 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 				return
 			}
 			// Create customer
-			customerID := faker.UUID()
+			customerID := newID(t)
 			var redirectURL string
 			{
 				res, err := c.CustomersPost(ctx, &api.CustomersPostReq{
@@ -166,6 +166,12 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 	ts.Method(http.MethodGet).ResponseString(http.StatusNotFound, "Not Found")
 
 	return ts.Server()
+}
+
+func newID(t *testing.T) string {
+	t.Helper()
+	faker := gofakeit.NewCrypto()
+	return fmt.Sprintf("test-fincode-go-%s", faker.UUID())
 }
 
 func errorWithResponse(t *testing.T, err error, w http.ResponseWriter) {
