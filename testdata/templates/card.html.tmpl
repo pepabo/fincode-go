@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Register card</title>
+</head>
+<script src="https://js.test.fincode.jp/v1/fincode.js"></script>
+<script src="util.js"></script>
+<script>
+const endpoint = '{{ .Endpoint }}';
+window.onload = (event) => {
+  const fincode = Fincode('{{ .APIPublicKey }}');
+  const button = document.querySelector("button");
+  button.addEventListener("click", (event) => {
+    const card = {
+      card_no : document.getElementById("card_no").value,             
+      expire : document.getElementById("expire").value,               
+      holder_name: document.getElementById("holder_name").value,      
+      security_code: document.getElementById("security_code").value,  
+      number: 1,
+    }
+    fincode.tokens(card,
+      function (status, response) {
+          if (200 === status) {
+              postData(endpoint + '/card/register', response).then((data) => {
+                  location.href = data.redirect_url;
+              });
+          } else {
+              // リクエストエラー時の処理
+              console.log(response);
+          }
+      },
+      function () {
+          // 通信エラー処理
+          console.log("通信エラー");
+      }
+    );
+  });
+};
+</script>
+<body>
+<form id="fincode-form" style="margin: 50px; padding: 20px">
+  <ul>
+    <li>
+      <label for="card_no">Card No:</label>
+      <input type="text" id="card_no" name="card_no" />
+    </li>
+    <li>
+      <label for="expire">Expire:</label>
+      <input type="text" id="expire" name="expire" />
+    </li>
+    <li>
+      <label for="holder_name">Holder Name:</label>
+      <input type="text" id="holder_name" name="holder_name" />
+    </li>
+    <li>
+      <label for="security_code">Security Code:</label>
+      <input type="text" id="security_code" name="security_code" />
+    </li>
+  </ul>
+  <button type="button" id="submit" >
+    <span>Register card</span>
+  </button>
+</form>
+</body>
+</html>

@@ -13,6 +13,27 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
+// CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete implements DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+//
+// DELETE /customers/{customer_id}/payment_methods/{payment_method_id}
+func (UnimplementedHandler) CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (r CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// CustomersCustomerIDPaymentMethodsPaymentMethodIDGet implements GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+//
+// GET /customers/{customer_id}/payment_methods/{payment_method_id}
+func (UnimplementedHandler) CustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (r CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// CustomersCustomerIDPaymentMethodsPost implements POST /customers/{customer_id}/payment_methods operation.
+//
+// POST /customers/{customer_id}/payment_methods
+func (UnimplementedHandler) CustomersCustomerIDPaymentMethodsPost(ctx context.Context, req CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (r CustomersCustomerIDPaymentMethodsPostRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // CustomersIDDelete implements DELETE /customers/{id} operation.
 //
 // DELETE /customers/{id}

@@ -1,0 +1,47 @@
+desc: Register card with 3D Secure using fincodeJS (Failure)
+runners:
+  cc: chrome://new
+vars:
+  endpoint: dummy
+  card_no: '4100000000200007' # Always failure
+  expire: '3012'
+  holder_name: 'FINCODE MEMBER'
+  security_code: '123'
+steps:
+  -
+    desc: Navigate to register card page
+    loop:
+      interval: 100ms
+      until: |
+        current.html contains 'form'
+    cc:
+      actions:
+        - navigate: '{{ vars.endpoint }}/card'
+        - html
+  -
+    desc: Register card with 3D Secure using fincodeJS
+    cc:
+      actions:
+        - sendKeys:
+            sel: 'input[name="card_no"]'
+            value: '{{ vars.card_no }}'
+        - sendKeys:
+            sel: 'input[name="expire"]'
+            value: '{{ vars.expire }}'
+        - sendKeys:
+            sel: 'input[name="holder_name"]'
+            value: '{{ vars.holder_name }}'
+        - sendKeys:
+            sel: 'input[name="security_code"]'
+            value: '{{ vars.security_code }}'
+        - click: '#submit'
+  -
+    desc: Failure
+    loop:
+      count: 10
+      interval: 500ms
+      until: |
+        current.url contains '/card/failure'
+    cc:
+      actions:
+        - location
