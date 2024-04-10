@@ -21,14 +21,15 @@ import (
 var tmplFS embed.FS
 
 /*
-	{
-	  "card_no": "************1111",
-	  "expire": "2021/12/19 21:34:58.464",
-	  "list": [
-	    { "token": '3561656330616461626163303663363330306' }
-	  ],
-	  "security_code_set": "1"
-	}
+		{
+		  "card_no": "************1111",
+		  "expire": "2021/12/19 21:34:58.464",
+		  "list": [
+		    { "token": '3561656330616461626163303663363330306' }
+		  ],
+		  "security_code_set": "1"
+		}
+	  with customer_id
 */
 type tokenResponse struct {
 	CardNo string `json:"card_no"`
@@ -37,7 +38,8 @@ type tokenResponse struct {
 		Token string `json:"token"`
 	} `json:"list"`
 	SecurityCodeSet string `json:"security_code_set"`
-	CustomerID      string `json:"customer_id"`
+	// with customer_id
+	CustomerID string `json:"customer_id"`
 }
 
 func NewPaymentServer(t *testing.T) *httptest.Server {
