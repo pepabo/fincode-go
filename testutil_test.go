@@ -67,7 +67,7 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 			w.Header().Set("Content-Type", "text/html")
 
 			// Create customer
-			customerID := faker.UUID()
+			customerID := newID(t)
 			res, err := c.CustomersPost(ctx, &api.CustomersPostReq{
 				ID:    customerID,
 				Name:  faker.Name(),
