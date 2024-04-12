@@ -54,3 +54,17 @@ func (UnimplementedHandler) CustomersIDGet(ctx context.Context, params Customers
 func (UnimplementedHandler) CustomersPost(ctx context.Context, req *CustomersPostReq) (r CustomersPostRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
+
+// PaymentsIDPut implements PUT /payments/{id} operation.
+//
+// PUT /payments/{id}
+func (UnimplementedHandler) PaymentsIDPut(ctx context.Context, req PaymentsIDPutReq, params PaymentsIDPutParams) (r PaymentsIDPutRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// PaymentsPost implements POST /payments operation.
+//
+// POST /payments
+func (UnimplementedHandler) PaymentsPost(ctx context.Context, req PaymentsPostReq) (r PaymentsPostRes, _ error) {
+	return r, ht.ErrNotImplemented
+}

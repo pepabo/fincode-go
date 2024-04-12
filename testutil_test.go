@@ -215,6 +215,11 @@ func newID(t *testing.T) string {
 	return fmt.Sprintf("test-fincode-go-%s", faker.UUID())
 }
 
+func newOrderID(t *testing.T) string {
+	t.Helper()
+	return newID(t)[0:30]
+}
+
 func errorWithResponse(t *testing.T, err error, w http.ResponseWriter) {
 	t.Helper()
 	t.Error(err)
