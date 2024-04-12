@@ -7,7 +7,7 @@ import (
 	"github.com/k1LoW/runn"
 )
 
-func TestScenario(t *testing.T) {
+func TestScenarioFor3DSecure(t *testing.T) {
 	ctx := context.Background()
 	ts := NewPaymentServer(t)
 	opts := []runn.Option{
