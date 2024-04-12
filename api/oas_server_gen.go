@@ -32,6 +32,14 @@ type Handler interface {
 	//
 	// POST /customers
 	CustomersPost(ctx context.Context, req *CustomersPostReq) (CustomersPostRes, error)
+	// PaymentsIDPut implements PUT /payments/{id} operation.
+	//
+	// PUT /payments/{id}
+	PaymentsIDPut(ctx context.Context, req PaymentsIDPutReq, params PaymentsIDPutParams) (PaymentsIDPutRes, error)
+	// PaymentsPost implements POST /payments operation.
+	//
+	// POST /payments
+	PaymentsPost(ctx context.Context, req PaymentsPostReq) (PaymentsPostRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

@@ -21,15 +21,16 @@ import (
 var tmplFS embed.FS
 
 /*
-		{
-		  "card_no": "************1111",
-		  "expire": "2021/12/19 21:34:58.464",
-		  "list": [
-		    { "token": '3561656330616461626163303663363330306' }
-		  ],
-		  "security_code_set": "1"
-		}
-	  with customer_id
+	{
+	  "card_no": "************1111",
+	  "expire": "2021/12/19 21:34:58.464",
+	  "list": [
+
+make test	    { "token": '3561656330616461626163303663363330306' }
+
+	  ],
+	  "security_code_set": "1"
+	}
 */
 type tokenResponse struct {
 	CardNo string `json:"card_no"`
@@ -38,8 +39,6 @@ type tokenResponse struct {
 		Token string `json:"token"`
 	} `json:"list"`
 	SecurityCodeSet string `json:"security_code_set"`
-	// with customer_id
-	CustomerID string `json:"customer_id"`
 }
 
 func NewPaymentServer(t *testing.T) *httptest.Server {
@@ -66,10 +65,9 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 				t.Fatal(err)
 			}
 			w.Header().Set("Content-Type", "text/html")
-			w.WriteHeader(http.StatusOK)
 
 			// Create customer
-			customerID := r.URL.Query().Get("customer_id")
+			customerID := newID(t)
 			res, err := c.CustomersPost(ctx, &api.CustomersPostReq{
 				ID:    customerID,
 				Name:  faker.Name(),
@@ -92,7 +90,14 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 				}
 			})
 
-			data["CustomerID"] = customerID
+			cookie := &http.Cookie{
+				Name:  "customer_id",
+				Value: customerID,
+			}
+			http.SetCookie(w, cookie)
+
+			w.WriteHeader(http.StatusOK)
+
 			tmpl := template.Must(template.New("/card").Parse(string(b)))
 			if err := tmpl.Execute(w, data); err != nil {
 				t.Fatal(err)
@@ -112,8 +117,16 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 				errorWithResponse(t, err, w)
 				return
 			}
-			customerID := res.CustomerID
-			var redirectURL string
+			customerID, err := r.Cookie("customer_id")
+			if err != nil {
+				errorWithResponse(t, err, w)
+				return
+			}
+			var (
+				redirectURL string
+				cardID      string
+			)
+
 			// Create payment method
 			{
 				req := api.CustomersCustomerIDPaymentMethodsPostReq{
@@ -130,7 +143,7 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 					},
 				}
 				params := api.CustomersCustomerIDPaymentMethodsPostParams{
-					CustomerID: customerID,
+					CustomerID: customerID.Value,
 				}
 				res, err := c.CustomersCustomerIDPaymentMethodsPost(ctx, req, params)
 				if err != nil {
@@ -143,22 +156,45 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 					return
 				}
 				redirectURL = resOK.PaymentMethodCardResponse.RedirectURL.Value
+				cardID = resOK.PaymentMethodCardResponse.ID
 
 				t.Cleanup(func() {
 					if _, err := c.CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx, api.CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams{
-						CustomerID:      resOK.PaymentMethodCardResponse.CustomerID.Value,
-						PaymentMethodID: resOK.PaymentMethodCardResponse.ID.Value,
+						CustomerID:      resOK.PaymentMethodCardResponse.CustomerID,
+						PaymentMethodID: resOK.PaymentMethodCardResponse.ID,
 					}); err != nil {
 						t.Error(err)
 					}
 				})
 			}
+
+			cookie := &http.Cookie{
+				Name:  "card_id",
+				Value: cardID,
+			}
+			http.SetCookie(w, cookie)
+
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusCreated)
 			_, _ = w.Write([]byte(fmt.Sprintf(`{"redirect_url":"%s"}`, redirectURL)))
 		})
 	}
-	ts.Method(http.MethodPost).Path("/card/success").ResponseString(http.StatusOK, "Success")
+	ts.Method(http.MethodPost).Path("/card/success").Handler(func(w http.ResponseWriter, r *http.Request) {
+		customerID, err := r.Cookie("customer_id")
+		if err != nil {
+			errorWithResponse(t, err, w)
+			return
+		}
+		cardID, err := r.Cookie("card_id")
+		if err != nil {
+			errorWithResponse(t, err, w)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(fmt.Sprintf(`{"customer_id":"%s","card_id":"%s"}`, customerID.Value, cardID.Value)))
+	})
 	ts.Method(http.MethodPost).Path("/card/failure").ResponseString(http.StatusBadRequest, "Failure")
 	{
 		b, err := tmplFS.ReadFile("testdata/templates/util.js")
@@ -177,6 +213,11 @@ func newID(t *testing.T) string {
 	t.Helper()
 	faker := gofakeit.NewCrypto()
 	return fmt.Sprintf("test-fincode-go-%s", faker.UUID())
+}
+
+func newOrderID(t *testing.T) string {
+	t.Helper()
+	return newID(t)[0:30]
 }
 
 func errorWithResponse(t *testing.T, err error, w http.ResponseWriter) {

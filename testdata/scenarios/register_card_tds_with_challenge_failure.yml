@@ -9,10 +9,6 @@ vars:
   security_code: '123'
 steps:
   -
-    desc: Bind customerID for test
-    bind:
-      customer_id: id()  
-  -
     desc: Navigate to register card page
     loop:
       interval: 100ms
@@ -20,7 +16,7 @@ steps:
         current.html contains 'form'
     cc:
       actions:
-        - navigate: '{{ vars.endpoint }}/card?customer_id={{ customer_id }}'
+        - navigate: '{{ vars.endpoint }}/card'
         - html
   -
     desc: Register card with 3D Secure using fincodeJS
