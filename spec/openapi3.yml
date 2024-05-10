@@ -8,6 +8,126 @@ security:
   - BearerAuth: []
 paths:
   /payments:
+    get:
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+                  last_page:
+                    type: integer
+                  current_page:
+                    type: integer
+                  limit:
+                    type: integer
+                  link_next:
+                    type: string
+                  link_previous:
+                    type: string
+                  list:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        shop_id:
+                          type: string
+                        id:
+                          type: string
+                        pay_type:
+                          type: string
+                        status:
+                          type: string
+                        access_id:
+                          type: string
+                        process_date:
+                          type: string
+                        job_code:
+                          type: string
+                        item_code:
+                          type: string
+                        amount:
+                          type: string
+                        tax:
+                          type: integer
+                        total_amount:
+                          type: integer
+                        customer_group_id:
+                          type: string
+                        customer_id:
+                          type: string
+                        card_no:
+                          type: string
+                        card_id:
+                          type: string
+                        expire:
+                          type: string
+                        holder_name:
+                          type: string
+                        card_no_hash:
+                          type: string
+                        method:
+                          type: string
+                        pay_times:
+                          type: string
+                        forward:
+                          type: string
+                        issuer:
+                          type: string
+                        transaction_id:
+                          type: string
+                        approve:
+                          type: string
+                        auth_max_date:
+                          type: string
+                        client_field_1:
+                          type: string
+                        client_field_2:
+                          type: string
+                        client_field_3:
+                          type: string
+                        tds_type:
+                          type: string
+                        tds2_type:
+                          type: string
+                        tds2_ret_url:
+                          type: string
+                        tds2_status:
+                          type: string
+                        merchant_name:
+                          type: string
+                        send_url:
+                          type: string
+                        subscription_id:
+                          type: string
+                        brand:
+                          type: string
+                        error_code:
+                          type: string
+                        created:
+                          type: string
+                        updated:
+                          type: string
+        "400":
+          description: "Bad Request. リクエストが不正です"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        error_code:
+                          type: string
+                        error_message:
+                          type: string
     post:
       requestBody:
         required: true
@@ -1177,7 +1297,7 @@ components:
           type: string
           nullable: true
         brand:
-          type: string          
+          type: string
         error_code:
           type: string
           nullable: true
