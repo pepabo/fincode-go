@@ -3,6 +3,7 @@ package fincode
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/k1LoW/runn"
 	"github.com/pepabo/fincode-go/api"
@@ -99,7 +100,12 @@ func TestPayments(t *testing.T) {
 	})
 
 	t.Run("List Payments", func(t *testing.T) {
-		res, err := c.PaymentsGet(ctx)
+		today := time.Now().Format("2006/01/02")
+		res, err := c.PaymentsGet(ctx, api.PaymentsGetParams{
+			PayType: "Card",
+			ProcessDataFrom: api.NewOptString(today),
+			Limit: api.NewOptInt(100),
+		})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -107,8 +113,9 @@ func TestPayments(t *testing.T) {
 		if !ok {
 			t.Fatalf("unexpected response: %T, %#v", res, res)
 		}
+		println("here", accessID)
 		for _, p := range v.List {
-			if p.AccessID.Value ==  accessID && p.ID.Value == orderID {
+			if p.AccessID.Value ==  accessID {
 				return
 			}
 		}

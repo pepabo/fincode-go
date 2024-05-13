@@ -1082,6 +1082,10 @@ func (s *Server) handlePaymentsGetRequest(args [0]string, argsEscaped bool, w ht
 					In:   "query",
 				}: params.CountOnly,
 				{
+					Name: "sort",
+					In:   "query",
+				}: params.Sort,
+				{
 					Name: "pay_type",
 					In:   "query",
 				}: params.PayType,

@@ -11243,7 +11243,7 @@ type PaymentsGetOK struct {
 	LastPage     OptInt                  `json:"last_page"`
 	CurrentPage  OptInt                  `json:"current_page"`
 	Limit        OptInt                  `json:"limit"`
-	LinkNext     OptString               `json:"link_next"`
+	LinkNext     OptNilString            `json:"link_next"`
 	LinkPrevious OptNilString            `json:"link_previous"`
 	List         []PaymentsGetOKListItem `json:"list"`
 }
@@ -11269,7 +11269,7 @@ func (s *PaymentsGetOK) GetLimit() OptInt {
 }
 
 // GetLinkNext returns the value of LinkNext.
-func (s *PaymentsGetOK) GetLinkNext() OptString {
+func (s *PaymentsGetOK) GetLinkNext() OptNilString {
 	return s.LinkNext
 }
 
@@ -11304,7 +11304,7 @@ func (s *PaymentsGetOK) SetLimit(val OptInt) {
 }
 
 // SetLinkNext sets the value of LinkNext.
-func (s *PaymentsGetOK) SetLinkNext(val OptString) {
+func (s *PaymentsGetOK) SetLinkNext(val OptNilString) {
 	s.LinkNext = val
 }
 

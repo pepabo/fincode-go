@@ -454,6 +454,15 @@ type PaymentsGetParams struct {
 	Page OptInt
 	// 総件数のみを取得するフラグ.
 	CountOnly OptBool
+	// ソート順の定義
+	// ※ソート可能な項目
+	// status - 決済ステータス
+	// process_date - 処理日時
+	// total_amount - 利用金額と税送料の合計金額
+	// auth_max_date - 仮売上有効期限
+	// created - 作成日時
+	// updated - 更新日時.
+	Sort OptNilString
 	// 決済種別
 	// Card- クレジットカード決済
 	// Applepay - Apple Pay
@@ -524,6 +533,15 @@ func unpackPaymentsGetParams(packed middleware.Parameters) (params PaymentsGetPa
 		}
 		if v, ok := packed[key]; ok {
 			params.CountOnly = v.(OptBool)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "sort",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Sort = v.(OptNilString)
 		}
 	}
 	{
@@ -774,6 +792,47 @@ func decodePaymentsGetParams(args [0]string, argsEscaped bool, r *http.Request) 
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
 			Name: "count_only",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: sort.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "sort",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotSortVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotSortVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.Sort.SetTo(paramsDotSortVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "sort",
 			In:   "query",
 			Err:  err,
 		}

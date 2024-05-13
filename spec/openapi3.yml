@@ -25,7 +25,22 @@ paths:
           schema:
             type: boolean
           description: 総件数のみを取得するフラグ
-        # TODO: sortに対応する
+        - in: query
+          name: sort
+          schema:
+            # FIXME: fincodeのドキュメントにはanyと記述してある
+            type: string
+            nullable: true
+          description: |
+            ソート順の定義
+            ※ソート可能な項目
+
+            status - 決済ステータス
+            process_date - 処理日時
+            total_amount - 利用金額と税送料の合計金額
+            auth_max_date - 仮売上有効期限
+            created - 作成日時
+            updated - 更新日時
         - in: query
           name: pay_type
           required: true
@@ -134,6 +149,7 @@ paths:
                     type: integer
                   link_next:
                     type: string
+                    nullable: true
                   link_previous:
                     type: string
                     nullable: true
