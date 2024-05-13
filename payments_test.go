@@ -119,7 +119,7 @@ func TestPayments(t *testing.T) {
 				return
 			}
 		}
-		t.Errorf("payment not found: %s", orderID)
+		t.Errorf("payment not found: %s", accessID)
 	})
 
 	t.Cleanup(func() {
