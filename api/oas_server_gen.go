@@ -32,6 +32,10 @@ type Handler interface {
 	//
 	// POST /customers
 	CustomersPost(ctx context.Context, req *CustomersPostReq) (CustomersPostRes, error)
+	// PaymentsGet implements GET /payments operation.
+	//
+	// GET /payments
+	PaymentsGet(ctx context.Context) (PaymentsGetRes, error)
 	// PaymentsIDPut implements PUT /payments/{id} operation.
 	//
 	// PUT /payments/{id}

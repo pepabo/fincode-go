@@ -188,10 +188,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 				if len(elem) == 0 {
 					switch r.Method {
+					case "GET":
+						s.handlePaymentsGetRequest([0]string{}, elemIsEscaped, w, r)
 					case "POST":
 						s.handlePaymentsPostRequest([0]string{}, elemIsEscaped, w, r)
 					default:
-						s.notAllowed(w, r, "POST")
+						s.notAllowed(w, r, "GET,POST")
 					}
 
 					return
@@ -467,6 +469,14 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 
 				if len(elem) == 0 {
 					switch method {
+					case "GET":
+						r.name = "PaymentsGet"
+						r.summary = ""
+						r.operationID = ""
+						r.pathPattern = "/payments"
+						r.args = args
+						r.count = 0
+						return r, true
 					case "POST":
 						r.name = "PaymentsPost"
 						r.summary = ""

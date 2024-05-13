@@ -14038,6 +14038,1045 @@ func (s *PaymentMethodDirectDebitResponseStatus) UnmarshalJSON(data []byte) erro
 	return s.Decode(d)
 }
 
+// Encode implements json.Marshaler.
+func (s *PaymentsGetBadRequest) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentsGetBadRequest) encodeFields(e *jx.Encoder) {
+	{
+		if s.Errors != nil {
+			e.FieldStart("errors")
+			e.ArrStart()
+			for _, elem := range s.Errors {
+				elem.Encode(e)
+			}
+			e.ArrEnd()
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentsGetBadRequest = [1]string{
+	0: "errors",
+}
+
+// Decode decodes PaymentsGetBadRequest from json.
+func (s *PaymentsGetBadRequest) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentsGetBadRequest to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "errors":
+			if err := func() error {
+				s.Errors = make([]PaymentsGetBadRequestErrorsItem, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem PaymentsGetBadRequestErrorsItem
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.Errors = append(s.Errors, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"errors\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentsGetBadRequest")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentsGetBadRequest) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentsGetBadRequest) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentsGetBadRequestErrorsItem) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentsGetBadRequestErrorsItem) encodeFields(e *jx.Encoder) {
+	{
+		if s.ErrorCode.Set {
+			e.FieldStart("error_code")
+			s.ErrorCode.Encode(e)
+		}
+	}
+	{
+		if s.ErrorMessage.Set {
+			e.FieldStart("error_message")
+			s.ErrorMessage.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentsGetBadRequestErrorsItem = [2]string{
+	0: "error_code",
+	1: "error_message",
+}
+
+// Decode decodes PaymentsGetBadRequestErrorsItem from json.
+func (s *PaymentsGetBadRequestErrorsItem) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentsGetBadRequestErrorsItem to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "error_code":
+			if err := func() error {
+				s.ErrorCode.Reset()
+				if err := s.ErrorCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_code\"")
+			}
+		case "error_message":
+			if err := func() error {
+				s.ErrorMessage.Reset()
+				if err := s.ErrorMessage.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_message\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentsGetBadRequestErrorsItem")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentsGetBadRequestErrorsItem) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentsGetBadRequestErrorsItem) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentsGetOK) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentsGetOK) encodeFields(e *jx.Encoder) {
+	{
+		if s.TotalCount.Set {
+			e.FieldStart("total_count")
+			s.TotalCount.Encode(e)
+		}
+	}
+	{
+		if s.LastPage.Set {
+			e.FieldStart("last_page")
+			s.LastPage.Encode(e)
+		}
+	}
+	{
+		if s.CurrentPage.Set {
+			e.FieldStart("current_page")
+			s.CurrentPage.Encode(e)
+		}
+	}
+	{
+		if s.Limit.Set {
+			e.FieldStart("limit")
+			s.Limit.Encode(e)
+		}
+	}
+	{
+		if s.LinkNext.Set {
+			e.FieldStart("link_next")
+			s.LinkNext.Encode(e)
+		}
+	}
+	{
+		if s.LinkPrevious.Set {
+			e.FieldStart("link_previous")
+			s.LinkPrevious.Encode(e)
+		}
+	}
+	{
+		if s.List != nil {
+			e.FieldStart("list")
+			e.ArrStart()
+			for _, elem := range s.List {
+				elem.Encode(e)
+			}
+			e.ArrEnd()
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentsGetOK = [7]string{
+	0: "total_count",
+	1: "last_page",
+	2: "current_page",
+	3: "limit",
+	4: "link_next",
+	5: "link_previous",
+	6: "list",
+}
+
+// Decode decodes PaymentsGetOK from json.
+func (s *PaymentsGetOK) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentsGetOK to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "total_count":
+			if err := func() error {
+				s.TotalCount.Reset()
+				if err := s.TotalCount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"total_count\"")
+			}
+		case "last_page":
+			if err := func() error {
+				s.LastPage.Reset()
+				if err := s.LastPage.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"last_page\"")
+			}
+		case "current_page":
+			if err := func() error {
+				s.CurrentPage.Reset()
+				if err := s.CurrentPage.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"current_page\"")
+			}
+		case "limit":
+			if err := func() error {
+				s.Limit.Reset()
+				if err := s.Limit.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"limit\"")
+			}
+		case "link_next":
+			if err := func() error {
+				s.LinkNext.Reset()
+				if err := s.LinkNext.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"link_next\"")
+			}
+		case "link_previous":
+			if err := func() error {
+				s.LinkPrevious.Reset()
+				if err := s.LinkPrevious.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"link_previous\"")
+			}
+		case "list":
+			if err := func() error {
+				s.List = make([]PaymentsGetOKListItem, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem PaymentsGetOKListItem
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.List = append(s.List, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"list\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentsGetOK")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentsGetOK) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentsGetOK) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentsGetOKListItem) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentsGetOKListItem) encodeFields(e *jx.Encoder) {
+	{
+		if s.ShopID.Set {
+			e.FieldStart("shop_id")
+			s.ShopID.Encode(e)
+		}
+	}
+	{
+		if s.ID.Set {
+			e.FieldStart("id")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		if s.PayType.Set {
+			e.FieldStart("pay_type")
+			s.PayType.Encode(e)
+		}
+	}
+	{
+		if s.Status.Set {
+			e.FieldStart("status")
+			s.Status.Encode(e)
+		}
+	}
+	{
+		if s.AccessID.Set {
+			e.FieldStart("access_id")
+			s.AccessID.Encode(e)
+		}
+	}
+	{
+		if s.ProcessDate.Set {
+			e.FieldStart("process_date")
+			s.ProcessDate.Encode(e)
+		}
+	}
+	{
+		if s.JobCode.Set {
+			e.FieldStart("job_code")
+			s.JobCode.Encode(e)
+		}
+	}
+	{
+		if s.ItemCode.Set {
+			e.FieldStart("item_code")
+			s.ItemCode.Encode(e)
+		}
+	}
+	{
+		if s.Amount.Set {
+			e.FieldStart("amount")
+			s.Amount.Encode(e)
+		}
+	}
+	{
+		if s.Tax.Set {
+			e.FieldStart("tax")
+			s.Tax.Encode(e)
+		}
+	}
+	{
+		if s.TotalAmount.Set {
+			e.FieldStart("total_amount")
+			s.TotalAmount.Encode(e)
+		}
+	}
+	{
+		if s.CustomerGroupID.Set {
+			e.FieldStart("customer_group_id")
+			s.CustomerGroupID.Encode(e)
+		}
+	}
+	{
+		if s.CustomerID.Set {
+			e.FieldStart("customer_id")
+			s.CustomerID.Encode(e)
+		}
+	}
+	{
+		if s.CardNo.Set {
+			e.FieldStart("card_no")
+			s.CardNo.Encode(e)
+		}
+	}
+	{
+		if s.CardID.Set {
+			e.FieldStart("card_id")
+			s.CardID.Encode(e)
+		}
+	}
+	{
+		if s.Expire.Set {
+			e.FieldStart("expire")
+			s.Expire.Encode(e)
+		}
+	}
+	{
+		if s.HolderName.Set {
+			e.FieldStart("holder_name")
+			s.HolderName.Encode(e)
+		}
+	}
+	{
+		if s.CardNoHash.Set {
+			e.FieldStart("card_no_hash")
+			s.CardNoHash.Encode(e)
+		}
+	}
+	{
+		if s.Method.Set {
+			e.FieldStart("method")
+			s.Method.Encode(e)
+		}
+	}
+	{
+		if s.PayTimes.Set {
+			e.FieldStart("pay_times")
+			s.PayTimes.Encode(e)
+		}
+	}
+	{
+		if s.Forward.Set {
+			e.FieldStart("forward")
+			s.Forward.Encode(e)
+		}
+	}
+	{
+		if s.Issuer.Set {
+			e.FieldStart("issuer")
+			s.Issuer.Encode(e)
+		}
+	}
+	{
+		if s.TransactionID.Set {
+			e.FieldStart("transaction_id")
+			s.TransactionID.Encode(e)
+		}
+	}
+	{
+		if s.Approve.Set {
+			e.FieldStart("approve")
+			s.Approve.Encode(e)
+		}
+	}
+	{
+		if s.AuthMaxDate.Set {
+			e.FieldStart("auth_max_date")
+			s.AuthMaxDate.Encode(e)
+		}
+	}
+	{
+		if s.ClientField1.Set {
+			e.FieldStart("client_field_1")
+			s.ClientField1.Encode(e)
+		}
+	}
+	{
+		if s.ClientField2.Set {
+			e.FieldStart("client_field_2")
+			s.ClientField2.Encode(e)
+		}
+	}
+	{
+		if s.ClientField3.Set {
+			e.FieldStart("client_field_3")
+			s.ClientField3.Encode(e)
+		}
+	}
+	{
+		if s.TdsType.Set {
+			e.FieldStart("tds_type")
+			s.TdsType.Encode(e)
+		}
+	}
+	{
+		if s.Tds2Type.Set {
+			e.FieldStart("tds2_type")
+			s.Tds2Type.Encode(e)
+		}
+	}
+	{
+		if s.Tds2RetURL.Set {
+			e.FieldStart("tds2_ret_url")
+			s.Tds2RetURL.Encode(e)
+		}
+	}
+	{
+		if s.Tds2Status.Set {
+			e.FieldStart("tds2_status")
+			s.Tds2Status.Encode(e)
+		}
+	}
+	{
+		if s.MerchantName.Set {
+			e.FieldStart("merchant_name")
+			s.MerchantName.Encode(e)
+		}
+	}
+	{
+		if s.SendURL.Set {
+			e.FieldStart("send_url")
+			s.SendURL.Encode(e)
+		}
+	}
+	{
+		if s.SubscriptionID.Set {
+			e.FieldStart("subscription_id")
+			s.SubscriptionID.Encode(e)
+		}
+	}
+	{
+		if s.Brand.Set {
+			e.FieldStart("brand")
+			s.Brand.Encode(e)
+		}
+	}
+	{
+		if s.ErrorCode.Set {
+			e.FieldStart("error_code")
+			s.ErrorCode.Encode(e)
+		}
+	}
+	{
+		if s.Created.Set {
+			e.FieldStart("created")
+			s.Created.Encode(e)
+		}
+	}
+	{
+		if s.Updated.Set {
+			e.FieldStart("updated")
+			s.Updated.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentsGetOKListItem = [39]string{
+	0:  "shop_id",
+	1:  "id",
+	2:  "pay_type",
+	3:  "status",
+	4:  "access_id",
+	5:  "process_date",
+	6:  "job_code",
+	7:  "item_code",
+	8:  "amount",
+	9:  "tax",
+	10: "total_amount",
+	11: "customer_group_id",
+	12: "customer_id",
+	13: "card_no",
+	14: "card_id",
+	15: "expire",
+	16: "holder_name",
+	17: "card_no_hash",
+	18: "method",
+	19: "pay_times",
+	20: "forward",
+	21: "issuer",
+	22: "transaction_id",
+	23: "approve",
+	24: "auth_max_date",
+	25: "client_field_1",
+	26: "client_field_2",
+	27: "client_field_3",
+	28: "tds_type",
+	29: "tds2_type",
+	30: "tds2_ret_url",
+	31: "tds2_status",
+	32: "merchant_name",
+	33: "send_url",
+	34: "subscription_id",
+	35: "brand",
+	36: "error_code",
+	37: "created",
+	38: "updated",
+}
+
+// Decode decodes PaymentsGetOKListItem from json.
+func (s *PaymentsGetOKListItem) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentsGetOKListItem to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "shop_id":
+			if err := func() error {
+				s.ShopID.Reset()
+				if err := s.ShopID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"shop_id\"")
+			}
+		case "id":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"id\"")
+			}
+		case "pay_type":
+			if err := func() error {
+				s.PayType.Reset()
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "status":
+			if err := func() error {
+				s.Status.Reset()
+				if err := s.Status.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"status\"")
+			}
+		case "access_id":
+			if err := func() error {
+				s.AccessID.Reset()
+				if err := s.AccessID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "process_date":
+			if err := func() error {
+				s.ProcessDate.Reset()
+				if err := s.ProcessDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"process_date\"")
+			}
+		case "job_code":
+			if err := func() error {
+				s.JobCode.Reset()
+				if err := s.JobCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"job_code\"")
+			}
+		case "item_code":
+			if err := func() error {
+				s.ItemCode.Reset()
+				if err := s.ItemCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"item_code\"")
+			}
+		case "amount":
+			if err := func() error {
+				s.Amount.Reset()
+				if err := s.Amount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"amount\"")
+			}
+		case "tax":
+			if err := func() error {
+				s.Tax.Reset()
+				if err := s.Tax.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tax\"")
+			}
+		case "total_amount":
+			if err := func() error {
+				s.TotalAmount.Reset()
+				if err := s.TotalAmount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"total_amount\"")
+			}
+		case "customer_group_id":
+			if err := func() error {
+				s.CustomerGroupID.Reset()
+				if err := s.CustomerGroupID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_group_id\"")
+			}
+		case "customer_id":
+			if err := func() error {
+				s.CustomerID.Reset()
+				if err := s.CustomerID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_id\"")
+			}
+		case "card_no":
+			if err := func() error {
+				s.CardNo.Reset()
+				if err := s.CardNo.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_no\"")
+			}
+		case "card_id":
+			if err := func() error {
+				s.CardID.Reset()
+				if err := s.CardID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_id\"")
+			}
+		case "expire":
+			if err := func() error {
+				s.Expire.Reset()
+				if err := s.Expire.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"expire\"")
+			}
+		case "holder_name":
+			if err := func() error {
+				s.HolderName.Reset()
+				if err := s.HolderName.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"holder_name\"")
+			}
+		case "card_no_hash":
+			if err := func() error {
+				s.CardNoHash.Reset()
+				if err := s.CardNoHash.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_no_hash\"")
+			}
+		case "method":
+			if err := func() error {
+				s.Method.Reset()
+				if err := s.Method.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"method\"")
+			}
+		case "pay_times":
+			if err := func() error {
+				s.PayTimes.Reset()
+				if err := s.PayTimes.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_times\"")
+			}
+		case "forward":
+			if err := func() error {
+				s.Forward.Reset()
+				if err := s.Forward.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"forward\"")
+			}
+		case "issuer":
+			if err := func() error {
+				s.Issuer.Reset()
+				if err := s.Issuer.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"issuer\"")
+			}
+		case "transaction_id":
+			if err := func() error {
+				s.TransactionID.Reset()
+				if err := s.TransactionID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"transaction_id\"")
+			}
+		case "approve":
+			if err := func() error {
+				s.Approve.Reset()
+				if err := s.Approve.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"approve\"")
+			}
+		case "auth_max_date":
+			if err := func() error {
+				s.AuthMaxDate.Reset()
+				if err := s.AuthMaxDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"auth_max_date\"")
+			}
+		case "client_field_1":
+			if err := func() error {
+				s.ClientField1.Reset()
+				if err := s.ClientField1.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_1\"")
+			}
+		case "client_field_2":
+			if err := func() error {
+				s.ClientField2.Reset()
+				if err := s.ClientField2.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_2\"")
+			}
+		case "client_field_3":
+			if err := func() error {
+				s.ClientField3.Reset()
+				if err := s.ClientField3.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_3\"")
+			}
+		case "tds_type":
+			if err := func() error {
+				s.TdsType.Reset()
+				if err := s.TdsType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tds_type\"")
+			}
+		case "tds2_type":
+			if err := func() error {
+				s.Tds2Type.Reset()
+				if err := s.Tds2Type.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tds2_type\"")
+			}
+		case "tds2_ret_url":
+			if err := func() error {
+				s.Tds2RetURL.Reset()
+				if err := s.Tds2RetURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tds2_ret_url\"")
+			}
+		case "tds2_status":
+			if err := func() error {
+				s.Tds2Status.Reset()
+				if err := s.Tds2Status.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tds2_status\"")
+			}
+		case "merchant_name":
+			if err := func() error {
+				s.MerchantName.Reset()
+				if err := s.MerchantName.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_name\"")
+			}
+		case "send_url":
+			if err := func() error {
+				s.SendURL.Reset()
+				if err := s.SendURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"send_url\"")
+			}
+		case "subscription_id":
+			if err := func() error {
+				s.SubscriptionID.Reset()
+				if err := s.SubscriptionID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"subscription_id\"")
+			}
+		case "brand":
+			if err := func() error {
+				s.Brand.Reset()
+				if err := s.Brand.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"brand\"")
+			}
+		case "error_code":
+			if err := func() error {
+				s.ErrorCode.Reset()
+				if err := s.ErrorCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_code\"")
+			}
+		case "created":
+			if err := func() error {
+				s.Created.Reset()
+				if err := s.Created.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"created\"")
+			}
+		case "updated":
+			if err := func() error {
+				s.Updated.Reset()
+				if err := s.Updated.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"updated\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentsGetOKListItem")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentsGetOKListItem) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentsGetOKListItem) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes PaymentsIDPutOK as json.
 func (s PaymentsIDPutOK) Encode(e *jx.Encoder) {
 	switch s.Type {

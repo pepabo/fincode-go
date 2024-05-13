@@ -8,10 +8,10 @@ require (
 	github.com/go-faster/jx v1.1.0
 	github.com/k1LoW/httpstub v0.15.1
 	github.com/k1LoW/runn v0.103.0
-	github.com/ogen-go/ogen v1.0.0
-	go.opentelemetry.io/otel v1.24.0
-	go.opentelemetry.io/otel/metric v1.24.0
-	go.opentelemetry.io/otel/trace v1.24.0
+	github.com/ogen-go/ogen v1.1.0
+	go.opentelemetry.io/otel v1.25.0
+	go.opentelemetry.io/otel/metric v1.25.0
+	go.opentelemetry.io/otel/trace v1.25.0
 	go.uber.org/multierr v1.11.0
 )
 
@@ -138,7 +138,7 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.22.0 // indirect
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225 // indirect
-	golang.org/x/net v0.23.0 // indirect
+	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/oauth2 v0.18.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.19.0 // indirect
