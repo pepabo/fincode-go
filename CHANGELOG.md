@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.1](https://github.com/pepabo/fincode-go/compare/v0.1.0...v0.1.1) - 2024-05-13
+### Other Changes
+- Add `GET /payments` by @naoyafurudono in https://github.com/pepabo/fincode-go/pull/8
+
 ## [v0.1.0](https://github.com/pepabo/fincode-go/compare/v0.0.1...v0.1.0) - 2024-04-12
 ### Other Changes
 - Add `GET /customer/{id}` path by @k1LoW in https://github.com/pepabo/fincode-go/pull/4
