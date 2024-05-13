@@ -113,7 +113,6 @@ func TestPayments(t *testing.T) {
 		if !ok {
 			t.Fatalf("unexpected response: %T, %#v", res, res)
 		}
-		println("here", accessID)
 		for _, p := range v.List {
 			if p.AccessID.Value ==  accessID {
 				return
