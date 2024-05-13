@@ -98,6 +98,23 @@ func TestPayments(t *testing.T) {
 		}
 	})
 
+	t.Run("List Payments", func(t *testing.T) {
+		res, err := c.PaymentsGet(ctx)
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.PaymentsGetOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		for _, p := range v.List {
+			if p.AccessID.Value ==  accessID && p.ID.Value == orderID {
+				return
+			}
+		}
+		t.Errorf("payment not found: %s", orderID)
+	})
+
 	t.Cleanup(func() {
 		o.Close(false)
 	})
