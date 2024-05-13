@@ -25,6 +25,10 @@ type CustomersPostRes interface {
 	customersPostRes()
 }
 
+type PaymentsGetRes interface {
+	paymentsGetRes()
+}
+
 type PaymentsIDPutRes interface {
 	paymentsIDPutRes()
 }

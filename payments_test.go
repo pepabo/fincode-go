@@ -3,6 +3,7 @@ package fincode
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/k1LoW/runn"
 	"github.com/pepabo/fincode-go/api"
@@ -96,6 +97,28 @@ func TestPayments(t *testing.T) {
 				t.Errorf("want %s, got %s", want, v.PaymentDoCardResponse.ID.Value)
 			}
 		}
+	})
+
+	t.Run("List Payments", func(t *testing.T) {
+		today := time.Now().Format("2006/01/02")
+		res, err := c.PaymentsGet(ctx, api.PaymentsGetParams{
+			PayType: "Card",
+			ProcessDataFrom: api.NewOptString(today),
+			Limit: api.NewOptInt(100),
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.PaymentsGetOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		for _, p := range v.List {
+			if p.AccessID.Value ==  accessID {
+				return
+			}
+		}
+		t.Errorf("payment not found: %s", accessID)
 	})
 
 	t.Cleanup(func() {
