@@ -1049,6 +1049,16 @@ func (s *Server) handlePaymentsGetRequest(args [0]string, argsEscaped bool, w ht
 			return
 		}
 	}
+	params, err := decodePaymentsGetParams(args, argsEscaped, r)
+	if err != nil {
+		err = &ogenerrors.DecodeParamsError{
+			OperationContext: opErrContext,
+			Err:              err,
+		}
+		defer recordError("DecodeParams", err)
+		s.cfg.ErrorHandler(ctx, w, r, err)
+		return
+	}
 
 	var response PaymentsGetRes
 	if m := s.cfg.Middleware; m != nil {
@@ -1058,13 +1068,82 @@ func (s *Server) handlePaymentsGetRequest(args [0]string, argsEscaped bool, w ht
 			OperationSummary: "",
 			OperationID:      "",
 			Body:             nil,
-			Params:           middleware.Parameters{},
-			Raw:              r,
+			Params: middleware.Parameters{
+				{
+					Name: "limit",
+					In:   "query",
+				}: params.Limit,
+				{
+					Name: "page",
+					In:   "query",
+				}: params.Page,
+				{
+					Name: "count_only",
+					In:   "query",
+				}: params.CountOnly,
+				{
+					Name: "pay_type",
+					In:   "query",
+				}: params.PayType,
+				{
+					Name: "keyword",
+					In:   "query",
+				}: params.Keyword,
+				{
+					Name: "total_amount_min",
+					In:   "query",
+				}: params.TotalAmountMin,
+				{
+					Name: "total_amount_max",
+					In:   "query",
+				}: params.TotalAmountMax,
+				{
+					Name: "customer_id",
+					In:   "query",
+				}: params.CustomerID,
+				{
+					Name: "process_data_from",
+					In:   "query",
+				}: params.ProcessDataFrom,
+				{
+					Name: "process_data_to",
+					In:   "query",
+				}: params.ProcessDataTo,
+				{
+					Name: "auth_max_date_from",
+					In:   "query",
+				}: params.AuthMaxDateFrom,
+				{
+					Name: "auth_max_date_to",
+					In:   "query",
+				}: params.AuthMaxDateTo,
+				{
+					Name: "update_date_from",
+					In:   "query",
+				}: params.UpdateDateFrom,
+				{
+					Name: "update_date_to",
+					In:   "query",
+				}: params.UpdateDateTo,
+				{
+					Name: "status",
+					In:   "query",
+				}: params.Status,
+				{
+					Name: "pay_pattern",
+					In:   "query",
+				}: params.PayPattern,
+				{
+					Name: "subscription_id",
+					In:   "query",
+				}: params.SubscriptionID,
+			},
+			Raw: r,
 		}
 
 		type (
 			Request  = struct{}
-			Params   = struct{}
+			Params   = PaymentsGetParams
 			Response = PaymentsGetRes
 		)
 		response, err = middleware.HookMiddleware[
@@ -1074,14 +1153,14 @@ func (s *Server) handlePaymentsGetRequest(args [0]string, argsEscaped bool, w ht
 		](
 			m,
 			mreq,
-			nil,
+			unpackPaymentsGetParams,
 			func(ctx context.Context, request Request, params Params) (response Response, err error) {
-				response, err = s.h.PaymentsGet(ctx)
+				response, err = s.h.PaymentsGet(ctx, params)
 				return response, err
 			},
 		)
 	} else {
-		response, err = s.h.PaymentsGet(ctx)
+		response, err = s.h.PaymentsGet(ctx, params)
 	}
 	if err != nil {
 		defer recordError("Internal", err)

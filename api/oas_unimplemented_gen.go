@@ -58,7 +58,7 @@ func (UnimplementedHandler) CustomersPost(ctx context.Context, req *CustomersPos
 // PaymentsGet implements GET /payments operation.
 //
 // GET /payments
-func (UnimplementedHandler) PaymentsGet(ctx context.Context) (r PaymentsGetRes, _ error) {
+func (UnimplementedHandler) PaymentsGet(ctx context.Context, params PaymentsGetParams) (r PaymentsGetRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 

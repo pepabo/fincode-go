@@ -9,6 +9,113 @@ security:
 paths:
   /payments:
     get:
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: 1回で取得するデータ件数
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: ページ数
+        - in: query
+          name: count_only
+          schema:
+            type: boolean
+          description: 総件数のみを取得するフラグ
+        # TODO: sortに対応する
+        - in: query
+          name: pay_type
+          required: true
+          schema:
+            type: string
+          description: |
+            決済種別
+              Card- クレジットカード決済
+              Applepay - Apple Pay
+              Konbini- コンビニ決済
+              Paypay- PayPay
+        - in: query
+          name: keyword
+          schema:
+            type: string
+          description: 加盟店自由項目1-3に対する部分一致
+        - in: query
+          name: total_amount_min
+          schema:
+            type: integer
+          description: 利用金額+税送料の合計(min)
+        - in: query
+          name: total_amount_max
+          schema:
+            type: string
+          description: 利用金額+税送料の合計(max)
+        - in: query
+          name: customer_id
+          schema:
+            type: string
+          description: 顧客ID
+        - in: query
+          name: process_data_from
+          schema:
+            type: string
+          description: 作成日の範囲指定の始点。YYYY/MM/dd 形式
+        - in: query
+          name: process_data_to
+          schema:
+            type: string
+          description: 作成日の範囲指定の終点。YYYY/MM/dd 形式
+        - in: query
+          name: auth_max_date_from
+          schema:
+            type: string
+          description: 仮売上有効期限の始点。YYYY/MM/dd 形式
+        - in: query
+          name: auth_max_date_to
+          schema:
+            type: string
+          description: 仮売上有効期限の終点。YYYY/MM/dd 形式
+        - in: query
+          name: update_date_from
+          schema:
+            type: string
+          description: 更新日の範囲指定の始値。YYYY/MM/dd 形式
+        - in: query
+          name: update_date_to
+          schema:
+            type: string
+          description: 更新日の範囲指定の終点。YYYY/MM/dd 形式
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: |
+            決済ステータス
+              (カンマ区切りで複数指定可能)
+
+              UNPROCESSED - 未決済
+              CHECKED - 有効性チェック
+              AUTHORIZED - 仮売上
+              CAPTURED - 売上確定
+              CANCELED - キャンセル
+              AUTHENTICATED - 未決済（3Dセキュア）
+        - in: query
+          name: pay_pattern
+          schema:
+            type: string
+          description: |
+            課金種別
+            (カンマ区切りで複数指定可能)
+
+              onetime - サブスクリプション以外
+              subscription - サブスクリプション
+        - in: query
+          name: subscription_id
+          schema:
+            type: string
+          description: サブスクリプションID
       responses:
         "200":
           description: "OK"
@@ -29,6 +136,7 @@ paths:
                     type: string
                   link_previous:
                     type: string
+                    nullable: true
                   list:
                     type: array
                     items:
@@ -51,63 +159,87 @@ paths:
                         item_code:
                           type: string
                         amount:
-                          type: string
+                          type: integer
                         tax:
                           type: integer
                         total_amount:
                           type: integer
                         customer_group_id:
                           type: string
+                          nullable: true
                         customer_id:
                           type: string
+                          nullable: true
                         card_no:
                           type: string
+                          nullable: true
                         card_id:
                           type: string
+                          nullable: true
                         expire:
                           type: string
+                          nullable: true
                         holder_name:
                           type: string
+                          nullable: true
                         card_no_hash:
                           type: string
+                          nullable: true
                         method:
                           type: string
+                          nullable: true
                         pay_times:
                           type: string
+                          nullable: true
                         forward:
                           type: string
+                          nullable: true
                         issuer:
                           type: string
+                          nullable: true
                         transaction_id:
                           type: string
+                          nullable: true
                         approve:
                           type: string
+                          nullable: true
                         auth_max_date:
                           type: string
+                          nullable: true
                         client_field_1:
                           type: string
+                          nullable: true
                         client_field_2:
                           type: string
+                          nullable: true
                         client_field_3:
                           type: string
+                          nullable: true
                         tds_type:
                           type: string
                         tds2_type:
                           type: string
+                          nullable: true
                         tds2_ret_url:
                           type: string
+                          nullable: true
                         tds2_status:
                           type: string
+                          nullable: true
                         merchant_name:
                           type: string
+                          nullable: true
                         send_url:
                           type: string
+                          nullable: true
                         subscription_id:
                           type: string
+                          nullable: true
                         brand:
                           type: string
                         error_code:
                           type: string
+                          nullable: true
                         created:
                           type: string
                         updated:

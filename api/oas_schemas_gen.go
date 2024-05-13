@@ -969,6 +969,52 @@ func (s *ErrorResponseErrorsItem) SetErrorMessage(val string) {
 	s.ErrorMessage = val
 }
 
+// NewOptBool returns new OptBool with value set to v.
+func NewOptBool(v bool) OptBool {
+	return OptBool{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptBool is optional bool.
+type OptBool struct {
+	Value bool
+	Set   bool
+}
+
+// IsSet returns true if OptBool was set.
+func (o OptBool) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptBool) Reset() {
+	var v bool
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptBool) SetTo(v bool) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptBool) Get() (v bool, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptBool) Or(d bool) bool {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptInt returns new OptInt with value set to v.
 func NewOptInt(v int) OptInt {
 	return OptInt{
@@ -11198,7 +11244,7 @@ type PaymentsGetOK struct {
 	CurrentPage  OptInt                  `json:"current_page"`
 	Limit        OptInt                  `json:"limit"`
 	LinkNext     OptString               `json:"link_next"`
-	LinkPrevious OptString               `json:"link_previous"`
+	LinkPrevious OptNilString            `json:"link_previous"`
 	List         []PaymentsGetOKListItem `json:"list"`
 }
 
@@ -11228,7 +11274,7 @@ func (s *PaymentsGetOK) GetLinkNext() OptString {
 }
 
 // GetLinkPrevious returns the value of LinkPrevious.
-func (s *PaymentsGetOK) GetLinkPrevious() OptString {
+func (s *PaymentsGetOK) GetLinkPrevious() OptNilString {
 	return s.LinkPrevious
 }
 
@@ -11263,7 +11309,7 @@ func (s *PaymentsGetOK) SetLinkNext(val OptString) {
 }
 
 // SetLinkPrevious sets the value of LinkPrevious.
-func (s *PaymentsGetOK) SetLinkPrevious(val OptString) {
+func (s *PaymentsGetOK) SetLinkPrevious(val OptNilString) {
 	s.LinkPrevious = val
 }
 
@@ -11275,45 +11321,45 @@ func (s *PaymentsGetOK) SetList(val []PaymentsGetOKListItem) {
 func (*PaymentsGetOK) paymentsGetRes() {}
 
 type PaymentsGetOKListItem struct {
-	ShopID          OptString `json:"shop_id"`
-	ID              OptString `json:"id"`
-	PayType         OptString `json:"pay_type"`
-	Status          OptString `json:"status"`
-	AccessID        OptString `json:"access_id"`
-	ProcessDate     OptString `json:"process_date"`
-	JobCode         OptString `json:"job_code"`
-	ItemCode        OptString `json:"item_code"`
-	Amount          OptString `json:"amount"`
-	Tax             OptInt    `json:"tax"`
-	TotalAmount     OptInt    `json:"total_amount"`
-	CustomerGroupID OptString `json:"customer_group_id"`
-	CustomerID      OptString `json:"customer_id"`
-	CardNo          OptString `json:"card_no"`
-	CardID          OptString `json:"card_id"`
-	Expire          OptString `json:"expire"`
-	HolderName      OptString `json:"holder_name"`
-	CardNoHash      OptString `json:"card_no_hash"`
-	Method          OptString `json:"method"`
-	PayTimes        OptString `json:"pay_times"`
-	Forward         OptString `json:"forward"`
-	Issuer          OptString `json:"issuer"`
-	TransactionID   OptString `json:"transaction_id"`
-	Approve         OptString `json:"approve"`
-	AuthMaxDate     OptString `json:"auth_max_date"`
-	ClientField1    OptString `json:"client_field_1"`
-	ClientField2    OptString `json:"client_field_2"`
-	ClientField3    OptString `json:"client_field_3"`
-	TdsType         OptString `json:"tds_type"`
-	Tds2Type        OptString `json:"tds2_type"`
-	Tds2RetURL      OptString `json:"tds2_ret_url"`
-	Tds2Status      OptString `json:"tds2_status"`
-	MerchantName    OptString `json:"merchant_name"`
-	SendURL         OptString `json:"send_url"`
-	SubscriptionID  OptString `json:"subscription_id"`
-	Brand           OptString `json:"brand"`
-	ErrorCode       OptString `json:"error_code"`
-	Created         OptString `json:"created"`
-	Updated         OptString `json:"updated"`
+	ShopID          OptString    `json:"shop_id"`
+	ID              OptString    `json:"id"`
+	PayType         OptString    `json:"pay_type"`
+	Status          OptString    `json:"status"`
+	AccessID        OptString    `json:"access_id"`
+	ProcessDate     OptString    `json:"process_date"`
+	JobCode         OptString    `json:"job_code"`
+	ItemCode        OptString    `json:"item_code"`
+	Amount          OptInt       `json:"amount"`
+	Tax             OptInt       `json:"tax"`
+	TotalAmount     OptInt       `json:"total_amount"`
+	CustomerGroupID OptNilString `json:"customer_group_id"`
+	CustomerID      OptNilString `json:"customer_id"`
+	CardNo          OptNilString `json:"card_no"`
+	CardID          OptNilString `json:"card_id"`
+	Expire          OptNilString `json:"expire"`
+	HolderName      OptNilString `json:"holder_name"`
+	CardNoHash      OptNilString `json:"card_no_hash"`
+	Method          OptNilString `json:"method"`
+	PayTimes        OptNilString `json:"pay_times"`
+	Forward         OptNilString `json:"forward"`
+	Issuer          OptNilString `json:"issuer"`
+	TransactionID   OptNilString `json:"transaction_id"`
+	Approve         OptNilString `json:"approve"`
+	AuthMaxDate     OptNilString `json:"auth_max_date"`
+	ClientField1    OptNilString `json:"client_field_1"`
+	ClientField2    OptNilString `json:"client_field_2"`
+	ClientField3    OptNilString `json:"client_field_3"`
+	TdsType         OptString    `json:"tds_type"`
+	Tds2Type        OptNilString `json:"tds2_type"`
+	Tds2RetURL      OptNilString `json:"tds2_ret_url"`
+	Tds2Status      OptNilString `json:"tds2_status"`
+	MerchantName    OptNilString `json:"merchant_name"`
+	SendURL         OptNilString `json:"send_url"`
+	SubscriptionID  OptNilString `json:"subscription_id"`
+	Brand           OptString    `json:"brand"`
+	ErrorCode       OptNilString `json:"error_code"`
+	Created         OptString    `json:"created"`
+	Updated         OptString    `json:"updated"`
 }
 
 // GetShopID returns the value of ShopID.
@@ -11357,7 +11403,7 @@ func (s *PaymentsGetOKListItem) GetItemCode() OptString {
 }
 
 // GetAmount returns the value of Amount.
-func (s *PaymentsGetOKListItem) GetAmount() OptString {
+func (s *PaymentsGetOKListItem) GetAmount() OptInt {
 	return s.Amount
 }
 
@@ -11372,87 +11418,87 @@ func (s *PaymentsGetOKListItem) GetTotalAmount() OptInt {
 }
 
 // GetCustomerGroupID returns the value of CustomerGroupID.
-func (s *PaymentsGetOKListItem) GetCustomerGroupID() OptString {
+func (s *PaymentsGetOKListItem) GetCustomerGroupID() OptNilString {
 	return s.CustomerGroupID
 }
 
 // GetCustomerID returns the value of CustomerID.
-func (s *PaymentsGetOKListItem) GetCustomerID() OptString {
+func (s *PaymentsGetOKListItem) GetCustomerID() OptNilString {
 	return s.CustomerID
 }
 
 // GetCardNo returns the value of CardNo.
-func (s *PaymentsGetOKListItem) GetCardNo() OptString {
+func (s *PaymentsGetOKListItem) GetCardNo() OptNilString {
 	return s.CardNo
 }
 
 // GetCardID returns the value of CardID.
-func (s *PaymentsGetOKListItem) GetCardID() OptString {
+func (s *PaymentsGetOKListItem) GetCardID() OptNilString {
 	return s.CardID
 }
 
 // GetExpire returns the value of Expire.
-func (s *PaymentsGetOKListItem) GetExpire() OptString {
+func (s *PaymentsGetOKListItem) GetExpire() OptNilString {
 	return s.Expire
 }
 
 // GetHolderName returns the value of HolderName.
-func (s *PaymentsGetOKListItem) GetHolderName() OptString {
+func (s *PaymentsGetOKListItem) GetHolderName() OptNilString {
 	return s.HolderName
 }
 
 // GetCardNoHash returns the value of CardNoHash.
-func (s *PaymentsGetOKListItem) GetCardNoHash() OptString {
+func (s *PaymentsGetOKListItem) GetCardNoHash() OptNilString {
 	return s.CardNoHash
 }
 
 // GetMethod returns the value of Method.
-func (s *PaymentsGetOKListItem) GetMethod() OptString {
+func (s *PaymentsGetOKListItem) GetMethod() OptNilString {
 	return s.Method
 }
 
 // GetPayTimes returns the value of PayTimes.
-func (s *PaymentsGetOKListItem) GetPayTimes() OptString {
+func (s *PaymentsGetOKListItem) GetPayTimes() OptNilString {
 	return s.PayTimes
 }
 
 // GetForward returns the value of Forward.
-func (s *PaymentsGetOKListItem) GetForward() OptString {
+func (s *PaymentsGetOKListItem) GetForward() OptNilString {
 	return s.Forward
 }
 
 // GetIssuer returns the value of Issuer.
-func (s *PaymentsGetOKListItem) GetIssuer() OptString {
+func (s *PaymentsGetOKListItem) GetIssuer() OptNilString {
 	return s.Issuer
 }
 
 // GetTransactionID returns the value of TransactionID.
-func (s *PaymentsGetOKListItem) GetTransactionID() OptString {
+func (s *PaymentsGetOKListItem) GetTransactionID() OptNilString {
 	return s.TransactionID
 }
 
 // GetApprove returns the value of Approve.
-func (s *PaymentsGetOKListItem) GetApprove() OptString {
+func (s *PaymentsGetOKListItem) GetApprove() OptNilString {
 	return s.Approve
 }
 
 // GetAuthMaxDate returns the value of AuthMaxDate.
-func (s *PaymentsGetOKListItem) GetAuthMaxDate() OptString {
+func (s *PaymentsGetOKListItem) GetAuthMaxDate() OptNilString {
 	return s.AuthMaxDate
 }
 
 // GetClientField1 returns the value of ClientField1.
-func (s *PaymentsGetOKListItem) GetClientField1() OptString {
+func (s *PaymentsGetOKListItem) GetClientField1() OptNilString {
 	return s.ClientField1
 }
 
 // GetClientField2 returns the value of ClientField2.
-func (s *PaymentsGetOKListItem) GetClientField2() OptString {
+func (s *PaymentsGetOKListItem) GetClientField2() OptNilString {
 	return s.ClientField2
 }
 
 // GetClientField3 returns the value of ClientField3.
-func (s *PaymentsGetOKListItem) GetClientField3() OptString {
+func (s *PaymentsGetOKListItem) GetClientField3() OptNilString {
 	return s.ClientField3
 }
 
@@ -11462,32 +11508,32 @@ func (s *PaymentsGetOKListItem) GetTdsType() OptString {
 }
 
 // GetTds2Type returns the value of Tds2Type.
-func (s *PaymentsGetOKListItem) GetTds2Type() OptString {
+func (s *PaymentsGetOKListItem) GetTds2Type() OptNilString {
 	return s.Tds2Type
 }
 
 // GetTds2RetURL returns the value of Tds2RetURL.
-func (s *PaymentsGetOKListItem) GetTds2RetURL() OptString {
+func (s *PaymentsGetOKListItem) GetTds2RetURL() OptNilString {
 	return s.Tds2RetURL
 }
 
 // GetTds2Status returns the value of Tds2Status.
-func (s *PaymentsGetOKListItem) GetTds2Status() OptString {
+func (s *PaymentsGetOKListItem) GetTds2Status() OptNilString {
 	return s.Tds2Status
 }
 
 // GetMerchantName returns the value of MerchantName.
-func (s *PaymentsGetOKListItem) GetMerchantName() OptString {
+func (s *PaymentsGetOKListItem) GetMerchantName() OptNilString {
 	return s.MerchantName
 }
 
 // GetSendURL returns the value of SendURL.
-func (s *PaymentsGetOKListItem) GetSendURL() OptString {
+func (s *PaymentsGetOKListItem) GetSendURL() OptNilString {
 	return s.SendURL
 }
 
 // GetSubscriptionID returns the value of SubscriptionID.
-func (s *PaymentsGetOKListItem) GetSubscriptionID() OptString {
+func (s *PaymentsGetOKListItem) GetSubscriptionID() OptNilString {
 	return s.SubscriptionID
 }
 
@@ -11497,7 +11543,7 @@ func (s *PaymentsGetOKListItem) GetBrand() OptString {
 }
 
 // GetErrorCode returns the value of ErrorCode.
-func (s *PaymentsGetOKListItem) GetErrorCode() OptString {
+func (s *PaymentsGetOKListItem) GetErrorCode() OptNilString {
 	return s.ErrorCode
 }
 
@@ -11552,7 +11598,7 @@ func (s *PaymentsGetOKListItem) SetItemCode(val OptString) {
 }
 
 // SetAmount sets the value of Amount.
-func (s *PaymentsGetOKListItem) SetAmount(val OptString) {
+func (s *PaymentsGetOKListItem) SetAmount(val OptInt) {
 	s.Amount = val
 }
 
@@ -11567,87 +11613,87 @@ func (s *PaymentsGetOKListItem) SetTotalAmount(val OptInt) {
 }
 
 // SetCustomerGroupID sets the value of CustomerGroupID.
-func (s *PaymentsGetOKListItem) SetCustomerGroupID(val OptString) {
+func (s *PaymentsGetOKListItem) SetCustomerGroupID(val OptNilString) {
 	s.CustomerGroupID = val
 }
 
 // SetCustomerID sets the value of CustomerID.
-func (s *PaymentsGetOKListItem) SetCustomerID(val OptString) {
+func (s *PaymentsGetOKListItem) SetCustomerID(val OptNilString) {
 	s.CustomerID = val
 }
 
 // SetCardNo sets the value of CardNo.
-func (s *PaymentsGetOKListItem) SetCardNo(val OptString) {
+func (s *PaymentsGetOKListItem) SetCardNo(val OptNilString) {
 	s.CardNo = val
 }
 
 // SetCardID sets the value of CardID.
-func (s *PaymentsGetOKListItem) SetCardID(val OptString) {
+func (s *PaymentsGetOKListItem) SetCardID(val OptNilString) {
 	s.CardID = val
 }
 
 // SetExpire sets the value of Expire.
-func (s *PaymentsGetOKListItem) SetExpire(val OptString) {
+func (s *PaymentsGetOKListItem) SetExpire(val OptNilString) {
 	s.Expire = val
 }
 
 // SetHolderName sets the value of HolderName.
-func (s *PaymentsGetOKListItem) SetHolderName(val OptString) {
+func (s *PaymentsGetOKListItem) SetHolderName(val OptNilString) {
 	s.HolderName = val
 }
 
 // SetCardNoHash sets the value of CardNoHash.
-func (s *PaymentsGetOKListItem) SetCardNoHash(val OptString) {
+func (s *PaymentsGetOKListItem) SetCardNoHash(val OptNilString) {
 	s.CardNoHash = val
 }
 
 // SetMethod sets the value of Method.
-func (s *PaymentsGetOKListItem) SetMethod(val OptString) {
+func (s *PaymentsGetOKListItem) SetMethod(val OptNilString) {
 	s.Method = val
 }
 
 // SetPayTimes sets the value of PayTimes.
-func (s *PaymentsGetOKListItem) SetPayTimes(val OptString) {
+func (s *PaymentsGetOKListItem) SetPayTimes(val OptNilString) {
 	s.PayTimes = val
 }
 
 // SetForward sets the value of Forward.
-func (s *PaymentsGetOKListItem) SetForward(val OptString) {
+func (s *PaymentsGetOKListItem) SetForward(val OptNilString) {
 	s.Forward = val
 }
 
 // SetIssuer sets the value of Issuer.
-func (s *PaymentsGetOKListItem) SetIssuer(val OptString) {
+func (s *PaymentsGetOKListItem) SetIssuer(val OptNilString) {
 	s.Issuer = val
 }
 
 // SetTransactionID sets the value of TransactionID.
-func (s *PaymentsGetOKListItem) SetTransactionID(val OptString) {
+func (s *PaymentsGetOKListItem) SetTransactionID(val OptNilString) {
 	s.TransactionID = val
 }
 
 // SetApprove sets the value of Approve.
-func (s *PaymentsGetOKListItem) SetApprove(val OptString) {
+func (s *PaymentsGetOKListItem) SetApprove(val OptNilString) {
 	s.Approve = val
 }
 
 // SetAuthMaxDate sets the value of AuthMaxDate.
-func (s *PaymentsGetOKListItem) SetAuthMaxDate(val OptString) {
+func (s *PaymentsGetOKListItem) SetAuthMaxDate(val OptNilString) {
 	s.AuthMaxDate = val
 }
 
 // SetClientField1 sets the value of ClientField1.
-func (s *PaymentsGetOKListItem) SetClientField1(val OptString) {
+func (s *PaymentsGetOKListItem) SetClientField1(val OptNilString) {
 	s.ClientField1 = val
 }
 
 // SetClientField2 sets the value of ClientField2.
-func (s *PaymentsGetOKListItem) SetClientField2(val OptString) {
+func (s *PaymentsGetOKListItem) SetClientField2(val OptNilString) {
 	s.ClientField2 = val
 }
 
 // SetClientField3 sets the value of ClientField3.
-func (s *PaymentsGetOKListItem) SetClientField3(val OptString) {
+func (s *PaymentsGetOKListItem) SetClientField3(val OptNilString) {
 	s.ClientField3 = val
 }
 
@@ -11657,32 +11703,32 @@ func (s *PaymentsGetOKListItem) SetTdsType(val OptString) {
 }
 
 // SetTds2Type sets the value of Tds2Type.
-func (s *PaymentsGetOKListItem) SetTds2Type(val OptString) {
+func (s *PaymentsGetOKListItem) SetTds2Type(val OptNilString) {
 	s.Tds2Type = val
 }
 
 // SetTds2RetURL sets the value of Tds2RetURL.
-func (s *PaymentsGetOKListItem) SetTds2RetURL(val OptString) {
+func (s *PaymentsGetOKListItem) SetTds2RetURL(val OptNilString) {
 	s.Tds2RetURL = val
 }
 
 // SetTds2Status sets the value of Tds2Status.
-func (s *PaymentsGetOKListItem) SetTds2Status(val OptString) {
+func (s *PaymentsGetOKListItem) SetTds2Status(val OptNilString) {
 	s.Tds2Status = val
 }
 
 // SetMerchantName sets the value of MerchantName.
-func (s *PaymentsGetOKListItem) SetMerchantName(val OptString) {
+func (s *PaymentsGetOKListItem) SetMerchantName(val OptNilString) {
 	s.MerchantName = val
 }
 
 // SetSendURL sets the value of SendURL.
-func (s *PaymentsGetOKListItem) SetSendURL(val OptString) {
+func (s *PaymentsGetOKListItem) SetSendURL(val OptNilString) {
 	s.SendURL = val
 }
 
 // SetSubscriptionID sets the value of SubscriptionID.
-func (s *PaymentsGetOKListItem) SetSubscriptionID(val OptString) {
+func (s *PaymentsGetOKListItem) SetSubscriptionID(val OptNilString) {
 	s.SubscriptionID = val
 }
 
@@ -11692,7 +11738,7 @@ func (s *PaymentsGetOKListItem) SetBrand(val OptString) {
 }
 
 // SetErrorCode sets the value of ErrorCode.
-func (s *PaymentsGetOKListItem) SetErrorCode(val OptString) {
+func (s *PaymentsGetOKListItem) SetErrorCode(val OptNilString) {
 	s.ErrorCode = val
 }
 
