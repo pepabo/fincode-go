@@ -114,36 +114,27 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						return
 					}
 					switch elem[0] {
-					case '/': // Prefix: "/payment_methods"
+					case '/': // Prefix: "/"
 						origElem := elem
-						if l := len("/payment_methods"); len(elem) >= l && elem[0:l] == "/payment_methods" {
+						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
 						if len(elem) == 0 {
-							switch r.Method {
-							case "POST":
-								s.handleCustomersCustomerIDPaymentMethodsPostRequest([1]string{
-									args[0],
-								}, elemIsEscaped, w, r)
-							default:
-								s.notAllowed(w, r, "POST")
-							}
-
-							return
+							break
 						}
 						switch elem[0] {
-						case '/': // Prefix: "/"
+						case 'c': // Prefix: "cards/"
 							origElem := elem
-							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+							if l := len("cards/"); len(elem) >= l && elem[0:l] == "cards/" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
-							// Param: "payment_method_id"
+							// Param: "id"
 							// Leaf parameter
 							args[1] = elem
 							elem = ""
@@ -151,21 +142,74 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							if len(elem) == 0 {
 								// Leaf node.
 								switch r.Method {
-								case "DELETE":
-									s.handleCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRequest([2]string{
-										args[0],
-										args[1],
-									}, elemIsEscaped, w, r)
 								case "GET":
-									s.handleCustomersCustomerIDPaymentMethodsPaymentMethodIDGetRequest([2]string{
+									s.handleCustomersCustomerIDCardsIDGetRequest([2]string{
 										args[0],
 										args[1],
 									}, elemIsEscaped, w, r)
 								default:
-									s.notAllowed(w, r, "DELETE,GET")
+									s.notAllowed(w, r, "GET")
 								}
 
 								return
+							}
+
+							elem = origElem
+						case 'p': // Prefix: "payment_methods"
+							origElem := elem
+							if l := len("payment_methods"); len(elem) >= l && elem[0:l] == "payment_methods" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch r.Method {
+								case "POST":
+									s.handleCustomersCustomerIDPaymentMethodsPostRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "POST")
+								}
+
+								return
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+								origElem := elem
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								// Param: "payment_method_id"
+								// Leaf parameter
+								args[1] = elem
+								elem = ""
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "DELETE":
+										s.handleCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRequest([2]string{
+											args[0],
+											args[1],
+										}, elemIsEscaped, w, r)
+									case "GET":
+										s.handleCustomersCustomerIDPaymentMethodsPaymentMethodIDGetRequest([2]string{
+											args[0],
+											args[1],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "DELETE,GET")
+									}
+
+									return
+								}
+
+								elem = origElem
 							}
 
 							elem = origElem
@@ -388,65 +432,110 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						}
 					}
 					switch elem[0] {
-					case '/': // Prefix: "/payment_methods"
+					case '/': // Prefix: "/"
 						origElem := elem
-						if l := len("/payment_methods"); len(elem) >= l && elem[0:l] == "/payment_methods" {
+						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
 						if len(elem) == 0 {
-							switch method {
-							case "POST":
-								r.name = "CustomersCustomerIDPaymentMethodsPost"
-								r.summary = ""
-								r.operationID = ""
-								r.pathPattern = "/customers/{customer_id}/payment_methods"
-								r.args = args
-								r.count = 1
-								return r, true
-							default:
-								return
-							}
+							break
 						}
 						switch elem[0] {
-						case '/': // Prefix: "/"
+						case 'c': // Prefix: "cards/"
 							origElem := elem
-							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+							if l := len("cards/"); len(elem) >= l && elem[0:l] == "cards/" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
-							// Param: "payment_method_id"
+							// Param: "id"
 							// Leaf parameter
 							args[1] = elem
 							elem = ""
 
 							if len(elem) == 0 {
 								switch method {
-								case "DELETE":
-									// Leaf: CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete
-									r.name = "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete"
-									r.summary = ""
-									r.operationID = ""
-									r.pathPattern = "/customers/{customer_id}/payment_methods/{payment_method_id}"
-									r.args = args
-									r.count = 2
-									return r, true
 								case "GET":
-									// Leaf: CustomersCustomerIDPaymentMethodsPaymentMethodIDGet
-									r.name = "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet"
+									// Leaf: CustomersCustomerIDCardsIDGet
+									r.name = "CustomersCustomerIDCardsIDGet"
 									r.summary = ""
 									r.operationID = ""
-									r.pathPattern = "/customers/{customer_id}/payment_methods/{payment_method_id}"
+									r.pathPattern = "/customers/{customer_id}/cards/{id}"
 									r.args = args
 									r.count = 2
 									return r, true
 								default:
 									return
 								}
+							}
+
+							elem = origElem
+						case 'p': // Prefix: "payment_methods"
+							origElem := elem
+							if l := len("payment_methods"); len(elem) >= l && elem[0:l] == "payment_methods" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "POST":
+									r.name = "CustomersCustomerIDPaymentMethodsPost"
+									r.summary = ""
+									r.operationID = ""
+									r.pathPattern = "/customers/{customer_id}/payment_methods"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+								origElem := elem
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								// Param: "payment_method_id"
+								// Leaf parameter
+								args[1] = elem
+								elem = ""
+
+								if len(elem) == 0 {
+									switch method {
+									case "DELETE":
+										// Leaf: CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete
+										r.name = "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete"
+										r.summary = ""
+										r.operationID = ""
+										r.pathPattern = "/customers/{customer_id}/payment_methods/{payment_method_id}"
+										r.args = args
+										r.count = 2
+										return r, true
+									case "GET":
+										// Leaf: CustomersCustomerIDPaymentMethodsPaymentMethodIDGet
+										r.name = "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet"
+										r.summary = ""
+										r.operationID = ""
+										r.pathPattern = "/customers/{customer_id}/payment_methods/{payment_method_id}"
+										r.args = args
+										r.count = 2
+										return r, true
+									default:
+										return
+									}
+								}
+
+								elem = origElem
 							}
 
 							elem = origElem
