@@ -13,6 +13,13 @@ type UnimplementedHandler struct{}
 
 var _ Handler = UnimplementedHandler{}
 
+// CustomersCustomerIDCardsIDDelete implements DELETE /customers/{customer_id}/cards/{id} operation.
+//
+// DELETE /customers/{customer_id}/cards/{id}
+func (UnimplementedHandler) CustomersCustomerIDCardsIDDelete(ctx context.Context, params CustomersCustomerIDCardsIDDeleteParams) (r CustomersCustomerIDCardsIDDeleteRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // CustomersCustomerIDCardsIDGet implements GET /customers/{customer_id}/cards/{id} operation.
 //
 // GET /customers/{customer_id}/cards/{id}

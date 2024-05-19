@@ -140,6 +140,26 @@ func TestPayments(t *testing.T) {
 		}
 	})
 
+	t.Run("Delete Card", func(t *testing.T) {
+		res, err := c.CustomersCustomerIDCardsIDDelete(ctx, api.CustomersCustomerIDCardsIDDeleteParams{
+			CustomerID: customerID,
+			ID:         cardID,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.CustomersCustomerIDCardsIDDeleteOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		if want := cardID; v.ID != want {
+			t.Errorf("want %s, got %s", want, v.ID)
+		}
+		if want := "1"; v.DeleteFlag != want {
+			t.Errorf("want %s, got %s", want, v.DeleteFlag)
+		}
+	})
+
 	t.Cleanup(func() {
 		o.Close(false)
 	})
