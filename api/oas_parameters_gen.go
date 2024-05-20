@@ -15,6 +15,124 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
+// CustomersCustomerIDCardsIDGetParams is parameters of GET /customers/{customer_id}/cards/{id} operation.
+type CustomersCustomerIDCardsIDGetParams struct {
+	CustomerID string
+	ID         string
+}
+
+func unpackCustomersCustomerIDCardsIDGetParams(packed middleware.Parameters) (params CustomersCustomerIDCardsIDGetParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeCustomersCustomerIDCardsIDGetParams(args [2]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDCardsIDGetParams, _ error) {
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[1]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[1])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams is parameters of DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
 type CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams struct {
 	CustomerID      string

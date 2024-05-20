@@ -20,6 +20,110 @@ func (s *BearerAuth) SetToken(val string) {
 	s.Token = val
 }
 
+type CustomersCustomerIDCardsIDGetOK struct {
+	DefaultFlag OptString `json:"default_flag"`
+	CardNo      OptString `json:"card_no"`
+	Expire      OptString `json:"expire"`
+	HolderName  OptString `json:"holder_name"`
+	CardNoHash  OptString `json:"card_no_hash"`
+	Created     OptString `json:"created"`
+	Updated     OptString `json:"updated"`
+	Type        OptString `json:"type"`
+	Brand       OptString `json:"brand"`
+}
+
+// GetDefaultFlag returns the value of DefaultFlag.
+func (s *CustomersCustomerIDCardsIDGetOK) GetDefaultFlag() OptString {
+	return s.DefaultFlag
+}
+
+// GetCardNo returns the value of CardNo.
+func (s *CustomersCustomerIDCardsIDGetOK) GetCardNo() OptString {
+	return s.CardNo
+}
+
+// GetExpire returns the value of Expire.
+func (s *CustomersCustomerIDCardsIDGetOK) GetExpire() OptString {
+	return s.Expire
+}
+
+// GetHolderName returns the value of HolderName.
+func (s *CustomersCustomerIDCardsIDGetOK) GetHolderName() OptString {
+	return s.HolderName
+}
+
+// GetCardNoHash returns the value of CardNoHash.
+func (s *CustomersCustomerIDCardsIDGetOK) GetCardNoHash() OptString {
+	return s.CardNoHash
+}
+
+// GetCreated returns the value of Created.
+func (s *CustomersCustomerIDCardsIDGetOK) GetCreated() OptString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *CustomersCustomerIDCardsIDGetOK) GetUpdated() OptString {
+	return s.Updated
+}
+
+// GetType returns the value of Type.
+func (s *CustomersCustomerIDCardsIDGetOK) GetType() OptString {
+	return s.Type
+}
+
+// GetBrand returns the value of Brand.
+func (s *CustomersCustomerIDCardsIDGetOK) GetBrand() OptString {
+	return s.Brand
+}
+
+// SetDefaultFlag sets the value of DefaultFlag.
+func (s *CustomersCustomerIDCardsIDGetOK) SetDefaultFlag(val OptString) {
+	s.DefaultFlag = val
+}
+
+// SetCardNo sets the value of CardNo.
+func (s *CustomersCustomerIDCardsIDGetOK) SetCardNo(val OptString) {
+	s.CardNo = val
+}
+
+// SetExpire sets the value of Expire.
+func (s *CustomersCustomerIDCardsIDGetOK) SetExpire(val OptString) {
+	s.Expire = val
+}
+
+// SetHolderName sets the value of HolderName.
+func (s *CustomersCustomerIDCardsIDGetOK) SetHolderName(val OptString) {
+	s.HolderName = val
+}
+
+// SetCardNoHash sets the value of CardNoHash.
+func (s *CustomersCustomerIDCardsIDGetOK) SetCardNoHash(val OptString) {
+	s.CardNoHash = val
+}
+
+// SetCreated sets the value of Created.
+func (s *CustomersCustomerIDCardsIDGetOK) SetCreated(val OptString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *CustomersCustomerIDCardsIDGetOK) SetUpdated(val OptString) {
+	s.Updated = val
+}
+
+// SetType sets the value of Type.
+func (s *CustomersCustomerIDCardsIDGetOK) SetType(val OptString) {
+	s.Type = val
+}
+
+// SetBrand sets the value of Brand.
+func (s *CustomersCustomerIDCardsIDGetOK) SetBrand(val OptString) {
+	s.Brand = val
+}
+
+func (*CustomersCustomerIDCardsIDGetOK) customersCustomerIDCardsIDGetRes() {}
+
 type CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOK struct {
 	ID         string `json:"id"`
 	DeleteFlag string `json:"delete_flag"`
@@ -935,6 +1039,7 @@ func (s *ErrorResponse) SetErrors(val []ErrorResponseErrorsItem) {
 	s.Errors = val
 }
 
+func (*ErrorResponse) customersCustomerIDCardsIDGetRes()                          {}
 func (*ErrorResponse) customersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes() {}
 func (*ErrorResponse) customersCustomerIDPaymentMethodsPaymentMethodIDGetRes()    {}
 func (*ErrorResponse) customersCustomerIDPaymentMethodsPostRes()                  {}

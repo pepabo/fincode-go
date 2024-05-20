@@ -36,6 +36,8 @@ func TestPayments(t *testing.T) {
 		t.Fatal("card_id not found")
 	}
 
+	holderName := "FINCODE MEMBER" // same as testdata/scenarios/register_card_tds_with_challenge.yml
+
 	t.Logf("customer_id: %s", customerID)
 	t.Logf("card_id: %s", cardID)
 
@@ -119,6 +121,23 @@ func TestPayments(t *testing.T) {
 			}
 		}
 		t.Errorf("payment not found: %s", accessID)
+	})
+
+	t.Run("Get Card", func(t *testing.T) {
+		res, err := c.CustomersCustomerIDCardsIDGet(ctx, api.CustomersCustomerIDCardsIDGetParams{
+			CustomerID: customerID,
+			ID:         cardID,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.CustomersCustomerIDCardsIDGetOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		if want := holderName; v.HolderName.Value != want {
+			t.Errorf("want %s, got %s", want, v.HolderName.Value)
+		}
 	})
 
 	t.Cleanup(func() {

@@ -13,6 +13,205 @@ import (
 )
 
 // Encode implements json.Marshaler.
+func (s *CustomersCustomerIDCardsIDGetOK) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *CustomersCustomerIDCardsIDGetOK) encodeFields(e *jx.Encoder) {
+	{
+		if s.DefaultFlag.Set {
+			e.FieldStart("default_flag")
+			s.DefaultFlag.Encode(e)
+		}
+	}
+	{
+		if s.CardNo.Set {
+			e.FieldStart("card_no")
+			s.CardNo.Encode(e)
+		}
+	}
+	{
+		if s.Expire.Set {
+			e.FieldStart("expire")
+			s.Expire.Encode(e)
+		}
+	}
+	{
+		if s.HolderName.Set {
+			e.FieldStart("holder_name")
+			s.HolderName.Encode(e)
+		}
+	}
+	{
+		if s.CardNoHash.Set {
+			e.FieldStart("card_no_hash")
+			s.CardNoHash.Encode(e)
+		}
+	}
+	{
+		if s.Created.Set {
+			e.FieldStart("created")
+			s.Created.Encode(e)
+		}
+	}
+	{
+		if s.Updated.Set {
+			e.FieldStart("updated")
+			s.Updated.Encode(e)
+		}
+	}
+	{
+		if s.Type.Set {
+			e.FieldStart("type")
+			s.Type.Encode(e)
+		}
+	}
+	{
+		if s.Brand.Set {
+			e.FieldStart("brand")
+			s.Brand.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfCustomersCustomerIDCardsIDGetOK = [9]string{
+	0: "default_flag",
+	1: "card_no",
+	2: "expire",
+	3: "holder_name",
+	4: "card_no_hash",
+	5: "created",
+	6: "updated",
+	7: "type",
+	8: "brand",
+}
+
+// Decode decodes CustomersCustomerIDCardsIDGetOK from json.
+func (s *CustomersCustomerIDCardsIDGetOK) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CustomersCustomerIDCardsIDGetOK to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "default_flag":
+			if err := func() error {
+				s.DefaultFlag.Reset()
+				if err := s.DefaultFlag.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"default_flag\"")
+			}
+		case "card_no":
+			if err := func() error {
+				s.CardNo.Reset()
+				if err := s.CardNo.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_no\"")
+			}
+		case "expire":
+			if err := func() error {
+				s.Expire.Reset()
+				if err := s.Expire.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"expire\"")
+			}
+		case "holder_name":
+			if err := func() error {
+				s.HolderName.Reset()
+				if err := s.HolderName.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"holder_name\"")
+			}
+		case "card_no_hash":
+			if err := func() error {
+				s.CardNoHash.Reset()
+				if err := s.CardNoHash.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_no_hash\"")
+			}
+		case "created":
+			if err := func() error {
+				s.Created.Reset()
+				if err := s.Created.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"created\"")
+			}
+		case "updated":
+			if err := func() error {
+				s.Updated.Reset()
+				if err := s.Updated.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"updated\"")
+			}
+		case "type":
+			if err := func() error {
+				s.Type.Reset()
+				if err := s.Type.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"type\"")
+			}
+		case "brand":
+			if err := func() error {
+				s.Brand.Reset()
+				if err := s.Brand.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"brand\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode CustomersCustomerIDCardsIDGetOK")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *CustomersCustomerIDCardsIDGetOK) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CustomersCustomerIDCardsIDGetOK) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOK) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
