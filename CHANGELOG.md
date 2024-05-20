@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.1.2](https://github.com/pepabo/fincode-go/compare/v0.1.1...v0.1.2) - 2024-05-20
+### Other Changes
+- Add GET /customers/{customer_id}/cards/{id} by @n3xem in https://github.com/pepabo/fincode-go/pull/10
+- Add DELETE /customers/{customer_id}/cards/{id} paths by @n3xem in https://github.com/pepabo/fincode-go/pull/11
+
 ## [v0.1.1](https://github.com/pepabo/fincode-go/compare/v0.1.0...v0.1.1) - 2024-05-13
 ### Other Changes
 - Add `GET /payments` by @naoyafurudono in https://github.com/pepabo/fincode-go/pull/8
