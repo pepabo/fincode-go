@@ -142,13 +142,18 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							if len(elem) == 0 {
 								// Leaf node.
 								switch r.Method {
+								case "DELETE":
+									s.handleCustomersCustomerIDCardsIDDeleteRequest([2]string{
+										args[0],
+										args[1],
+									}, elemIsEscaped, w, r)
 								case "GET":
 									s.handleCustomersCustomerIDCardsIDGetRequest([2]string{
 										args[0],
 										args[1],
 									}, elemIsEscaped, w, r)
 								default:
-									s.notAllowed(w, r, "GET")
+									s.notAllowed(w, r, "DELETE,GET")
 								}
 
 								return
@@ -459,6 +464,15 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 
 							if len(elem) == 0 {
 								switch method {
+								case "DELETE":
+									// Leaf: CustomersCustomerIDCardsIDDelete
+									r.name = "CustomersCustomerIDCardsIDDelete"
+									r.summary = ""
+									r.operationID = ""
+									r.pathPattern = "/customers/{customer_id}/cards/{id}"
+									r.args = args
+									r.count = 2
+									return r, true
 								case "GET":
 									// Leaf: CustomersCustomerIDCardsIDGet
 									r.name = "CustomersCustomerIDCardsIDGet"

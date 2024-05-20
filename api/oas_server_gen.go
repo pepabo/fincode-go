@@ -8,6 +8,10 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
+	// CustomersCustomerIDCardsIDDelete implements DELETE /customers/{customer_id}/cards/{id} operation.
+	//
+	// DELETE /customers/{customer_id}/cards/{id}
+	CustomersCustomerIDCardsIDDelete(ctx context.Context, params CustomersCustomerIDCardsIDDeleteParams) (CustomersCustomerIDCardsIDDeleteRes, error)
 	// CustomersCustomerIDCardsIDGet implements GET /customers/{customer_id}/cards/{id} operation.
 	//
 	// GET /customers/{customer_id}/cards/{id}

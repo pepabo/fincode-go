@@ -20,6 +20,33 @@ func (s *BearerAuth) SetToken(val string) {
 	s.Token = val
 }
 
+type CustomersCustomerIDCardsIDDeleteOK struct {
+	ID         string `json:"id"`
+	DeleteFlag string `json:"delete_flag"`
+}
+
+// GetID returns the value of ID.
+func (s *CustomersCustomerIDCardsIDDeleteOK) GetID() string {
+	return s.ID
+}
+
+// GetDeleteFlag returns the value of DeleteFlag.
+func (s *CustomersCustomerIDCardsIDDeleteOK) GetDeleteFlag() string {
+	return s.DeleteFlag
+}
+
+// SetID sets the value of ID.
+func (s *CustomersCustomerIDCardsIDDeleteOK) SetID(val string) {
+	s.ID = val
+}
+
+// SetDeleteFlag sets the value of DeleteFlag.
+func (s *CustomersCustomerIDCardsIDDeleteOK) SetDeleteFlag(val string) {
+	s.DeleteFlag = val
+}
+
+func (*CustomersCustomerIDCardsIDDeleteOK) customersCustomerIDCardsIDDeleteRes() {}
+
 type CustomersCustomerIDCardsIDGetOK struct {
 	DefaultFlag OptString `json:"default_flag"`
 	CardNo      OptString `json:"card_no"`
@@ -1039,6 +1066,7 @@ func (s *ErrorResponse) SetErrors(val []ErrorResponseErrorsItem) {
 	s.Errors = val
 }
 
+func (*ErrorResponse) customersCustomerIDCardsIDDeleteRes()                       {}
 func (*ErrorResponse) customersCustomerIDCardsIDGetRes()                          {}
 func (*ErrorResponse) customersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes() {}
 func (*ErrorResponse) customersCustomerIDPaymentMethodsPaymentMethodIDGetRes()    {}
