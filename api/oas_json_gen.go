@@ -15389,6 +15389,45 @@ func (s *PaymentsGetOKListItem) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes PaymentsIDGetOK as json.
+func (s PaymentsIDGetOK) Encode(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentCardResponsePaymentsIDGetOK:
+		s.PaymentCardResponse.Encode(e)
+	}
+}
+
+// Decode decodes PaymentsIDGetOK from json.
+func (s *PaymentsIDGetOK) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentsIDGetOK to nil")
+	}
+	// Sum type type_discriminator.
+	switch t := d.Next(); t {
+	case jx.Object:
+		if err := s.PaymentCardResponse.Decode(d); err != nil {
+			return err
+		}
+		s.Type = PaymentCardResponsePaymentsIDGetOK
+	default:
+		return errors.Errorf("unexpected json type %q", t)
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentsIDGetOK) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentsIDGetOK) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes PaymentsIDPutOK as json.
 func (s PaymentsIDPutOK) Encode(e *jx.Encoder) {
 	switch s.Type {

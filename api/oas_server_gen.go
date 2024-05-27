@@ -44,6 +44,10 @@ type Handler interface {
 	//
 	// GET /payments
 	PaymentsGet(ctx context.Context, params PaymentsGetParams) (PaymentsGetRes, error)
+	// PaymentsIDGet implements GET /payments/{id} operation.
+	//
+	// GET /payments/{id}
+	PaymentsIDGet(ctx context.Context, params PaymentsIDGetParams) (PaymentsIDGetRes, error)
 	// PaymentsIDPut implements PUT /payments/{id} operation.
 	//
 	// PUT /payments/{id}

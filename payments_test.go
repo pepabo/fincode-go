@@ -101,6 +101,27 @@ func TestPayments(t *testing.T) {
 		}
 	})
 
+	t.Run("Get a Payment", func(t *testing.T) {
+		res, err := c.PaymentsIDGet(ctx, api.PaymentsIDGetParams{
+			ID: orderID,
+			PayType: "Card",
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.PaymentsIDGetOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		if want := orderID; v.PaymentCardResponse.ID.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCardResponse.ID.Value)
+		}
+
+		if want := accessID; v.PaymentCardResponse.AccessID.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCardResponse.AccessID.Value)
+		}
+	})
+
 	t.Run("List Payments", func(t *testing.T) {
 		today := time.Now().Format("2006/01/02")
 		res, err := c.PaymentsGet(ctx, api.PaymentsGetParams{
