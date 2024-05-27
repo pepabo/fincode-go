@@ -37,6 +37,10 @@ type PaymentsGetRes interface {
 	paymentsGetRes()
 }
 
+type PaymentsIDGetRes interface {
+	paymentsIDGetRes()
+}
+
 type PaymentsIDPutRes interface {
 	paymentsIDPutRes()
 }

@@ -1074,6 +1074,7 @@ func (*ErrorResponse) customersCustomerIDPaymentMethodsPostRes()                
 func (*ErrorResponse) customersIDDeleteRes()                                      {}
 func (*ErrorResponse) customersIDGetRes()                                         {}
 func (*ErrorResponse) customersPostRes()                                          {}
+func (*ErrorResponse) paymentsIDGetRes()                                          {}
 func (*ErrorResponse) paymentsIDPutRes()                                          {}
 func (*ErrorResponse) paymentsPostRes()                                           {}
 
@@ -11884,6 +11885,48 @@ func (s *PaymentsGetOKListItem) SetCreated(val OptString) {
 func (s *PaymentsGetOKListItem) SetUpdated(val OptString) {
 	s.Updated = val
 }
+
+// PaymentsIDGetOK represents sum type.
+type PaymentsIDGetOK struct {
+	Type                PaymentsIDGetOKType // switch on this field
+	PaymentCardResponse PaymentCardResponse
+}
+
+// PaymentsIDGetOKType is oneOf type of PaymentsIDGetOK.
+type PaymentsIDGetOKType string
+
+// Possible values for PaymentsIDGetOKType.
+const (
+	PaymentCardResponsePaymentsIDGetOK PaymentsIDGetOKType = "PaymentCardResponse"
+)
+
+// IsPaymentCardResponse reports whether PaymentsIDGetOK is PaymentCardResponse.
+func (s PaymentsIDGetOK) IsPaymentCardResponse() bool {
+	return s.Type == PaymentCardResponsePaymentsIDGetOK
+}
+
+// SetPaymentCardResponse sets PaymentsIDGetOK to PaymentCardResponse.
+func (s *PaymentsIDGetOK) SetPaymentCardResponse(v PaymentCardResponse) {
+	s.Type = PaymentCardResponsePaymentsIDGetOK
+	s.PaymentCardResponse = v
+}
+
+// GetPaymentCardResponse returns PaymentCardResponse and true boolean if PaymentsIDGetOK is PaymentCardResponse.
+func (s PaymentsIDGetOK) GetPaymentCardResponse() (v PaymentCardResponse, ok bool) {
+	if !s.IsPaymentCardResponse() {
+		return v, false
+	}
+	return s.PaymentCardResponse, true
+}
+
+// NewPaymentCardResponsePaymentsIDGetOK returns new PaymentsIDGetOK from PaymentCardResponse.
+func NewPaymentCardResponsePaymentsIDGetOK(v PaymentCardResponse) PaymentsIDGetOK {
+	var s PaymentsIDGetOK
+	s.SetPaymentCardResponse(v)
+	return s
+}
+
+func (*PaymentsIDGetOK) paymentsIDGetRes() {}
 
 // PaymentsIDPutOK represents sum type.
 type PaymentsIDPutOK struct {

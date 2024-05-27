@@ -264,12 +264,16 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					if len(elem) == 0 {
 						// Leaf node.
 						switch r.Method {
+						case "GET":
+							s.handlePaymentsIDGetRequest([1]string{
+								args[0],
+							}, elemIsEscaped, w, r)
 						case "PUT":
 							s.handlePaymentsIDPutRequest([1]string{
 								args[0],
 							}, elemIsEscaped, w, r)
 						default:
-							s.notAllowed(w, r, "PUT")
+							s.notAllowed(w, r, "GET,PUT")
 						}
 
 						return
@@ -608,6 +612,15 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 
 					if len(elem) == 0 {
 						switch method {
+						case "GET":
+							// Leaf: PaymentsIDGet
+							r.name = "PaymentsIDGet"
+							r.summary = ""
+							r.operationID = ""
+							r.pathPattern = "/payments/{id}"
+							r.args = args
+							r.count = 1
+							return r, true
 						case "PUT":
 							// Leaf: PaymentsIDPut
 							r.name = "PaymentsIDPut"

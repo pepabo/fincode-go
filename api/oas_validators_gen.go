@@ -3110,6 +3110,18 @@ func (s PaymentMethodDirectDebitResponseStatus) Validate() error {
 	}
 }
 
+func (s PaymentsIDGetOK) Validate() error {
+	switch s.Type {
+	case PaymentCardResponsePaymentsIDGetOK:
+		if err := s.PaymentCardResponse.Validate(); err != nil {
+			return err
+		}
+		return nil
+	default:
+		return errors.Errorf("invalid type %q", s.Type)
+	}
+}
+
 func (s PaymentsIDPutOK) Validate() error {
 	switch s.Type {
 	case PaymentDoCardResponsePaymentsIDPutOK:
