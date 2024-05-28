@@ -128,6 +128,7 @@ func TestPayments(t *testing.T) {
 			PayType: "Card",
 			ProcessDataFrom: api.NewOptString(today),
 			Limit: api.NewOptInt(100),
+			CustomerID: api.NewOptString(customerID),
 		})
 		if err != nil {
 			t.Fatal(err)
