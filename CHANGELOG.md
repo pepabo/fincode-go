@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.4](https://github.com/pepabo/fincode-go/compare/v0.1.3...v0.1.4) - 2024-05-28
+### Other Changes
+- Modify payment method response to accept nullable field by @naoyafurudono in https://github.com/pepabo/fincode-go/pull/15
+
 ## [v0.1.3](https://github.com/pepabo/fincode-go/compare/v0.1.2...v0.1.3) - 2024-05-27
 ### Other Changes
 - Add `GET /payments/{id}` by @naoyafurudono in https://github.com/pepabo/fincode-go/pull/13
