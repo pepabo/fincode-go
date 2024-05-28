@@ -467,9 +467,9 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							elem = ""
 
 							if len(elem) == 0 {
+								// Leaf node.
 								switch method {
 								case "DELETE":
-									// Leaf: CustomersCustomerIDCardsIDDelete
 									r.name = "CustomersCustomerIDCardsIDDelete"
 									r.summary = ""
 									r.operationID = ""
@@ -478,7 +478,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									r.count = 2
 									return r, true
 								case "GET":
-									// Leaf: CustomersCustomerIDCardsIDGet
 									r.name = "CustomersCustomerIDCardsIDGet"
 									r.summary = ""
 									r.operationID = ""
@@ -529,9 +528,9 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								elem = ""
 
 								if len(elem) == 0 {
+									// Leaf node.
 									switch method {
 									case "DELETE":
-										// Leaf: CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete
 										r.name = "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete"
 										r.summary = ""
 										r.operationID = ""
@@ -540,7 +539,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 										r.count = 2
 										return r, true
 									case "GET":
-										// Leaf: CustomersCustomerIDPaymentMethodsPaymentMethodIDGet
 										r.name = "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet"
 										r.summary = ""
 										r.operationID = ""
@@ -611,9 +609,9 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					elem = ""
 
 					if len(elem) == 0 {
+						// Leaf node.
 						switch method {
 						case "GET":
-							// Leaf: PaymentsIDGet
 							r.name = "PaymentsIDGet"
 							r.summary = ""
 							r.operationID = ""
@@ -622,7 +620,6 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							r.count = 1
 							return r, true
 						case "PUT":
-							// Leaf: PaymentsIDPut
 							r.name = "PaymentsIDPut"
 							r.summary = ""
 							r.operationID = ""
