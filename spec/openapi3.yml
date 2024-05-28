@@ -1682,6 +1682,7 @@ components:
           pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
         redirect_url:
           type: string
+          nullable: true
         status:
           type: string
           enum:
@@ -1690,8 +1691,10 @@ components:
             - ACTIVATED
         return_url:
           type: string
+          nullable: true
         return_url_on_failure:
           type: string
+          nullable: true
         default_flag:
           type: string
           enum:
