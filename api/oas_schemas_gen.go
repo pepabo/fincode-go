@@ -8405,10 +8405,10 @@ type PaymentMethodCardResponse struct {
 	PayType            PaymentMethodCardResponsePayType        `json:"pay_type"`
 	CustomerID         string                                  `json:"customer_id"`
 	ProcessDate        OptString                               `json:"process_date"`
-	RedirectURL        OptString                               `json:"redirect_url"`
+	RedirectURL        OptNilString                            `json:"redirect_url"`
 	Status             OptPaymentMethodCardResponseStatus      `json:"status"`
-	ReturnURL          OptString                               `json:"return_url"`
-	ReturnURLOnFailure OptString                               `json:"return_url_on_failure"`
+	ReturnURL          OptNilString                            `json:"return_url"`
+	ReturnURLOnFailure OptNilString                            `json:"return_url_on_failure"`
 	DefaultFlag        OptPaymentMethodCardResponseDefaultFlag `json:"default_flag"`
 	DeleteFlag         OptString                               `json:"delete_flag"`
 	ClientField1       OptNilString                            `json:"client_field_1"`
@@ -8440,7 +8440,7 @@ func (s *PaymentMethodCardResponse) GetProcessDate() OptString {
 }
 
 // GetRedirectURL returns the value of RedirectURL.
-func (s *PaymentMethodCardResponse) GetRedirectURL() OptString {
+func (s *PaymentMethodCardResponse) GetRedirectURL() OptNilString {
 	return s.RedirectURL
 }
 
@@ -8450,12 +8450,12 @@ func (s *PaymentMethodCardResponse) GetStatus() OptPaymentMethodCardResponseStat
 }
 
 // GetReturnURL returns the value of ReturnURL.
-func (s *PaymentMethodCardResponse) GetReturnURL() OptString {
+func (s *PaymentMethodCardResponse) GetReturnURL() OptNilString {
 	return s.ReturnURL
 }
 
 // GetReturnURLOnFailure returns the value of ReturnURLOnFailure.
-func (s *PaymentMethodCardResponse) GetReturnURLOnFailure() OptString {
+func (s *PaymentMethodCardResponse) GetReturnURLOnFailure() OptNilString {
 	return s.ReturnURLOnFailure
 }
 
@@ -8520,7 +8520,7 @@ func (s *PaymentMethodCardResponse) SetProcessDate(val OptString) {
 }
 
 // SetRedirectURL sets the value of RedirectURL.
-func (s *PaymentMethodCardResponse) SetRedirectURL(val OptString) {
+func (s *PaymentMethodCardResponse) SetRedirectURL(val OptNilString) {
 	s.RedirectURL = val
 }
 
@@ -8530,12 +8530,12 @@ func (s *PaymentMethodCardResponse) SetStatus(val OptPaymentMethodCardResponseSt
 }
 
 // SetReturnURL sets the value of ReturnURL.
-func (s *PaymentMethodCardResponse) SetReturnURL(val OptString) {
+func (s *PaymentMethodCardResponse) SetReturnURL(val OptNilString) {
 	s.ReturnURL = val
 }
 
 // SetReturnURLOnFailure sets the value of ReturnURLOnFailure.
-func (s *PaymentMethodCardResponse) SetReturnURLOnFailure(val OptString) {
+func (s *PaymentMethodCardResponse) SetReturnURLOnFailure(val OptNilString) {
 	s.ReturnURLOnFailure = val
 }
 
