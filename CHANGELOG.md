@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.5](https://github.com/pepabo/fincode-go/compare/v0.1.4...v0.1.5) - 2024-05-28
+### Other Changes
+- Make access ID to be nullable by @naoyafurudono in https://github.com/pepabo/fincode-go/pull/17
+
 ## [v0.1.4](https://github.com/pepabo/fincode-go/compare/v0.1.3...v0.1.4) - 2024-05-28
 ### Other Changes
 - Modify payment method response to accept nullable field by @naoyafurudono in https://github.com/pepabo/fincode-go/pull/15
