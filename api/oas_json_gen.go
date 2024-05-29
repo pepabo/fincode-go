@@ -10460,8 +10460,10 @@ func (s *PaymentMethodCardResponseCard) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		e.FieldStart("access_id")
-		e.Str(s.AccessID)
+		if s.AccessID.Set {
+			e.FieldStart("access_id")
+			s.AccessID.Encode(e)
+		}
 	}
 	{
 		if s.Acs.Set {
@@ -10492,7 +10494,6 @@ func (s *PaymentMethodCardResponseCard) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode PaymentMethodCardResponseCard to nil")
 	}
-	var requiredBitSet [2]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
@@ -10607,11 +10608,9 @@ func (s *PaymentMethodCardResponseCard) Decode(d *jx.Decoder) error {
 				return errors.Wrap(err, "decode field \"merchant_name\"")
 			}
 		case "access_id":
-			requiredBitSet[1] |= 1 << 3
 			if err := func() error {
-				v, err := d.Str()
-				s.AccessID = string(v)
-				if err != nil {
+				s.AccessID.Reset()
+				if err := s.AccessID.Decode(d); err != nil {
 					return err
 				}
 				return nil
@@ -10634,39 +10633,6 @@ func (s *PaymentMethodCardResponseCard) Decode(d *jx.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode PaymentMethodCardResponseCard")
-	}
-	// Validate required fields.
-	var failures []validate.FieldError
-	for i, mask := range [2]uint8{
-		0b00000000,
-		0b00001000,
-	} {
-		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
-			// Mask only required fields and check equality to mask using XOR.
-			//
-			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
-			// Bits of fields which would be set are actually bits of missed fields.
-			missed := bits.OnesCount8(result)
-			for bitN := 0; bitN < missed; bitN++ {
-				bitIdx := bits.TrailingZeros8(result)
-				fieldIdx := i*8 + bitIdx
-				var name string
-				if fieldIdx < len(jsonFieldsNameOfPaymentMethodCardResponseCard) {
-					name = jsonFieldsNameOfPaymentMethodCardResponseCard[fieldIdx]
-				} else {
-					name = strconv.Itoa(fieldIdx)
-				}
-				failures = append(failures, validate.FieldError{
-					Name:  name,
-					Error: validate.ErrFieldRequired,
-				})
-				// Reset bit.
-				result &^= 1 << bitIdx
-			}
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
 	}
 
 	return nil

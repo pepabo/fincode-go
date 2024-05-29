@@ -8591,7 +8591,7 @@ type PaymentMethodCardResponseCard struct {
 	Tds2Type     OptNilPaymentMethodCardResponseCardTds2Type   `json:"tds2_type"`
 	Tds2Status   OptNilPaymentMethodCardResponseCardTds2Status `json:"tds2_status"`
 	MerchantName OptNilString                                  `json:"merchant_name"`
-	AccessID     string                                        `json:"access_id"`
+	AccessID     OptNilString                                  `json:"access_id"`
 	Acs          OptNilString                                  `json:"acs"`
 }
 
@@ -8651,7 +8651,7 @@ func (s *PaymentMethodCardResponseCard) GetMerchantName() OptNilString {
 }
 
 // GetAccessID returns the value of AccessID.
-func (s *PaymentMethodCardResponseCard) GetAccessID() string {
+func (s *PaymentMethodCardResponseCard) GetAccessID() OptNilString {
 	return s.AccessID
 }
 
@@ -8716,7 +8716,7 @@ func (s *PaymentMethodCardResponseCard) SetMerchantName(val OptNilString) {
 }
 
 // SetAccessID sets the value of AccessID.
-func (s *PaymentMethodCardResponseCard) SetAccessID(val string) {
+func (s *PaymentMethodCardResponseCard) SetAccessID(val OptNilString) {
 	s.AccessID = val
 }
 
