@@ -46,6 +46,11 @@ paths:
           required: true
           schema:
             type: string
+            enum:
+              - Card
+              - Applepay
+              - Konbini
+              - Paypay
           description: |
             決済種別
               Card- クレジットカード決済
@@ -1145,6 +1150,7 @@ components:
           properties:
             token:
               type: string
+
     paymentMethodDirectDebit:
       type: object
       required:

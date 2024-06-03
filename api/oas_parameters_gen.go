@@ -704,7 +704,7 @@ type PaymentsGetParams struct {
 	// Applepay - Apple Pay
 	// Konbini- コンビニ決済
 	// Paypay- PayPay.
-	PayType string
+	PayType PaymentsGetPayType
 	// 加盟店自由項目1-3に対する部分一致.
 	Keyword OptString
 	// 利用金額+税送料の合計(min).
@@ -785,7 +785,7 @@ func unpackPaymentsGetParams(packed middleware.Parameters) (params PaymentsGetPa
 			Name: "pay_type",
 			In:   "query",
 		}
-		params.PayType = packed[key].(string)
+		params.PayType = packed[key].(PaymentsGetPayType)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -1093,9 +1093,17 @@ func decodePaymentsGetParams(args [0]string, argsEscaped bool, r *http.Request) 
 					return err
 				}
 
-				params.PayType = c
+				params.PayType = PaymentsGetPayType(c)
 				return nil
 			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := params.PayType.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
 				return err
 			}
 		} else {

@@ -125,7 +125,7 @@ func TestPayments(t *testing.T) {
 	t.Run("List Payments", func(t *testing.T) {
 		today := time.Now().Format("2006/01/02")
 		res, err := c.PaymentsGet(ctx, api.PaymentsGetParams{
-			PayType: "Card",
+			PayType: api.PaymentsGetPayTypeCard,
 			ProcessDataFrom: api.NewOptString(today),
 			Limit: api.NewOptInt(100),
 			CustomerID: api.NewOptString(customerID),

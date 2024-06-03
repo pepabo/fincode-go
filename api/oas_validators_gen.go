@@ -3110,6 +3110,21 @@ func (s PaymentMethodDirectDebitResponseStatus) Validate() error {
 	}
 }
 
+func (s PaymentsGetPayType) Validate() error {
+	switch s {
+	case "Card":
+		return nil
+	case "Applepay":
+		return nil
+	case "Konbini":
+		return nil
+	case "Paypay":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s PaymentsIDGetOK) Validate() error {
 	switch s.Type {
 	case PaymentCardResponsePaymentsIDGetOK:

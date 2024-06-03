@@ -1274,7 +1274,7 @@ func (c *Client) sendPaymentsGet(ctx context.Context, params PaymentsGetParams) 
 		}
 
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.PayType))
+			return e.EncodeValue(conv.StringToString(string(params.PayType)))
 		}); err != nil {
 			return res, errors.Wrap(err, "encode query")
 		}

@@ -11886,6 +11886,61 @@ func (s *PaymentsGetOKListItem) SetUpdated(val OptString) {
 	s.Updated = val
 }
 
+type PaymentsGetPayType string
+
+const (
+	PaymentsGetPayTypeCard     PaymentsGetPayType = "Card"
+	PaymentsGetPayTypeApplepay PaymentsGetPayType = "Applepay"
+	PaymentsGetPayTypeKonbini  PaymentsGetPayType = "Konbini"
+	PaymentsGetPayTypePaypay   PaymentsGetPayType = "Paypay"
+)
+
+// AllValues returns all PaymentsGetPayType values.
+func (PaymentsGetPayType) AllValues() []PaymentsGetPayType {
+	return []PaymentsGetPayType{
+		PaymentsGetPayTypeCard,
+		PaymentsGetPayTypeApplepay,
+		PaymentsGetPayTypeKonbini,
+		PaymentsGetPayTypePaypay,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentsGetPayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentsGetPayTypeCard:
+		return []byte(s), nil
+	case PaymentsGetPayTypeApplepay:
+		return []byte(s), nil
+	case PaymentsGetPayTypeKonbini:
+		return []byte(s), nil
+	case PaymentsGetPayTypePaypay:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentsGetPayType) UnmarshalText(data []byte) error {
+	switch PaymentsGetPayType(data) {
+	case PaymentsGetPayTypeCard:
+		*s = PaymentsGetPayTypeCard
+		return nil
+	case PaymentsGetPayTypeApplepay:
+		*s = PaymentsGetPayTypeApplepay
+		return nil
+	case PaymentsGetPayTypeKonbini:
+		*s = PaymentsGetPayTypeKonbini
+		return nil
+	case PaymentsGetPayTypePaypay:
+		*s = PaymentsGetPayTypePaypay
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 // PaymentsIDGetOK represents sum type.
 type PaymentsIDGetOK struct {
 	Type                PaymentsIDGetOKType // switch on this field
