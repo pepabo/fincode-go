@@ -1576,7 +1576,7 @@ paths:
             def main
                 customer_id = '<Customer ID>'
                 card_id = '<Card ID>'
-                
+
                 endpoint = "/v1/customers/#{customer_id}/cards/#{card_id}"
 
                 uri = URI.parse(BASE_URL + endpoint)
@@ -1935,7 +1935,7 @@ paths:
             api_key = '<Secret API Key>'
 
             customer_id = '<Customer ID>'
-            card_id = '<Card ID>' 
+            card_id = '<Card ID>'
 
             url = f'https://api.test.fincode.jp/v1/customers/{customer_id}/cards/{card_id}/'
 
@@ -2214,7 +2214,7 @@ paths:
             def main
                 customer_id = '<Customer ID>'
                 endpoint = "/v1/customers/#{customer_id}/payment_methods"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -2231,7 +2231,7 @@ paths:
                         account_type: "1",
                         account_number: "0999999",
                         account_name_kana: "ナマエカナ"
-                    }   
+                    }
                 }
 
                 # リクエストの作成
@@ -2422,7 +2422,7 @@ paths:
                 customer_id = '<Customer ID>'
 
                 endpoint = "/v1/customers/#{customer_id}/payment_methods"
-                query_params =  { 
+                query_params =  {
                     limit: 10,
                     pay_type: 'Directdebit',
                 }
@@ -2825,7 +2825,7 @@ paths:
             def main
                 customer_id = '<Customer ID>'
                 payment_method_id = '<Payment Method ID>'
-                
+
                 endpoint = "/v1/customers/#{customer_id}/payment_methods/#{payment_method_id}"
                 query_params =  {
                     limit: 10,
@@ -3969,7 +3969,7 @@ paths:
             def main
                 order_id = '<Order ID>'
                 endpoint = "/v1/payments/#{order_id}/capture"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -4212,7 +4212,7 @@ paths:
             def main
                 order_id = '<Order ID>'
                 endpoint = "/v1/payments/#{order_id}/cancel"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -4430,7 +4430,7 @@ paths:
             def main
                 order_id = '<Order ID>'
                 endpoint = "/v1/payments/#{order_id}/auth"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -4668,7 +4668,7 @@ paths:
             def main
                 order_id = '<Order ID>'
                 endpoint = "/v1/payments/#{order_id}/change"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -4888,7 +4888,7 @@ paths:
             def main
                 order_id = '<Order ID>'
                 endpoint = "/v1/payments/#{order_id}/secure"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -5118,7 +5118,7 @@ paths:
             def main
                 order_id = '<Order ID>'
                 endpoint = "/v1/payments/#{order_id}/barcode"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -5131,7 +5131,7 @@ paths:
                     win_width: "390",
                     win_height: "844",
                     pixel_ratio: "3.00",
-                    win_size_type: "2" 
+                    win_size_type: "2"
                 }
 
                 # リクエストの作成
@@ -6334,7 +6334,7 @@ paths:
             def main
                 endpoint = "/v1/plans"
                 query_params =  { limit: 10 }
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
                 uri.query = URI.encode_www_form(query_params)
 
@@ -6694,7 +6694,7 @@ paths:
 
                 http = Net::HTTP.new(uri.host, uri.port)
                 http.use_ssl = true
-                
+
                 data = {
                     plan_name: "Pro Plan",
                     description: "Pro Plan (previous: Gold Plan)"
@@ -7232,7 +7232,7 @@ paths:
 
             def main
                 endpoint = "/v1/subscriptions"
-                query_params =  { 
+                query_params =  {
                     limit: 10,
                     pay_type: 'Card'
                 }
@@ -7604,7 +7604,7 @@ paths:
             def main
                 subscription_id = '<Subscription ID>'
                 endpoint = "/v1/subscriptions/#{subscription_id}"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -8337,7 +8337,7 @@ paths:
 
                 file_path = '<Path to file>'
                 file_name = '<File Name>'
-                
+
                 with open(file_path, 'rb') as file:
                     files = {'file': (file_name, file)}
 
@@ -8386,7 +8386,7 @@ paths:
                     pay_type: 'Card',
                     process_plan_date: '2025/12/31',
                 }
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
                 uri.query = URI.encode_www_form(query_params)
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -8394,7 +8394,7 @@ paths:
 
                 file_path = '<Path to file>'
                 file_name = '<File Name>'
-                
+
                 file = File.open(file_path, 'rb')
                 file_data = file.read
                 file.close
@@ -8968,7 +8968,7 @@ paths:
                 query_params =  { limit: 10 }
 
                 uri = URI.parse(BASE_URL + endpoint)
-                uri.query = URI.encode_www_form(query_params) 
+                uri.query = URI.encode_www_form(query_params)
 
                 http = Net::HTTP.new(uri.host, uri.port)
                 http.use_ssl = true
@@ -9142,7 +9142,7 @@ paths:
             def main
                 account_id = '<Account ID>'
                 endpoint = "/v1/accounts/#{account_id}"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -11068,12 +11068,12 @@ paths:
 
             def main
                 endpoint = "/v1/tenant_entries"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
                 http.use_ssl = true
-                
+
                 data = {
                     email: "<New User Email Address>",
                     password: "<New User Password>",
@@ -11837,7 +11837,7 @@ paths:
             def main
                 tenant_shop_id = '<Tenant Shop ID>'
                 endpoint = "/v1/contracts/examinations_v2/tenants/#{tenant_shop_id}"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -12125,7 +12125,7 @@ paths:
 
                 file_path = '<Path to file>'
                 file_name = '<File Name>'
-                
+
                 file = File.open(file_path, 'rb')
                 file_data = file.read
                 file.close
@@ -14106,7 +14106,7 @@ paths:
             def main
                 webhook_setting_id = '<Webhook Setting ID>'
                 endpoint = "/v1/webhook_settings/#{webhook_setting_id}"
-                
+
                 uri = URI.parse(BASE_URL + endpoint)
 
                 http = Net::HTTP.new(uri.host, uri.port)
@@ -14741,14 +14741,14 @@ components:
       properties:
         page:
           type: integer
-          minLength: 1
+          minimum: 1
           nullable: true
           description: ページ番号
         limit:
           type: integer
           nullable: true
-          minLength: 10
-          maxLength: 100
+          minimum: 10
+          maximum: 100
           description: 1回で取得するデータの最大件数
         count_only:
           type: boolean
@@ -17168,16 +17168,16 @@ components:
         total_amount_min:
           type: integer
           format: int64
-          minLength: 1
-          maxLength: 9999999
+          minimum: 1
+          maximum: 9999999
           description: |
             合計金額（始値）\
             利用金額と税送料の合計額（`total_amount`）を対象に範囲検索を行います。この値以上の合計金額を持つ決済情報を取得します。
         total_amount_max:
           type: integer
           format: int64
-          minLength: 1
-          maxLength: 9999999
+          minimum: 1
+          maximum: 9999999
           description: |
             合計金額（終値）\
             利用金額と税送料の合計額（`total_amount`）を対象に範囲検索を行います。この値以下の合計金額を持つ決済情報を取得します。
@@ -20867,8 +20867,8 @@ components:
       type: number
       format: int32
       nullable: true
-      minLength: 1
-      maxLength: 3
+      minimum: 1
+      maximum: 3
       example: 7
       description: |
         コンビニ決済 支払期限日数\
@@ -21880,8 +21880,8 @@ components:
           type: number
           format: int32
           nullable: true
-          minLength: 1
-          maxLength: 3
+          minimum: 1
+          maximu: 3
           example: 7
           description: |
             コンビニ決済 支払期限日数\
@@ -23145,24 +23145,24 @@ components:
             - $ref: '#/components/schemas/total_amount'
         initial_amount:
           type: integer
-          minLength: 1
-          maxLength: 9999999
+          minimum: 1
+          maximum: 9999999
           description: |
             初回利用金額\
             \
             この値が設定されているとき、このサブスクリプションは初回の課金のみこの金額で課金し、2回目以降はプラン情報がもつ`amount`の金額で課金します。
         initial_tax:
           type: integer
-          minLength: 1
-          maxLength: 9999999
+          minimum: 1
+          maximum: 9999999
           description: |
             初回税送料\
             \
             この値が設定されているとき、このサブスクリプションは初回の課金のみこの金額で課金し、2回目以降はプラン情報がもつ`tax`の金額で課金します。
         initial_total_amount:
           type: integer
-          minLength: 1
-          maxLength: 9999999
+          minimum: 1
+          maximum: 9999999
           description: |
             初回合計金額\
             \
@@ -24284,8 +24284,8 @@ components:
         売上入金ID
     account_id:
       type: integer
-      minLength: 7
-      maxLength: 7
+      minimum: 1000000
+      maximum: 9999999
       example: 1234567
       description: |
         精算ID
@@ -24568,8 +24568,8 @@ components:
             売上入金ID
         account_id:
           type: integer
-          minLength: 7
-          maxLength: 7
+          minimum: 1000000
+          maximum: 9999999
           example: 1234567
           description: |
             精算ID
@@ -24956,7 +24956,7 @@ components:
           example: 2022/05/16 23:59
           nullable: true
           description: |
-            集計期間の開始日\  
+            集計期間の開始日\
             形式： `yyyy/MM/dd HH:MM`
         aggregate_term_end:
           type: string
@@ -25039,8 +25039,8 @@ components:
         プラットフォーム利用料収入ID
     properties-account_id:
       type: integer
-      minLength: 6
-      maxLength: 6
+      minimum: 100000
+      maximum: 999999
       example: 123456
       description: |
         精算ID
@@ -25219,8 +25219,8 @@ components:
             プラットフォーム利用料収入ID
         account_id:
           type: integer
-          minLength: 6
-          maxLength: 6
+          minimum: 1000000
+          maximum: 9999999
           example: 123456
           description: |
             精算ID
@@ -25442,8 +25442,8 @@ components:
       properties:
         summary_id:
           type: integer
-          minLength: 8
-          maxLength: 8
+          minimum: 10000000
+          maximum: 99999999
           example: 12345678
           description: |
             プラットフォーム利用料収入サマリーID
@@ -26108,8 +26108,8 @@ components:
         - tenant_url_id
     Role_properties-id:
       type: integer
-      minLength: 1
-      maxLength: 11
+      minimum: 0
+      maximum: 2147483647
       example: 9
       description: |
         ロールID\
@@ -26582,8 +26582,8 @@ components:
         capital:
           type: number
           nullable: true
-          minLength: 1
-          maxLength: 19
+          minimum: 1
+          maximum: 2147483647
           example: 1000000
           description: |
             資本金
@@ -26598,8 +26598,8 @@ components:
         yearly_sales:
           type: number
           nullable: true
-          minLength: 1
-          maxLength: 19
+          minimum: 1
+          maximum: 2147483647
           example: 1000000
           description: |
             年商
@@ -27118,8 +27118,8 @@ components:
             商材1 説明
         content1_unit_price:
           type: integer
-          minLength: 1
-          maxLength: 19
+          minimum: 0
+          maximum: 2147483647
           example: 1000
           description: |
             商材1 単価
@@ -27139,8 +27139,8 @@ components:
             商材2 説明
         content2_unit_price:
           type: integer
-          minLength: 1
-          maxLength: 19
+          minimum: 0
+          maximum: 2147483647
           example: 2000
           description: |
             商材2 単価
@@ -27160,8 +27160,8 @@ components:
             商材3 説明
         content3_unit_price:
           type: integer
-          minLength: 1
-          maxLength: 19
+          minimum: 0
+          maximum: 2147483647
           example: 3000
           description: |
             商材3 単価
@@ -27210,8 +27210,8 @@ components:
         unit_price:
           type: number
           nullable: true
-          minLength: 1
-          maxLength: 23
+          minimum: 1
+          maximum: 2147483647
           example: 1000
           description: |
             1回の決済における金額（単価）\
@@ -27888,8 +27888,8 @@ components:
             properties:
               reservation_id:
                 type: integer
-                minLength: 1
-                maxLength: 20
+                minimum: 0
+                maximum: 21474836479
                 example: 123456
                 description: 追加申請ID
               shop_id:
@@ -28043,8 +28043,8 @@ components:
     capital:
       type: number
       nullable: true
-      minLength: 1
-      maxLength: 19
+      minimum: 1
+      maximum: 2147483647
       example: 1000000
       description: |
         資本金
@@ -28059,8 +28059,8 @@ components:
     yearly_sales:
       type: number
       nullable: true
-      minLength: 1
-      maxLength: 19
+      minimum: 0
+      maximum: 2147483647
       example: 1000000
       description: |
         年商
@@ -28556,8 +28556,8 @@ components:
     unit_price:
       type: number
       nullable: true
-      minLength: 1
-      maxLength: 23
+      minimum: 0
+      maximum: 2147483647
       example: 1000
       description: |
         1回の決済における金額（単価）\
@@ -28945,8 +28945,8 @@ components:
           nullable: true
         content_category_master_id:
           type: number
-          minLength: 1
-          maxLength: 10
+          minimum: 0
+          maximum: 9999999999
           nullable: true
           description: |
             取扱商材カテゴリID
@@ -29053,8 +29053,8 @@ components:
         contract_card_info_master_id:
           type: integer
           nullable: true
-          minLength: 1
-          maxLength: 10
+          minimum: 0
+          maximum: 9999999999
           example: 123456789
           description: |
             カードマスタID
@@ -29072,8 +29072,8 @@ components:
         destination_type:
           type: number
           nullable: true
-          minLength: 1
-          maxLength: 3
+          minimum: 1
+          maximum: 3
           description: |
             仕向け先種別
     CardPaymentSetting:
