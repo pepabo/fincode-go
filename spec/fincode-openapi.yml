@@ -15391,11 +15391,9 @@ components:
         type:
           allOf:
             - $ref: '#/components/schemas/CardType'
-            - nullable: true
         brand:
           allOf:
             - $ref: '#/components/schemas/CardBrand'
-            - nullable: true
         card_no_hash:
           allOf:
             - $ref: '#/components/schemas/card_no_hash'
@@ -15486,25 +15484,21 @@ components:
       type: object
       properties:
         token:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/x-req-properties-token'
         default_flag:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/default_flag'
           description: |
             デフォルトフラグ。\
             指定した場合のみ更新されます。
         holder_name:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/holder_name'
           description: |
             ※ `token`に入力がある場合は無視\
             カード名義人名
         expire:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/expire'
           description: |
@@ -23112,7 +23106,6 @@ components:
         plan_name:
           allOf:
             - $ref: '#/components/schemas/plan_name'
-          nullable: true
         customer_id:
           allOf:
             - $ref: '#/components/schemas/id'
@@ -23212,26 +23205,22 @@ components:
           description: |
             ※ 閉塞機能
         error_code:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/error_code'
           description: |
             このサブスクリプションにおいて発生したエラーのうち、一番最新のエラーのエラーコードです。\
             [各エラーコードの定義はこちらを参照](https://docs.fincode.jp/develop_support/error)して確認できます。
         client_field_1:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 1
         client_field_2:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 2
         client_field_3:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
@@ -23382,19 +23371,16 @@ components:
             - 半角：`.`、`(`、`)`、`–`
             - 全角：`．`、`（`、`）`、`ー`
         client_field_1:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 1
         client_field_2:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 2
         client_field_3:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
@@ -28667,203 +28653,153 @@ components:
         corporate_number:
           allOf:
             - $ref: '#/components/schemas/corporate_number'
-          nullable: true
         corporate_name:
           allOf:
             - $ref: '#/components/schemas/corporate_name'
-          nullable: true
         corporate_name_kana:
           allOf:
             - $ref: '#/components/schemas/corporate_name_kana'
-          nullable: true
         hp:
           allOf:
             - $ref: '#/components/schemas/hp'
-          nullable: true
         capital:
           allOf:
             - $ref: '#/components/schemas/capital'
-          nullable: true
         established_at:
           allOf:
             - $ref: '#/components/schemas/established_at'
-          nullable: true
         yearly_sales:
           allOf:
             - $ref: '#/components/schemas/yearly_sales'
-          nullable: true
         business_details:
           allOf:
             - $ref: '#/components/schemas/business_details'
-          nullable: true
         company_postal_code:
           allOf:
             - $ref: '#/components/schemas/company_postal_code'
-          nullable: true
         company_prefecture:
           allOf:
             - $ref: '#/components/schemas/company_prefecture'
-          nullable: true
         company_prefecture_kana:
           allOf:
             - $ref: '#/components/schemas/company_prefecture_kana'
-          nullable: true
         company_address_municipality:
           allOf:
             - $ref: '#/components/schemas/company_address_municipality'
-          nullable: true
         company_address_municipality_kana:
           allOf:
             - $ref: '#/components/schemas/company_address_municipality_kana'
-          nullable: true
         company_address_section:
           allOf:
             - $ref: '#/components/schemas/company_address_section'
-          nullable: true
         company_address_section_kana:
           allOf:
             - $ref: '#/components/schemas/company_address_section_kana'
-          nullable: true
         company_address_chrome:
           allOf:
             - $ref: '#/components/schemas/company_address_chrome'
-          nullable: true
         company_address_chrome_kana:
           allOf:
             - $ref: '#/components/schemas/company_address_chrome_kana'
-          nullable: true
         company_address_building_name:
           allOf:
             - $ref: '#/components/schemas/company_address_building_name'
-          nullable: true
         company_address_building_name_kana:
           allOf:
             - $ref: '#/components/schemas/company_address_building_name_kana'
-          nullable: true
         company_tel:
           allOf:
             - $ref: '#/components/schemas/company_tel'
-          nullable: true
         representative_last_name:
           allOf:
             - $ref: '#/components/schemas/representative_last_name'
-          nullable: true
         representative_last_name_kana:
           allOf:
             - $ref: '#/components/schemas/representative_last_name_kana'
-          nullable: true
         representative_first_name:
           allOf:
             - $ref: '#/components/schemas/representative_first_name'
-          nullable: true
         representative_first_name_kana:
           allOf:
             - $ref: '#/components/schemas/representative_first_name_kana'
-          nullable: true
         representative_birthday:
           allOf:
             - $ref: '#/components/schemas/representative_birthday'
-          nullable: true
         representative_gender:
           allOf:
             - $ref: '#/components/schemas/representative_gender'
-          nullable: true
         representative_postal_code:
           allOf:
             - $ref: '#/components/schemas/representative_postal_code'
-          nullable: true
         representative_prefecture:
           allOf:
             - $ref: '#/components/schemas/representative_prefecture'
-          nullable: true
         representative_prefecture_kana:
           allOf:
             - $ref: '#/components/schemas/representative_prefecture_kana'
-          nullable: true
         representative_address_municipality:
           allOf:
             - $ref: '#/components/schemas/representative_address_municipality'
-          nullable: true
         representative_address_municipality_kana:
           allOf:
             - $ref: '#/components/schemas/representative_address_municipality_kana'
-          nullable: true
         representative_address_section:
           allOf:
             - $ref: '#/components/schemas/representative_address_section'
-          nullable: true
         representative_address_section_kana:
           allOf:
             - $ref: '#/components/schemas/representative_address_section_kana'
-          nullable: true
         representative_address_chrome:
           allOf:
             - $ref: '#/components/schemas/representative_address_chrome'
-          nullable: true
         representative_address_chrome_kana:
           allOf:
             - $ref: '#/components/schemas/representative_address_chrome_kana'
-          nullable: true
         representative_tel:
           allOf:
             - $ref: '#/components/schemas/representative_tel'
-          nullable: true
         staff1_last_name:
           allOf:
             - $ref: '#/components/schemas/staff1_last_name'
-          nullable: true
         staff1_last_name_kana:
           allOf:
             - $ref: '#/components/schemas/staff1_last_name_kana'
-          nullable: true
         staff1_first_name:
           allOf:
             - $ref: '#/components/schemas/staff1_first_name'
-          nullable: true
         staff1_first_name_kana:
           allOf:
             - $ref: '#/components/schemas/staff1_first_name_kana'
-          nullable: true
         staff1_tel:
           allOf:
             - $ref: '#/components/schemas/staff1_tel'
-          nullable: true
         staff1_mail:
           allOf:
             - $ref: '#/components/schemas/staff1_mail'
-          nullable: true
         staff2_last_name:
           allOf:
             - $ref: '#/components/schemas/staff2_last_name'
-          nullable: true
         staff2_last_name_kana:
           allOf:
             - $ref: '#/components/schemas/staff2_last_name_kana'
-          nullable: true
         staff2_first_name:
           allOf:
             - $ref: '#/components/schemas/staff2_first_name'
-          nullable: true
         staff2_first_name_kana:
           allOf:
             - $ref: '#/components/schemas/staff2_first_name_kana'
-          nullable: true
         staff2_tel:
           allOf:
             - $ref: '#/components/schemas/staff2_tel'
-          nullable: true
         staff2_mail:
           allOf:
             - $ref: '#/components/schemas/staff2_mail'
-          nullable: true
         used_on_app:
           allOf:
             - $ref: '#/components/schemas/used_on_app'
-          nullable: true
         used_on_web:
           allOf:
             - $ref: '#/components/schemas/used_on_web'
-          nullable: true
         used_on_other:
           type: boolean
           nullable: true
@@ -28891,23 +28827,18 @@ components:
         url:
           allOf:
             - $ref: '#/components/schemas/url'
-          nullable: true
         site_credential:
           allOf:
             - $ref: '#/components/schemas/credential'
-          nullable: true
         shop_name:
           allOf:
             - $ref: '#/components/schemas/properties-shop_name'
-          nullable: true
         shop_name_kana:
           allOf:
             - $ref: '#/components/schemas/properties-shop_name_kana'
-          nullable: true
         shop_name_en:
           allOf:
             - $ref: '#/components/schemas/shop_name_en'
-          nullable: true
         platform_name:
           type: string
           minLength: 1
@@ -28918,31 +28849,24 @@ components:
         support_tel:
           allOf:
             - $ref: '#/components/schemas/support_tel'
-          nullable: true
         support_mail:
           allOf:
             - $ref: '#/components/schemas/support_mail'
-          nullable: true
         provides_product:
           allOf:
             - $ref: '#/components/schemas/product'
-          nullable: true
         provides_service:
           allOf:
             - $ref: '#/components/schemas/service'
-          nullable: true
         provides_digital_content:
           allOf:
             - $ref: '#/components/schemas/digital_content'
-          nullable: true
         prepaid:
           allOf:
             - $ref: '#/components/schemas/prepaid_point'
-          nullable: true
         unit_price:
           allOf:
             - $ref: '#/components/schemas/unit_price'
-          nullable: true
         content_category_master_id:
           type: number
           minimum: 0
@@ -28953,27 +28877,21 @@ components:
         content_description:
           allOf:
             - $ref: '#/components/schemas/content_description'
-          nullable: true
         expiretion_date_of_point:
           allOf:
             - $ref: '#/components/schemas/about_expiration'
-          nullable: true
         usage_of_point:
           allOf:
             - $ref: '#/components/schemas/how_to_use'
-          nullable: true
         lost_trial:
           allOf:
             - $ref: '#/components/schemas/lost_trial'
-          nullable: true
         deals_insecure_content:
           allOf:
             - $ref: '#/components/schemas/deals_insecure_content'
-          nullable: true
         deals_long_apply_content:
           allOf:
             - $ref: '#/components/schemas/deals_long_apply_content'
-          nullable: true
     ShopPaymentMethod:
       type: number
       enum:
@@ -30360,31 +30278,25 @@ components:
             - `CANCELED`: キャンセル<br /><span class="smallText">この決済はキャンセルされました。</span>
             - `EXPIRED`: 決済の期限切れ<br /><span class="smallText">この決済は期限が切れています。</span>
         customer_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/id'
         process_date:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/properties-process_date'
         job_code:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/PayPayPaymentJobCode'
         client_field_1:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 1
         client_field_2:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 2
         client_field_3:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
@@ -30400,47 +30312,36 @@ components:
           description: |
             税送料
         code_expiry_date:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/code_expiry_date'
         auth_max_date:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/auth_max_date'
         order_description:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/order_description'
         code_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/code_id'
         payment_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/payment_id'
         payment_date:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/properties-payment_date'
         merchant_payment_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/merchant_payment_id'
         merchant_update_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/merchant_update_id'
         merchant_revert_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/merchant_revert_id'
         merchant_refund_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/merchant_refund_id'
         error_code:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/error_code'
           description: |
@@ -30597,11 +30498,9 @@ components:
           allOf:
             - $ref: '#/components/schemas/Shop_properties-id'
         customer_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/id'
         payment_method_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/PaymentMethod_properties-id'
         pay_type:
@@ -30611,25 +30510,21 @@ components:
           allOf:
             - $ref: '#/components/schemas/PaymentMethodStatus'
         client_field_1:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 1
         client_field_2:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 2
         client_field_3:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/client_field_n'
           description: |
             加盟店自由項目 3
         application_type:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/DirectDebitApplicationType'
         event:
@@ -30653,27 +30548,21 @@ components:
           allOf:
             - $ref: '#/components/schemas/Shop_properties-id'
         customer_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/id'
         customer_group_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/properties-customer_group_id'
         card_id:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/properties-id'
         default_flag:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/default_flag'
         card_no_display:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/properties-card_no'
         expire_display:
-          nullable: true
           allOf:
             - $ref: '#/components/schemas/Card_properties-expire'
         process_date:
