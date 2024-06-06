@@ -180,7 +180,7 @@ func (s *Server) handleAuthorizePaymentRequest(args [1]string, argsEscaped bool,
 		}
 
 		type (
-			Request  = OptAuthorizePaymentReq
+			Request  = *AuthorizePaymentReq
 			Params   = AuthorizePaymentParams
 			Response = AuthorizePaymentRes
 		)
@@ -374,7 +374,7 @@ func (s *Server) handleCapturePaymentRequest(args [1]string, argsEscaped bool, w
 		}
 
 		type (
-			Request  = OptCapturePaymentReq
+			Request  = CapturePaymentReq
 			Params   = CapturePaymentParams
 			Response = CapturePaymentRes
 		)
@@ -568,7 +568,7 @@ func (s *Server) handleChangeAmountOfPaymentRequest(args [1]string, argsEscaped 
 		}
 
 		type (
-			Request  = OptChangeAmountOfPaymentReq
+			Request  = ChangeAmountOfPaymentReq
 			Params   = ChangeAmountOfPaymentParams
 			Response = ChangeAmountOfPaymentRes
 		)
@@ -955,7 +955,7 @@ func (s *Server) handleCreateCardRegistrationSessionRequest(args [0]string, args
 		}
 
 		type (
-			Request  = OptCardRegistrationSessionCreatingRequest
+			Request  = *CardRegistrationSessionCreatingRequest
 			Params   = CreateCardRegistrationSessionParams
 			Response = CreateCardRegistrationSessionRes
 		)
@@ -1144,7 +1144,7 @@ func (s *Server) handleCreateCustomerRequest(args [0]string, argsEscaped bool, w
 		}
 
 		type (
-			Request  = OptCustomerCreatingRequest
+			Request  = *CustomerCreatingRequest
 			Params   = CreateCustomerParams
 			Response = CreateCustomerRes
 		)
@@ -1337,7 +1337,7 @@ func (s *Server) handleCreateCustomerCardRequest(args [1]string, argsEscaped boo
 		}
 
 		type (
-			Request  = OptCustomerCardCreatingRequest
+			Request  = *CustomerCardCreatingRequest
 			Params   = CreateCustomerCardParams
 			Response = CreateCustomerCardRes
 		)
@@ -1548,7 +1548,7 @@ func (s *Server) handleCreateCustomerPaymentMethodRequest(args [1]string, argsEs
 		}
 
 		type (
-			Request  = OptCustomerPaymentMethodCreatingRequest
+			Request  = *CustomerPaymentMethodCreatingRequest
 			Params   = CreateCustomerPaymentMethodParams
 			Response = CreateCustomerPaymentMethodRes
 		)
@@ -1737,7 +1737,7 @@ func (s *Server) handleCreatePaymentRequest(args [0]string, argsEscaped bool, w 
 		}
 
 		type (
-			Request  = OptCreatePaymentReq
+			Request  = CreatePaymentReq
 			Params   = CreatePaymentParams
 			Response = CreatePaymentRes
 		)
@@ -1934,7 +1934,7 @@ func (s *Server) handleCreatePaymentBulkRequest(args [0]string, argsEscaped bool
 		}
 
 		type (
-			Request  = OptPaymentBulkCreatingRequestMultipart
+			Request  = *PaymentBulkCreatingRequestMultipart
 			Params   = CreatePaymentBulkParams
 			Response = CreatePaymentBulkRes
 		)
@@ -2123,7 +2123,7 @@ func (s *Server) handleCreatePaymentSessionRequest(args [0]string, argsEscaped b
 		}
 
 		type (
-			Request  = OptPaymentSessionCreatingRequest
+			Request  = *PaymentSessionCreatingRequest
 			Params   = CreatePaymentSessionParams
 			Response = CreatePaymentSessionRes
 		)
@@ -2297,7 +2297,7 @@ func (s *Server) handleCreatePlanRequest(args [0]string, argsEscaped bool, w htt
 		}
 
 		type (
-			Request  = OptPlanCreatingRequest
+			Request  = *PlanCreatingRequest
 			Params   = struct{}
 			Response = CreatePlanRes
 		)
@@ -2471,7 +2471,7 @@ func (s *Server) handleCreateSubscriptionRequest(args [0]string, argsEscaped boo
 		}
 
 		type (
-			Request  = OptSubscriptionCreatingRequest
+			Request  = *SubscriptionCreatingRequest
 			Params   = struct{}
 			Response = CreateSubscriptionRes
 		)
@@ -2647,7 +2647,7 @@ func (s *Server) handleCreateTenantWithExistingUserRequest(args [0]string, argsE
 		}
 
 		type (
-			Request  = OptPOSTJoinTenantsRequest
+			Request  = *POSTJoinTenantsRequest
 			Params   = struct{}
 			Response = CreateTenantWithExistingUserRes
 		)
@@ -2822,7 +2822,7 @@ func (s *Server) handleCreateTenantWithNewUserRequest(args [0]string, argsEscape
 		}
 
 		type (
-			Request  = OptPOSTTenantEntriesRequest
+			Request  = *POSTTenantEntriesRequest
 			Params   = struct{}
 			Response = CreateTenantWithNewUserRes
 		)
@@ -3011,7 +3011,7 @@ func (s *Server) handleCreateWebhookSettingRequest(args [0]string, argsEscaped b
 		}
 
 		type (
-			Request  = OptWebhookSettingCreatingRequest
+			Request  = *WebhookSettingCreatingRequest
 			Params   = CreateWebhookSettingParams
 			Response = CreateWebhookSettingRes
 		)
@@ -4427,7 +4427,7 @@ func (s *Server) handleExecute3DSecureAuthenticationRequest(args [1]string, args
 		}
 
 		type (
-			Request  = OptR3DSAuthorizingRequest
+			Request  = *R3DSAuthorizingRequest
 			Params   = Execute3DSecureAuthenticationParams
 			Response = Execute3DSecureAuthenticationRes
 		)
@@ -4638,7 +4638,7 @@ func (s *Server) handleExecutePaymentRequest(args [1]string, argsEscaped bool, w
 		}
 
 		type (
-			Request  = OptExecutePaymentReq
+			Request  = ExecutePaymentReq
 			Params   = ExecutePaymentParams
 			Response = ExecutePaymentRes
 		)
@@ -4851,7 +4851,7 @@ func (s *Server) handleExecutePaymentAfter3DSecureRequest(args [1]string, argsEs
 		}
 
 		type (
-			Request  = OptExecutePaymentAfter3DSecureReq
+			Request  = *ExecutePaymentAfter3DSecureReq
 			Params   = ExecutePaymentAfter3DSecureParams
 			Response = ExecutePaymentAfter3DSecureRes
 		)
@@ -5044,7 +5044,7 @@ func (s *Server) handleGenerateBarcodeOfPaymentRequest(args [1]string, argsEscap
 		}
 
 		type (
-			Request  = OptGenerateBarcodeOfPaymentReq
+			Request  = *GenerateBarcodeOfPaymentReq
 			Params   = GenerateBarcodeOfPaymentParams
 			Response = GenerateBarcodeOfPaymentRes
 		)
@@ -5219,7 +5219,7 @@ func (s *Server) handleReceiveWebhookOfApplePayPaymentRequest(args [0]string, ar
 		}
 
 		type (
-			Request  = OptWebhookEventPaymentApplePay
+			Request  = *WebhookEventPaymentApplePay
 			Params   = struct{}
 			Response = ReceiveWebhookOfApplePayPaymentRes
 		)
@@ -5394,7 +5394,7 @@ func (s *Server) handleReceiveWebhookOfCardRequest(args [0]string, argsEscaped b
 		}
 
 		type (
-			Request  = OptWebhookEventCard
+			Request  = *WebhookEventCard
 			Params   = struct{}
 			Response = ReceiveWebhookOfCardRes
 		)
@@ -5569,7 +5569,7 @@ func (s *Server) handleReceiveWebhookOfCardPaymentRequest(args [0]string, argsEs
 		}
 
 		type (
-			Request  = OptWebhookEventPaymentCard
+			Request  = *WebhookEventPaymentCard
 			Params   = struct{}
 			Response = ReceiveWebhookOfCardPaymentRes
 		)
@@ -5744,7 +5744,7 @@ func (s *Server) handleReceiveWebhookOfCardPaymentBulkBatchRequest(args [0]strin
 		}
 
 		type (
-			Request  = OptWebhookEventPaymentBulkBatchCard
+			Request  = *WebhookEventPaymentBulkBatchCard
 			Params   = struct{}
 			Response = ReceiveWebhookOfCardPaymentBulkBatchRes
 		)
@@ -5919,7 +5919,7 @@ func (s *Server) handleReceiveWebhookOfCardRecurringBatchRequest(args [0]string,
 		}
 
 		type (
-			Request  = OptWebhookEventRecurringBatchCard
+			Request  = *WebhookEventRecurringBatchCard
 			Params   = struct{}
 			Response = ReceiveWebhookOfCardRecurringBatchRes
 		)
@@ -6094,7 +6094,7 @@ func (s *Server) handleReceiveWebhookOfCardSubscriptionRequest(args [0]string, a
 		}
 
 		type (
-			Request  = OptWebhookEventSubscriptionCard
+			Request  = *WebhookEventSubscriptionCard
 			Params   = struct{}
 			Response = ReceiveWebhookOfCardSubscriptionRes
 		)
@@ -6269,7 +6269,7 @@ func (s *Server) handleReceiveWebhookOfContractRequest(args [0]string, argsEscap
 		}
 
 		type (
-			Request  = OptWebhookEventContract
+			Request  = *WebhookEventContract
 			Params   = struct{}
 			Response = ReceiveWebhookOfContractRes
 		)
@@ -6444,7 +6444,7 @@ func (s *Server) handleReceiveWebhookOfCustomerPaymentMethodRequest(args [0]stri
 		}
 
 		type (
-			Request  = OptWebhookEventCustomerPaymentMethod
+			Request  = *WebhookEventCustomerPaymentMethod
 			Params   = struct{}
 			Response = ReceiveWebhookOfCustomerPaymentMethodRes
 		)
@@ -6619,7 +6619,7 @@ func (s *Server) handleReceiveWebhookOfDirectDebitPaymentRequest(args [0]string,
 		}
 
 		type (
-			Request  = OptWebhookEventPaymentDirectDebit
+			Request  = *WebhookEventPaymentDirectDebit
 			Params   = struct{}
 			Response = ReceiveWebhookOfDirectDebitPaymentRes
 		)
@@ -6794,7 +6794,7 @@ func (s *Server) handleReceiveWebhookOfDirectDebitRecurringBatchRequest(args [0]
 		}
 
 		type (
-			Request  = OptWebhookEventRecurringBatchDirectDebit
+			Request  = *WebhookEventRecurringBatchDirectDebit
 			Params   = struct{}
 			Response = ReceiveWebhookOfDirectDebitRecurringBatchRes
 		)
@@ -6969,7 +6969,7 @@ func (s *Server) handleReceiveWebhookOfDirectDebitSubscriptionRequest(args [0]st
 		}
 
 		type (
-			Request  = OptWebhookEventSubscriptionDirectDebit
+			Request  = *WebhookEventSubscriptionDirectDebit
 			Params   = struct{}
 			Response = ReceiveWebhookOfDirectDebitSubscriptionRes
 		)
@@ -7144,7 +7144,7 @@ func (s *Server) handleReceiveWebhookOfKonbiniPaymentRequest(args [0]string, arg
 		}
 
 		type (
-			Request  = OptWebhookEventPaymentKonbini
+			Request  = *WebhookEventPaymentKonbini
 			Params   = struct{}
 			Response = ReceiveWebhookOfKonbiniPaymentRes
 		)
@@ -7319,7 +7319,7 @@ func (s *Server) handleReceiveWebhookOfPayPayPaymentRequest(args [0]string, args
 		}
 
 		type (
-			Request  = OptWebhookEventPaymentPayPay
+			Request  = *WebhookEventPaymentPayPay
 			Params   = struct{}
 			Response = ReceiveWebhookOfPayPayPaymentRes
 		)
@@ -7494,7 +7494,7 @@ func (s *Server) handleReceiveWebhookOfRegisteringCardPaymentBulkRequest(args [0
 		}
 
 		type (
-			Request  = OptWebhookEventPaymentBulkRegistCard
+			Request  = *WebhookEventPaymentBulkRegistCard
 			Params   = struct{}
 			Response = ReceiveWebhookOfRegisteringCardPaymentBulkRes
 		)
@@ -7683,7 +7683,7 @@ func (s *Server) handleRequestProductionEnvironmentRequest(args [0]string, argsE
 		}
 
 		type (
-			Request  = OptPOSTContractsExaminationsRequestMultipart
+			Request  = *POSTContractsExaminationsRequestMultipart
 			Params   = RequestProductionEnvironmentParams
 			Response = RequestProductionEnvironmentRes
 		)
@@ -7876,7 +7876,7 @@ func (s *Server) handleReserveProviderRequest(args [1]string, argsEscaped bool, 
 		}
 
 		type (
-			Request  = OptPOSTProviderReserveRequestMultipart
+			Request  = *POSTProviderReserveRequestMultipart
 			Params   = ReserveProviderParams
 			Response = ReserveProviderRes
 		)
@@ -13140,7 +13140,7 @@ func (s *Server) handleUpdateCustomerRequest(args [1]string, argsEscaped bool, w
 		}
 
 		type (
-			Request  = OptCustomerUpdatingRequest
+			Request  = *CustomerUpdatingRequest
 			Params   = UpdateCustomerParams
 			Response = UpdateCustomerRes
 		)
@@ -13337,7 +13337,7 @@ func (s *Server) handleUpdateCustomerCardRequest(args [2]string, argsEscaped boo
 		}
 
 		type (
-			Request  = OptCustomerCardUpdatingRequest
+			Request  = *CustomerCardUpdatingRequest
 			Params   = UpdateCustomerCardParams
 			Response = UpdateCustomerCardRes
 		)
@@ -13528,7 +13528,7 @@ func (s *Server) handleUpdatePlanRequest(args [1]string, argsEscaped bool, w htt
 		}
 
 		type (
-			Request  = OptPlanUpdatingRequest
+			Request  = *PlanUpdatingRequest
 			Params   = UpdatePlanParams
 			Response = UpdatePlanRes
 		)
@@ -13717,7 +13717,7 @@ func (s *Server) handleUpdatePlatformShopRequest(args [1]string, argsEscaped boo
 		}
 
 		type (
-			Request  = OptPlatformShopUpdatingRequest
+			Request  = *PlatformShopUpdatingRequest
 			Params   = UpdatePlatformShopParams
 			Response = UpdatePlatformShopRes
 		)
@@ -13908,7 +13908,7 @@ func (s *Server) handleUpdateSubscriptionRequest(args [1]string, argsEscaped boo
 		}
 
 		type (
-			Request  = OptSubscriptionUpdatingRequest
+			Request  = *SubscriptionUpdatingRequest
 			Params   = UpdateSubscriptionParams
 			Response = UpdateSubscriptionRes
 		)
@@ -14105,7 +14105,7 @@ func (s *Server) handleUpdateTenantExaminationInfoRequest(args [1]string, argsEs
 		}
 
 		type (
-			Request  = OptExaminationInfoUpdatingRequest
+			Request  = *ExaminationInfoUpdatingRequest
 			Params   = UpdateTenantExaminationInfoParams
 			Response = UpdateTenantExaminationInfoRes
 		)
@@ -14298,7 +14298,7 @@ func (s *Server) handleUpdateTenantExaminationInfoV2Request(args [1]string, args
 		}
 
 		type (
-			Request  = OptExaminationInfoV2UpdatingRequest
+			Request  = *ExaminationInfoV2UpdatingRequest
 			Params   = UpdateTenantExaminationInfoV2Params
 			Response = UpdateTenantExaminationInfoV2Res
 		)
@@ -14487,7 +14487,7 @@ func (s *Server) handleUpdateTenantShopRequest(args [1]string, argsEscaped bool,
 		}
 
 		type (
-			Request  = OptTenantShopUpdatingRequest
+			Request  = *TenantShopUpdatingRequest
 			Params   = UpdateTenantShopParams
 			Response = UpdateTenantShopRes
 		)
@@ -14680,7 +14680,7 @@ func (s *Server) handleUpdateWebhookSettingRequest(args [1]string, argsEscaped b
 		}
 
 		type (
-			Request  = OptWebhookSettingUpdatingRequest
+			Request  = *WebhookSettingUpdatingRequest
 			Params   = UpdateWebhookSettingParams
 			Response = UpdateWebhookSettingRes
 		)
@@ -14873,7 +14873,7 @@ func (s *Server) handleUploadExaminationFileRequest(args [1]string, argsEscaped 
 		}
 
 		type (
-			Request  = OptExaminationFileUploadingRequestMultipart
+			Request  = *ExaminationFileUploadingRequestMultipart
 			Params   = UploadExaminationFileParams
 			Response = UploadExaminationFileRes
 		)

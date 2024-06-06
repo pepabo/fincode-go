@@ -50637,52 +50637,6 @@ func (o OptAuthorizePaymentOKStatus) Or(d AuthorizePaymentOKStatus) AuthorizePay
 	return d
 }
 
-// NewOptAuthorizePaymentReq returns new OptAuthorizePaymentReq with value set to v.
-func NewOptAuthorizePaymentReq(v AuthorizePaymentReq) OptAuthorizePaymentReq {
-	return OptAuthorizePaymentReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptAuthorizePaymentReq is optional AuthorizePaymentReq.
-type OptAuthorizePaymentReq struct {
-	Value AuthorizePaymentReq
-	Set   bool
-}
-
-// IsSet returns true if OptAuthorizePaymentReq was set.
-func (o OptAuthorizePaymentReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptAuthorizePaymentReq) Reset() {
-	var v AuthorizePaymentReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptAuthorizePaymentReq) SetTo(v AuthorizePaymentReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptAuthorizePaymentReq) Get() (v AuthorizePaymentReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptAuthorizePaymentReq) Or(d AuthorizePaymentReq) AuthorizePaymentReq {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptBool returns new OptBool with value set to v.
 func NewOptBool(v bool) OptBool {
 	return OptBool{
@@ -51235,52 +51189,6 @@ func (o OptCapturePaymentOK2Status) Or(d CapturePaymentOK2Status) CapturePayment
 	return d
 }
 
-// NewOptCapturePaymentReq returns new OptCapturePaymentReq with value set to v.
-func NewOptCapturePaymentReq(v CapturePaymentReq) OptCapturePaymentReq {
-	return OptCapturePaymentReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCapturePaymentReq is optional CapturePaymentReq.
-type OptCapturePaymentReq struct {
-	Value CapturePaymentReq
-	Set   bool
-}
-
-// IsSet returns true if OptCapturePaymentReq was set.
-func (o OptCapturePaymentReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCapturePaymentReq) Reset() {
-	var v CapturePaymentReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCapturePaymentReq) SetTo(v CapturePaymentReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCapturePaymentReq) Get() (v CapturePaymentReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCapturePaymentReq) Or(d CapturePaymentReq) CapturePaymentReq {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptCapturePaymentReq0Method returns new OptCapturePaymentReq0Method with value set to v.
 func NewOptCapturePaymentReq0Method(v CapturePaymentReq0Method) OptCapturePaymentReq0Method {
 	return OptCapturePaymentReq0Method{
@@ -51459,52 +51367,6 @@ func (o OptCardPaymentSessionJobCode) Get() (v CardPaymentSessionJobCode, ok boo
 
 // Or returns value if set, or given parameter if does not.
 func (o OptCardPaymentSessionJobCode) Or(d CardPaymentSessionJobCode) CardPaymentSessionJobCode {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptCardRegistrationSessionCreatingRequest returns new OptCardRegistrationSessionCreatingRequest with value set to v.
-func NewOptCardRegistrationSessionCreatingRequest(v CardRegistrationSessionCreatingRequest) OptCardRegistrationSessionCreatingRequest {
-	return OptCardRegistrationSessionCreatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCardRegistrationSessionCreatingRequest is optional CardRegistrationSessionCreatingRequest.
-type OptCardRegistrationSessionCreatingRequest struct {
-	Value CardRegistrationSessionCreatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptCardRegistrationSessionCreatingRequest was set.
-func (o OptCardRegistrationSessionCreatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCardRegistrationSessionCreatingRequest) Reset() {
-	var v CardRegistrationSessionCreatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCardRegistrationSessionCreatingRequest) SetTo(v CardRegistrationSessionCreatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCardRegistrationSessionCreatingRequest) Get() (v CardRegistrationSessionCreatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCardRegistrationSessionCreatingRequest) Or(d CardRegistrationSessionCreatingRequest) CardRegistrationSessionCreatingRequest {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -52195,52 +52057,6 @@ func (o OptChangeAmountOfPaymentOK2Status) Get() (v ChangeAmountOfPaymentOK2Stat
 
 // Or returns value if set, or given parameter if does not.
 func (o OptChangeAmountOfPaymentOK2Status) Or(d ChangeAmountOfPaymentOK2Status) ChangeAmountOfPaymentOK2Status {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptChangeAmountOfPaymentReq returns new OptChangeAmountOfPaymentReq with value set to v.
-func NewOptChangeAmountOfPaymentReq(v ChangeAmountOfPaymentReq) OptChangeAmountOfPaymentReq {
-	return OptChangeAmountOfPaymentReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptChangeAmountOfPaymentReq is optional ChangeAmountOfPaymentReq.
-type OptChangeAmountOfPaymentReq struct {
-	Value ChangeAmountOfPaymentReq
-	Set   bool
-}
-
-// IsSet returns true if OptChangeAmountOfPaymentReq was set.
-func (o OptChangeAmountOfPaymentReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptChangeAmountOfPaymentReq) Reset() {
-	var v ChangeAmountOfPaymentReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptChangeAmountOfPaymentReq) SetTo(v ChangeAmountOfPaymentReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptChangeAmountOfPaymentReq) Get() (v ChangeAmountOfPaymentReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptChangeAmountOfPaymentReq) Or(d ChangeAmountOfPaymentReq) ChangeAmountOfPaymentReq {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -53719,98 +53535,6 @@ func (o OptCreatePaymentOK4Status) Or(d CreatePaymentOK4Status) CreatePaymentOK4
 	return d
 }
 
-// NewOptCreatePaymentReq returns new OptCreatePaymentReq with value set to v.
-func NewOptCreatePaymentReq(v CreatePaymentReq) OptCreatePaymentReq {
-	return OptCreatePaymentReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCreatePaymentReq is optional CreatePaymentReq.
-type OptCreatePaymentReq struct {
-	Value CreatePaymentReq
-	Set   bool
-}
-
-// IsSet returns true if OptCreatePaymentReq was set.
-func (o OptCreatePaymentReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCreatePaymentReq) Reset() {
-	var v CreatePaymentReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCreatePaymentReq) SetTo(v CreatePaymentReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCreatePaymentReq) Get() (v CreatePaymentReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCreatePaymentReq) Or(d CreatePaymentReq) CreatePaymentReq {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptCustomerCardCreatingRequest returns new OptCustomerCardCreatingRequest with value set to v.
-func NewOptCustomerCardCreatingRequest(v CustomerCardCreatingRequest) OptCustomerCardCreatingRequest {
-	return OptCustomerCardCreatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCustomerCardCreatingRequest is optional CustomerCardCreatingRequest.
-type OptCustomerCardCreatingRequest struct {
-	Value CustomerCardCreatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptCustomerCardCreatingRequest was set.
-func (o OptCustomerCardCreatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCustomerCardCreatingRequest) Reset() {
-	var v CustomerCardCreatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCustomerCardCreatingRequest) SetTo(v CustomerCardCreatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCustomerCardCreatingRequest) Get() (v CustomerCardCreatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCustomerCardCreatingRequest) Or(d CustomerCardCreatingRequest) CustomerCardCreatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptCustomerCardCreatingResponseBrand returns new OptCustomerCardCreatingResponseBrand with value set to v.
 func NewOptCustomerCardCreatingResponseBrand(v CustomerCardCreatingResponseBrand) OptCustomerCardCreatingResponseBrand {
 	return OptCustomerCardCreatingResponseBrand{
@@ -54133,52 +53857,6 @@ func (o OptCustomerCardRetrievingResponseType) Or(d CustomerCardRetrievingRespon
 	return d
 }
 
-// NewOptCustomerCardUpdatingRequest returns new OptCustomerCardUpdatingRequest with value set to v.
-func NewOptCustomerCardUpdatingRequest(v CustomerCardUpdatingRequest) OptCustomerCardUpdatingRequest {
-	return OptCustomerCardUpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCustomerCardUpdatingRequest is optional CustomerCardUpdatingRequest.
-type OptCustomerCardUpdatingRequest struct {
-	Value CustomerCardUpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptCustomerCardUpdatingRequest was set.
-func (o OptCustomerCardUpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCustomerCardUpdatingRequest) Reset() {
-	var v CustomerCardUpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCustomerCardUpdatingRequest) SetTo(v CustomerCardUpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCustomerCardUpdatingRequest) Get() (v CustomerCardUpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCustomerCardUpdatingRequest) Or(d CustomerCardUpdatingRequest) CustomerCardUpdatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptCustomerCardUpdatingRequestDefaultFlag returns new OptCustomerCardUpdatingRequestDefaultFlag with value set to v.
 func NewOptCustomerCardUpdatingRequestDefaultFlag(v CustomerCardUpdatingRequestDefaultFlag) OptCustomerCardUpdatingRequestDefaultFlag {
 	return OptCustomerCardUpdatingRequestDefaultFlag{
@@ -54363,52 +54041,6 @@ func (o OptCustomerCardUpdatingResponseType) Or(d CustomerCardUpdatingResponseTy
 	return d
 }
 
-// NewOptCustomerCreatingRequest returns new OptCustomerCreatingRequest with value set to v.
-func NewOptCustomerCreatingRequest(v CustomerCreatingRequest) OptCustomerCreatingRequest {
-	return OptCustomerCreatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCustomerCreatingRequest is optional CustomerCreatingRequest.
-type OptCustomerCreatingRequest struct {
-	Value CustomerCreatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptCustomerCreatingRequest was set.
-func (o OptCustomerCreatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCustomerCreatingRequest) Reset() {
-	var v CustomerCreatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCustomerCreatingRequest) SetTo(v CustomerCreatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCustomerCreatingRequest) Get() (v CustomerCreatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCustomerCreatingRequest) Or(d CustomerCreatingRequest) CustomerCreatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptCustomerDeletingResponseDeleteFlag returns new OptCustomerDeletingResponseDeleteFlag with value set to v.
 func NewOptCustomerDeletingResponseDeleteFlag(v CustomerDeletingResponseDeleteFlag) OptCustomerDeletingResponseDeleteFlag {
 	return OptCustomerDeletingResponseDeleteFlag{
@@ -54449,52 +54081,6 @@ func (o OptCustomerDeletingResponseDeleteFlag) Get() (v CustomerDeletingResponse
 
 // Or returns value if set, or given parameter if does not.
 func (o OptCustomerDeletingResponseDeleteFlag) Or(d CustomerDeletingResponseDeleteFlag) CustomerDeletingResponseDeleteFlag {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptCustomerPaymentMethodCreatingRequest returns new OptCustomerPaymentMethodCreatingRequest with value set to v.
-func NewOptCustomerPaymentMethodCreatingRequest(v CustomerPaymentMethodCreatingRequest) OptCustomerPaymentMethodCreatingRequest {
-	return OptCustomerPaymentMethodCreatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCustomerPaymentMethodCreatingRequest is optional CustomerPaymentMethodCreatingRequest.
-type OptCustomerPaymentMethodCreatingRequest struct {
-	Value CustomerPaymentMethodCreatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptCustomerPaymentMethodCreatingRequest was set.
-func (o OptCustomerPaymentMethodCreatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCustomerPaymentMethodCreatingRequest) Reset() {
-	var v CustomerPaymentMethodCreatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCustomerPaymentMethodCreatingRequest) SetTo(v CustomerPaymentMethodCreatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCustomerPaymentMethodCreatingRequest) Get() (v CustomerPaymentMethodCreatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCustomerPaymentMethodCreatingRequest) Or(d CustomerPaymentMethodCreatingRequest) CustomerPaymentMethodCreatingRequest {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -54871,52 +54457,6 @@ func (o OptCustomerPaymentMethodRetrievingResponsePayType) Or(d CustomerPaymentM
 	return d
 }
 
-// NewOptCustomerUpdatingRequest returns new OptCustomerUpdatingRequest with value set to v.
-func NewOptCustomerUpdatingRequest(v CustomerUpdatingRequest) OptCustomerUpdatingRequest {
-	return OptCustomerUpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCustomerUpdatingRequest is optional CustomerUpdatingRequest.
-type OptCustomerUpdatingRequest struct {
-	Value CustomerUpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptCustomerUpdatingRequest was set.
-func (o OptCustomerUpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCustomerUpdatingRequest) Reset() {
-	var v CustomerUpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCustomerUpdatingRequest) SetTo(v CustomerUpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCustomerUpdatingRequest) Get() (v CustomerUpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCustomerUpdatingRequest) Or(d CustomerUpdatingRequest) CustomerUpdatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptDepositStatusCode returns new OptDepositStatusCode with value set to v.
 func NewOptDepositStatusCode(v DepositStatusCode) OptDepositStatusCode {
 	return OptDepositStatusCode{
@@ -54957,52 +54497,6 @@ func (o OptDepositStatusCode) Get() (v DepositStatusCode, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptDepositStatusCode) Or(d DepositStatusCode) DepositStatusCode {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptExaminationFileUploadingRequestMultipart returns new OptExaminationFileUploadingRequestMultipart with value set to v.
-func NewOptExaminationFileUploadingRequestMultipart(v ExaminationFileUploadingRequestMultipart) OptExaminationFileUploadingRequestMultipart {
-	return OptExaminationFileUploadingRequestMultipart{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptExaminationFileUploadingRequestMultipart is optional ExaminationFileUploadingRequestMultipart.
-type OptExaminationFileUploadingRequestMultipart struct {
-	Value ExaminationFileUploadingRequestMultipart
-	Set   bool
-}
-
-// IsSet returns true if OptExaminationFileUploadingRequestMultipart was set.
-func (o OptExaminationFileUploadingRequestMultipart) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptExaminationFileUploadingRequestMultipart) Reset() {
-	var v ExaminationFileUploadingRequestMultipart
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptExaminationFileUploadingRequestMultipart) SetTo(v ExaminationFileUploadingRequestMultipart) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptExaminationFileUploadingRequestMultipart) Get() (v ExaminationFileUploadingRequestMultipart, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptExaminationFileUploadingRequestMultipart) Or(d ExaminationFileUploadingRequestMultipart) ExaminationFileUploadingRequestMultipart {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -55557,52 +55051,6 @@ func (o OptExaminationInfoRetrievingResponseStatusCode) Get() (v ExaminationInfo
 
 // Or returns value if set, or given parameter if does not.
 func (o OptExaminationInfoRetrievingResponseStatusCode) Or(d ExaminationInfoRetrievingResponseStatusCode) ExaminationInfoRetrievingResponseStatusCode {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptExaminationInfoUpdatingRequest returns new OptExaminationInfoUpdatingRequest with value set to v.
-func NewOptExaminationInfoUpdatingRequest(v ExaminationInfoUpdatingRequest) OptExaminationInfoUpdatingRequest {
-	return OptExaminationInfoUpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptExaminationInfoUpdatingRequest is optional ExaminationInfoUpdatingRequest.
-type OptExaminationInfoUpdatingRequest struct {
-	Value ExaminationInfoUpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptExaminationInfoUpdatingRequest was set.
-func (o OptExaminationInfoUpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptExaminationInfoUpdatingRequest) Reset() {
-	var v ExaminationInfoUpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptExaminationInfoUpdatingRequest) SetTo(v ExaminationInfoUpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptExaminationInfoUpdatingRequest) Get() (v ExaminationInfoUpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptExaminationInfoUpdatingRequest) Or(d ExaminationInfoUpdatingRequest) ExaminationInfoUpdatingRequest {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -56713,52 +56161,6 @@ func (o OptExaminationInfoV2RetrievingResponseStatusCode) Or(d ExaminationInfoV2
 	return d
 }
 
-// NewOptExaminationInfoV2UpdatingRequest returns new OptExaminationInfoV2UpdatingRequest with value set to v.
-func NewOptExaminationInfoV2UpdatingRequest(v ExaminationInfoV2UpdatingRequest) OptExaminationInfoV2UpdatingRequest {
-	return OptExaminationInfoV2UpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptExaminationInfoV2UpdatingRequest is optional ExaminationInfoV2UpdatingRequest.
-type OptExaminationInfoV2UpdatingRequest struct {
-	Value ExaminationInfoV2UpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptExaminationInfoV2UpdatingRequest was set.
-func (o OptExaminationInfoV2UpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptExaminationInfoV2UpdatingRequest) Reset() {
-	var v ExaminationInfoV2UpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptExaminationInfoV2UpdatingRequest) SetTo(v ExaminationInfoV2UpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptExaminationInfoV2UpdatingRequest) Get() (v ExaminationInfoV2UpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptExaminationInfoV2UpdatingRequest) Or(d ExaminationInfoV2UpdatingRequest) ExaminationInfoV2UpdatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptExaminationInfoV2UpdatingRequestBankAccountInfo returns new OptExaminationInfoV2UpdatingRequestBankAccountInfo with value set to v.
 func NewOptExaminationInfoV2UpdatingRequestBankAccountInfo(v ExaminationInfoV2UpdatingRequestBankAccountInfo) OptExaminationInfoV2UpdatingRequestBankAccountInfo {
 	return OptExaminationInfoV2UpdatingRequestBankAccountInfo{
@@ -57535,52 +56937,6 @@ func (o OptExecutePaymentAfter3DSecureOKStatus) Get() (v ExecutePaymentAfter3DSe
 
 // Or returns value if set, or given parameter if does not.
 func (o OptExecutePaymentAfter3DSecureOKStatus) Or(d ExecutePaymentAfter3DSecureOKStatus) ExecutePaymentAfter3DSecureOKStatus {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptExecutePaymentAfter3DSecureReq returns new OptExecutePaymentAfter3DSecureReq with value set to v.
-func NewOptExecutePaymentAfter3DSecureReq(v ExecutePaymentAfter3DSecureReq) OptExecutePaymentAfter3DSecureReq {
-	return OptExecutePaymentAfter3DSecureReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptExecutePaymentAfter3DSecureReq is optional ExecutePaymentAfter3DSecureReq.
-type OptExecutePaymentAfter3DSecureReq struct {
-	Value ExecutePaymentAfter3DSecureReq
-	Set   bool
-}
-
-// IsSet returns true if OptExecutePaymentAfter3DSecureReq was set.
-func (o OptExecutePaymentAfter3DSecureReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptExecutePaymentAfter3DSecureReq) Reset() {
-	var v ExecutePaymentAfter3DSecureReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptExecutePaymentAfter3DSecureReq) SetTo(v ExecutePaymentAfter3DSecureReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptExecutePaymentAfter3DSecureReq) Get() (v ExecutePaymentAfter3DSecureReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptExecutePaymentAfter3DSecureReq) Or(d ExecutePaymentAfter3DSecureReq) ExecutePaymentAfter3DSecureReq {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -58415,52 +57771,6 @@ func (o OptExecutePaymentOK4Status) Or(d ExecutePaymentOK4Status) ExecutePayment
 	return d
 }
 
-// NewOptExecutePaymentReq returns new OptExecutePaymentReq with value set to v.
-func NewOptExecutePaymentReq(v ExecutePaymentReq) OptExecutePaymentReq {
-	return OptExecutePaymentReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptExecutePaymentReq is optional ExecutePaymentReq.
-type OptExecutePaymentReq struct {
-	Value ExecutePaymentReq
-	Set   bool
-}
-
-// IsSet returns true if OptExecutePaymentReq was set.
-func (o OptExecutePaymentReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptExecutePaymentReq) Reset() {
-	var v ExecutePaymentReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptExecutePaymentReq) SetTo(v ExecutePaymentReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptExecutePaymentReq) Get() (v ExecutePaymentReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptExecutePaymentReq) Or(d ExecutePaymentReq) ExecutePaymentReq {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptExecutePaymentReq0Method returns new OptExecutePaymentReq0Method with value set to v.
 func NewOptExecutePaymentReq0Method(v ExecutePaymentReq0Method) OptExecutePaymentReq0Method {
 	return OptExecutePaymentReq0Method{
@@ -58823,52 +58133,6 @@ func (o OptGenerateBarcodeOfPaymentOKStatus) Get() (v GenerateBarcodeOfPaymentOK
 
 // Or returns value if set, or given parameter if does not.
 func (o OptGenerateBarcodeOfPaymentOKStatus) Or(d GenerateBarcodeOfPaymentOKStatus) GenerateBarcodeOfPaymentOKStatus {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptGenerateBarcodeOfPaymentReq returns new OptGenerateBarcodeOfPaymentReq with value set to v.
-func NewOptGenerateBarcodeOfPaymentReq(v GenerateBarcodeOfPaymentReq) OptGenerateBarcodeOfPaymentReq {
-	return OptGenerateBarcodeOfPaymentReq{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptGenerateBarcodeOfPaymentReq is optional GenerateBarcodeOfPaymentReq.
-type OptGenerateBarcodeOfPaymentReq struct {
-	Value GenerateBarcodeOfPaymentReq
-	Set   bool
-}
-
-// IsSet returns true if OptGenerateBarcodeOfPaymentReq was set.
-func (o OptGenerateBarcodeOfPaymentReq) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptGenerateBarcodeOfPaymentReq) Reset() {
-	var v GenerateBarcodeOfPaymentReq
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptGenerateBarcodeOfPaymentReq) SetTo(v GenerateBarcodeOfPaymentReq) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptGenerateBarcodeOfPaymentReq) Get() (v GenerateBarcodeOfPaymentReq, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptGenerateBarcodeOfPaymentReq) Or(d GenerateBarcodeOfPaymentReq) GenerateBarcodeOfPaymentReq {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -68707,52 +67971,6 @@ func (o OptNilWebhookEventSubscriptionDirectDebitEndMonthFlag) Or(d WebhookEvent
 	return d
 }
 
-// NewOptPOSTContractsExaminationsRequestMultipart returns new OptPOSTContractsExaminationsRequestMultipart with value set to v.
-func NewOptPOSTContractsExaminationsRequestMultipart(v POSTContractsExaminationsRequestMultipart) OptPOSTContractsExaminationsRequestMultipart {
-	return OptPOSTContractsExaminationsRequestMultipart{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPOSTContractsExaminationsRequestMultipart is optional POSTContractsExaminationsRequestMultipart.
-type OptPOSTContractsExaminationsRequestMultipart struct {
-	Value POSTContractsExaminationsRequestMultipart
-	Set   bool
-}
-
-// IsSet returns true if OptPOSTContractsExaminationsRequestMultipart was set.
-func (o OptPOSTContractsExaminationsRequestMultipart) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPOSTContractsExaminationsRequestMultipart) Reset() {
-	var v POSTContractsExaminationsRequestMultipart
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPOSTContractsExaminationsRequestMultipart) SetTo(v POSTContractsExaminationsRequestMultipart) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPOSTContractsExaminationsRequestMultipart) Get() (v POSTContractsExaminationsRequestMultipart, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPOSTContractsExaminationsRequestMultipart) Or(d POSTContractsExaminationsRequestMultipart) POSTContractsExaminationsRequestMultipart {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptPOSTContractsExaminationsRequestMultipartEnableImmediateUse returns new OptPOSTContractsExaminationsRequestMultipartEnableImmediateUse with value set to v.
 func NewOptPOSTContractsExaminationsRequestMultipartEnableImmediateUse(v POSTContractsExaminationsRequestMultipartEnableImmediateUse) OptPOSTContractsExaminationsRequestMultipartEnableImmediateUse {
 	return OptPOSTContractsExaminationsRequestMultipartEnableImmediateUse{
@@ -68845,98 +68063,6 @@ func (o OptPOSTContractsExaminationsResponseEnableImmediateUse) Or(d POSTContrac
 	return d
 }
 
-// NewOptPOSTJoinTenantsRequest returns new OptPOSTJoinTenantsRequest with value set to v.
-func NewOptPOSTJoinTenantsRequest(v POSTJoinTenantsRequest) OptPOSTJoinTenantsRequest {
-	return OptPOSTJoinTenantsRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPOSTJoinTenantsRequest is optional POSTJoinTenantsRequest.
-type OptPOSTJoinTenantsRequest struct {
-	Value POSTJoinTenantsRequest
-	Set   bool
-}
-
-// IsSet returns true if OptPOSTJoinTenantsRequest was set.
-func (o OptPOSTJoinTenantsRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPOSTJoinTenantsRequest) Reset() {
-	var v POSTJoinTenantsRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPOSTJoinTenantsRequest) SetTo(v POSTJoinTenantsRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPOSTJoinTenantsRequest) Get() (v POSTJoinTenantsRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPOSTJoinTenantsRequest) Or(d POSTJoinTenantsRequest) POSTJoinTenantsRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptPOSTProviderReserveRequestMultipart returns new OptPOSTProviderReserveRequestMultipart with value set to v.
-func NewOptPOSTProviderReserveRequestMultipart(v POSTProviderReserveRequestMultipart) OptPOSTProviderReserveRequestMultipart {
-	return OptPOSTProviderReserveRequestMultipart{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPOSTProviderReserveRequestMultipart is optional POSTProviderReserveRequestMultipart.
-type OptPOSTProviderReserveRequestMultipart struct {
-	Value POSTProviderReserveRequestMultipart
-	Set   bool
-}
-
-// IsSet returns true if OptPOSTProviderReserveRequestMultipart was set.
-func (o OptPOSTProviderReserveRequestMultipart) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPOSTProviderReserveRequestMultipart) Reset() {
-	var v POSTProviderReserveRequestMultipart
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPOSTProviderReserveRequestMultipart) SetTo(v POSTProviderReserveRequestMultipart) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPOSTProviderReserveRequestMultipart) Get() (v POSTProviderReserveRequestMultipart, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPOSTProviderReserveRequestMultipart) Or(d POSTProviderReserveRequestMultipart) POSTProviderReserveRequestMultipart {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptPOSTProviderReserveResponseReservationListItemProvider returns new OptPOSTProviderReserveResponseReservationListItemProvider with value set to v.
 func NewOptPOSTProviderReserveResponseReservationListItemProvider(v POSTProviderReserveResponseReservationListItemProvider) OptPOSTProviderReserveResponseReservationListItemProvider {
 	return OptPOSTProviderReserveResponseReservationListItemProvider{
@@ -68977,52 +68103,6 @@ func (o OptPOSTProviderReserveResponseReservationListItemProvider) Get() (v POST
 
 // Or returns value if set, or given parameter if does not.
 func (o OptPOSTProviderReserveResponseReservationListItemProvider) Or(d POSTProviderReserveResponseReservationListItemProvider) POSTProviderReserveResponseReservationListItemProvider {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptPOSTTenantEntriesRequest returns new OptPOSTTenantEntriesRequest with value set to v.
-func NewOptPOSTTenantEntriesRequest(v POSTTenantEntriesRequest) OptPOSTTenantEntriesRequest {
-	return OptPOSTTenantEntriesRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPOSTTenantEntriesRequest is optional POSTTenantEntriesRequest.
-type OptPOSTTenantEntriesRequest struct {
-	Value POSTTenantEntriesRequest
-	Set   bool
-}
-
-// IsSet returns true if OptPOSTTenantEntriesRequest was set.
-func (o OptPOSTTenantEntriesRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPOSTTenantEntriesRequest) Reset() {
-	var v POSTTenantEntriesRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPOSTTenantEntriesRequest) SetTo(v POSTTenantEntriesRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPOSTTenantEntriesRequest) Get() (v POSTTenantEntriesRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPOSTTenantEntriesRequest) Or(d POSTTenantEntriesRequest) POSTTenantEntriesRequest {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -69345,52 +68425,6 @@ func (o OptPOSTTenantEntriesResponseUserDataType) Get() (v POSTTenantEntriesResp
 
 // Or returns value if set, or given parameter if does not.
 func (o OptPOSTTenantEntriesResponseUserDataType) Or(d POSTTenantEntriesResponseUserDataType) POSTTenantEntriesResponseUserDataType {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptPaymentBulkCreatingRequestMultipart returns new OptPaymentBulkCreatingRequestMultipart with value set to v.
-func NewOptPaymentBulkCreatingRequestMultipart(v PaymentBulkCreatingRequestMultipart) OptPaymentBulkCreatingRequestMultipart {
-	return OptPaymentBulkCreatingRequestMultipart{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPaymentBulkCreatingRequestMultipart is optional PaymentBulkCreatingRequestMultipart.
-type OptPaymentBulkCreatingRequestMultipart struct {
-	Value PaymentBulkCreatingRequestMultipart
-	Set   bool
-}
-
-// IsSet returns true if OptPaymentBulkCreatingRequestMultipart was set.
-func (o OptPaymentBulkCreatingRequestMultipart) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPaymentBulkCreatingRequestMultipart) Reset() {
-	var v PaymentBulkCreatingRequestMultipart
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPaymentBulkCreatingRequestMultipart) SetTo(v PaymentBulkCreatingRequestMultipart) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPaymentBulkCreatingRequestMultipart) Get() (v PaymentBulkCreatingRequestMultipart, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPaymentBulkCreatingRequestMultipart) Or(d PaymentBulkCreatingRequestMultipart) PaymentBulkCreatingRequestMultipart {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -70041,52 +69075,6 @@ func (o OptPaymentMethodStatus) Or(d PaymentMethodStatus) PaymentMethodStatus {
 	return d
 }
 
-// NewOptPaymentSessionCreatingRequest returns new OptPaymentSessionCreatingRequest with value set to v.
-func NewOptPaymentSessionCreatingRequest(v PaymentSessionCreatingRequest) OptPaymentSessionCreatingRequest {
-	return OptPaymentSessionCreatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPaymentSessionCreatingRequest is optional PaymentSessionCreatingRequest.
-type OptPaymentSessionCreatingRequest struct {
-	Value PaymentSessionCreatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptPaymentSessionCreatingRequest was set.
-func (o OptPaymentSessionCreatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPaymentSessionCreatingRequest) Reset() {
-	var v PaymentSessionCreatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPaymentSessionCreatingRequest) SetTo(v PaymentSessionCreatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPaymentSessionCreatingRequest) Get() (v PaymentSessionCreatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPaymentSessionCreatingRequest) Or(d PaymentSessionCreatingRequest) PaymentSessionCreatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptPaymentSessionCreatingResponseCard returns new OptPaymentSessionCreatingResponseCard with value set to v.
 func NewOptPaymentSessionCreatingResponseCard(v PaymentSessionCreatingResponseCard) OptPaymentSessionCreatingResponseCard {
 	return OptPaymentSessionCreatingResponseCard{
@@ -70451,52 +69439,6 @@ func (o OptPaymentSessionCreatingResponseTransaction) Get() (v PaymentSessionCre
 
 // Or returns value if set, or given parameter if does not.
 func (o OptPaymentSessionCreatingResponseTransaction) Or(d PaymentSessionCreatingResponseTransaction) PaymentSessionCreatingResponseTransaction {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptPlanCreatingRequest returns new OptPlanCreatingRequest with value set to v.
-func NewOptPlanCreatingRequest(v PlanCreatingRequest) OptPlanCreatingRequest {
-	return OptPlanCreatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPlanCreatingRequest is optional PlanCreatingRequest.
-type OptPlanCreatingRequest struct {
-	Value PlanCreatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptPlanCreatingRequest was set.
-func (o OptPlanCreatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPlanCreatingRequest) Reset() {
-	var v PlanCreatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPlanCreatingRequest) SetTo(v PlanCreatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPlanCreatingRequest) Get() (v PlanCreatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPlanCreatingRequest) Or(d PlanCreatingRequest) PlanCreatingRequest {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -71285,52 +70227,6 @@ func (o OptPlanRetrievingResponseUsedFlag) Or(d PlanRetrievingResponseUsedFlag) 
 	return d
 }
 
-// NewOptPlanUpdatingRequest returns new OptPlanUpdatingRequest with value set to v.
-func NewOptPlanUpdatingRequest(v PlanUpdatingRequest) OptPlanUpdatingRequest {
-	return OptPlanUpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPlanUpdatingRequest is optional PlanUpdatingRequest.
-type OptPlanUpdatingRequest struct {
-	Value PlanUpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptPlanUpdatingRequest was set.
-func (o OptPlanUpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPlanUpdatingRequest) Reset() {
-	var v PlanUpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPlanUpdatingRequest) SetTo(v PlanUpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPlanUpdatingRequest) Get() (v PlanUpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPlanUpdatingRequest) Or(d PlanUpdatingRequest) PlanUpdatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptPlanUpdatingRequestIntervalCount returns new OptPlanUpdatingRequestIntervalCount with value set to v.
 func NewOptPlanUpdatingRequestIntervalCount(v PlanUpdatingRequestIntervalCount) OptPlanUpdatingRequestIntervalCount {
 	return OptPlanUpdatingRequestIntervalCount{
@@ -71785,98 +70681,6 @@ func (o OptPlatformRateConfigID) Get() (v PlatformRateConfigID, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptPlatformRateConfigID) Or(d PlatformRateConfigID) PlatformRateConfigID {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptPlatformShopUpdatingRequest returns new OptPlatformShopUpdatingRequest with value set to v.
-func NewOptPlatformShopUpdatingRequest(v PlatformShopUpdatingRequest) OptPlatformShopUpdatingRequest {
-	return OptPlatformShopUpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptPlatformShopUpdatingRequest is optional PlatformShopUpdatingRequest.
-type OptPlatformShopUpdatingRequest struct {
-	Value PlatformShopUpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptPlatformShopUpdatingRequest was set.
-func (o OptPlatformShopUpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptPlatformShopUpdatingRequest) Reset() {
-	var v PlatformShopUpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptPlatformShopUpdatingRequest) SetTo(v PlatformShopUpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptPlatformShopUpdatingRequest) Get() (v PlatformShopUpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptPlatformShopUpdatingRequest) Or(d PlatformShopUpdatingRequest) PlatformShopUpdatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptR3DSAuthorizingRequest returns new OptR3DSAuthorizingRequest with value set to v.
-func NewOptR3DSAuthorizingRequest(v R3DSAuthorizingRequest) OptR3DSAuthorizingRequest {
-	return OptR3DSAuthorizingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptR3DSAuthorizingRequest is optional R3DSAuthorizingRequest.
-type OptR3DSAuthorizingRequest struct {
-	Value R3DSAuthorizingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptR3DSAuthorizingRequest was set.
-func (o OptR3DSAuthorizingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptR3DSAuthorizingRequest) Reset() {
-	var v R3DSAuthorizingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptR3DSAuthorizingRequest) SetTo(v R3DSAuthorizingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptR3DSAuthorizingRequest) Get() (v R3DSAuthorizingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptR3DSAuthorizingRequest) Or(d R3DSAuthorizingRequest) R3DSAuthorizingRequest {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -73723,52 +72527,6 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
-// NewOptSubscriptionCreatingRequest returns new OptSubscriptionCreatingRequest with value set to v.
-func NewOptSubscriptionCreatingRequest(v SubscriptionCreatingRequest) OptSubscriptionCreatingRequest {
-	return OptSubscriptionCreatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptSubscriptionCreatingRequest is optional SubscriptionCreatingRequest.
-type OptSubscriptionCreatingRequest struct {
-	Value SubscriptionCreatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptSubscriptionCreatingRequest was set.
-func (o OptSubscriptionCreatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptSubscriptionCreatingRequest) Reset() {
-	var v SubscriptionCreatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptSubscriptionCreatingRequest) SetTo(v SubscriptionCreatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptSubscriptionCreatingRequest) Get() (v SubscriptionCreatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptSubscriptionCreatingRequest) Or(d SubscriptionCreatingRequest) SubscriptionCreatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptSubscriptionCreatingRequestEndMonthFlag returns new OptSubscriptionCreatingRequestEndMonthFlag with value set to v.
 func NewOptSubscriptionCreatingRequestEndMonthFlag(v SubscriptionCreatingRequestEndMonthFlag) OptSubscriptionCreatingRequestEndMonthFlag {
 	return OptSubscriptionCreatingRequestEndMonthFlag{
@@ -74551,52 +73309,6 @@ func (o OptSubscriptionUnsubscribingResponseStatus) Or(d SubscriptionUnsubscribi
 	return d
 }
 
-// NewOptSubscriptionUpdatingRequest returns new OptSubscriptionUpdatingRequest with value set to v.
-func NewOptSubscriptionUpdatingRequest(v SubscriptionUpdatingRequest) OptSubscriptionUpdatingRequest {
-	return OptSubscriptionUpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptSubscriptionUpdatingRequest is optional SubscriptionUpdatingRequest.
-type OptSubscriptionUpdatingRequest struct {
-	Value SubscriptionUpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptSubscriptionUpdatingRequest was set.
-func (o OptSubscriptionUpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptSubscriptionUpdatingRequest) Reset() {
-	var v SubscriptionUpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptSubscriptionUpdatingRequest) SetTo(v SubscriptionUpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptSubscriptionUpdatingRequest) Get() (v SubscriptionUpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptSubscriptionUpdatingRequest) Or(d SubscriptionUpdatingRequest) SubscriptionUpdatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptSubscriptionUpdatingRequestEndMonthFlag returns new OptSubscriptionUpdatingRequestEndMonthFlag with value set to v.
 func NewOptSubscriptionUpdatingRequestEndMonthFlag(v SubscriptionUpdatingRequestEndMonthFlag) OptSubscriptionUpdatingRequestEndMonthFlag {
 	return OptSubscriptionUpdatingRequestEndMonthFlag{
@@ -74873,52 +73585,6 @@ func (o OptTds2Status) Or(d Tds2Status) Tds2Status {
 	return d
 }
 
-// NewOptTenantShopUpdatingRequest returns new OptTenantShopUpdatingRequest with value set to v.
-func NewOptTenantShopUpdatingRequest(v TenantShopUpdatingRequest) OptTenantShopUpdatingRequest {
-	return OptTenantShopUpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptTenantShopUpdatingRequest is optional TenantShopUpdatingRequest.
-type OptTenantShopUpdatingRequest struct {
-	Value TenantShopUpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptTenantShopUpdatingRequest was set.
-func (o OptTenantShopUpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptTenantShopUpdatingRequest) Reset() {
-	var v TenantShopUpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptTenantShopUpdatingRequest) SetTo(v TenantShopUpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptTenantShopUpdatingRequest) Get() (v TenantShopUpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptTenantShopUpdatingRequest) Or(d TenantShopUpdatingRequest) TenantShopUpdatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptTenantShopUpdatingRequestExaminationMasterID returns new OptTenantShopUpdatingRequestExaminationMasterID with value set to v.
 func NewOptTenantShopUpdatingRequestExaminationMasterID(v TenantShopUpdatingRequestExaminationMasterID) OptTenantShopUpdatingRequestExaminationMasterID {
 	return OptTenantShopUpdatingRequestExaminationMasterID{
@@ -75005,52 +73671,6 @@ func (o OptURI) Get() (v url.URL, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptURI) Or(d url.URL) url.URL {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptWebhookEventCard returns new OptWebhookEventCard with value set to v.
-func NewOptWebhookEventCard(v WebhookEventCard) OptWebhookEventCard {
-	return OptWebhookEventCard{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventCard is optional WebhookEventCard.
-type OptWebhookEventCard struct {
-	Value WebhookEventCard
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventCard was set.
-func (o OptWebhookEventCard) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventCard) Reset() {
-	var v WebhookEventCard
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventCard) SetTo(v WebhookEventCard) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventCard) Get() (v WebhookEventCard, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventCard) Or(d WebhookEventCard) WebhookEventCard {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -75241,52 +73861,6 @@ func (o OptWebhookEventCardProcessType) Or(d WebhookEventCardProcessType) Webhoo
 	return d
 }
 
-// NewOptWebhookEventContract returns new OptWebhookEventContract with value set to v.
-func NewOptWebhookEventContract(v WebhookEventContract) OptWebhookEventContract {
-	return OptWebhookEventContract{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventContract is optional WebhookEventContract.
-type OptWebhookEventContract struct {
-	Value WebhookEventContract
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventContract was set.
-func (o OptWebhookEventContract) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventContract) Reset() {
-	var v WebhookEventContract
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventContract) SetTo(v WebhookEventContract) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventContract) Get() (v WebhookEventContract, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventContract) Or(d WebhookEventContract) WebhookEventContract {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookEventContractBodyItemAcquirer returns new OptWebhookEventContractBodyItemAcquirer with value set to v.
 func NewOptWebhookEventContractBodyItemAcquirer(v WebhookEventContractBodyItemAcquirer) OptWebhookEventContractBodyItemAcquirer {
 	return OptWebhookEventContractBodyItemAcquirer{
@@ -75425,52 +73999,6 @@ func (o OptWebhookEventContractEvent) Or(d WebhookEventContractEvent) WebhookEve
 	return d
 }
 
-// NewOptWebhookEventCustomerPaymentMethod returns new OptWebhookEventCustomerPaymentMethod with value set to v.
-func NewOptWebhookEventCustomerPaymentMethod(v WebhookEventCustomerPaymentMethod) OptWebhookEventCustomerPaymentMethod {
-	return OptWebhookEventCustomerPaymentMethod{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventCustomerPaymentMethod is optional WebhookEventCustomerPaymentMethod.
-type OptWebhookEventCustomerPaymentMethod struct {
-	Value WebhookEventCustomerPaymentMethod
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventCustomerPaymentMethod was set.
-func (o OptWebhookEventCustomerPaymentMethod) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventCustomerPaymentMethod) Reset() {
-	var v WebhookEventCustomerPaymentMethod
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventCustomerPaymentMethod) SetTo(v WebhookEventCustomerPaymentMethod) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventCustomerPaymentMethod) Get() (v WebhookEventCustomerPaymentMethod, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventCustomerPaymentMethod) Or(d WebhookEventCustomerPaymentMethod) WebhookEventCustomerPaymentMethod {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookEventCustomerPaymentMethodEvent returns new OptWebhookEventCustomerPaymentMethodEvent with value set to v.
 func NewOptWebhookEventCustomerPaymentMethodEvent(v WebhookEventCustomerPaymentMethodEvent) OptWebhookEventCustomerPaymentMethodEvent {
 	return OptWebhookEventCustomerPaymentMethodEvent{
@@ -75603,52 +74131,6 @@ func (o OptWebhookEventCustomerPaymentMethodStatus) Get() (v WebhookEventCustome
 
 // Or returns value if set, or given parameter if does not.
 func (o OptWebhookEventCustomerPaymentMethodStatus) Or(d WebhookEventCustomerPaymentMethodStatus) WebhookEventCustomerPaymentMethodStatus {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptWebhookEventPaymentApplePay returns new OptWebhookEventPaymentApplePay with value set to v.
-func NewOptWebhookEventPaymentApplePay(v WebhookEventPaymentApplePay) OptWebhookEventPaymentApplePay {
-	return OptWebhookEventPaymentApplePay{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventPaymentApplePay is optional WebhookEventPaymentApplePay.
-type OptWebhookEventPaymentApplePay struct {
-	Value WebhookEventPaymentApplePay
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventPaymentApplePay was set.
-func (o OptWebhookEventPaymentApplePay) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventPaymentApplePay) Reset() {
-	var v WebhookEventPaymentApplePay
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventPaymentApplePay) SetTo(v WebhookEventPaymentApplePay) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventPaymentApplePay) Get() (v WebhookEventPaymentApplePay, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventPaymentApplePay) Or(d WebhookEventPaymentApplePay) WebhookEventPaymentApplePay {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -75931,52 +74413,6 @@ func (o OptWebhookEventPaymentApplePayStatus) Or(d WebhookEventPaymentApplePaySt
 	return d
 }
 
-// NewOptWebhookEventPaymentBulkBatchCard returns new OptWebhookEventPaymentBulkBatchCard with value set to v.
-func NewOptWebhookEventPaymentBulkBatchCard(v WebhookEventPaymentBulkBatchCard) OptWebhookEventPaymentBulkBatchCard {
-	return OptWebhookEventPaymentBulkBatchCard{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventPaymentBulkBatchCard is optional WebhookEventPaymentBulkBatchCard.
-type OptWebhookEventPaymentBulkBatchCard struct {
-	Value WebhookEventPaymentBulkBatchCard
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventPaymentBulkBatchCard was set.
-func (o OptWebhookEventPaymentBulkBatchCard) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventPaymentBulkBatchCard) Reset() {
-	var v WebhookEventPaymentBulkBatchCard
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventPaymentBulkBatchCard) SetTo(v WebhookEventPaymentBulkBatchCard) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventPaymentBulkBatchCard) Get() (v WebhookEventPaymentBulkBatchCard, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventPaymentBulkBatchCard) Or(d WebhookEventPaymentBulkBatchCard) WebhookEventPaymentBulkBatchCard {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookEventPaymentBulkBatchCardEvent returns new OptWebhookEventPaymentBulkBatchCardEvent with value set to v.
 func NewOptWebhookEventPaymentBulkBatchCardEvent(v WebhookEventPaymentBulkBatchCardEvent) OptWebhookEventPaymentBulkBatchCardEvent {
 	return OptWebhookEventPaymentBulkBatchCardEvent{
@@ -76115,52 +74551,6 @@ func (o OptWebhookEventPaymentBulkBatchCardStatus) Or(d WebhookEventPaymentBulkB
 	return d
 }
 
-// NewOptWebhookEventPaymentBulkRegistCard returns new OptWebhookEventPaymentBulkRegistCard with value set to v.
-func NewOptWebhookEventPaymentBulkRegistCard(v WebhookEventPaymentBulkRegistCard) OptWebhookEventPaymentBulkRegistCard {
-	return OptWebhookEventPaymentBulkRegistCard{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventPaymentBulkRegistCard is optional WebhookEventPaymentBulkRegistCard.
-type OptWebhookEventPaymentBulkRegistCard struct {
-	Value WebhookEventPaymentBulkRegistCard
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventPaymentBulkRegistCard was set.
-func (o OptWebhookEventPaymentBulkRegistCard) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventPaymentBulkRegistCard) Reset() {
-	var v WebhookEventPaymentBulkRegistCard
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventPaymentBulkRegistCard) SetTo(v WebhookEventPaymentBulkRegistCard) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventPaymentBulkRegistCard) Get() (v WebhookEventPaymentBulkRegistCard, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventPaymentBulkRegistCard) Or(d WebhookEventPaymentBulkRegistCard) WebhookEventPaymentBulkRegistCard {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookEventPaymentBulkRegistCardEvent returns new OptWebhookEventPaymentBulkRegistCardEvent with value set to v.
 func NewOptWebhookEventPaymentBulkRegistCardEvent(v WebhookEventPaymentBulkRegistCardEvent) OptWebhookEventPaymentBulkRegistCardEvent {
 	return OptWebhookEventPaymentBulkRegistCardEvent{
@@ -76293,52 +74683,6 @@ func (o OptWebhookEventPaymentBulkRegistCardStatus) Get() (v WebhookEventPayment
 
 // Or returns value if set, or given parameter if does not.
 func (o OptWebhookEventPaymentBulkRegistCardStatus) Or(d WebhookEventPaymentBulkRegistCardStatus) WebhookEventPaymentBulkRegistCardStatus {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptWebhookEventPaymentCard returns new OptWebhookEventPaymentCard with value set to v.
-func NewOptWebhookEventPaymentCard(v WebhookEventPaymentCard) OptWebhookEventPaymentCard {
-	return OptWebhookEventPaymentCard{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventPaymentCard is optional WebhookEventPaymentCard.
-type OptWebhookEventPaymentCard struct {
-	Value WebhookEventPaymentCard
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventPaymentCard was set.
-func (o OptWebhookEventPaymentCard) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventPaymentCard) Reset() {
-	var v WebhookEventPaymentCard
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventPaymentCard) SetTo(v WebhookEventPaymentCard) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventPaymentCard) Get() (v WebhookEventPaymentCard, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventPaymentCard) Or(d WebhookEventPaymentCard) WebhookEventPaymentCard {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -76621,52 +74965,6 @@ func (o OptWebhookEventPaymentCardStatus) Or(d WebhookEventPaymentCardStatus) We
 	return d
 }
 
-// NewOptWebhookEventPaymentDirectDebit returns new OptWebhookEventPaymentDirectDebit with value set to v.
-func NewOptWebhookEventPaymentDirectDebit(v WebhookEventPaymentDirectDebit) OptWebhookEventPaymentDirectDebit {
-	return OptWebhookEventPaymentDirectDebit{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventPaymentDirectDebit is optional WebhookEventPaymentDirectDebit.
-type OptWebhookEventPaymentDirectDebit struct {
-	Value WebhookEventPaymentDirectDebit
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventPaymentDirectDebit was set.
-func (o OptWebhookEventPaymentDirectDebit) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventPaymentDirectDebit) Reset() {
-	var v WebhookEventPaymentDirectDebit
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventPaymentDirectDebit) SetTo(v WebhookEventPaymentDirectDebit) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventPaymentDirectDebit) Get() (v WebhookEventPaymentDirectDebit, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventPaymentDirectDebit) Or(d WebhookEventPaymentDirectDebit) WebhookEventPaymentDirectDebit {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookEventPaymentDirectDebitEvent returns new OptWebhookEventPaymentDirectDebitEvent with value set to v.
 func NewOptWebhookEventPaymentDirectDebitEvent(v WebhookEventPaymentDirectDebitEvent) OptWebhookEventPaymentDirectDebitEvent {
 	return OptWebhookEventPaymentDirectDebitEvent{
@@ -76805,52 +75103,6 @@ func (o OptWebhookEventPaymentDirectDebitStatus) Or(d WebhookEventPaymentDirectD
 	return d
 }
 
-// NewOptWebhookEventPaymentKonbini returns new OptWebhookEventPaymentKonbini with value set to v.
-func NewOptWebhookEventPaymentKonbini(v WebhookEventPaymentKonbini) OptWebhookEventPaymentKonbini {
-	return OptWebhookEventPaymentKonbini{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventPaymentKonbini is optional WebhookEventPaymentKonbini.
-type OptWebhookEventPaymentKonbini struct {
-	Value WebhookEventPaymentKonbini
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventPaymentKonbini was set.
-func (o OptWebhookEventPaymentKonbini) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventPaymentKonbini) Reset() {
-	var v WebhookEventPaymentKonbini
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventPaymentKonbini) SetTo(v WebhookEventPaymentKonbini) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventPaymentKonbini) Get() (v WebhookEventPaymentKonbini, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventPaymentKonbini) Or(d WebhookEventPaymentKonbini) WebhookEventPaymentKonbini {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookEventPaymentKonbiniEvent returns new OptWebhookEventPaymentKonbiniEvent with value set to v.
 func NewOptWebhookEventPaymentKonbiniEvent(v WebhookEventPaymentKonbiniEvent) OptWebhookEventPaymentKonbiniEvent {
 	return OptWebhookEventPaymentKonbiniEvent{
@@ -76983,52 +75235,6 @@ func (o OptWebhookEventPaymentKonbiniStatus) Get() (v WebhookEventPaymentKonbini
 
 // Or returns value if set, or given parameter if does not.
 func (o OptWebhookEventPaymentKonbiniStatus) Or(d WebhookEventPaymentKonbiniStatus) WebhookEventPaymentKonbiniStatus {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptWebhookEventPaymentPayPay returns new OptWebhookEventPaymentPayPay with value set to v.
-func NewOptWebhookEventPaymentPayPay(v WebhookEventPaymentPayPay) OptWebhookEventPaymentPayPay {
-	return OptWebhookEventPaymentPayPay{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventPaymentPayPay is optional WebhookEventPaymentPayPay.
-type OptWebhookEventPaymentPayPay struct {
-	Value WebhookEventPaymentPayPay
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventPaymentPayPay was set.
-func (o OptWebhookEventPaymentPayPay) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventPaymentPayPay) Reset() {
-	var v WebhookEventPaymentPayPay
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventPaymentPayPay) SetTo(v WebhookEventPaymentPayPay) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventPaymentPayPay) Get() (v WebhookEventPaymentPayPay, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventPaymentPayPay) Or(d WebhookEventPaymentPayPay) WebhookEventPaymentPayPay {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -77219,52 +75425,6 @@ func (o OptWebhookEventPaymentPayPayStatus) Or(d WebhookEventPaymentPayPayStatus
 	return d
 }
 
-// NewOptWebhookEventRecurringBatchCard returns new OptWebhookEventRecurringBatchCard with value set to v.
-func NewOptWebhookEventRecurringBatchCard(v WebhookEventRecurringBatchCard) OptWebhookEventRecurringBatchCard {
-	return OptWebhookEventRecurringBatchCard{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventRecurringBatchCard is optional WebhookEventRecurringBatchCard.
-type OptWebhookEventRecurringBatchCard struct {
-	Value WebhookEventRecurringBatchCard
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventRecurringBatchCard was set.
-func (o OptWebhookEventRecurringBatchCard) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventRecurringBatchCard) Reset() {
-	var v WebhookEventRecurringBatchCard
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventRecurringBatchCard) SetTo(v WebhookEventRecurringBatchCard) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventRecurringBatchCard) Get() (v WebhookEventRecurringBatchCard, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventRecurringBatchCard) Or(d WebhookEventRecurringBatchCard) WebhookEventRecurringBatchCard {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookEventRecurringBatchCardEvent returns new OptWebhookEventRecurringBatchCardEvent with value set to v.
 func NewOptWebhookEventRecurringBatchCardEvent(v WebhookEventRecurringBatchCardEvent) OptWebhookEventRecurringBatchCardEvent {
 	return OptWebhookEventRecurringBatchCardEvent{
@@ -77357,52 +75517,6 @@ func (o OptWebhookEventRecurringBatchCardPayType) Or(d WebhookEventRecurringBatc
 	return d
 }
 
-// NewOptWebhookEventRecurringBatchDirectDebit returns new OptWebhookEventRecurringBatchDirectDebit with value set to v.
-func NewOptWebhookEventRecurringBatchDirectDebit(v WebhookEventRecurringBatchDirectDebit) OptWebhookEventRecurringBatchDirectDebit {
-	return OptWebhookEventRecurringBatchDirectDebit{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventRecurringBatchDirectDebit is optional WebhookEventRecurringBatchDirectDebit.
-type OptWebhookEventRecurringBatchDirectDebit struct {
-	Value WebhookEventRecurringBatchDirectDebit
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventRecurringBatchDirectDebit was set.
-func (o OptWebhookEventRecurringBatchDirectDebit) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventRecurringBatchDirectDebit) Reset() {
-	var v WebhookEventRecurringBatchDirectDebit
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventRecurringBatchDirectDebit) SetTo(v WebhookEventRecurringBatchDirectDebit) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventRecurringBatchDirectDebit) Get() (v WebhookEventRecurringBatchDirectDebit, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventRecurringBatchDirectDebit) Or(d WebhookEventRecurringBatchDirectDebit) WebhookEventRecurringBatchDirectDebit {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookEventRecurringBatchDirectDebitEvent returns new OptWebhookEventRecurringBatchDirectDebitEvent with value set to v.
 func NewOptWebhookEventRecurringBatchDirectDebitEvent(v WebhookEventRecurringBatchDirectDebitEvent) OptWebhookEventRecurringBatchDirectDebitEvent {
 	return OptWebhookEventRecurringBatchDirectDebitEvent{
@@ -77489,52 +75603,6 @@ func (o OptWebhookEventRecurringBatchDirectDebitPayType) Get() (v WebhookEventRe
 
 // Or returns value if set, or given parameter if does not.
 func (o OptWebhookEventRecurringBatchDirectDebitPayType) Or(d WebhookEventRecurringBatchDirectDebitPayType) WebhookEventRecurringBatchDirectDebitPayType {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptWebhookEventSubscriptionCard returns new OptWebhookEventSubscriptionCard with value set to v.
-func NewOptWebhookEventSubscriptionCard(v WebhookEventSubscriptionCard) OptWebhookEventSubscriptionCard {
-	return OptWebhookEventSubscriptionCard{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventSubscriptionCard is optional WebhookEventSubscriptionCard.
-type OptWebhookEventSubscriptionCard struct {
-	Value WebhookEventSubscriptionCard
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventSubscriptionCard was set.
-func (o OptWebhookEventSubscriptionCard) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventSubscriptionCard) Reset() {
-	var v WebhookEventSubscriptionCard
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventSubscriptionCard) SetTo(v WebhookEventSubscriptionCard) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventSubscriptionCard) Get() (v WebhookEventSubscriptionCard, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventSubscriptionCard) Or(d WebhookEventSubscriptionCard) WebhookEventSubscriptionCard {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -77673,52 +75741,6 @@ func (o OptWebhookEventSubscriptionCardStatus) Get() (v WebhookEventSubscription
 
 // Or returns value if set, or given parameter if does not.
 func (o OptWebhookEventSubscriptionCardStatus) Or(d WebhookEventSubscriptionCardStatus) WebhookEventSubscriptionCardStatus {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptWebhookEventSubscriptionDirectDebit returns new OptWebhookEventSubscriptionDirectDebit with value set to v.
-func NewOptWebhookEventSubscriptionDirectDebit(v WebhookEventSubscriptionDirectDebit) OptWebhookEventSubscriptionDirectDebit {
-	return OptWebhookEventSubscriptionDirectDebit{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookEventSubscriptionDirectDebit is optional WebhookEventSubscriptionDirectDebit.
-type OptWebhookEventSubscriptionDirectDebit struct {
-	Value WebhookEventSubscriptionDirectDebit
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookEventSubscriptionDirectDebit was set.
-func (o OptWebhookEventSubscriptionDirectDebit) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookEventSubscriptionDirectDebit) Reset() {
-	var v WebhookEventSubscriptionDirectDebit
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookEventSubscriptionDirectDebit) SetTo(v WebhookEventSubscriptionDirectDebit) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookEventSubscriptionDirectDebit) Get() (v WebhookEventSubscriptionDirectDebit, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookEventSubscriptionDirectDebit) Or(d WebhookEventSubscriptionDirectDebit) WebhookEventSubscriptionDirectDebit {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -77909,52 +75931,6 @@ func (o OptWebhookResponseReceive) Or(d WebhookResponseReceive) WebhookResponseR
 	return d
 }
 
-// NewOptWebhookSettingCreatingRequest returns new OptWebhookSettingCreatingRequest with value set to v.
-func NewOptWebhookSettingCreatingRequest(v WebhookSettingCreatingRequest) OptWebhookSettingCreatingRequest {
-	return OptWebhookSettingCreatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookSettingCreatingRequest is optional WebhookSettingCreatingRequest.
-type OptWebhookSettingCreatingRequest struct {
-	Value WebhookSettingCreatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookSettingCreatingRequest was set.
-func (o OptWebhookSettingCreatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookSettingCreatingRequest) Reset() {
-	var v WebhookSettingCreatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookSettingCreatingRequest) SetTo(v WebhookSettingCreatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookSettingCreatingRequest) Get() (v WebhookSettingCreatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookSettingCreatingRequest) Or(d WebhookSettingCreatingRequest) WebhookSettingCreatingRequest {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptWebhookSettingCreatingResponseEvent returns new OptWebhookSettingCreatingResponseEvent with value set to v.
 func NewOptWebhookSettingCreatingResponseEvent(v WebhookSettingCreatingResponseEvent) OptWebhookSettingCreatingResponseEvent {
 	return OptWebhookSettingCreatingResponseEvent{
@@ -78133,52 +76109,6 @@ func (o OptWebhookSettingRetrievingResponseEvent) Get() (v WebhookSettingRetriev
 
 // Or returns value if set, or given parameter if does not.
 func (o OptWebhookSettingRetrievingResponseEvent) Or(d WebhookSettingRetrievingResponseEvent) WebhookSettingRetrievingResponseEvent {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptWebhookSettingUpdatingRequest returns new OptWebhookSettingUpdatingRequest with value set to v.
-func NewOptWebhookSettingUpdatingRequest(v WebhookSettingUpdatingRequest) OptWebhookSettingUpdatingRequest {
-	return OptWebhookSettingUpdatingRequest{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptWebhookSettingUpdatingRequest is optional WebhookSettingUpdatingRequest.
-type OptWebhookSettingUpdatingRequest struct {
-	Value WebhookSettingUpdatingRequest
-	Set   bool
-}
-
-// IsSet returns true if OptWebhookSettingUpdatingRequest was set.
-func (o OptWebhookSettingUpdatingRequest) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptWebhookSettingUpdatingRequest) Reset() {
-	var v WebhookSettingUpdatingRequest
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptWebhookSettingUpdatingRequest) SetTo(v WebhookSettingUpdatingRequest) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptWebhookSettingUpdatingRequest) Get() (v WebhookSettingUpdatingRequest, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptWebhookSettingUpdatingRequest) Or(d WebhookSettingUpdatingRequest) WebhookSettingUpdatingRequest {
 	if v, ok := o.Get(); ok {
 		return v
 	}

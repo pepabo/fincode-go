@@ -64646,39 +64646,6 @@ func (s *OptAuthorizePaymentOKStatus) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes AuthorizePaymentReq as json.
-func (o OptAuthorizePaymentReq) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes AuthorizePaymentReq from json.
-func (o *OptAuthorizePaymentReq) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptAuthorizePaymentReq to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptAuthorizePaymentReq) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptAuthorizePaymentReq) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes bool as json.
 func (o OptBool) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -65077,39 +65044,6 @@ func (s *OptCapturePaymentOK2Status) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes CapturePaymentReq as json.
-func (o OptCapturePaymentReq) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes CapturePaymentReq from json.
-func (o *OptCapturePaymentReq) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCapturePaymentReq to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCapturePaymentReq) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCapturePaymentReq) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes CapturePaymentReq0Method as json.
 func (o OptCapturePaymentReq0Method) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -65238,39 +65172,6 @@ func (s OptCardPaymentSessionJobCode) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptCardPaymentSessionJobCode) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes CardRegistrationSessionCreatingRequest as json.
-func (o OptCardRegistrationSessionCreatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes CardRegistrationSessionCreatingRequest from json.
-func (o *OptCardRegistrationSessionCreatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCardRegistrationSessionCreatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCardRegistrationSessionCreatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCardRegistrationSessionCreatingRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -65766,39 +65667,6 @@ func (s OptChangeAmountOfPaymentOK2Status) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptChangeAmountOfPaymentOK2Status) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes ChangeAmountOfPaymentReq as json.
-func (o OptChangeAmountOfPaymentReq) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes ChangeAmountOfPaymentReq from json.
-func (o *OptChangeAmountOfPaymentReq) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptChangeAmountOfPaymentReq to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptChangeAmountOfPaymentReq) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptChangeAmountOfPaymentReq) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -66859,72 +66727,6 @@ func (s *OptCreatePaymentOK4Status) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes CreatePaymentReq as json.
-func (o OptCreatePaymentReq) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes CreatePaymentReq from json.
-func (o *OptCreatePaymentReq) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCreatePaymentReq to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCreatePaymentReq) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCreatePaymentReq) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes CustomerCardCreatingRequest as json.
-func (o OptCustomerCardCreatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes CustomerCardCreatingRequest from json.
-func (o *OptCustomerCardCreatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCustomerCardCreatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCustomerCardCreatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCustomerCardCreatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes CustomerCardCreatingResponseBrand as json.
 func (o OptCustomerCardCreatingResponseBrand) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -67156,39 +66958,6 @@ func (s *OptCustomerCardRetrievingResponseType) UnmarshalJSON(data []byte) error
 	return s.Decode(d)
 }
 
-// Encode encodes CustomerCardUpdatingRequest as json.
-func (o OptCustomerCardUpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes CustomerCardUpdatingRequest from json.
-func (o *OptCustomerCardUpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCustomerCardUpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCustomerCardUpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCustomerCardUpdatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes CustomerCardUpdatingRequestDefaultFlag as json.
 func (o OptCustomerCardUpdatingRequestDefaultFlag) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -67321,39 +67090,6 @@ func (s *OptCustomerCardUpdatingResponseType) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes CustomerCreatingRequest as json.
-func (o OptCustomerCreatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes CustomerCreatingRequest from json.
-func (o *OptCustomerCreatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCustomerCreatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCustomerCreatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCustomerCreatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes CustomerDeletingResponseDeleteFlag as json.
 func (o OptCustomerDeletingResponseDeleteFlag) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -67383,39 +67119,6 @@ func (s OptCustomerDeletingResponseDeleteFlag) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptCustomerDeletingResponseDeleteFlag) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes CustomerPaymentMethodCreatingRequest as json.
-func (o OptCustomerPaymentMethodCreatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes CustomerPaymentMethodCreatingRequest from json.
-func (o *OptCustomerPaymentMethodCreatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCustomerPaymentMethodCreatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCustomerPaymentMethodCreatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCustomerPaymentMethodCreatingRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -67680,39 +67383,6 @@ func (s OptCustomerPaymentMethodRetrievingResponsePayType) MarshalJSON() ([]byte
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptCustomerPaymentMethodRetrievingResponsePayType) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes CustomerUpdatingRequest as json.
-func (o OptCustomerUpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes CustomerUpdatingRequest from json.
-func (o *OptCustomerUpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCustomerUpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCustomerUpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCustomerUpdatingRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -68142,39 +67812,6 @@ func (s OptExaminationInfoRetrievingResponseStatusCode) MarshalJSON() ([]byte, e
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptExaminationInfoRetrievingResponseStatusCode) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes ExaminationInfoUpdatingRequest as json.
-func (o OptExaminationInfoUpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes ExaminationInfoUpdatingRequest from json.
-func (o *OptExaminationInfoUpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptExaminationInfoUpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptExaminationInfoUpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptExaminationInfoUpdatingRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -68971,39 +68608,6 @@ func (s *OptExaminationInfoV2RetrievingResponseStatusCode) UnmarshalJSON(data []
 	return s.Decode(d)
 }
 
-// Encode encodes ExaminationInfoV2UpdatingRequest as json.
-func (o OptExaminationInfoV2UpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes ExaminationInfoV2UpdatingRequest from json.
-func (o *OptExaminationInfoV2UpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptExaminationInfoV2UpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptExaminationInfoV2UpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptExaminationInfoV2UpdatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes ExaminationInfoV2UpdatingRequestBankAccountInfo as json.
 func (o OptExaminationInfoV2UpdatingRequestBankAccountInfo) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -69561,39 +69165,6 @@ func (s OptExecutePaymentAfter3DSecureOKStatus) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptExecutePaymentAfter3DSecureOKStatus) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes ExecutePaymentAfter3DSecureReq as json.
-func (o OptExecutePaymentAfter3DSecureReq) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes ExecutePaymentAfter3DSecureReq from json.
-func (o *OptExecutePaymentAfter3DSecureReq) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptExecutePaymentAfter3DSecureReq to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptExecutePaymentAfter3DSecureReq) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptExecutePaymentAfter3DSecureReq) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -70192,39 +69763,6 @@ func (s *OptExecutePaymentOK4Status) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes ExecutePaymentReq as json.
-func (o OptExecutePaymentReq) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes ExecutePaymentReq from json.
-func (o *OptExecutePaymentReq) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptExecutePaymentReq to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptExecutePaymentReq) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptExecutePaymentReq) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes ExecutePaymentReq0Method as json.
 func (o OptExecutePaymentReq0Method) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -70487,39 +70025,6 @@ func (s OptGenerateBarcodeOfPaymentOKStatus) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptGenerateBarcodeOfPaymentOKStatus) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes GenerateBarcodeOfPaymentReq as json.
-func (o OptGenerateBarcodeOfPaymentReq) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes GenerateBarcodeOfPaymentReq from json.
-func (o *OptGenerateBarcodeOfPaymentReq) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptGenerateBarcodeOfPaymentReq to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptGenerateBarcodeOfPaymentReq) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptGenerateBarcodeOfPaymentReq) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -78015,39 +77520,6 @@ func (s *OptPOSTContractsExaminationsResponseEnableImmediateUse) UnmarshalJSON(d
 	return s.Decode(d)
 }
 
-// Encode encodes POSTJoinTenantsRequest as json.
-func (o OptPOSTJoinTenantsRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes POSTJoinTenantsRequest from json.
-func (o *OptPOSTJoinTenantsRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptPOSTJoinTenantsRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptPOSTJoinTenantsRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptPOSTJoinTenantsRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes POSTProviderReserveResponseReservationListItemProvider as json.
 func (o OptPOSTProviderReserveResponseReservationListItemProvider) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -78077,39 +77549,6 @@ func (s OptPOSTProviderReserveResponseReservationListItemProvider) MarshalJSON()
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptPOSTProviderReserveResponseReservationListItemProvider) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes POSTTenantEntriesRequest as json.
-func (o OptPOSTTenantEntriesRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes POSTTenantEntriesRequest from json.
-func (o *OptPOSTTenantEntriesRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptPOSTTenantEntriesRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptPOSTTenantEntriesRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptPOSTTenantEntriesRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -78807,39 +78246,6 @@ func (s *OptPaymentMethodStatus) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes PaymentSessionCreatingRequest as json.
-func (o OptPaymentSessionCreatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes PaymentSessionCreatingRequest from json.
-func (o *OptPaymentSessionCreatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptPaymentSessionCreatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptPaymentSessionCreatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptPaymentSessionCreatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes PaymentSessionCreatingResponseCard as json.
 func (o OptPaymentSessionCreatingResponseCard) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -79100,39 +78506,6 @@ func (s OptPaymentSessionCreatingResponseTransaction) MarshalJSON() ([]byte, err
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptPaymentSessionCreatingResponseTransaction) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes PlanCreatingRequest as json.
-func (o OptPlanCreatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes PlanCreatingRequest from json.
-func (o *OptPlanCreatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptPlanCreatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptPlanCreatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptPlanCreatingRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -79698,39 +79071,6 @@ func (s *OptPlanRetrievingResponseUsedFlag) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes PlanUpdatingRequest as json.
-func (o OptPlanUpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes PlanUpdatingRequest from json.
-func (o *OptPlanUpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptPlanUpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptPlanUpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptPlanUpdatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes PlanUpdatingRequestIntervalCount as json.
 func (o OptPlanUpdatingRequestIntervalCount) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -80057,72 +79397,6 @@ func (s OptPlatformRateConfigID) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptPlatformRateConfigID) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes PlatformShopUpdatingRequest as json.
-func (o OptPlatformShopUpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes PlatformShopUpdatingRequest from json.
-func (o *OptPlatformShopUpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptPlatformShopUpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptPlatformShopUpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptPlatformShopUpdatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes R3DSAuthorizingRequest as json.
-func (o OptR3DSAuthorizingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes R3DSAuthorizingRequest from json.
-func (o *OptR3DSAuthorizingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptR3DSAuthorizingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptR3DSAuthorizingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptR3DSAuthorizingRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -80888,39 +80162,6 @@ func (s *OptString) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes SubscriptionCreatingRequest as json.
-func (o OptSubscriptionCreatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes SubscriptionCreatingRequest from json.
-func (o *OptSubscriptionCreatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptSubscriptionCreatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptSubscriptionCreatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptSubscriptionCreatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes SubscriptionCreatingRequestEndMonthFlag as json.
 func (o OptSubscriptionCreatingRequestEndMonthFlag) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -81482,39 +80723,6 @@ func (s *OptSubscriptionUnsubscribingResponseStatus) UnmarshalJSON(data []byte) 
 	return s.Decode(d)
 }
 
-// Encode encodes SubscriptionUpdatingRequest as json.
-func (o OptSubscriptionUpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes SubscriptionUpdatingRequest from json.
-func (o *OptSubscriptionUpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptSubscriptionUpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptSubscriptionUpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptSubscriptionUpdatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes SubscriptionUpdatingRequestEndMonthFlag as json.
 func (o OptSubscriptionUpdatingRequestEndMonthFlag) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -81713,39 +80921,6 @@ func (s *OptTds2Status) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes TenantShopUpdatingRequest as json.
-func (o OptTenantShopUpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes TenantShopUpdatingRequest from json.
-func (o *OptTenantShopUpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptTenantShopUpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptTenantShopUpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptTenantShopUpdatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes TenantShopUpdatingRequestExaminationMasterID as json.
 func (o OptTenantShopUpdatingRequestExaminationMasterID) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -81810,39 +80985,6 @@ func (s OptURI) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptURI) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes WebhookEventCard as json.
-func (o OptWebhookEventCard) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventCard from json.
-func (o *OptWebhookEventCard) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventCard to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventCard) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventCard) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -81979,39 +81121,6 @@ func (s *OptWebhookEventCardProcessType) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookEventContract as json.
-func (o OptWebhookEventContract) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventContract from json.
-func (o *OptWebhookEventContract) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventContract to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventContract) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventContract) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookEventContractBodyItemAcquirer as json.
 func (o OptWebhookEventContractBodyItemAcquirer) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -82111,39 +81220,6 @@ func (s *OptWebhookEventContractEvent) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookEventCustomerPaymentMethod as json.
-func (o OptWebhookEventCustomerPaymentMethod) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventCustomerPaymentMethod from json.
-func (o *OptWebhookEventCustomerPaymentMethod) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventCustomerPaymentMethod to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventCustomerPaymentMethod) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventCustomerPaymentMethod) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookEventCustomerPaymentMethodEvent as json.
 func (o OptWebhookEventCustomerPaymentMethodEvent) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -82239,39 +81315,6 @@ func (s OptWebhookEventCustomerPaymentMethodStatus) MarshalJSON() ([]byte, error
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptWebhookEventCustomerPaymentMethodStatus) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes WebhookEventPaymentApplePay as json.
-func (o OptWebhookEventPaymentApplePay) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventPaymentApplePay from json.
-func (o *OptWebhookEventPaymentApplePay) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventPaymentApplePay to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventPaymentApplePay) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventPaymentApplePay) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -82474,39 +81517,6 @@ func (s *OptWebhookEventPaymentApplePayStatus) UnmarshalJSON(data []byte) error 
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookEventPaymentBulkBatchCard as json.
-func (o OptWebhookEventPaymentBulkBatchCard) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventPaymentBulkBatchCard from json.
-func (o *OptWebhookEventPaymentBulkBatchCard) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventPaymentBulkBatchCard to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventPaymentBulkBatchCard) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventPaymentBulkBatchCard) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookEventPaymentBulkBatchCardEvent as json.
 func (o OptWebhookEventPaymentBulkBatchCardEvent) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -82606,39 +81616,6 @@ func (s *OptWebhookEventPaymentBulkBatchCardStatus) UnmarshalJSON(data []byte) e
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookEventPaymentBulkRegistCard as json.
-func (o OptWebhookEventPaymentBulkRegistCard) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventPaymentBulkRegistCard from json.
-func (o *OptWebhookEventPaymentBulkRegistCard) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventPaymentBulkRegistCard to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventPaymentBulkRegistCard) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventPaymentBulkRegistCard) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookEventPaymentBulkRegistCardEvent as json.
 func (o OptWebhookEventPaymentBulkRegistCardEvent) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -82734,39 +81711,6 @@ func (s OptWebhookEventPaymentBulkRegistCardStatus) MarshalJSON() ([]byte, error
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptWebhookEventPaymentBulkRegistCardStatus) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes WebhookEventPaymentCard as json.
-func (o OptWebhookEventPaymentCard) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventPaymentCard from json.
-func (o *OptWebhookEventPaymentCard) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventPaymentCard to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventPaymentCard) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventPaymentCard) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -82969,39 +81913,6 @@ func (s *OptWebhookEventPaymentCardStatus) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookEventPaymentDirectDebit as json.
-func (o OptWebhookEventPaymentDirectDebit) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventPaymentDirectDebit from json.
-func (o *OptWebhookEventPaymentDirectDebit) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventPaymentDirectDebit to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventPaymentDirectDebit) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventPaymentDirectDebit) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookEventPaymentDirectDebitEvent as json.
 func (o OptWebhookEventPaymentDirectDebitEvent) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -83101,39 +82012,6 @@ func (s *OptWebhookEventPaymentDirectDebitStatus) UnmarshalJSON(data []byte) err
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookEventPaymentKonbini as json.
-func (o OptWebhookEventPaymentKonbini) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventPaymentKonbini from json.
-func (o *OptWebhookEventPaymentKonbini) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventPaymentKonbini to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventPaymentKonbini) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventPaymentKonbini) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookEventPaymentKonbiniEvent as json.
 func (o OptWebhookEventPaymentKonbiniEvent) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -83229,39 +82107,6 @@ func (s OptWebhookEventPaymentKonbiniStatus) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptWebhookEventPaymentKonbiniStatus) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes WebhookEventPaymentPayPay as json.
-func (o OptWebhookEventPaymentPayPay) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventPaymentPayPay from json.
-func (o *OptWebhookEventPaymentPayPay) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventPaymentPayPay to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventPaymentPayPay) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventPaymentPayPay) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -83398,39 +82243,6 @@ func (s *OptWebhookEventPaymentPayPayStatus) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookEventRecurringBatchCard as json.
-func (o OptWebhookEventRecurringBatchCard) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventRecurringBatchCard from json.
-func (o *OptWebhookEventRecurringBatchCard) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventRecurringBatchCard to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventRecurringBatchCard) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventRecurringBatchCard) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookEventRecurringBatchCardEvent as json.
 func (o OptWebhookEventRecurringBatchCardEvent) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -83497,39 +82309,6 @@ func (s *OptWebhookEventRecurringBatchCardPayType) UnmarshalJSON(data []byte) er
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookEventRecurringBatchDirectDebit as json.
-func (o OptWebhookEventRecurringBatchDirectDebit) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventRecurringBatchDirectDebit from json.
-func (o *OptWebhookEventRecurringBatchDirectDebit) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventRecurringBatchDirectDebit to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventRecurringBatchDirectDebit) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventRecurringBatchDirectDebit) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookEventRecurringBatchDirectDebitEvent as json.
 func (o OptWebhookEventRecurringBatchDirectDebitEvent) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -83592,39 +82371,6 @@ func (s OptWebhookEventRecurringBatchDirectDebitPayType) MarshalJSON() ([]byte, 
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptWebhookEventRecurringBatchDirectDebitPayType) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes WebhookEventSubscriptionCard as json.
-func (o OptWebhookEventSubscriptionCard) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventSubscriptionCard from json.
-func (o *OptWebhookEventSubscriptionCard) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventSubscriptionCard to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventSubscriptionCard) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventSubscriptionCard) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -83724,39 +82470,6 @@ func (s OptWebhookEventSubscriptionCardStatus) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptWebhookEventSubscriptionCardStatus) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes WebhookEventSubscriptionDirectDebit as json.
-func (o OptWebhookEventSubscriptionDirectDebit) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookEventSubscriptionDirectDebit from json.
-func (o *OptWebhookEventSubscriptionDirectDebit) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookEventSubscriptionDirectDebit to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookEventSubscriptionDirectDebit) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookEventSubscriptionDirectDebit) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -83893,39 +82606,6 @@ func (s *OptWebhookResponseReceive) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes WebhookSettingCreatingRequest as json.
-func (o OptWebhookSettingCreatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookSettingCreatingRequest from json.
-func (o *OptWebhookSettingCreatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookSettingCreatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookSettingCreatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookSettingCreatingRequest) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes WebhookSettingCreatingResponseEvent as json.
 func (o OptWebhookSettingCreatingResponseEvent) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -84054,39 +82734,6 @@ func (s OptWebhookSettingRetrievingResponseEvent) MarshalJSON() ([]byte, error) 
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptWebhookSettingRetrievingResponseEvent) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes WebhookSettingUpdatingRequest as json.
-func (o OptWebhookSettingUpdatingRequest) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	o.Value.Encode(e)
-}
-
-// Decode decodes WebhookSettingUpdatingRequest from json.
-func (o *OptWebhookSettingUpdatingRequest) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptWebhookSettingUpdatingRequest to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptWebhookSettingUpdatingRequest) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptWebhookSettingUpdatingRequest) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

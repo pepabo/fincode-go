@@ -135,6 +135,7 @@ paths:
       description: |
         顧客情報を登録します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -683,6 +684,7 @@ paths:
             テナントショップID。\
             このテナントショップに紐づく顧客のうち、指定したIDの顧客情報を更新します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1064,6 +1066,7 @@ paths:
             テナントショップID。\
             このテナントショップに紐づく顧客のうち、指定したIDの顧客に対してカードを登録します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1639,6 +1642,7 @@ paths:
             テナントショップID。\
             このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードの情報を更新します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2027,6 +2031,7 @@ paths:
             テナントショップID。\
             このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して決済手段を登録します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3101,6 +3106,7 @@ paths:
             テナントショップID。\
             指定したテナントショップを販売主として決済を登録します。テナントが`pay_type`で指定する決済手段契約の審査を完了させている必要があります。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3346,6 +3352,7 @@ paths:
               - $ref: '#/components/schemas/OrderId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3804,6 +3811,7 @@ paths:
               - $ref: '#/components/schemas/OrderId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4035,6 +4043,7 @@ paths:
               - $ref: '#/components/schemas/OrderId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4277,6 +4286,7 @@ paths:
               - $ref: '#/components/schemas/OrderId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4495,6 +4505,7 @@ paths:
               - $ref: '#/components/schemas/OrderId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4736,6 +4747,7 @@ paths:
               - $ref: '#/components/schemas/OrderId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4951,6 +4963,7 @@ paths:
               - $ref: '#/components/schemas/OrderId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5189,6 +5202,7 @@ paths:
             このテナントショップの決済情報のうち、指定した`access_id`のカード決済を3Dセキュア認証します。
           required: false
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5561,6 +5575,7 @@ paths:
       description: |
         fincodeが提供するリダイレクト型決済ページを発行し、その決済ページへのURLをレスポンスします。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5830,6 +5845,7 @@ paths:
       description: |
         fincodeが提供するリダイレクト型カード登録ページを発行し、そのカード登録ページへのURLをレスポンスします。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6016,6 +6032,7 @@ paths:
       description: |
         プラン情報を登録します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6543,6 +6560,7 @@ paths:
               - $ref: '#/components/schemas/PlanId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6896,6 +6914,7 @@ paths:
       description: |
         `customer_id`で指定した顧客に対して`plan_id`で指定したプランを適用したサブスクリプション情報を登録します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7458,6 +7477,7 @@ paths:
               - $ref: '#/components/schemas/SubscriptionId_schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8219,6 +8239,7 @@ paths:
             allOf:
               - $ref: '#/components/schemas/process_plan_date'
       requestBody:
+        required: true
         content:
           multipart/form-data:
             schema:
@@ -10224,6 +10245,7 @@ paths:
               - $ref: '#/components/schemas/schema'
           required: true
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -10749,6 +10771,7 @@ paths:
             allOf:
               - $ref: '#/components/schemas/schema'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -10921,6 +10944,7 @@ paths:
         新規ユーザーを作成し、作成されたユーザーをオーナーとして新規テナントショップを作成するAPIです。\
         このAPIでのテナント作成に成功すると、登録されたメールアドレス宛にメールアドレス認証メールが送信されます。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -11117,6 +11141,7 @@ paths:
         \
         `password`パラメータに関して、ユーザーのパスワードがfincode管理画面アプリケーション上で更新されることを想定して実装・運用することが推奨されます。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -11506,6 +11531,7 @@ paths:
             テナントショップID。\
             指定したテナントショップの本番環境申請情報を更新します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -11946,6 +11972,7 @@ paths:
             テナントショップID。\
             指定したテナントショップのものとしてファイルをアップロードします。
       requestBody:
+        required: true
         content:
           multipart/form-data:
             schema:
@@ -12200,6 +12227,7 @@ paths:
             テナントショップID。\
             指定したテナントショップのものとしてファイルをアップロードします。
       requestBody:
+        required: true
         content:
           multipart/form-data:
             schema:
@@ -12414,6 +12442,7 @@ paths:
             テナントショップID。\
             指定したテナントショップに対して決済手段を追加申請します。
       requestBody:
+        required: true
         content:
           multipart/form-data:
             schema:
@@ -12994,6 +13023,7 @@ paths:
             テナントショップID。\
             指定したテナントショップの本番環境申請情報を更新します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -13418,6 +13448,7 @@ paths:
       description: |
         Webhook設定を登録します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -13962,6 +13993,7 @@ paths:
             テナントショップID。\
             このテナントショップに紐づくWebhook設定のうち、指定したIDのWebhook設定を更新します。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14321,6 +14353,7 @@ paths:
       description: |
         カード決済に関するイベント（`payments.card.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14347,6 +14380,7 @@ paths:
       description: |
         Apple Payによる決済に関するイベント（`payments.applepay.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14373,6 +14407,7 @@ paths:
       description: |
         コンビニ決済に関するイベント（`payments.konbini.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14399,6 +14434,7 @@ paths:
       description: |
         PayPayによる決済に関するイベント（`payments.paypay.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14425,6 +14461,7 @@ paths:
       description: |
         口座振替に関するイベント（`payments.directdebit.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14451,6 +14488,7 @@ paths:
       description: |
         顧客の決済手段に関するイベント（`customers.payment_methods.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14477,6 +14515,7 @@ paths:
       description: |
         カードに関するイベント（`card.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14503,6 +14542,7 @@ paths:
       description: |
         カード決済によるサブスクリプションに関するイベント（`subscription.card.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14529,6 +14569,7 @@ paths:
       description: |
         口座振替によるサブスクリプションに関するイベント（`subscription.directdebit.*`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14555,6 +14596,7 @@ paths:
       description: |
         カード決済によるサブスクリプション課金のイベント（`recurring.card.batch`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14581,6 +14623,7 @@ paths:
       description: |
         口座振替によるサブスクリプション課金に関するイベント（`recurring.directdebit.batch`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14607,6 +14650,7 @@ paths:
       description: |
         カード決済による一括決済 登録イベント（`payments.bulk.card.regist`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14633,6 +14677,7 @@ paths:
       description: |
         カード決済による一括決済 課金イベント（`payments.bulk.card.batch`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -14659,6 +14704,7 @@ paths:
       description: |
         決済手段 契約状況 更新イベント（`contracts.status_code.updated`）で通知されるリクエストのリクエストボディの仕様です。
       requestBody:
+        required: true
         content:
           application/json:
             schema:

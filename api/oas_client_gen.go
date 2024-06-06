@@ -31,21 +31,21 @@ type Invoker interface {
 	// `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
 	//
 	// PUT /v1/payments/{id}/auth
-	AuthorizePayment(ctx context.Context, request OptAuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error)
+	AuthorizePayment(ctx context.Context, request *AuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error)
 	// CapturePayment invokes capturePayment operation.
 	//
 	// `status`が仮売上（`AUTHORIZED`）またはキャンセル（`CANCELED`）である決済に対して売上確定を行います。\
 	// 成功すると、ステータスが`CAPTURED`に遷移し、その時点を集計対象とした売上入金に反映されます。.
 	//
 	// PUT /v1/payments/{id}/capture
-	CapturePayment(ctx context.Context, request OptCapturePaymentReq, params CapturePaymentParams) (CapturePaymentRes, error)
+	CapturePayment(ctx context.Context, request CapturePaymentReq, params CapturePaymentParams) (CapturePaymentRes, error)
 	// ChangeAmountOfPayment invokes changeAmountOfPayment operation.
 	//
 	// 決済の利用金額を変更します。\
 	// 既に売上確定となっている決済は請求金額が変更され、仮売上となっている決済は確保している与信枠の金額が変更されます。.
 	//
 	// PUT /v1/payments/{id}/change
-	ChangeAmountOfPayment(ctx context.Context, request OptChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (ChangeAmountOfPaymentRes, error)
+	ChangeAmountOfPayment(ctx context.Context, request ChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (ChangeAmountOfPaymentRes, error)
 	// Confirm3DSecureAuthentication invokes confirm3DSecureAuthentication operation.
 	//
 	// `access_id`で指定したカード決済取引の3Dセキュア認証の結果を確定します。\
@@ -59,55 +59,55 @@ type Invoker interface {
 	// Fincodeが提供するリダイレクト型カード登録ページを発行し、そのカード登録ページへのURLをレスポンスします。.
 	//
 	// POST /v1/card_sessions
-	CreateCardRegistrationSession(ctx context.Context, request OptCardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (CreateCardRegistrationSessionRes, error)
+	CreateCardRegistrationSession(ctx context.Context, request *CardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (CreateCardRegistrationSessionRes, error)
 	// CreateCustomer invokes createCustomer operation.
 	//
 	// 顧客情報を登録します。.
 	//
 	// POST /v1/customers
-	CreateCustomer(ctx context.Context, request OptCustomerCreatingRequest, params CreateCustomerParams) (CreateCustomerRes, error)
+	CreateCustomer(ctx context.Context, request *CustomerCreatingRequest, params CreateCustomerParams) (CreateCustomerRes, error)
 	// CreateCustomerCard invokes createCustomerCard operation.
 	//
 	// `customer_id`で指定した顧客に対しカードを登録します。.
 	//
 	// POST /v1/customers/{customer_id}/cards
-	CreateCustomerCard(ctx context.Context, request OptCustomerCardCreatingRequest, params CreateCustomerCardParams) (CreateCustomerCardRes, error)
+	CreateCustomerCard(ctx context.Context, request *CustomerCardCreatingRequest, params CreateCustomerCardParams) (CreateCustomerCardRes, error)
 	// CreateCustomerPaymentMethod invokes createCustomerPaymentMethod operation.
 	//
 	// `customer_id`で指定した顧客に対し、決済手段を登録します。.
 	//
 	// POST /v1/customers/{customer_id}/payment_methods
-	CreateCustomerPaymentMethod(ctx context.Context, request OptCustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (CreateCustomerPaymentMethodRes, error)
+	CreateCustomerPaymentMethod(ctx context.Context, request *CustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (CreateCustomerPaymentMethodRes, error)
 	// CreatePayment invokes createPayment operation.
 	//
 	// 決済情報をfincodeに登録します。決済登録に成功した時点ではまだ顧客に対して請求はされていません。.
 	//
 	// POST /v1/payments
-	CreatePayment(ctx context.Context, request OptCreatePaymentReq, params CreatePaymentParams) (CreatePaymentRes, error)
+	CreatePayment(ctx context.Context, request CreatePaymentReq, params CreatePaymentParams) (CreatePaymentRes, error)
 	// CreatePaymentBulk invokes createPaymentBulk operation.
 	//
 	// FincodeにJSON形式のファイルで一括決済情報を登録し、`process_plan_date`で指定した日時に一括決済処理を予約します。.
 	//
 	// POST /v1/payments/bulk
-	CreatePaymentBulk(ctx context.Context, request OptPaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (CreatePaymentBulkRes, error)
+	CreatePaymentBulk(ctx context.Context, request *PaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (CreatePaymentBulkRes, error)
 	// CreatePaymentSession invokes createPaymentSession operation.
 	//
 	// Fincodeが提供するリダイレクト型決済ページを発行し、その決済ページへのURLをレスポンスします。.
 	//
 	// POST /v1/sessions
-	CreatePaymentSession(ctx context.Context, request OptPaymentSessionCreatingRequest, params CreatePaymentSessionParams) (CreatePaymentSessionRes, error)
+	CreatePaymentSession(ctx context.Context, request *PaymentSessionCreatingRequest, params CreatePaymentSessionParams) (CreatePaymentSessionRes, error)
 	// CreatePlan invokes createPlan operation.
 	//
 	// プラン情報を登録します。.
 	//
 	// POST /v1/plans
-	CreatePlan(ctx context.Context, request OptPlanCreatingRequest) (CreatePlanRes, error)
+	CreatePlan(ctx context.Context, request *PlanCreatingRequest) (CreatePlanRes, error)
 	// CreateSubscription invokes createSubscription operation.
 	//
 	// `customer_id`で指定した顧客に対して`plan_id`で指定したプランを適用したサブスクリプション情報を登録します。.
 	//
 	// POST /v1/subscriptions
-	CreateSubscription(ctx context.Context, request OptSubscriptionCreatingRequest) (CreateSubscriptionRes, error)
+	CreateSubscription(ctx context.Context, request *SubscriptionCreatingRequest) (CreateSubscriptionRes, error)
 	// CreateTenantWithExistingUser invokes createTenantWithExistingUser operation.
 	//
 	// 指定したプラットフォームショップのユーザーをオーナーとして新規テナントショップを作成するAPIです。\
@@ -115,20 +115,20 @@ type Invoker interface {
 	// `password`パラメータに関して、ユーザーのパスワードがfincode管理画面アプリケーション上で更新されることを想定して実装・運用することが推奨されます。.
 	//
 	// POST /v1/join_tenants
-	CreateTenantWithExistingUser(ctx context.Context, request OptPOSTJoinTenantsRequest) (CreateTenantWithExistingUserRes, error)
+	CreateTenantWithExistingUser(ctx context.Context, request *POSTJoinTenantsRequest) (CreateTenantWithExistingUserRes, error)
 	// CreateTenantWithNewUser invokes createTenantWithNewUser operation.
 	//
 	// 新規ユーザーを作成し、作成されたユーザーをオーナーとして新規テナントショップを作成するAPIです。\
 	// このAPIでのテナント作成に成功すると、登録されたメールアドレス宛にメールアドレス認証メールが送信されます。.
 	//
 	// POST /v1/tenant_entries
-	CreateTenantWithNewUser(ctx context.Context, request OptPOSTTenantEntriesRequest) (CreateTenantWithNewUserRes, error)
+	CreateTenantWithNewUser(ctx context.Context, request *POSTTenantEntriesRequest) (CreateTenantWithNewUserRes, error)
 	// CreateWebhookSetting invokes createWebhookSetting operation.
 	//
 	// Webhook設定を登録します。.
 	//
 	// POST /v1/webhook_settings
-	CreateWebhookSetting(ctx context.Context, request OptWebhookSettingCreatingRequest, params CreateWebhookSettingParams) (CreateWebhookSettingRes, error)
+	CreateWebhookSetting(ctx context.Context, request *WebhookSettingCreatingRequest, params CreateWebhookSettingParams) (CreateWebhookSettingRes, error)
 	// DeleteCustomer invokes deleteCustomer operation.
 	//
 	// IDで指定した顧客情報を削除します。.
@@ -179,13 +179,13 @@ type Invoker interface {
 	// 用意した`tds2_ret_url`に対し`event`パラメータで`3DSMethodFinished`もしくは`3DSMethodSkipped`イベントが通知されたとき、このAPIを呼び出します。.
 	//
 	// PUT /v1/secure2/{access_id}
-	Execute3DSecureAuthentication(ctx context.Context, request OptR3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (Execute3DSecureAuthenticationRes, error)
+	Execute3DSecureAuthentication(ctx context.Context, request *R3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (Execute3DSecureAuthenticationRes, error)
 	// ExecutePayment invokes executePayment operation.
 	//
 	// Fincodeに登録された決済情報を指定し、請求を実行します。.
 	//
 	// PUT /v1/payments/{id}
-	ExecutePayment(ctx context.Context, request OptExecutePaymentReq, params ExecutePaymentParams) (ExecutePaymentRes, error)
+	ExecutePayment(ctx context.Context, request ExecutePaymentReq, params ExecutePaymentParams) (ExecutePaymentRes, error)
 	// ExecutePaymentAfter3DSecure invokes executePaymentAfter3DSecure operation.
 	//
 	// 3Dセキュア認証後の決済を実行します。\
@@ -193,123 +193,123 @@ type Invoker interface {
 	// 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
 	//
 	// PUT /v1/payments/{id}/secure
-	ExecutePaymentAfter3DSecure(ctx context.Context, request OptExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error)
+	ExecutePaymentAfter3DSecure(ctx context.Context, request *ExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error)
 	// GenerateBarcodeOfPayment invokes generateBarcodeOfPayment operation.
 	//
 	// リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
 	//
 	// PUT /v1/payments/{id}/barcode
-	GenerateBarcodeOfPayment(ctx context.Context, request OptGenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error)
+	GenerateBarcodeOfPayment(ctx context.Context, request *GenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error)
 	// ReceiveWebhookOfApplePayPayment invokes receiveWebhookOfApplePayPayment operation.
 	//
 	// Apple Payによる決済に関するイベント（`payments.applepay.
 	// *`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-applepay-payment
-	ReceiveWebhookOfApplePayPayment(ctx context.Context, request OptWebhookEventPaymentApplePay) (ReceiveWebhookOfApplePayPaymentRes, error)
+	ReceiveWebhookOfApplePayPayment(ctx context.Context, request *WebhookEventPaymentApplePay) (ReceiveWebhookOfApplePayPaymentRes, error)
 	// ReceiveWebhookOfCard invokes receiveWebhookOfCard operation.
 	//
 	// カードに関するイベント（`card.
 	// *`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-card
-	ReceiveWebhookOfCard(ctx context.Context, request OptWebhookEventCard) (ReceiveWebhookOfCardRes, error)
+	ReceiveWebhookOfCard(ctx context.Context, request *WebhookEventCard) (ReceiveWebhookOfCardRes, error)
 	// ReceiveWebhookOfCardPayment invokes receiveWebhookOfCardPayment operation.
 	//
 	// カード決済に関するイベント（`payments.card.
 	// *`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-card-payment
-	ReceiveWebhookOfCardPayment(ctx context.Context, request OptWebhookEventPaymentCard) (ReceiveWebhookOfCardPaymentRes, error)
+	ReceiveWebhookOfCardPayment(ctx context.Context, request *WebhookEventPaymentCard) (ReceiveWebhookOfCardPaymentRes, error)
 	// ReceiveWebhookOfCardPaymentBulkBatch invokes receiveWebhookOfCardPaymentBulkBatch operation.
 	//
 	// カード決済による一括決済 課金イベント（`payments.bulk.card.
 	// batch`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-card-payment-bulk-batch
-	ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request OptWebhookEventPaymentBulkBatchCard) (ReceiveWebhookOfCardPaymentBulkBatchRes, error)
+	ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request *WebhookEventPaymentBulkBatchCard) (ReceiveWebhookOfCardPaymentBulkBatchRes, error)
 	// ReceiveWebhookOfCardRecurringBatch invokes receiveWebhookOfCardRecurringBatch operation.
 	//
 	// カード決済によるサブスクリプション課金のイベント（`recurring.card.
 	// batch`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-card-recurring-batch
-	ReceiveWebhookOfCardRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchCard) (ReceiveWebhookOfCardRecurringBatchRes, error)
+	ReceiveWebhookOfCardRecurringBatch(ctx context.Context, request *WebhookEventRecurringBatchCard) (ReceiveWebhookOfCardRecurringBatchRes, error)
 	// ReceiveWebhookOfCardSubscription invokes receiveWebhookOfCardSubscription operation.
 	//
 	// カード決済によるサブスクリプションに関するイベント（`subscription.card.
 	// *`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-card-subscription
-	ReceiveWebhookOfCardSubscription(ctx context.Context, request OptWebhookEventSubscriptionCard) (ReceiveWebhookOfCardSubscriptionRes, error)
+	ReceiveWebhookOfCardSubscription(ctx context.Context, request *WebhookEventSubscriptionCard) (ReceiveWebhookOfCardSubscriptionRes, error)
 	// ReceiveWebhookOfContract invokes receiveWebhookOfContract operation.
 	//
 	// 決済手段 契約状況 更新イベント（`contracts.status_code.
 	// updated`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-contract
-	ReceiveWebhookOfContract(ctx context.Context, request OptWebhookEventContract) (ReceiveWebhookOfContractRes, error)
+	ReceiveWebhookOfContract(ctx context.Context, request *WebhookEventContract) (ReceiveWebhookOfContractRes, error)
 	// ReceiveWebhookOfCustomerPaymentMethod invokes receiveWebhookOfCustomerPaymentMethod operation.
 	//
 	// 顧客の決済手段に関するイベント（`customers.payment_methods.
 	// *`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-customer-payment_method
-	ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request OptWebhookEventCustomerPaymentMethod) (ReceiveWebhookOfCustomerPaymentMethodRes, error)
+	ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request *WebhookEventCustomerPaymentMethod) (ReceiveWebhookOfCustomerPaymentMethodRes, error)
 	// ReceiveWebhookOfDirectDebitPayment invokes receiveWebhookOfDirectDebitPayment operation.
 	//
 	// 口座振替に関するイベント（`payments.directdebit.
 	// *`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-directdebit-payment
-	ReceiveWebhookOfDirectDebitPayment(ctx context.Context, request OptWebhookEventPaymentDirectDebit) (ReceiveWebhookOfDirectDebitPaymentRes, error)
+	ReceiveWebhookOfDirectDebitPayment(ctx context.Context, request *WebhookEventPaymentDirectDebit) (ReceiveWebhookOfDirectDebitPaymentRes, error)
 	// ReceiveWebhookOfDirectDebitRecurringBatch invokes receiveWebhookOfDirectDebitRecurringBatch operation.
 	//
 	// 口座振替によるサブスクリプション課金に関するイベント（`recurring.
 	// directdebit.batch`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-directdebit-recurring-batch
-	ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchDirectDebit) (ReceiveWebhookOfDirectDebitRecurringBatchRes, error)
+	ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request *WebhookEventRecurringBatchDirectDebit) (ReceiveWebhookOfDirectDebitRecurringBatchRes, error)
 	// ReceiveWebhookOfDirectDebitSubscription invokes receiveWebhookOfDirectDebitSubscription operation.
 	//
 	// 口座振替によるサブスクリプションに関するイベント（`subscription.
 	// directdebit.*`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-directdebit-subscription
-	ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request OptWebhookEventSubscriptionDirectDebit) (ReceiveWebhookOfDirectDebitSubscriptionRes, error)
+	ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request *WebhookEventSubscriptionDirectDebit) (ReceiveWebhookOfDirectDebitSubscriptionRes, error)
 	// ReceiveWebhookOfKonbiniPayment invokes receiveWebhookOfKonbiniPayment operation.
 	//
 	// コンビニ決済に関するイベント（`payments.konbini.
 	// *`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-konbini-payment
-	ReceiveWebhookOfKonbiniPayment(ctx context.Context, request OptWebhookEventPaymentKonbini) (ReceiveWebhookOfKonbiniPaymentRes, error)
+	ReceiveWebhookOfKonbiniPayment(ctx context.Context, request *WebhookEventPaymentKonbini) (ReceiveWebhookOfKonbiniPaymentRes, error)
 	// ReceiveWebhookOfPayPayPayment invokes receiveWebhookOfPayPayPayment operation.
 	//
 	// PayPayによる決済に関するイベント（`payments.paypay.
 	// *`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-paypay-payment
-	ReceiveWebhookOfPayPayPayment(ctx context.Context, request OptWebhookEventPaymentPayPay) (ReceiveWebhookOfPayPayPaymentRes, error)
+	ReceiveWebhookOfPayPayPayment(ctx context.Context, request *WebhookEventPaymentPayPay) (ReceiveWebhookOfPayPayPaymentRes, error)
 	// ReceiveWebhookOfRegisteringCardPaymentBulk invokes receiveWebhookOfRegisteringCardPaymentBulk operation.
 	//
 	// カード決済による一括決済 登録イベント（`payments.bulk.card.
 	// regist`）で通知されるリクエストのリクエストボディの仕様です。.
 	//
 	// POST /your-endpoint-on-card-payment-bulk-regist
-	ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request OptWebhookEventPaymentBulkRegistCard) (ReceiveWebhookOfRegisteringCardPaymentBulkRes, error)
+	ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request *WebhookEventPaymentBulkRegistCard) (ReceiveWebhookOfRegisteringCardPaymentBulkRes, error)
 	// RequestProductionEnvironment invokes requestProductionEnvironment operation.
 	//
 	// `id`で指定したテナントショップの本番環境の利用申請を行います。このAPIを呼び出すまでにテナント本番環境申請情報 更新APIで申請情報を用意しておく必要があります。.
 	//
 	// POST /v1/contracts/examinations
-	RequestProductionEnvironment(ctx context.Context, request OptPOSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (RequestProductionEnvironmentRes, error)
+	RequestProductionEnvironment(ctx context.Context, request *POSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (RequestProductionEnvironmentRes, error)
 	// ReserveProvider invokes reserveProvider operation.
 	//
 	// `id`で指定したテナントショップの決済手段の追加申請を行います。.
 	//
 	// POST /v1/contracts-examinations-tenants-{id}-providers-reserve.yml
-	ReserveProvider(ctx context.Context, request OptPOSTProviderReserveRequestMultipart, params ReserveProviderParams) (ReserveProviderRes, error)
+	ReserveProvider(ctx context.Context, request *POSTProviderReserveRequestMultipart, params ReserveProviderParams) (ReserveProviderRes, error)
 	// RetrieveAccount invokes retrieveAccount operation.
 	//
 	// IDで指定した売上入金を取得します。\
@@ -506,13 +506,13 @@ type Invoker interface {
 	// IDで指定した顧客情報を更新します。.
 	//
 	// PUT /v1/customers/{id}
-	UpdateCustomer(ctx context.Context, request OptCustomerUpdatingRequest, params UpdateCustomerParams) (UpdateCustomerRes, error)
+	UpdateCustomer(ctx context.Context, request *CustomerUpdatingRequest, params UpdateCustomerParams) (UpdateCustomerRes, error)
 	// UpdateCustomerCard invokes updateCustomerCard operation.
 	//
 	// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを更新します。.
 	//
 	// PUT /v1/customers/{customer_id}/cards/{id}
-	UpdateCustomerCard(ctx context.Context, request OptCustomerCardUpdatingRequest, params UpdateCustomerCardParams) (UpdateCustomerCardRes, error)
+	UpdateCustomerCard(ctx context.Context, request *CustomerCardUpdatingRequest, params UpdateCustomerCardParams) (UpdateCustomerCardRes, error)
 	// UpdatePlan invokes updatePlan operation.
 	//
 	// IDで指定したプラン情報を更新します。\
@@ -520,13 +520,13 @@ type Invoker interface {
 	// 1`のとき）、プランは更新できません。.
 	//
 	// PUT /v1/plans/{id}
-	UpdatePlan(ctx context.Context, request OptPlanUpdatingRequest, params UpdatePlanParams) (UpdatePlanRes, error)
+	UpdatePlan(ctx context.Context, request *PlanUpdatingRequest, params UpdatePlanParams) (UpdatePlanRes, error)
 	// UpdatePlatformShop invokes updatePlatformShop operation.
 	//
 	// `examination_master_id`で指定した決済手段に関してプラットフォーム利用料を更新します。.
 	//
 	// PUT /v1/platforms/{id}
-	UpdatePlatformShop(ctx context.Context, request OptPlatformShopUpdatingRequest, params UpdatePlatformShopParams) (UpdatePlatformShopRes, error)
+	UpdatePlatformShop(ctx context.Context, request *PlatformShopUpdatingRequest, params UpdatePlatformShopParams) (UpdatePlatformShopRes, error)
 	// UpdateSubscription invokes updateSubscription operation.
 	//
 	// IDで指定したサブスクリプション情報を更新します。\
@@ -534,7 +534,7 @@ type Invoker interface {
 	// {{現在時刻}}`のとき）、サブスクリプションは更新できません。.
 	//
 	// PUT /v1/subscriptions/{id}
-	UpdateSubscription(ctx context.Context, request OptSubscriptionUpdatingRequest, params UpdateSubscriptionParams) (UpdateSubscriptionRes, error)
+	UpdateSubscription(ctx context.Context, request *SubscriptionUpdatingRequest, params UpdateSubscriptionParams) (UpdateSubscriptionRes, error)
 	// UpdateTenantExaminationInfo invokes updateTenantExaminationInfo operation.
 	//
 	// ※
@@ -544,31 +544,31 @@ type Invoker interface {
 	// Deprecated: schema marks this operation as deprecated.
 	//
 	// PUT /v1/contracts/examinations/tenants/{id}
-	UpdateTenantExaminationInfo(ctx context.Context, request OptExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (UpdateTenantExaminationInfoRes, error)
+	UpdateTenantExaminationInfo(ctx context.Context, request *ExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (UpdateTenantExaminationInfoRes, error)
 	// UpdateTenantExaminationInfoV2 invokes updateTenantExaminationInfoV2 operation.
 	//
 	// `id`で指定したテナントショップの本番環境申請情報を更新します。.
 	//
 	// PUT /v1/contracts/examinations_v2/tenants/{id}
-	UpdateTenantExaminationInfoV2(ctx context.Context, request OptExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (UpdateTenantExaminationInfoV2Res, error)
+	UpdateTenantExaminationInfoV2(ctx context.Context, request *ExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (UpdateTenantExaminationInfoV2Res, error)
 	// UpdateTenantShop invokes updateTenantShop operation.
 	//
 	// `examination_master_id`で指定した決済手段におけるプラットフォーム利用料などの設定の変更を`id`で指定したテナントに対して実行します。.
 	//
 	// PUT /v1/tenants/{id}
-	UpdateTenantShop(ctx context.Context, request OptTenantShopUpdatingRequest, params UpdateTenantShopParams) (UpdateTenantShopRes, error)
+	UpdateTenantShop(ctx context.Context, request *TenantShopUpdatingRequest, params UpdateTenantShopParams) (UpdateTenantShopRes, error)
 	// UpdateWebhookSetting invokes updateWebhookSetting operation.
 	//
 	// IDで指定したWebhook設定を更新します。.
 	//
 	// PUT /v1/webhook_settings/{id}
-	UpdateWebhookSetting(ctx context.Context, request OptWebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (UpdateWebhookSettingRes, error)
+	UpdateWebhookSetting(ctx context.Context, request *WebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (UpdateWebhookSettingRes, error)
 	// UploadExaminationFile invokes uploadExaminationFile operation.
 	//
 	// `id`で指定したテナントショップの審査に必要なファイルのアップロードを行います。.
 	//
 	// POST /v1/contracts/examinations/tenants/{id}/files
-	UploadExaminationFile(ctx context.Context, request OptExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (UploadExaminationFileRes, error)
+	UploadExaminationFile(ctx context.Context, request *ExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (UploadExaminationFileRes, error)
 }
 
 // Client implements OAS client.
@@ -628,12 +628,12 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 // `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
 //
 // PUT /v1/payments/{id}/auth
-func (c *Client) AuthorizePayment(ctx context.Context, request OptAuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error) {
+func (c *Client) AuthorizePayment(ctx context.Context, request *AuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error) {
 	res, err := c.sendAuthorizePayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendAuthorizePayment(ctx context.Context, request OptAuthorizePaymentReq, params AuthorizePaymentParams) (res AuthorizePaymentRes, err error) {
+func (c *Client) sendAuthorizePayment(ctx context.Context, request *AuthorizePaymentReq, params AuthorizePaymentParams) (res AuthorizePaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("authorizePayment"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -785,12 +785,12 @@ func (c *Client) sendAuthorizePayment(ctx context.Context, request OptAuthorizeP
 // 成功すると、ステータスが`CAPTURED`に遷移し、その時点を集計対象とした売上入金に反映されます。.
 //
 // PUT /v1/payments/{id}/capture
-func (c *Client) CapturePayment(ctx context.Context, request OptCapturePaymentReq, params CapturePaymentParams) (CapturePaymentRes, error) {
+func (c *Client) CapturePayment(ctx context.Context, request CapturePaymentReq, params CapturePaymentParams) (CapturePaymentRes, error) {
 	res, err := c.sendCapturePayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCapturePayment(ctx context.Context, request OptCapturePaymentReq, params CapturePaymentParams) (res CapturePaymentRes, err error) {
+func (c *Client) sendCapturePayment(ctx context.Context, request CapturePaymentReq, params CapturePaymentParams) (res CapturePaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("capturePayment"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -942,12 +942,12 @@ func (c *Client) sendCapturePayment(ctx context.Context, request OptCapturePayme
 // 既に売上確定となっている決済は請求金額が変更され、仮売上となっている決済は確保している与信枠の金額が変更されます。.
 //
 // PUT /v1/payments/{id}/change
-func (c *Client) ChangeAmountOfPayment(ctx context.Context, request OptChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (ChangeAmountOfPaymentRes, error) {
+func (c *Client) ChangeAmountOfPayment(ctx context.Context, request ChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (ChangeAmountOfPaymentRes, error) {
 	res, err := c.sendChangeAmountOfPayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendChangeAmountOfPayment(ctx context.Context, request OptChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (res ChangeAmountOfPaymentRes, err error) {
+func (c *Client) sendChangeAmountOfPayment(ctx context.Context, request ChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (res ChangeAmountOfPaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("changeAmountOfPayment"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -1264,12 +1264,12 @@ func (c *Client) sendConfirm3DSecureAuthentication(ctx context.Context, params C
 // Fincodeが提供するリダイレクト型カード登録ページを発行し、そのカード登録ページへのURLをレスポンスします。.
 //
 // POST /v1/card_sessions
-func (c *Client) CreateCardRegistrationSession(ctx context.Context, request OptCardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (CreateCardRegistrationSessionRes, error) {
+func (c *Client) CreateCardRegistrationSession(ctx context.Context, request *CardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (CreateCardRegistrationSessionRes, error) {
 	res, err := c.sendCreateCardRegistrationSession(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateCardRegistrationSession(ctx context.Context, request OptCardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (res CreateCardRegistrationSessionRes, err error) {
+func (c *Client) sendCreateCardRegistrationSession(ctx context.Context, request *CardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (res CreateCardRegistrationSessionRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createCardRegistrationSession"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1401,12 +1401,12 @@ func (c *Client) sendCreateCardRegistrationSession(ctx context.Context, request 
 // 顧客情報を登録します。.
 //
 // POST /v1/customers
-func (c *Client) CreateCustomer(ctx context.Context, request OptCustomerCreatingRequest, params CreateCustomerParams) (CreateCustomerRes, error) {
+func (c *Client) CreateCustomer(ctx context.Context, request *CustomerCreatingRequest, params CreateCustomerParams) (CreateCustomerRes, error) {
 	res, err := c.sendCreateCustomer(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateCustomer(ctx context.Context, request OptCustomerCreatingRequest, params CreateCustomerParams) (res CreateCustomerRes, err error) {
+func (c *Client) sendCreateCustomer(ctx context.Context, request *CustomerCreatingRequest, params CreateCustomerParams) (res CreateCustomerRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createCustomer"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1538,12 +1538,12 @@ func (c *Client) sendCreateCustomer(ctx context.Context, request OptCustomerCrea
 // `customer_id`で指定した顧客に対しカードを登録します。.
 //
 // POST /v1/customers/{customer_id}/cards
-func (c *Client) CreateCustomerCard(ctx context.Context, request OptCustomerCardCreatingRequest, params CreateCustomerCardParams) (CreateCustomerCardRes, error) {
+func (c *Client) CreateCustomerCard(ctx context.Context, request *CustomerCardCreatingRequest, params CreateCustomerCardParams) (CreateCustomerCardRes, error) {
 	res, err := c.sendCreateCustomerCard(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateCustomerCard(ctx context.Context, request OptCustomerCardCreatingRequest, params CreateCustomerCardParams) (res CreateCustomerCardRes, err error) {
+func (c *Client) sendCreateCustomerCard(ctx context.Context, request *CustomerCardCreatingRequest, params CreateCustomerCardParams) (res CreateCustomerCardRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createCustomerCard"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1694,12 +1694,12 @@ func (c *Client) sendCreateCustomerCard(ctx context.Context, request OptCustomer
 // `customer_id`で指定した顧客に対し、決済手段を登録します。.
 //
 // POST /v1/customers/{customer_id}/payment_methods
-func (c *Client) CreateCustomerPaymentMethod(ctx context.Context, request OptCustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (CreateCustomerPaymentMethodRes, error) {
+func (c *Client) CreateCustomerPaymentMethod(ctx context.Context, request *CustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (CreateCustomerPaymentMethodRes, error) {
 	res, err := c.sendCreateCustomerPaymentMethod(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateCustomerPaymentMethod(ctx context.Context, request OptCustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (res CreateCustomerPaymentMethodRes, err error) {
+func (c *Client) sendCreateCustomerPaymentMethod(ctx context.Context, request *CustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (res CreateCustomerPaymentMethodRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createCustomerPaymentMethod"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1862,12 +1862,12 @@ func (c *Client) sendCreateCustomerPaymentMethod(ctx context.Context, request Op
 // 決済情報をfincodeに登録します。決済登録に成功した時点ではまだ顧客に対して請求はされていません。.
 //
 // POST /v1/payments
-func (c *Client) CreatePayment(ctx context.Context, request OptCreatePaymentReq, params CreatePaymentParams) (CreatePaymentRes, error) {
+func (c *Client) CreatePayment(ctx context.Context, request CreatePaymentReq, params CreatePaymentParams) (CreatePaymentRes, error) {
 	res, err := c.sendCreatePayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreatePayment(ctx context.Context, request OptCreatePaymentReq, params CreatePaymentParams) (res CreatePaymentRes, err error) {
+func (c *Client) sendCreatePayment(ctx context.Context, request CreatePaymentReq, params CreatePaymentParams) (res CreatePaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createPayment"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -1999,12 +1999,12 @@ func (c *Client) sendCreatePayment(ctx context.Context, request OptCreatePayment
 // FincodeにJSON形式のファイルで一括決済情報を登録し、`process_plan_date`で指定した日時に一括決済処理を予約します。.
 //
 // POST /v1/payments/bulk
-func (c *Client) CreatePaymentBulk(ctx context.Context, request OptPaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (CreatePaymentBulkRes, error) {
+func (c *Client) CreatePaymentBulk(ctx context.Context, request *PaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (CreatePaymentBulkRes, error) {
 	res, err := c.sendCreatePaymentBulk(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreatePaymentBulk(ctx context.Context, request OptPaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (res CreatePaymentBulkRes, err error) {
+func (c *Client) sendCreatePaymentBulk(ctx context.Context, request *PaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (res CreatePaymentBulkRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createPaymentBulk"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -2168,12 +2168,12 @@ func (c *Client) sendCreatePaymentBulk(ctx context.Context, request OptPaymentBu
 // Fincodeが提供するリダイレクト型決済ページを発行し、その決済ページへのURLをレスポンスします。.
 //
 // POST /v1/sessions
-func (c *Client) CreatePaymentSession(ctx context.Context, request OptPaymentSessionCreatingRequest, params CreatePaymentSessionParams) (CreatePaymentSessionRes, error) {
+func (c *Client) CreatePaymentSession(ctx context.Context, request *PaymentSessionCreatingRequest, params CreatePaymentSessionParams) (CreatePaymentSessionRes, error) {
 	res, err := c.sendCreatePaymentSession(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreatePaymentSession(ctx context.Context, request OptPaymentSessionCreatingRequest, params CreatePaymentSessionParams) (res CreatePaymentSessionRes, err error) {
+func (c *Client) sendCreatePaymentSession(ctx context.Context, request *PaymentSessionCreatingRequest, params CreatePaymentSessionParams) (res CreatePaymentSessionRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createPaymentSession"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -2305,12 +2305,12 @@ func (c *Client) sendCreatePaymentSession(ctx context.Context, request OptPaymen
 // プラン情報を登録します。.
 //
 // POST /v1/plans
-func (c *Client) CreatePlan(ctx context.Context, request OptPlanCreatingRequest) (CreatePlanRes, error) {
+func (c *Client) CreatePlan(ctx context.Context, request *PlanCreatingRequest) (CreatePlanRes, error) {
 	res, err := c.sendCreatePlan(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreatePlan(ctx context.Context, request OptPlanCreatingRequest) (res CreatePlanRes, err error) {
+func (c *Client) sendCreatePlan(ctx context.Context, request *PlanCreatingRequest) (res CreatePlanRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createPlan"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -2425,12 +2425,12 @@ func (c *Client) sendCreatePlan(ctx context.Context, request OptPlanCreatingRequ
 // `customer_id`で指定した顧客に対して`plan_id`で指定したプランを適用したサブスクリプション情報を登録します。.
 //
 // POST /v1/subscriptions
-func (c *Client) CreateSubscription(ctx context.Context, request OptSubscriptionCreatingRequest) (CreateSubscriptionRes, error) {
+func (c *Client) CreateSubscription(ctx context.Context, request *SubscriptionCreatingRequest) (CreateSubscriptionRes, error) {
 	res, err := c.sendCreateSubscription(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreateSubscription(ctx context.Context, request OptSubscriptionCreatingRequest) (res CreateSubscriptionRes, err error) {
+func (c *Client) sendCreateSubscription(ctx context.Context, request *SubscriptionCreatingRequest) (res CreateSubscriptionRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createSubscription"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -2547,12 +2547,12 @@ func (c *Client) sendCreateSubscription(ctx context.Context, request OptSubscrip
 // `password`パラメータに関して、ユーザーのパスワードがfincode管理画面アプリケーション上で更新されることを想定して実装・運用することが推奨されます。.
 //
 // POST /v1/join_tenants
-func (c *Client) CreateTenantWithExistingUser(ctx context.Context, request OptPOSTJoinTenantsRequest) (CreateTenantWithExistingUserRes, error) {
+func (c *Client) CreateTenantWithExistingUser(ctx context.Context, request *POSTJoinTenantsRequest) (CreateTenantWithExistingUserRes, error) {
 	res, err := c.sendCreateTenantWithExistingUser(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreateTenantWithExistingUser(ctx context.Context, request OptPOSTJoinTenantsRequest) (res CreateTenantWithExistingUserRes, err error) {
+func (c *Client) sendCreateTenantWithExistingUser(ctx context.Context, request *POSTJoinTenantsRequest) (res CreateTenantWithExistingUserRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createTenantWithExistingUser"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -2668,12 +2668,12 @@ func (c *Client) sendCreateTenantWithExistingUser(ctx context.Context, request O
 // このAPIでのテナント作成に成功すると、登録されたメールアドレス宛にメールアドレス認証メールが送信されます。.
 //
 // POST /v1/tenant_entries
-func (c *Client) CreateTenantWithNewUser(ctx context.Context, request OptPOSTTenantEntriesRequest) (CreateTenantWithNewUserRes, error) {
+func (c *Client) CreateTenantWithNewUser(ctx context.Context, request *POSTTenantEntriesRequest) (CreateTenantWithNewUserRes, error) {
 	res, err := c.sendCreateTenantWithNewUser(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendCreateTenantWithNewUser(ctx context.Context, request OptPOSTTenantEntriesRequest) (res CreateTenantWithNewUserRes, err error) {
+func (c *Client) sendCreateTenantWithNewUser(ctx context.Context, request *POSTTenantEntriesRequest) (res CreateTenantWithNewUserRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createTenantWithNewUser"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -2788,12 +2788,12 @@ func (c *Client) sendCreateTenantWithNewUser(ctx context.Context, request OptPOS
 // Webhook設定を登録します。.
 //
 // POST /v1/webhook_settings
-func (c *Client) CreateWebhookSetting(ctx context.Context, request OptWebhookSettingCreatingRequest, params CreateWebhookSettingParams) (CreateWebhookSettingRes, error) {
+func (c *Client) CreateWebhookSetting(ctx context.Context, request *WebhookSettingCreatingRequest, params CreateWebhookSettingParams) (CreateWebhookSettingRes, error) {
 	res, err := c.sendCreateWebhookSetting(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateWebhookSetting(ctx context.Context, request OptWebhookSettingCreatingRequest, params CreateWebhookSettingParams) (res CreateWebhookSettingRes, err error) {
+func (c *Client) sendCreateWebhookSetting(ctx context.Context, request *WebhookSettingCreatingRequest, params CreateWebhookSettingParams) (res CreateWebhookSettingRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("createWebhookSetting"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -3966,12 +3966,12 @@ func (c *Client) sendDeleteWebhookSetting(ctx context.Context, params DeleteWebh
 // 用意した`tds2_ret_url`に対し`event`パラメータで`3DSMethodFinished`もしくは`3DSMethodSkipped`イベントが通知されたとき、このAPIを呼び出します。.
 //
 // PUT /v1/secure2/{access_id}
-func (c *Client) Execute3DSecureAuthentication(ctx context.Context, request OptR3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (Execute3DSecureAuthenticationRes, error) {
+func (c *Client) Execute3DSecureAuthentication(ctx context.Context, request *R3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (Execute3DSecureAuthenticationRes, error) {
 	res, err := c.sendExecute3DSecureAuthentication(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendExecute3DSecureAuthentication(ctx context.Context, request OptR3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (res Execute3DSecureAuthenticationRes, err error) {
+func (c *Client) sendExecute3DSecureAuthentication(ctx context.Context, request *R3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (res Execute3DSecureAuthenticationRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("execute3DSecureAuthentication"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -4133,12 +4133,12 @@ func (c *Client) sendExecute3DSecureAuthentication(ctx context.Context, request 
 // Fincodeに登録された決済情報を指定し、請求を実行します。.
 //
 // PUT /v1/payments/{id}
-func (c *Client) ExecutePayment(ctx context.Context, request OptExecutePaymentReq, params ExecutePaymentParams) (ExecutePaymentRes, error) {
+func (c *Client) ExecutePayment(ctx context.Context, request ExecutePaymentReq, params ExecutePaymentParams) (ExecutePaymentRes, error) {
 	res, err := c.sendExecutePayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendExecutePayment(ctx context.Context, request OptExecutePaymentReq, params ExecutePaymentParams) (res ExecutePaymentRes, err error) {
+func (c *Client) sendExecutePayment(ctx context.Context, request ExecutePaymentReq, params ExecutePaymentParams) (res ExecutePaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("executePayment"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -4302,12 +4302,12 @@ func (c *Client) sendExecutePayment(ctx context.Context, request OptExecutePayme
 // 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
 //
 // PUT /v1/payments/{id}/secure
-func (c *Client) ExecutePaymentAfter3DSecure(ctx context.Context, request OptExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error) {
+func (c *Client) ExecutePaymentAfter3DSecure(ctx context.Context, request *ExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error) {
 	res, err := c.sendExecutePaymentAfter3DSecure(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request OptExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (res ExecutePaymentAfter3DSecureRes, err error) {
+func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request *ExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (res ExecutePaymentAfter3DSecureRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("executePaymentAfter3DSecure"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -4470,12 +4470,12 @@ func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request Op
 // リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
 //
 // PUT /v1/payments/{id}/barcode
-func (c *Client) GenerateBarcodeOfPayment(ctx context.Context, request OptGenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error) {
+func (c *Client) GenerateBarcodeOfPayment(ctx context.Context, request *GenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error) {
 	res, err := c.sendGenerateBarcodeOfPayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendGenerateBarcodeOfPayment(ctx context.Context, request OptGenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (res GenerateBarcodeOfPaymentRes, err error) {
+func (c *Client) sendGenerateBarcodeOfPayment(ctx context.Context, request *GenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (res GenerateBarcodeOfPaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("generateBarcodeOfPayment"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -4627,12 +4627,12 @@ func (c *Client) sendGenerateBarcodeOfPayment(ctx context.Context, request OptGe
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-applepay-payment
-func (c *Client) ReceiveWebhookOfApplePayPayment(ctx context.Context, request OptWebhookEventPaymentApplePay) (ReceiveWebhookOfApplePayPaymentRes, error) {
+func (c *Client) ReceiveWebhookOfApplePayPayment(ctx context.Context, request *WebhookEventPaymentApplePay) (ReceiveWebhookOfApplePayPaymentRes, error) {
 	res, err := c.sendReceiveWebhookOfApplePayPayment(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfApplePayPayment(ctx context.Context, request OptWebhookEventPaymentApplePay) (res ReceiveWebhookOfApplePayPaymentRes, err error) {
+func (c *Client) sendReceiveWebhookOfApplePayPayment(ctx context.Context, request *WebhookEventPaymentApplePay) (res ReceiveWebhookOfApplePayPaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfApplePayPayment"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -4748,12 +4748,12 @@ func (c *Client) sendReceiveWebhookOfApplePayPayment(ctx context.Context, reques
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card
-func (c *Client) ReceiveWebhookOfCard(ctx context.Context, request OptWebhookEventCard) (ReceiveWebhookOfCardRes, error) {
+func (c *Client) ReceiveWebhookOfCard(ctx context.Context, request *WebhookEventCard) (ReceiveWebhookOfCardRes, error) {
 	res, err := c.sendReceiveWebhookOfCard(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfCard(ctx context.Context, request OptWebhookEventCard) (res ReceiveWebhookOfCardRes, err error) {
+func (c *Client) sendReceiveWebhookOfCard(ctx context.Context, request *WebhookEventCard) (res ReceiveWebhookOfCardRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfCard"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -4869,12 +4869,12 @@ func (c *Client) sendReceiveWebhookOfCard(ctx context.Context, request OptWebhoo
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-payment
-func (c *Client) ReceiveWebhookOfCardPayment(ctx context.Context, request OptWebhookEventPaymentCard) (ReceiveWebhookOfCardPaymentRes, error) {
+func (c *Client) ReceiveWebhookOfCardPayment(ctx context.Context, request *WebhookEventPaymentCard) (ReceiveWebhookOfCardPaymentRes, error) {
 	res, err := c.sendReceiveWebhookOfCardPayment(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfCardPayment(ctx context.Context, request OptWebhookEventPaymentCard) (res ReceiveWebhookOfCardPaymentRes, err error) {
+func (c *Client) sendReceiveWebhookOfCardPayment(ctx context.Context, request *WebhookEventPaymentCard) (res ReceiveWebhookOfCardPaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfCardPayment"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -4990,12 +4990,12 @@ func (c *Client) sendReceiveWebhookOfCardPayment(ctx context.Context, request Op
 // batch`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-payment-bulk-batch
-func (c *Client) ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request OptWebhookEventPaymentBulkBatchCard) (ReceiveWebhookOfCardPaymentBulkBatchRes, error) {
+func (c *Client) ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request *WebhookEventPaymentBulkBatchCard) (ReceiveWebhookOfCardPaymentBulkBatchRes, error) {
 	res, err := c.sendReceiveWebhookOfCardPaymentBulkBatch(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request OptWebhookEventPaymentBulkBatchCard) (res ReceiveWebhookOfCardPaymentBulkBatchRes, err error) {
+func (c *Client) sendReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request *WebhookEventPaymentBulkBatchCard) (res ReceiveWebhookOfCardPaymentBulkBatchRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfCardPaymentBulkBatch"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -5111,12 +5111,12 @@ func (c *Client) sendReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, r
 // batch`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-recurring-batch
-func (c *Client) ReceiveWebhookOfCardRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchCard) (ReceiveWebhookOfCardRecurringBatchRes, error) {
+func (c *Client) ReceiveWebhookOfCardRecurringBatch(ctx context.Context, request *WebhookEventRecurringBatchCard) (ReceiveWebhookOfCardRecurringBatchRes, error) {
 	res, err := c.sendReceiveWebhookOfCardRecurringBatch(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfCardRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchCard) (res ReceiveWebhookOfCardRecurringBatchRes, err error) {
+func (c *Client) sendReceiveWebhookOfCardRecurringBatch(ctx context.Context, request *WebhookEventRecurringBatchCard) (res ReceiveWebhookOfCardRecurringBatchRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfCardRecurringBatch"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -5232,12 +5232,12 @@ func (c *Client) sendReceiveWebhookOfCardRecurringBatch(ctx context.Context, req
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-subscription
-func (c *Client) ReceiveWebhookOfCardSubscription(ctx context.Context, request OptWebhookEventSubscriptionCard) (ReceiveWebhookOfCardSubscriptionRes, error) {
+func (c *Client) ReceiveWebhookOfCardSubscription(ctx context.Context, request *WebhookEventSubscriptionCard) (ReceiveWebhookOfCardSubscriptionRes, error) {
 	res, err := c.sendReceiveWebhookOfCardSubscription(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfCardSubscription(ctx context.Context, request OptWebhookEventSubscriptionCard) (res ReceiveWebhookOfCardSubscriptionRes, err error) {
+func (c *Client) sendReceiveWebhookOfCardSubscription(ctx context.Context, request *WebhookEventSubscriptionCard) (res ReceiveWebhookOfCardSubscriptionRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfCardSubscription"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -5353,12 +5353,12 @@ func (c *Client) sendReceiveWebhookOfCardSubscription(ctx context.Context, reque
 // updated`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-contract
-func (c *Client) ReceiveWebhookOfContract(ctx context.Context, request OptWebhookEventContract) (ReceiveWebhookOfContractRes, error) {
+func (c *Client) ReceiveWebhookOfContract(ctx context.Context, request *WebhookEventContract) (ReceiveWebhookOfContractRes, error) {
 	res, err := c.sendReceiveWebhookOfContract(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfContract(ctx context.Context, request OptWebhookEventContract) (res ReceiveWebhookOfContractRes, err error) {
+func (c *Client) sendReceiveWebhookOfContract(ctx context.Context, request *WebhookEventContract) (res ReceiveWebhookOfContractRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfContract"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -5474,12 +5474,12 @@ func (c *Client) sendReceiveWebhookOfContract(ctx context.Context, request OptWe
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-customer-payment_method
-func (c *Client) ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request OptWebhookEventCustomerPaymentMethod) (ReceiveWebhookOfCustomerPaymentMethodRes, error) {
+func (c *Client) ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request *WebhookEventCustomerPaymentMethod) (ReceiveWebhookOfCustomerPaymentMethodRes, error) {
 	res, err := c.sendReceiveWebhookOfCustomerPaymentMethod(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request OptWebhookEventCustomerPaymentMethod) (res ReceiveWebhookOfCustomerPaymentMethodRes, err error) {
+func (c *Client) sendReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request *WebhookEventCustomerPaymentMethod) (res ReceiveWebhookOfCustomerPaymentMethodRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfCustomerPaymentMethod"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -5595,12 +5595,12 @@ func (c *Client) sendReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, 
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-directdebit-payment
-func (c *Client) ReceiveWebhookOfDirectDebitPayment(ctx context.Context, request OptWebhookEventPaymentDirectDebit) (ReceiveWebhookOfDirectDebitPaymentRes, error) {
+func (c *Client) ReceiveWebhookOfDirectDebitPayment(ctx context.Context, request *WebhookEventPaymentDirectDebit) (ReceiveWebhookOfDirectDebitPaymentRes, error) {
 	res, err := c.sendReceiveWebhookOfDirectDebitPayment(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfDirectDebitPayment(ctx context.Context, request OptWebhookEventPaymentDirectDebit) (res ReceiveWebhookOfDirectDebitPaymentRes, err error) {
+func (c *Client) sendReceiveWebhookOfDirectDebitPayment(ctx context.Context, request *WebhookEventPaymentDirectDebit) (res ReceiveWebhookOfDirectDebitPaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfDirectDebitPayment"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -5716,12 +5716,12 @@ func (c *Client) sendReceiveWebhookOfDirectDebitPayment(ctx context.Context, req
 // directdebit.batch`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-directdebit-recurring-batch
-func (c *Client) ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchDirectDebit) (ReceiveWebhookOfDirectDebitRecurringBatchRes, error) {
+func (c *Client) ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request *WebhookEventRecurringBatchDirectDebit) (ReceiveWebhookOfDirectDebitRecurringBatchRes, error) {
 	res, err := c.sendReceiveWebhookOfDirectDebitRecurringBatch(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchDirectDebit) (res ReceiveWebhookOfDirectDebitRecurringBatchRes, err error) {
+func (c *Client) sendReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request *WebhookEventRecurringBatchDirectDebit) (res ReceiveWebhookOfDirectDebitRecurringBatchRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfDirectDebitRecurringBatch"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -5837,12 +5837,12 @@ func (c *Client) sendReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Conte
 // directdebit.*`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-directdebit-subscription
-func (c *Client) ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request OptWebhookEventSubscriptionDirectDebit) (ReceiveWebhookOfDirectDebitSubscriptionRes, error) {
+func (c *Client) ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request *WebhookEventSubscriptionDirectDebit) (ReceiveWebhookOfDirectDebitSubscriptionRes, error) {
 	res, err := c.sendReceiveWebhookOfDirectDebitSubscription(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request OptWebhookEventSubscriptionDirectDebit) (res ReceiveWebhookOfDirectDebitSubscriptionRes, err error) {
+func (c *Client) sendReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request *WebhookEventSubscriptionDirectDebit) (res ReceiveWebhookOfDirectDebitSubscriptionRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfDirectDebitSubscription"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -5958,12 +5958,12 @@ func (c *Client) sendReceiveWebhookOfDirectDebitSubscription(ctx context.Context
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-konbini-payment
-func (c *Client) ReceiveWebhookOfKonbiniPayment(ctx context.Context, request OptWebhookEventPaymentKonbini) (ReceiveWebhookOfKonbiniPaymentRes, error) {
+func (c *Client) ReceiveWebhookOfKonbiniPayment(ctx context.Context, request *WebhookEventPaymentKonbini) (ReceiveWebhookOfKonbiniPaymentRes, error) {
 	res, err := c.sendReceiveWebhookOfKonbiniPayment(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfKonbiniPayment(ctx context.Context, request OptWebhookEventPaymentKonbini) (res ReceiveWebhookOfKonbiniPaymentRes, err error) {
+func (c *Client) sendReceiveWebhookOfKonbiniPayment(ctx context.Context, request *WebhookEventPaymentKonbini) (res ReceiveWebhookOfKonbiniPaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfKonbiniPayment"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -6079,12 +6079,12 @@ func (c *Client) sendReceiveWebhookOfKonbiniPayment(ctx context.Context, request
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-paypay-payment
-func (c *Client) ReceiveWebhookOfPayPayPayment(ctx context.Context, request OptWebhookEventPaymentPayPay) (ReceiveWebhookOfPayPayPaymentRes, error) {
+func (c *Client) ReceiveWebhookOfPayPayPayment(ctx context.Context, request *WebhookEventPaymentPayPay) (ReceiveWebhookOfPayPayPaymentRes, error) {
 	res, err := c.sendReceiveWebhookOfPayPayPayment(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfPayPayPayment(ctx context.Context, request OptWebhookEventPaymentPayPay) (res ReceiveWebhookOfPayPayPaymentRes, err error) {
+func (c *Client) sendReceiveWebhookOfPayPayPayment(ctx context.Context, request *WebhookEventPaymentPayPay) (res ReceiveWebhookOfPayPayPaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfPayPayPayment"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -6200,12 +6200,12 @@ func (c *Client) sendReceiveWebhookOfPayPayPayment(ctx context.Context, request 
 // regist`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-payment-bulk-regist
-func (c *Client) ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request OptWebhookEventPaymentBulkRegistCard) (ReceiveWebhookOfRegisteringCardPaymentBulkRes, error) {
+func (c *Client) ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request *WebhookEventPaymentBulkRegistCard) (ReceiveWebhookOfRegisteringCardPaymentBulkRes, error) {
 	res, err := c.sendReceiveWebhookOfRegisteringCardPaymentBulk(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request OptWebhookEventPaymentBulkRegistCard) (res ReceiveWebhookOfRegisteringCardPaymentBulkRes, err error) {
+func (c *Client) sendReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request *WebhookEventPaymentBulkRegistCard) (res ReceiveWebhookOfRegisteringCardPaymentBulkRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("receiveWebhookOfRegisteringCardPaymentBulk"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -6320,12 +6320,12 @@ func (c *Client) sendReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Cont
 // `id`で指定したテナントショップの本番環境の利用申請を行います。このAPIを呼び出すまでにテナント本番環境申請情報 更新APIで申請情報を用意しておく必要があります。.
 //
 // POST /v1/contracts/examinations
-func (c *Client) RequestProductionEnvironment(ctx context.Context, request OptPOSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (RequestProductionEnvironmentRes, error) {
+func (c *Client) RequestProductionEnvironment(ctx context.Context, request *POSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (RequestProductionEnvironmentRes, error) {
 	res, err := c.sendRequestProductionEnvironment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendRequestProductionEnvironment(ctx context.Context, request OptPOSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (res RequestProductionEnvironmentRes, err error) {
+func (c *Client) sendRequestProductionEnvironment(ctx context.Context, request *POSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (res RequestProductionEnvironmentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("requestProductionEnvironment"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -6454,12 +6454,12 @@ func (c *Client) sendRequestProductionEnvironment(ctx context.Context, request O
 // `id`で指定したテナントショップの決済手段の追加申請を行います。.
 //
 // POST /v1/contracts-examinations-tenants-{id}-providers-reserve.yml
-func (c *Client) ReserveProvider(ctx context.Context, request OptPOSTProviderReserveRequestMultipart, params ReserveProviderParams) (ReserveProviderRes, error) {
+func (c *Client) ReserveProvider(ctx context.Context, request *POSTProviderReserveRequestMultipart, params ReserveProviderParams) (ReserveProviderRes, error) {
 	res, err := c.sendReserveProvider(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendReserveProvider(ctx context.Context, request OptPOSTProviderReserveRequestMultipart, params ReserveProviderParams) (res ReserveProviderRes, err error) {
+func (c *Client) sendReserveProvider(ctx context.Context, request *POSTProviderReserveRequestMultipart, params ReserveProviderParams) (res ReserveProviderRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("reserveProvider"),
 		semconv.HTTPMethodKey.String("POST"),
@@ -10949,12 +10949,12 @@ func (c *Client) sendRetrieveWebhookSettingList(ctx context.Context, params Retr
 // IDで指定した顧客情報を更新します。.
 //
 // PUT /v1/customers/{id}
-func (c *Client) UpdateCustomer(ctx context.Context, request OptCustomerUpdatingRequest, params UpdateCustomerParams) (UpdateCustomerRes, error) {
+func (c *Client) UpdateCustomer(ctx context.Context, request *CustomerUpdatingRequest, params UpdateCustomerParams) (UpdateCustomerRes, error) {
 	res, err := c.sendUpdateCustomer(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateCustomer(ctx context.Context, request OptCustomerUpdatingRequest, params UpdateCustomerParams) (res UpdateCustomerRes, err error) {
+func (c *Client) sendUpdateCustomer(ctx context.Context, request *CustomerUpdatingRequest, params UpdateCustomerParams) (res UpdateCustomerRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updateCustomer"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -11104,12 +11104,12 @@ func (c *Client) sendUpdateCustomer(ctx context.Context, request OptCustomerUpda
 // `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを更新します。.
 //
 // PUT /v1/customers/{customer_id}/cards/{id}
-func (c *Client) UpdateCustomerCard(ctx context.Context, request OptCustomerCardUpdatingRequest, params UpdateCustomerCardParams) (UpdateCustomerCardRes, error) {
+func (c *Client) UpdateCustomerCard(ctx context.Context, request *CustomerCardUpdatingRequest, params UpdateCustomerCardParams) (UpdateCustomerCardRes, error) {
 	res, err := c.sendUpdateCustomerCard(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateCustomerCard(ctx context.Context, request OptCustomerCardUpdatingRequest, params UpdateCustomerCardParams) (res UpdateCustomerCardRes, err error) {
+func (c *Client) sendUpdateCustomerCard(ctx context.Context, request *CustomerCardUpdatingRequest, params UpdateCustomerCardParams) (res UpdateCustomerCardRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updateCustomerCard"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -11280,12 +11280,12 @@ func (c *Client) sendUpdateCustomerCard(ctx context.Context, request OptCustomer
 // 1`のとき）、プランは更新できません。.
 //
 // PUT /v1/plans/{id}
-func (c *Client) UpdatePlan(ctx context.Context, request OptPlanUpdatingRequest, params UpdatePlanParams) (UpdatePlanRes, error) {
+func (c *Client) UpdatePlan(ctx context.Context, request *PlanUpdatingRequest, params UpdatePlanParams) (UpdatePlanRes, error) {
 	res, err := c.sendUpdatePlan(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdatePlan(ctx context.Context, request OptPlanUpdatingRequest, params UpdatePlanParams) (res UpdatePlanRes, err error) {
+func (c *Client) sendUpdatePlan(ctx context.Context, request *PlanUpdatingRequest, params UpdatePlanParams) (res UpdatePlanRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updatePlan"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -11418,12 +11418,12 @@ func (c *Client) sendUpdatePlan(ctx context.Context, request OptPlanUpdatingRequ
 // `examination_master_id`で指定した決済手段に関してプラットフォーム利用料を更新します。.
 //
 // PUT /v1/platforms/{id}
-func (c *Client) UpdatePlatformShop(ctx context.Context, request OptPlatformShopUpdatingRequest, params UpdatePlatformShopParams) (UpdatePlatformShopRes, error) {
+func (c *Client) UpdatePlatformShop(ctx context.Context, request *PlatformShopUpdatingRequest, params UpdatePlatformShopParams) (UpdatePlatformShopRes, error) {
 	res, err := c.sendUpdatePlatformShop(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdatePlatformShop(ctx context.Context, request OptPlatformShopUpdatingRequest, params UpdatePlatformShopParams) (res UpdatePlatformShopRes, err error) {
+func (c *Client) sendUpdatePlatformShop(ctx context.Context, request *PlatformShopUpdatingRequest, params UpdatePlatformShopParams) (res UpdatePlatformShopRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updatePlatformShop"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -11558,12 +11558,12 @@ func (c *Client) sendUpdatePlatformShop(ctx context.Context, request OptPlatform
 // {{現在時刻}}`のとき）、サブスクリプションは更新できません。.
 //
 // PUT /v1/subscriptions/{id}
-func (c *Client) UpdateSubscription(ctx context.Context, request OptSubscriptionUpdatingRequest, params UpdateSubscriptionParams) (UpdateSubscriptionRes, error) {
+func (c *Client) UpdateSubscription(ctx context.Context, request *SubscriptionUpdatingRequest, params UpdateSubscriptionParams) (UpdateSubscriptionRes, error) {
 	res, err := c.sendUpdateSubscription(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateSubscription(ctx context.Context, request OptSubscriptionUpdatingRequest, params UpdateSubscriptionParams) (res UpdateSubscriptionRes, err error) {
+func (c *Client) sendUpdateSubscription(ctx context.Context, request *SubscriptionUpdatingRequest, params UpdateSubscriptionParams) (res UpdateSubscriptionRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updateSubscription"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -11700,12 +11700,12 @@ func (c *Client) sendUpdateSubscription(ctx context.Context, request OptSubscrip
 // Deprecated: schema marks this operation as deprecated.
 //
 // PUT /v1/contracts/examinations/tenants/{id}
-func (c *Client) UpdateTenantExaminationInfo(ctx context.Context, request OptExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (UpdateTenantExaminationInfoRes, error) {
+func (c *Client) UpdateTenantExaminationInfo(ctx context.Context, request *ExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (UpdateTenantExaminationInfoRes, error) {
 	res, err := c.sendUpdateTenantExaminationInfo(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateTenantExaminationInfo(ctx context.Context, request OptExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (res UpdateTenantExaminationInfoRes, err error) {
+func (c *Client) sendUpdateTenantExaminationInfo(ctx context.Context, request *ExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (res UpdateTenantExaminationInfoRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updateTenantExaminationInfo"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -11852,12 +11852,12 @@ func (c *Client) sendUpdateTenantExaminationInfo(ctx context.Context, request Op
 // `id`で指定したテナントショップの本番環境申請情報を更新します。.
 //
 // PUT /v1/contracts/examinations_v2/tenants/{id}
-func (c *Client) UpdateTenantExaminationInfoV2(ctx context.Context, request OptExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (UpdateTenantExaminationInfoV2Res, error) {
+func (c *Client) UpdateTenantExaminationInfoV2(ctx context.Context, request *ExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (UpdateTenantExaminationInfoV2Res, error) {
 	res, err := c.sendUpdateTenantExaminationInfoV2(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateTenantExaminationInfoV2(ctx context.Context, request OptExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (res UpdateTenantExaminationInfoV2Res, err error) {
+func (c *Client) sendUpdateTenantExaminationInfoV2(ctx context.Context, request *ExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (res UpdateTenantExaminationInfoV2Res, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updateTenantExaminationInfoV2"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -12004,12 +12004,12 @@ func (c *Client) sendUpdateTenantExaminationInfoV2(ctx context.Context, request 
 // `examination_master_id`で指定した決済手段におけるプラットフォーム利用料などの設定の変更を`id`で指定したテナントに対して実行します。.
 //
 // PUT /v1/tenants/{id}
-func (c *Client) UpdateTenantShop(ctx context.Context, request OptTenantShopUpdatingRequest, params UpdateTenantShopParams) (UpdateTenantShopRes, error) {
+func (c *Client) UpdateTenantShop(ctx context.Context, request *TenantShopUpdatingRequest, params UpdateTenantShopParams) (UpdateTenantShopRes, error) {
 	res, err := c.sendUpdateTenantShop(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateTenantShop(ctx context.Context, request OptTenantShopUpdatingRequest, params UpdateTenantShopParams) (res UpdateTenantShopRes, err error) {
+func (c *Client) sendUpdateTenantShop(ctx context.Context, request *TenantShopUpdatingRequest, params UpdateTenantShopParams) (res UpdateTenantShopRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updateTenantShop"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -12142,12 +12142,12 @@ func (c *Client) sendUpdateTenantShop(ctx context.Context, request OptTenantShop
 // IDで指定したWebhook設定を更新します。.
 //
 // PUT /v1/webhook_settings/{id}
-func (c *Client) UpdateWebhookSetting(ctx context.Context, request OptWebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (UpdateWebhookSettingRes, error) {
+func (c *Client) UpdateWebhookSetting(ctx context.Context, request *WebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (UpdateWebhookSettingRes, error) {
 	res, err := c.sendUpdateWebhookSetting(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateWebhookSetting(ctx context.Context, request OptWebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (res UpdateWebhookSettingRes, err error) {
+func (c *Client) sendUpdateWebhookSetting(ctx context.Context, request *WebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (res UpdateWebhookSettingRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("updateWebhookSetting"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -12297,12 +12297,12 @@ func (c *Client) sendUpdateWebhookSetting(ctx context.Context, request OptWebhoo
 // `id`で指定したテナントショップの審査に必要なファイルのアップロードを行います。.
 //
 // POST /v1/contracts/examinations/tenants/{id}/files
-func (c *Client) UploadExaminationFile(ctx context.Context, request OptExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (UploadExaminationFileRes, error) {
+func (c *Client) UploadExaminationFile(ctx context.Context, request *ExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (UploadExaminationFileRes, error) {
 	res, err := c.sendUploadExaminationFile(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUploadExaminationFile(ctx context.Context, request OptExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (res UploadExaminationFileRes, err error) {
+func (c *Client) sendUploadExaminationFile(ctx context.Context, request *ExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (res UploadExaminationFileRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("uploadExaminationFile"),
 		semconv.HTTPMethodKey.String("POST"),

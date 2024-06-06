@@ -16,19 +16,13 @@ import (
 )
 
 func encodeAuthorizePaymentRequest(
-	req OptAuthorizePaymentReq,
+	req *AuthorizePaymentReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -36,19 +30,13 @@ func encodeAuthorizePaymentRequest(
 }
 
 func encodeCapturePaymentRequest(
-	req OptCapturePaymentReq,
+	req CapturePaymentReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -56,19 +44,13 @@ func encodeCapturePaymentRequest(
 }
 
 func encodeChangeAmountOfPaymentRequest(
-	req OptChangeAmountOfPaymentReq,
+	req ChangeAmountOfPaymentReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -76,19 +58,13 @@ func encodeChangeAmountOfPaymentRequest(
 }
 
 func encodeCreateCardRegistrationSessionRequest(
-	req OptCardRegistrationSessionCreatingRequest,
+	req *CardRegistrationSessionCreatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -96,19 +72,13 @@ func encodeCreateCardRegistrationSessionRequest(
 }
 
 func encodeCreateCustomerRequest(
-	req OptCustomerCreatingRequest,
+	req *CustomerCreatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -116,19 +86,13 @@ func encodeCreateCustomerRequest(
 }
 
 func encodeCreateCustomerCardRequest(
-	req OptCustomerCardCreatingRequest,
+	req *CustomerCardCreatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -136,19 +100,13 @@ func encodeCreateCustomerCardRequest(
 }
 
 func encodeCreateCustomerPaymentMethodRequest(
-	req OptCustomerPaymentMethodCreatingRequest,
+	req *CustomerPaymentMethodCreatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -156,19 +114,13 @@ func encodeCreateCustomerPaymentMethodRequest(
 }
 
 func encodeCreatePaymentRequest(
-	req OptCreatePaymentReq,
+	req CreatePaymentReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -176,15 +128,11 @@ func encodeCreatePaymentRequest(
 }
 
 func encodeCreatePaymentBulkRequest(
-	req OptPaymentBulkCreatingRequestMultipart,
+	req *PaymentBulkCreatingRequestMultipart,
 	r *http.Request,
 ) error {
 	const contentType = "multipart/form-data"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
-	request := req.Value
+	request := req
 
 	q := uri.NewFormEncoder(map[string]string{
 		"file": "application/json; charset=utf-8",
@@ -219,19 +167,13 @@ func encodeCreatePaymentBulkRequest(
 }
 
 func encodeCreatePaymentSessionRequest(
-	req OptPaymentSessionCreatingRequest,
+	req *PaymentSessionCreatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -239,19 +181,13 @@ func encodeCreatePaymentSessionRequest(
 }
 
 func encodeCreatePlanRequest(
-	req OptPlanCreatingRequest,
+	req *PlanCreatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -259,19 +195,13 @@ func encodeCreatePlanRequest(
 }
 
 func encodeCreateSubscriptionRequest(
-	req OptSubscriptionCreatingRequest,
+	req *SubscriptionCreatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -279,19 +209,13 @@ func encodeCreateSubscriptionRequest(
 }
 
 func encodeCreateTenantWithExistingUserRequest(
-	req OptPOSTJoinTenantsRequest,
+	req *POSTJoinTenantsRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -299,19 +223,13 @@ func encodeCreateTenantWithExistingUserRequest(
 }
 
 func encodeCreateTenantWithNewUserRequest(
-	req OptPOSTTenantEntriesRequest,
+	req *POSTTenantEntriesRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -319,19 +237,13 @@ func encodeCreateTenantWithNewUserRequest(
 }
 
 func encodeCreateWebhookSettingRequest(
-	req OptWebhookSettingCreatingRequest,
+	req *WebhookSettingCreatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -339,19 +251,13 @@ func encodeCreateWebhookSettingRequest(
 }
 
 func encodeExecute3DSecureAuthenticationRequest(
-	req OptR3DSAuthorizingRequest,
+	req *R3DSAuthorizingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -359,19 +265,13 @@ func encodeExecute3DSecureAuthenticationRequest(
 }
 
 func encodeExecutePaymentRequest(
-	req OptExecutePaymentReq,
+	req ExecutePaymentReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -379,19 +279,13 @@ func encodeExecutePaymentRequest(
 }
 
 func encodeExecutePaymentAfter3DSecureRequest(
-	req OptExecutePaymentAfter3DSecureReq,
+	req *ExecutePaymentAfter3DSecureReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -399,19 +293,13 @@ func encodeExecutePaymentAfter3DSecureRequest(
 }
 
 func encodeGenerateBarcodeOfPaymentRequest(
-	req OptGenerateBarcodeOfPaymentReq,
+	req *GenerateBarcodeOfPaymentReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -419,19 +307,13 @@ func encodeGenerateBarcodeOfPaymentRequest(
 }
 
 func encodeReceiveWebhookOfApplePayPaymentRequest(
-	req OptWebhookEventPaymentApplePay,
+	req *WebhookEventPaymentApplePay,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -439,19 +321,13 @@ func encodeReceiveWebhookOfApplePayPaymentRequest(
 }
 
 func encodeReceiveWebhookOfCardRequest(
-	req OptWebhookEventCard,
+	req *WebhookEventCard,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -459,19 +335,13 @@ func encodeReceiveWebhookOfCardRequest(
 }
 
 func encodeReceiveWebhookOfCardPaymentRequest(
-	req OptWebhookEventPaymentCard,
+	req *WebhookEventPaymentCard,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -479,19 +349,13 @@ func encodeReceiveWebhookOfCardPaymentRequest(
 }
 
 func encodeReceiveWebhookOfCardPaymentBulkBatchRequest(
-	req OptWebhookEventPaymentBulkBatchCard,
+	req *WebhookEventPaymentBulkBatchCard,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -499,19 +363,13 @@ func encodeReceiveWebhookOfCardPaymentBulkBatchRequest(
 }
 
 func encodeReceiveWebhookOfCardRecurringBatchRequest(
-	req OptWebhookEventRecurringBatchCard,
+	req *WebhookEventRecurringBatchCard,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -519,19 +377,13 @@ func encodeReceiveWebhookOfCardRecurringBatchRequest(
 }
 
 func encodeReceiveWebhookOfCardSubscriptionRequest(
-	req OptWebhookEventSubscriptionCard,
+	req *WebhookEventSubscriptionCard,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -539,19 +391,13 @@ func encodeReceiveWebhookOfCardSubscriptionRequest(
 }
 
 func encodeReceiveWebhookOfContractRequest(
-	req OptWebhookEventContract,
+	req *WebhookEventContract,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -559,19 +405,13 @@ func encodeReceiveWebhookOfContractRequest(
 }
 
 func encodeReceiveWebhookOfCustomerPaymentMethodRequest(
-	req OptWebhookEventCustomerPaymentMethod,
+	req *WebhookEventCustomerPaymentMethod,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -579,19 +419,13 @@ func encodeReceiveWebhookOfCustomerPaymentMethodRequest(
 }
 
 func encodeReceiveWebhookOfDirectDebitPaymentRequest(
-	req OptWebhookEventPaymentDirectDebit,
+	req *WebhookEventPaymentDirectDebit,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -599,19 +433,13 @@ func encodeReceiveWebhookOfDirectDebitPaymentRequest(
 }
 
 func encodeReceiveWebhookOfDirectDebitRecurringBatchRequest(
-	req OptWebhookEventRecurringBatchDirectDebit,
+	req *WebhookEventRecurringBatchDirectDebit,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -619,19 +447,13 @@ func encodeReceiveWebhookOfDirectDebitRecurringBatchRequest(
 }
 
 func encodeReceiveWebhookOfDirectDebitSubscriptionRequest(
-	req OptWebhookEventSubscriptionDirectDebit,
+	req *WebhookEventSubscriptionDirectDebit,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -639,19 +461,13 @@ func encodeReceiveWebhookOfDirectDebitSubscriptionRequest(
 }
 
 func encodeReceiveWebhookOfKonbiniPaymentRequest(
-	req OptWebhookEventPaymentKonbini,
+	req *WebhookEventPaymentKonbini,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -659,19 +475,13 @@ func encodeReceiveWebhookOfKonbiniPaymentRequest(
 }
 
 func encodeReceiveWebhookOfPayPayPaymentRequest(
-	req OptWebhookEventPaymentPayPay,
+	req *WebhookEventPaymentPayPay,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -679,19 +489,13 @@ func encodeReceiveWebhookOfPayPayPaymentRequest(
 }
 
 func encodeReceiveWebhookOfRegisteringCardPaymentBulkRequest(
-	req OptWebhookEventPaymentBulkRegistCard,
+	req *WebhookEventPaymentBulkRegistCard,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -699,15 +503,11 @@ func encodeReceiveWebhookOfRegisteringCardPaymentBulkRequest(
 }
 
 func encodeRequestProductionEnvironmentRequest(
-	req OptPOSTContractsExaminationsRequestMultipart,
+	req *POSTContractsExaminationsRequestMultipart,
 	r *http.Request,
 ) error {
 	const contentType = "multipart/form-data"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
-	request := req.Value
+	request := req
 
 	q := uri.NewFormEncoder(map[string]string{
 		"shop_id":              "application/json; charset=utf-8",
@@ -762,15 +562,11 @@ func encodeRequestProductionEnvironmentRequest(
 }
 
 func encodeReserveProviderRequest(
-	req OptPOSTProviderReserveRequestMultipart,
+	req *POSTProviderReserveRequestMultipart,
 	r *http.Request,
 ) error {
 	const contentType = "multipart/form-data"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
-	request := req.Value
+	request := req
 
 	q := uri.NewFormEncoder(map[string]string{
 		"provider": "application/json; charset=utf-8",
@@ -807,19 +603,13 @@ func encodeReserveProviderRequest(
 }
 
 func encodeUpdateCustomerRequest(
-	req OptCustomerUpdatingRequest,
+	req *CustomerUpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -827,19 +617,13 @@ func encodeUpdateCustomerRequest(
 }
 
 func encodeUpdateCustomerCardRequest(
-	req OptCustomerCardUpdatingRequest,
+	req *CustomerCardUpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -847,19 +631,13 @@ func encodeUpdateCustomerCardRequest(
 }
 
 func encodeUpdatePlanRequest(
-	req OptPlanUpdatingRequest,
+	req *PlanUpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -867,19 +645,13 @@ func encodeUpdatePlanRequest(
 }
 
 func encodeUpdatePlatformShopRequest(
-	req OptPlatformShopUpdatingRequest,
+	req *PlatformShopUpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -887,19 +659,13 @@ func encodeUpdatePlatformShopRequest(
 }
 
 func encodeUpdateSubscriptionRequest(
-	req OptSubscriptionUpdatingRequest,
+	req *SubscriptionUpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -907,19 +673,13 @@ func encodeUpdateSubscriptionRequest(
 }
 
 func encodeUpdateTenantExaminationInfoRequest(
-	req OptExaminationInfoUpdatingRequest,
+	req *ExaminationInfoUpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -927,19 +687,13 @@ func encodeUpdateTenantExaminationInfoRequest(
 }
 
 func encodeUpdateTenantExaminationInfoV2Request(
-	req OptExaminationInfoV2UpdatingRequest,
+	req *ExaminationInfoV2UpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -947,19 +701,13 @@ func encodeUpdateTenantExaminationInfoV2Request(
 }
 
 func encodeUpdateTenantShopRequest(
-	req OptTenantShopUpdatingRequest,
+	req *TenantShopUpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -967,19 +715,13 @@ func encodeUpdateTenantShopRequest(
 }
 
 func encodeUpdateWebhookSettingRequest(
-	req OptWebhookSettingUpdatingRequest,
+	req *WebhookSettingUpdatingRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
 	e := new(jx.Encoder)
 	{
-		if req.Set {
-			req.Encode(e)
-		}
+		req.Encode(e)
 	}
 	encoded := e.Bytes()
 	ht.SetBody(r, bytes.NewReader(encoded), contentType)
@@ -987,15 +729,11 @@ func encodeUpdateWebhookSettingRequest(
 }
 
 func encodeUploadExaminationFileRequest(
-	req OptExaminationFileUploadingRequestMultipart,
+	req *ExaminationFileUploadingRequestMultipart,
 	r *http.Request,
 ) error {
 	const contentType = "multipart/form-data"
-	if !req.Set {
-		// Keep request with empty body if value is not set.
-		return nil
-	}
-	request := req.Value
+	request := req
 
 	q := uri.NewFormEncoder(map[string]string{
 		"type": "application/json; charset=utf-8",

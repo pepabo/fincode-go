@@ -20,7 +20,7 @@ var _ Handler = UnimplementedHandler{}
 // `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
 //
 // PUT /v1/payments/{id}/auth
-func (UnimplementedHandler) AuthorizePayment(ctx context.Context, req OptAuthorizePaymentReq, params AuthorizePaymentParams) (r AuthorizePaymentRes, _ error) {
+func (UnimplementedHandler) AuthorizePayment(ctx context.Context, req *AuthorizePaymentReq, params AuthorizePaymentParams) (r AuthorizePaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -30,7 +30,7 @@ func (UnimplementedHandler) AuthorizePayment(ctx context.Context, req OptAuthori
 // 成功すると、ステータスが`CAPTURED`に遷移し、その時点を集計対象とした売上入金に反映されます。.
 //
 // PUT /v1/payments/{id}/capture
-func (UnimplementedHandler) CapturePayment(ctx context.Context, req OptCapturePaymentReq, params CapturePaymentParams) (r CapturePaymentRes, _ error) {
+func (UnimplementedHandler) CapturePayment(ctx context.Context, req CapturePaymentReq, params CapturePaymentParams) (r CapturePaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -40,7 +40,7 @@ func (UnimplementedHandler) CapturePayment(ctx context.Context, req OptCapturePa
 // 既に売上確定となっている決済は請求金額が変更され、仮売上となっている決済は確保している与信枠の金額が変更されます。.
 //
 // PUT /v1/payments/{id}/change
-func (UnimplementedHandler) ChangeAmountOfPayment(ctx context.Context, req OptChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (r ChangeAmountOfPaymentRes, _ error) {
+func (UnimplementedHandler) ChangeAmountOfPayment(ctx context.Context, req ChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (r ChangeAmountOfPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -60,7 +60,7 @@ func (UnimplementedHandler) Confirm3DSecureAuthentication(ctx context.Context, p
 // Fincodeが提供するリダイレクト型カード登録ページを発行し、そのカード登録ページへのURLをレスポンスします。.
 //
 // POST /v1/card_sessions
-func (UnimplementedHandler) CreateCardRegistrationSession(ctx context.Context, req OptCardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (r CreateCardRegistrationSessionRes, _ error) {
+func (UnimplementedHandler) CreateCardRegistrationSession(ctx context.Context, req *CardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (r CreateCardRegistrationSessionRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -69,7 +69,7 @@ func (UnimplementedHandler) CreateCardRegistrationSession(ctx context.Context, r
 // 顧客情報を登録します。.
 //
 // POST /v1/customers
-func (UnimplementedHandler) CreateCustomer(ctx context.Context, req OptCustomerCreatingRequest, params CreateCustomerParams) (r CreateCustomerRes, _ error) {
+func (UnimplementedHandler) CreateCustomer(ctx context.Context, req *CustomerCreatingRequest, params CreateCustomerParams) (r CreateCustomerRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -78,7 +78,7 @@ func (UnimplementedHandler) CreateCustomer(ctx context.Context, req OptCustomerC
 // `customer_id`で指定した顧客に対しカードを登録します。.
 //
 // POST /v1/customers/{customer_id}/cards
-func (UnimplementedHandler) CreateCustomerCard(ctx context.Context, req OptCustomerCardCreatingRequest, params CreateCustomerCardParams) (r CreateCustomerCardRes, _ error) {
+func (UnimplementedHandler) CreateCustomerCard(ctx context.Context, req *CustomerCardCreatingRequest, params CreateCustomerCardParams) (r CreateCustomerCardRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -87,7 +87,7 @@ func (UnimplementedHandler) CreateCustomerCard(ctx context.Context, req OptCusto
 // `customer_id`で指定した顧客に対し、決済手段を登録します。.
 //
 // POST /v1/customers/{customer_id}/payment_methods
-func (UnimplementedHandler) CreateCustomerPaymentMethod(ctx context.Context, req OptCustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (r CreateCustomerPaymentMethodRes, _ error) {
+func (UnimplementedHandler) CreateCustomerPaymentMethod(ctx context.Context, req *CustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (r CreateCustomerPaymentMethodRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -96,7 +96,7 @@ func (UnimplementedHandler) CreateCustomerPaymentMethod(ctx context.Context, req
 // 決済情報をfincodeに登録します。決済登録に成功した時点ではまだ顧客に対して請求はされていません。.
 //
 // POST /v1/payments
-func (UnimplementedHandler) CreatePayment(ctx context.Context, req OptCreatePaymentReq, params CreatePaymentParams) (r CreatePaymentRes, _ error) {
+func (UnimplementedHandler) CreatePayment(ctx context.Context, req CreatePaymentReq, params CreatePaymentParams) (r CreatePaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -105,7 +105,7 @@ func (UnimplementedHandler) CreatePayment(ctx context.Context, req OptCreatePaym
 // FincodeにJSON形式のファイルで一括決済情報を登録し、`process_plan_date`で指定した日時に一括決済処理を予約します。.
 //
 // POST /v1/payments/bulk
-func (UnimplementedHandler) CreatePaymentBulk(ctx context.Context, req OptPaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (r CreatePaymentBulkRes, _ error) {
+func (UnimplementedHandler) CreatePaymentBulk(ctx context.Context, req *PaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (r CreatePaymentBulkRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -114,7 +114,7 @@ func (UnimplementedHandler) CreatePaymentBulk(ctx context.Context, req OptPaymen
 // Fincodeが提供するリダイレクト型決済ページを発行し、その決済ページへのURLをレスポンスします。.
 //
 // POST /v1/sessions
-func (UnimplementedHandler) CreatePaymentSession(ctx context.Context, req OptPaymentSessionCreatingRequest, params CreatePaymentSessionParams) (r CreatePaymentSessionRes, _ error) {
+func (UnimplementedHandler) CreatePaymentSession(ctx context.Context, req *PaymentSessionCreatingRequest, params CreatePaymentSessionParams) (r CreatePaymentSessionRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -123,7 +123,7 @@ func (UnimplementedHandler) CreatePaymentSession(ctx context.Context, req OptPay
 // プラン情報を登録します。.
 //
 // POST /v1/plans
-func (UnimplementedHandler) CreatePlan(ctx context.Context, req OptPlanCreatingRequest) (r CreatePlanRes, _ error) {
+func (UnimplementedHandler) CreatePlan(ctx context.Context, req *PlanCreatingRequest) (r CreatePlanRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -132,7 +132,7 @@ func (UnimplementedHandler) CreatePlan(ctx context.Context, req OptPlanCreatingR
 // `customer_id`で指定した顧客に対して`plan_id`で指定したプランを適用したサブスクリプション情報を登録します。.
 //
 // POST /v1/subscriptions
-func (UnimplementedHandler) CreateSubscription(ctx context.Context, req OptSubscriptionCreatingRequest) (r CreateSubscriptionRes, _ error) {
+func (UnimplementedHandler) CreateSubscription(ctx context.Context, req *SubscriptionCreatingRequest) (r CreateSubscriptionRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -143,7 +143,7 @@ func (UnimplementedHandler) CreateSubscription(ctx context.Context, req OptSubsc
 // `password`パラメータに関して、ユーザーのパスワードがfincode管理画面アプリケーション上で更新されることを想定して実装・運用することが推奨されます。.
 //
 // POST /v1/join_tenants
-func (UnimplementedHandler) CreateTenantWithExistingUser(ctx context.Context, req OptPOSTJoinTenantsRequest) (r CreateTenantWithExistingUserRes, _ error) {
+func (UnimplementedHandler) CreateTenantWithExistingUser(ctx context.Context, req *POSTJoinTenantsRequest) (r CreateTenantWithExistingUserRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -153,7 +153,7 @@ func (UnimplementedHandler) CreateTenantWithExistingUser(ctx context.Context, re
 // このAPIでのテナント作成に成功すると、登録されたメールアドレス宛にメールアドレス認証メールが送信されます。.
 //
 // POST /v1/tenant_entries
-func (UnimplementedHandler) CreateTenantWithNewUser(ctx context.Context, req OptPOSTTenantEntriesRequest) (r CreateTenantWithNewUserRes, _ error) {
+func (UnimplementedHandler) CreateTenantWithNewUser(ctx context.Context, req *POSTTenantEntriesRequest) (r CreateTenantWithNewUserRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -162,7 +162,7 @@ func (UnimplementedHandler) CreateTenantWithNewUser(ctx context.Context, req Opt
 // Webhook設定を登録します。.
 //
 // POST /v1/webhook_settings
-func (UnimplementedHandler) CreateWebhookSetting(ctx context.Context, req OptWebhookSettingCreatingRequest, params CreateWebhookSettingParams) (r CreateWebhookSettingRes, _ error) {
+func (UnimplementedHandler) CreateWebhookSetting(ctx context.Context, req *WebhookSettingCreatingRequest, params CreateWebhookSettingParams) (r CreateWebhookSettingRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -237,7 +237,7 @@ func (UnimplementedHandler) DeleteWebhookSetting(ctx context.Context, params Del
 // 用意した`tds2_ret_url`に対し`event`パラメータで`3DSMethodFinished`もしくは`3DSMethodSkipped`イベントが通知されたとき、このAPIを呼び出します。.
 //
 // PUT /v1/secure2/{access_id}
-func (UnimplementedHandler) Execute3DSecureAuthentication(ctx context.Context, req OptR3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (r Execute3DSecureAuthenticationRes, _ error) {
+func (UnimplementedHandler) Execute3DSecureAuthentication(ctx context.Context, req *R3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (r Execute3DSecureAuthenticationRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -246,7 +246,7 @@ func (UnimplementedHandler) Execute3DSecureAuthentication(ctx context.Context, r
 // Fincodeに登録された決済情報を指定し、請求を実行します。.
 //
 // PUT /v1/payments/{id}
-func (UnimplementedHandler) ExecutePayment(ctx context.Context, req OptExecutePaymentReq, params ExecutePaymentParams) (r ExecutePaymentRes, _ error) {
+func (UnimplementedHandler) ExecutePayment(ctx context.Context, req ExecutePaymentReq, params ExecutePaymentParams) (r ExecutePaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -257,7 +257,7 @@ func (UnimplementedHandler) ExecutePayment(ctx context.Context, req OptExecutePa
 // 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
 //
 // PUT /v1/payments/{id}/secure
-func (UnimplementedHandler) ExecutePaymentAfter3DSecure(ctx context.Context, req OptExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (r ExecutePaymentAfter3DSecureRes, _ error) {
+func (UnimplementedHandler) ExecutePaymentAfter3DSecure(ctx context.Context, req *ExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (r ExecutePaymentAfter3DSecureRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -266,7 +266,7 @@ func (UnimplementedHandler) ExecutePaymentAfter3DSecure(ctx context.Context, req
 // リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
 //
 // PUT /v1/payments/{id}/barcode
-func (UnimplementedHandler) GenerateBarcodeOfPayment(ctx context.Context, req OptGenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (r GenerateBarcodeOfPaymentRes, _ error) {
+func (UnimplementedHandler) GenerateBarcodeOfPayment(ctx context.Context, req *GenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (r GenerateBarcodeOfPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -276,7 +276,7 @@ func (UnimplementedHandler) GenerateBarcodeOfPayment(ctx context.Context, req Op
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-applepay-payment
-func (UnimplementedHandler) ReceiveWebhookOfApplePayPayment(ctx context.Context, req OptWebhookEventPaymentApplePay) (r ReceiveWebhookOfApplePayPaymentRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfApplePayPayment(ctx context.Context, req *WebhookEventPaymentApplePay) (r ReceiveWebhookOfApplePayPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -286,7 +286,7 @@ func (UnimplementedHandler) ReceiveWebhookOfApplePayPayment(ctx context.Context,
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card
-func (UnimplementedHandler) ReceiveWebhookOfCard(ctx context.Context, req OptWebhookEventCard) (r ReceiveWebhookOfCardRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfCard(ctx context.Context, req *WebhookEventCard) (r ReceiveWebhookOfCardRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -296,7 +296,7 @@ func (UnimplementedHandler) ReceiveWebhookOfCard(ctx context.Context, req OptWeb
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-payment
-func (UnimplementedHandler) ReceiveWebhookOfCardPayment(ctx context.Context, req OptWebhookEventPaymentCard) (r ReceiveWebhookOfCardPaymentRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfCardPayment(ctx context.Context, req *WebhookEventPaymentCard) (r ReceiveWebhookOfCardPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -306,7 +306,7 @@ func (UnimplementedHandler) ReceiveWebhookOfCardPayment(ctx context.Context, req
 // batch`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-payment-bulk-batch
-func (UnimplementedHandler) ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, req OptWebhookEventPaymentBulkBatchCard) (r ReceiveWebhookOfCardPaymentBulkBatchRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, req *WebhookEventPaymentBulkBatchCard) (r ReceiveWebhookOfCardPaymentBulkBatchRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -316,7 +316,7 @@ func (UnimplementedHandler) ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Con
 // batch`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-recurring-batch
-func (UnimplementedHandler) ReceiveWebhookOfCardRecurringBatch(ctx context.Context, req OptWebhookEventRecurringBatchCard) (r ReceiveWebhookOfCardRecurringBatchRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfCardRecurringBatch(ctx context.Context, req *WebhookEventRecurringBatchCard) (r ReceiveWebhookOfCardRecurringBatchRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -326,7 +326,7 @@ func (UnimplementedHandler) ReceiveWebhookOfCardRecurringBatch(ctx context.Conte
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-subscription
-func (UnimplementedHandler) ReceiveWebhookOfCardSubscription(ctx context.Context, req OptWebhookEventSubscriptionCard) (r ReceiveWebhookOfCardSubscriptionRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfCardSubscription(ctx context.Context, req *WebhookEventSubscriptionCard) (r ReceiveWebhookOfCardSubscriptionRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -336,7 +336,7 @@ func (UnimplementedHandler) ReceiveWebhookOfCardSubscription(ctx context.Context
 // updated`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-contract
-func (UnimplementedHandler) ReceiveWebhookOfContract(ctx context.Context, req OptWebhookEventContract) (r ReceiveWebhookOfContractRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfContract(ctx context.Context, req *WebhookEventContract) (r ReceiveWebhookOfContractRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -346,7 +346,7 @@ func (UnimplementedHandler) ReceiveWebhookOfContract(ctx context.Context, req Op
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-customer-payment_method
-func (UnimplementedHandler) ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, req OptWebhookEventCustomerPaymentMethod) (r ReceiveWebhookOfCustomerPaymentMethodRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, req *WebhookEventCustomerPaymentMethod) (r ReceiveWebhookOfCustomerPaymentMethodRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -356,7 +356,7 @@ func (UnimplementedHandler) ReceiveWebhookOfCustomerPaymentMethod(ctx context.Co
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-directdebit-payment
-func (UnimplementedHandler) ReceiveWebhookOfDirectDebitPayment(ctx context.Context, req OptWebhookEventPaymentDirectDebit) (r ReceiveWebhookOfDirectDebitPaymentRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfDirectDebitPayment(ctx context.Context, req *WebhookEventPaymentDirectDebit) (r ReceiveWebhookOfDirectDebitPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -366,7 +366,7 @@ func (UnimplementedHandler) ReceiveWebhookOfDirectDebitPayment(ctx context.Conte
 // directdebit.batch`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-directdebit-recurring-batch
-func (UnimplementedHandler) ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, req OptWebhookEventRecurringBatchDirectDebit) (r ReceiveWebhookOfDirectDebitRecurringBatchRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, req *WebhookEventRecurringBatchDirectDebit) (r ReceiveWebhookOfDirectDebitRecurringBatchRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -376,7 +376,7 @@ func (UnimplementedHandler) ReceiveWebhookOfDirectDebitRecurringBatch(ctx contex
 // directdebit.*`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-directdebit-subscription
-func (UnimplementedHandler) ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, req OptWebhookEventSubscriptionDirectDebit) (r ReceiveWebhookOfDirectDebitSubscriptionRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, req *WebhookEventSubscriptionDirectDebit) (r ReceiveWebhookOfDirectDebitSubscriptionRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -386,7 +386,7 @@ func (UnimplementedHandler) ReceiveWebhookOfDirectDebitSubscription(ctx context.
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-konbini-payment
-func (UnimplementedHandler) ReceiveWebhookOfKonbiniPayment(ctx context.Context, req OptWebhookEventPaymentKonbini) (r ReceiveWebhookOfKonbiniPaymentRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfKonbiniPayment(ctx context.Context, req *WebhookEventPaymentKonbini) (r ReceiveWebhookOfKonbiniPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -396,7 +396,7 @@ func (UnimplementedHandler) ReceiveWebhookOfKonbiniPayment(ctx context.Context, 
 // *`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-paypay-payment
-func (UnimplementedHandler) ReceiveWebhookOfPayPayPayment(ctx context.Context, req OptWebhookEventPaymentPayPay) (r ReceiveWebhookOfPayPayPaymentRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfPayPayPayment(ctx context.Context, req *WebhookEventPaymentPayPay) (r ReceiveWebhookOfPayPayPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -406,7 +406,7 @@ func (UnimplementedHandler) ReceiveWebhookOfPayPayPayment(ctx context.Context, r
 // regist`）で通知されるリクエストのリクエストボディの仕様です。.
 //
 // POST /your-endpoint-on-card-payment-bulk-regist
-func (UnimplementedHandler) ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, req OptWebhookEventPaymentBulkRegistCard) (r ReceiveWebhookOfRegisteringCardPaymentBulkRes, _ error) {
+func (UnimplementedHandler) ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, req *WebhookEventPaymentBulkRegistCard) (r ReceiveWebhookOfRegisteringCardPaymentBulkRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -415,7 +415,7 @@ func (UnimplementedHandler) ReceiveWebhookOfRegisteringCardPaymentBulk(ctx conte
 // `id`で指定したテナントショップの本番環境の利用申請を行います。このAPIを呼び出すまでにテナント本番環境申請情報 更新APIで申請情報を用意しておく必要があります。.
 //
 // POST /v1/contracts/examinations
-func (UnimplementedHandler) RequestProductionEnvironment(ctx context.Context, req OptPOSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (r RequestProductionEnvironmentRes, _ error) {
+func (UnimplementedHandler) RequestProductionEnvironment(ctx context.Context, req *POSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (r RequestProductionEnvironmentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -424,7 +424,7 @@ func (UnimplementedHandler) RequestProductionEnvironment(ctx context.Context, re
 // `id`で指定したテナントショップの決済手段の追加申請を行います。.
 //
 // POST /v1/contracts-examinations-tenants-{id}-providers-reserve.yml
-func (UnimplementedHandler) ReserveProvider(ctx context.Context, req OptPOSTProviderReserveRequestMultipart, params ReserveProviderParams) (r ReserveProviderRes, _ error) {
+func (UnimplementedHandler) ReserveProvider(ctx context.Context, req *POSTProviderReserveRequestMultipart, params ReserveProviderParams) (r ReserveProviderRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -711,7 +711,7 @@ func (UnimplementedHandler) RetrieveWebhookSettingList(ctx context.Context, para
 // IDで指定した顧客情報を更新します。.
 //
 // PUT /v1/customers/{id}
-func (UnimplementedHandler) UpdateCustomer(ctx context.Context, req OptCustomerUpdatingRequest, params UpdateCustomerParams) (r UpdateCustomerRes, _ error) {
+func (UnimplementedHandler) UpdateCustomer(ctx context.Context, req *CustomerUpdatingRequest, params UpdateCustomerParams) (r UpdateCustomerRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -720,7 +720,7 @@ func (UnimplementedHandler) UpdateCustomer(ctx context.Context, req OptCustomerU
 // `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを更新します。.
 //
 // PUT /v1/customers/{customer_id}/cards/{id}
-func (UnimplementedHandler) UpdateCustomerCard(ctx context.Context, req OptCustomerCardUpdatingRequest, params UpdateCustomerCardParams) (r UpdateCustomerCardRes, _ error) {
+func (UnimplementedHandler) UpdateCustomerCard(ctx context.Context, req *CustomerCardUpdatingRequest, params UpdateCustomerCardParams) (r UpdateCustomerCardRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -731,7 +731,7 @@ func (UnimplementedHandler) UpdateCustomerCard(ctx context.Context, req OptCusto
 // 1`のとき）、プランは更新できません。.
 //
 // PUT /v1/plans/{id}
-func (UnimplementedHandler) UpdatePlan(ctx context.Context, req OptPlanUpdatingRequest, params UpdatePlanParams) (r UpdatePlanRes, _ error) {
+func (UnimplementedHandler) UpdatePlan(ctx context.Context, req *PlanUpdatingRequest, params UpdatePlanParams) (r UpdatePlanRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -740,7 +740,7 @@ func (UnimplementedHandler) UpdatePlan(ctx context.Context, req OptPlanUpdatingR
 // `examination_master_id`で指定した決済手段に関してプラットフォーム利用料を更新します。.
 //
 // PUT /v1/platforms/{id}
-func (UnimplementedHandler) UpdatePlatformShop(ctx context.Context, req OptPlatformShopUpdatingRequest, params UpdatePlatformShopParams) (r UpdatePlatformShopRes, _ error) {
+func (UnimplementedHandler) UpdatePlatformShop(ctx context.Context, req *PlatformShopUpdatingRequest, params UpdatePlatformShopParams) (r UpdatePlatformShopRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -751,7 +751,7 @@ func (UnimplementedHandler) UpdatePlatformShop(ctx context.Context, req OptPlatf
 // {{現在時刻}}`のとき）、サブスクリプションは更新できません。.
 //
 // PUT /v1/subscriptions/{id}
-func (UnimplementedHandler) UpdateSubscription(ctx context.Context, req OptSubscriptionUpdatingRequest, params UpdateSubscriptionParams) (r UpdateSubscriptionRes, _ error) {
+func (UnimplementedHandler) UpdateSubscription(ctx context.Context, req *SubscriptionUpdatingRequest, params UpdateSubscriptionParams) (r UpdateSubscriptionRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -764,7 +764,7 @@ func (UnimplementedHandler) UpdateSubscription(ctx context.Context, req OptSubsc
 // Deprecated: schema marks this operation as deprecated.
 //
 // PUT /v1/contracts/examinations/tenants/{id}
-func (UnimplementedHandler) UpdateTenantExaminationInfo(ctx context.Context, req OptExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (r UpdateTenantExaminationInfoRes, _ error) {
+func (UnimplementedHandler) UpdateTenantExaminationInfo(ctx context.Context, req *ExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (r UpdateTenantExaminationInfoRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -773,7 +773,7 @@ func (UnimplementedHandler) UpdateTenantExaminationInfo(ctx context.Context, req
 // `id`で指定したテナントショップの本番環境申請情報を更新します。.
 //
 // PUT /v1/contracts/examinations_v2/tenants/{id}
-func (UnimplementedHandler) UpdateTenantExaminationInfoV2(ctx context.Context, req OptExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (r UpdateTenantExaminationInfoV2Res, _ error) {
+func (UnimplementedHandler) UpdateTenantExaminationInfoV2(ctx context.Context, req *ExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (r UpdateTenantExaminationInfoV2Res, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -782,7 +782,7 @@ func (UnimplementedHandler) UpdateTenantExaminationInfoV2(ctx context.Context, r
 // `examination_master_id`で指定した決済手段におけるプラットフォーム利用料などの設定の変更を`id`で指定したテナントに対して実行します。.
 //
 // PUT /v1/tenants/{id}
-func (UnimplementedHandler) UpdateTenantShop(ctx context.Context, req OptTenantShopUpdatingRequest, params UpdateTenantShopParams) (r UpdateTenantShopRes, _ error) {
+func (UnimplementedHandler) UpdateTenantShop(ctx context.Context, req *TenantShopUpdatingRequest, params UpdateTenantShopParams) (r UpdateTenantShopRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -791,7 +791,7 @@ func (UnimplementedHandler) UpdateTenantShop(ctx context.Context, req OptTenantS
 // IDで指定したWebhook設定を更新します。.
 //
 // PUT /v1/webhook_settings/{id}
-func (UnimplementedHandler) UpdateWebhookSetting(ctx context.Context, req OptWebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (r UpdateWebhookSettingRes, _ error) {
+func (UnimplementedHandler) UpdateWebhookSetting(ctx context.Context, req *WebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (r UpdateWebhookSettingRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -800,6 +800,6 @@ func (UnimplementedHandler) UpdateWebhookSetting(ctx context.Context, req OptWeb
 // `id`で指定したテナントショップの審査に必要なファイルのアップロードを行います。.
 //
 // POST /v1/contracts/examinations/tenants/{id}/files
-func (UnimplementedHandler) UploadExaminationFile(ctx context.Context, req OptExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (r UploadExaminationFileRes, _ error) {
+func (UnimplementedHandler) UploadExaminationFile(ctx context.Context, req *ExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (r UploadExaminationFileRes, _ error) {
 	return r, ht.ErrNotImplemented
 }

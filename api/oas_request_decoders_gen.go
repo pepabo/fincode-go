@@ -19,7 +19,7 @@ import (
 )
 
 func (s *Server) decodeAuthorizePaymentRequest(r *http.Request) (
-	req OptAuthorizePaymentReq,
+	req *AuthorizePaymentReq,
 	close func() error,
 	rerr error,
 ) {
@@ -38,9 +38,6 @@ func (s *Server) decodeAuthorizePaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -48,7 +45,7 @@ func (s *Server) decodeAuthorizePaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -56,14 +53,13 @@ func (s *Server) decodeAuthorizePaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptAuthorizePaymentReq
+		var request AuthorizePaymentReq
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -80,28 +76,21 @@ func (s *Server) decodeAuthorizePaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCapturePaymentRequest(r *http.Request) (
-	req OptCapturePaymentReq,
+	req CapturePaymentReq,
 	close func() error,
 	rerr error,
 ) {
@@ -120,9 +109,6 @@ func (s *Server) decodeCapturePaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -130,7 +116,7 @@ func (s *Server) decodeCapturePaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -138,14 +124,13 @@ func (s *Server) decodeCapturePaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptCapturePaymentReq
+		var request CapturePaymentReq
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -162,15 +147,8 @@ func (s *Server) decodeCapturePaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
@@ -183,7 +161,7 @@ func (s *Server) decodeCapturePaymentRequest(r *http.Request) (
 }
 
 func (s *Server) decodeChangeAmountOfPaymentRequest(r *http.Request) (
-	req OptChangeAmountOfPaymentReq,
+	req ChangeAmountOfPaymentReq,
 	close func() error,
 	rerr error,
 ) {
@@ -202,9 +180,6 @@ func (s *Server) decodeChangeAmountOfPaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -212,7 +187,7 @@ func (s *Server) decodeChangeAmountOfPaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -220,14 +195,13 @@ func (s *Server) decodeChangeAmountOfPaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptChangeAmountOfPaymentReq
+		var request ChangeAmountOfPaymentReq
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -244,15 +218,8 @@ func (s *Server) decodeChangeAmountOfPaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
@@ -265,7 +232,7 @@ func (s *Server) decodeChangeAmountOfPaymentRequest(r *http.Request) (
 }
 
 func (s *Server) decodeCreateCardRegistrationSessionRequest(r *http.Request) (
-	req OptCardRegistrationSessionCreatingRequest,
+	req *CardRegistrationSessionCreatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -284,9 +251,6 @@ func (s *Server) decodeCreateCardRegistrationSessionRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -294,7 +258,7 @@ func (s *Server) decodeCreateCardRegistrationSessionRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -302,14 +266,13 @@ func (s *Server) decodeCreateCardRegistrationSessionRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptCardRegistrationSessionCreatingRequest
+		var request CardRegistrationSessionCreatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -326,28 +289,21 @@ func (s *Server) decodeCreateCardRegistrationSessionRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreateCustomerRequest(r *http.Request) (
-	req OptCustomerCreatingRequest,
+	req *CustomerCreatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -366,9 +322,6 @@ func (s *Server) decodeCreateCustomerRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -376,7 +329,7 @@ func (s *Server) decodeCreateCustomerRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -384,14 +337,13 @@ func (s *Server) decodeCreateCustomerRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptCustomerCreatingRequest
+		var request CustomerCreatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -408,28 +360,21 @@ func (s *Server) decodeCreateCustomerRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreateCustomerCardRequest(r *http.Request) (
-	req OptCustomerCardCreatingRequest,
+	req *CustomerCardCreatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -448,9 +393,6 @@ func (s *Server) decodeCreateCustomerCardRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -458,7 +400,7 @@ func (s *Server) decodeCreateCustomerCardRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -466,14 +408,13 @@ func (s *Server) decodeCreateCustomerCardRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptCustomerCardCreatingRequest
+		var request CustomerCardCreatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -490,28 +431,21 @@ func (s *Server) decodeCreateCustomerCardRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreateCustomerPaymentMethodRequest(r *http.Request) (
-	req OptCustomerPaymentMethodCreatingRequest,
+	req *CustomerPaymentMethodCreatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -530,9 +464,6 @@ func (s *Server) decodeCreateCustomerPaymentMethodRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -540,7 +471,7 @@ func (s *Server) decodeCreateCustomerPaymentMethodRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -548,14 +479,13 @@ func (s *Server) decodeCreateCustomerPaymentMethodRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptCustomerPaymentMethodCreatingRequest
+		var request CustomerPaymentMethodCreatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -572,28 +502,21 @@ func (s *Server) decodeCreateCustomerPaymentMethodRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreatePaymentRequest(r *http.Request) (
-	req OptCreatePaymentReq,
+	req CreatePaymentReq,
 	close func() error,
 	rerr error,
 ) {
@@ -612,9 +535,6 @@ func (s *Server) decodeCreatePaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -622,7 +542,7 @@ func (s *Server) decodeCreatePaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -630,14 +550,13 @@ func (s *Server) decodeCreatePaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptCreatePaymentReq
+		var request CreatePaymentReq
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -654,15 +573,8 @@ func (s *Server) decodeCreatePaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
@@ -675,7 +587,7 @@ func (s *Server) decodeCreatePaymentRequest(r *http.Request) (
 }
 
 func (s *Server) decodeCreatePaymentBulkRequest(r *http.Request) (
-	req OptPaymentBulkCreatingRequestMultipart,
+	req *PaymentBulkCreatingRequestMultipart,
 	close func() error,
 	rerr error,
 ) {
@@ -694,9 +606,6 @@ func (s *Server) decodeCreatePaymentBulkRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -704,7 +613,7 @@ func (s *Server) decodeCreatePaymentBulkRequest(r *http.Request) (
 	switch {
 	case ct == "multipart/form-data":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		if err := r.ParseMultipartForm(s.cfg.MaxMultipartMemory); err != nil {
 			return req, close, errors.Wrap(err, "parse multipart form")
@@ -718,50 +627,43 @@ func (s *Server) decodeCreatePaymentBulkRequest(r *http.Request) (
 		form := url.Values(r.MultipartForm.Value)
 		_ = form
 
-		var request OptPaymentBulkCreatingRequestMultipart
+		var request PaymentBulkCreatingRequestMultipart
+		q := uri.NewQueryDecoder(form)
 		{
-			var optForm PaymentBulkCreatingRequestMultipart
-			q := uri.NewQueryDecoder(form)
-			{
-				cfg := uri.QueryParameterDecodingConfig{
-					Name:    "file",
-					Style:   uri.QueryStyleForm,
-					Explode: true,
-				}
-				if err := q.HasParam(cfg); err == nil {
-					if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-						val, err := d.DecodeValue()
-						if err != nil {
-							return err
-						}
-						if err := func(d *jx.Decoder) error {
-							optForm.File.Reset()
-							if err := optForm.File.Decode(d); err != nil {
-								return err
-							}
-							return nil
-						}(jx.DecodeStr(val)); err != nil {
+			cfg := uri.QueryParameterDecodingConfig{
+				Name:    "file",
+				Style:   uri.QueryStyleForm,
+				Explode: true,
+			}
+			if err := q.HasParam(cfg); err == nil {
+				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+					if err := func(d *jx.Decoder) error {
+						request.File.Reset()
+						if err := request.File.Decode(d); err != nil {
 							return err
 						}
 						return nil
-					}); err != nil {
-						return req, close, errors.Wrap(err, "decode \"file\"")
+					}(jx.DecodeStr(val)); err != nil {
+						return err
 					}
+					return nil
+				}); err != nil {
+					return req, close, errors.Wrap(err, "decode \"file\"")
 				}
 			}
-			request = OptPaymentBulkCreatingRequestMultipart{
-				Value: optForm,
-				Set:   true,
-			}
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreatePaymentSessionRequest(r *http.Request) (
-	req OptPaymentSessionCreatingRequest,
+	req *PaymentSessionCreatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -780,9 +682,6 @@ func (s *Server) decodeCreatePaymentSessionRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -790,7 +689,7 @@ func (s *Server) decodeCreatePaymentSessionRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -798,14 +697,13 @@ func (s *Server) decodeCreatePaymentSessionRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptPaymentSessionCreatingRequest
+		var request PaymentSessionCreatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -822,28 +720,21 @@ func (s *Server) decodeCreatePaymentSessionRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreatePlanRequest(r *http.Request) (
-	req OptPlanCreatingRequest,
+	req *PlanCreatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -862,9 +753,6 @@ func (s *Server) decodeCreatePlanRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -872,7 +760,7 @@ func (s *Server) decodeCreatePlanRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -880,14 +768,13 @@ func (s *Server) decodeCreatePlanRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptPlanCreatingRequest
+		var request PlanCreatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -904,28 +791,21 @@ func (s *Server) decodeCreatePlanRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreateSubscriptionRequest(r *http.Request) (
-	req OptSubscriptionCreatingRequest,
+	req *SubscriptionCreatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -944,9 +824,6 @@ func (s *Server) decodeCreateSubscriptionRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -954,7 +831,7 @@ func (s *Server) decodeCreateSubscriptionRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -962,14 +839,13 @@ func (s *Server) decodeCreateSubscriptionRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptSubscriptionCreatingRequest
+		var request SubscriptionCreatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -986,28 +862,21 @@ func (s *Server) decodeCreateSubscriptionRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreateTenantWithExistingUserRequest(r *http.Request) (
-	req OptPOSTJoinTenantsRequest,
+	req *POSTJoinTenantsRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -1026,9 +895,6 @@ func (s *Server) decodeCreateTenantWithExistingUserRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1036,7 +902,7 @@ func (s *Server) decodeCreateTenantWithExistingUserRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1044,14 +910,13 @@ func (s *Server) decodeCreateTenantWithExistingUserRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptPOSTJoinTenantsRequest
+		var request POSTJoinTenantsRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1068,28 +933,21 @@ func (s *Server) decodeCreateTenantWithExistingUserRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreateTenantWithNewUserRequest(r *http.Request) (
-	req OptPOSTTenantEntriesRequest,
+	req *POSTTenantEntriesRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -1108,9 +966,6 @@ func (s *Server) decodeCreateTenantWithNewUserRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1118,7 +973,7 @@ func (s *Server) decodeCreateTenantWithNewUserRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1126,14 +981,13 @@ func (s *Server) decodeCreateTenantWithNewUserRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptPOSTTenantEntriesRequest
+		var request POSTTenantEntriesRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1150,28 +1004,21 @@ func (s *Server) decodeCreateTenantWithNewUserRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeCreateWebhookSettingRequest(r *http.Request) (
-	req OptWebhookSettingCreatingRequest,
+	req *WebhookSettingCreatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -1190,9 +1037,6 @@ func (s *Server) decodeCreateWebhookSettingRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1200,7 +1044,7 @@ func (s *Server) decodeCreateWebhookSettingRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1208,14 +1052,13 @@ func (s *Server) decodeCreateWebhookSettingRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookSettingCreatingRequest
+		var request WebhookSettingCreatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1232,28 +1075,21 @@ func (s *Server) decodeCreateWebhookSettingRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeExecute3DSecureAuthenticationRequest(r *http.Request) (
-	req OptR3DSAuthorizingRequest,
+	req *R3DSAuthorizingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -1272,9 +1108,6 @@ func (s *Server) decodeExecute3DSecureAuthenticationRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1282,7 +1115,7 @@ func (s *Server) decodeExecute3DSecureAuthenticationRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1290,14 +1123,13 @@ func (s *Server) decodeExecute3DSecureAuthenticationRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptR3DSAuthorizingRequest
+		var request R3DSAuthorizingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1314,28 +1146,21 @@ func (s *Server) decodeExecute3DSecureAuthenticationRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeExecutePaymentRequest(r *http.Request) (
-	req OptExecutePaymentReq,
+	req ExecutePaymentReq,
 	close func() error,
 	rerr error,
 ) {
@@ -1354,9 +1179,6 @@ func (s *Server) decodeExecutePaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1364,7 +1186,7 @@ func (s *Server) decodeExecutePaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1372,14 +1194,13 @@ func (s *Server) decodeExecutePaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptExecutePaymentReq
+		var request ExecutePaymentReq
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1396,15 +1217,8 @@ func (s *Server) decodeExecutePaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
@@ -1417,7 +1231,7 @@ func (s *Server) decodeExecutePaymentRequest(r *http.Request) (
 }
 
 func (s *Server) decodeExecutePaymentAfter3DSecureRequest(r *http.Request) (
-	req OptExecutePaymentAfter3DSecureReq,
+	req *ExecutePaymentAfter3DSecureReq,
 	close func() error,
 	rerr error,
 ) {
@@ -1436,9 +1250,6 @@ func (s *Server) decodeExecutePaymentAfter3DSecureRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1446,7 +1257,7 @@ func (s *Server) decodeExecutePaymentAfter3DSecureRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1454,14 +1265,13 @@ func (s *Server) decodeExecutePaymentAfter3DSecureRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptExecutePaymentAfter3DSecureReq
+		var request ExecutePaymentAfter3DSecureReq
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1478,28 +1288,21 @@ func (s *Server) decodeExecutePaymentAfter3DSecureRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeGenerateBarcodeOfPaymentRequest(r *http.Request) (
-	req OptGenerateBarcodeOfPaymentReq,
+	req *GenerateBarcodeOfPaymentReq,
 	close func() error,
 	rerr error,
 ) {
@@ -1518,9 +1321,6 @@ func (s *Server) decodeGenerateBarcodeOfPaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1528,7 +1328,7 @@ func (s *Server) decodeGenerateBarcodeOfPaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1536,14 +1336,13 @@ func (s *Server) decodeGenerateBarcodeOfPaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptGenerateBarcodeOfPaymentReq
+		var request GenerateBarcodeOfPaymentReq
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1560,28 +1359,21 @@ func (s *Server) decodeGenerateBarcodeOfPaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfApplePayPaymentRequest(r *http.Request) (
-	req OptWebhookEventPaymentApplePay,
+	req *WebhookEventPaymentApplePay,
 	close func() error,
 	rerr error,
 ) {
@@ -1600,9 +1392,6 @@ func (s *Server) decodeReceiveWebhookOfApplePayPaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1610,7 +1399,7 @@ func (s *Server) decodeReceiveWebhookOfApplePayPaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1618,14 +1407,13 @@ func (s *Server) decodeReceiveWebhookOfApplePayPaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventPaymentApplePay
+		var request WebhookEventPaymentApplePay
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1642,28 +1430,21 @@ func (s *Server) decodeReceiveWebhookOfApplePayPaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfCardRequest(r *http.Request) (
-	req OptWebhookEventCard,
+	req *WebhookEventCard,
 	close func() error,
 	rerr error,
 ) {
@@ -1682,9 +1463,6 @@ func (s *Server) decodeReceiveWebhookOfCardRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1692,7 +1470,7 @@ func (s *Server) decodeReceiveWebhookOfCardRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1700,14 +1478,13 @@ func (s *Server) decodeReceiveWebhookOfCardRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventCard
+		var request WebhookEventCard
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1724,28 +1501,21 @@ func (s *Server) decodeReceiveWebhookOfCardRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfCardPaymentRequest(r *http.Request) (
-	req OptWebhookEventPaymentCard,
+	req *WebhookEventPaymentCard,
 	close func() error,
 	rerr error,
 ) {
@@ -1764,9 +1534,6 @@ func (s *Server) decodeReceiveWebhookOfCardPaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1774,7 +1541,7 @@ func (s *Server) decodeReceiveWebhookOfCardPaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1782,14 +1549,13 @@ func (s *Server) decodeReceiveWebhookOfCardPaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventPaymentCard
+		var request WebhookEventPaymentCard
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1806,28 +1572,21 @@ func (s *Server) decodeReceiveWebhookOfCardPaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfCardPaymentBulkBatchRequest(r *http.Request) (
-	req OptWebhookEventPaymentBulkBatchCard,
+	req *WebhookEventPaymentBulkBatchCard,
 	close func() error,
 	rerr error,
 ) {
@@ -1846,9 +1605,6 @@ func (s *Server) decodeReceiveWebhookOfCardPaymentBulkBatchRequest(r *http.Reque
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1856,7 +1612,7 @@ func (s *Server) decodeReceiveWebhookOfCardPaymentBulkBatchRequest(r *http.Reque
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1864,14 +1620,13 @@ func (s *Server) decodeReceiveWebhookOfCardPaymentBulkBatchRequest(r *http.Reque
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventPaymentBulkBatchCard
+		var request WebhookEventPaymentBulkBatchCard
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1888,28 +1643,21 @@ func (s *Server) decodeReceiveWebhookOfCardPaymentBulkBatchRequest(r *http.Reque
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfCardRecurringBatchRequest(r *http.Request) (
-	req OptWebhookEventRecurringBatchCard,
+	req *WebhookEventRecurringBatchCard,
 	close func() error,
 	rerr error,
 ) {
@@ -1928,9 +1676,6 @@ func (s *Server) decodeReceiveWebhookOfCardRecurringBatchRequest(r *http.Request
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -1938,7 +1683,7 @@ func (s *Server) decodeReceiveWebhookOfCardRecurringBatchRequest(r *http.Request
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -1946,14 +1691,13 @@ func (s *Server) decodeReceiveWebhookOfCardRecurringBatchRequest(r *http.Request
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventRecurringBatchCard
+		var request WebhookEventRecurringBatchCard
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -1970,28 +1714,21 @@ func (s *Server) decodeReceiveWebhookOfCardRecurringBatchRequest(r *http.Request
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfCardSubscriptionRequest(r *http.Request) (
-	req OptWebhookEventSubscriptionCard,
+	req *WebhookEventSubscriptionCard,
 	close func() error,
 	rerr error,
 ) {
@@ -2010,9 +1747,6 @@ func (s *Server) decodeReceiveWebhookOfCardSubscriptionRequest(r *http.Request) 
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2020,7 +1754,7 @@ func (s *Server) decodeReceiveWebhookOfCardSubscriptionRequest(r *http.Request) 
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2028,14 +1762,13 @@ func (s *Server) decodeReceiveWebhookOfCardSubscriptionRequest(r *http.Request) 
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventSubscriptionCard
+		var request WebhookEventSubscriptionCard
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2052,28 +1785,21 @@ func (s *Server) decodeReceiveWebhookOfCardSubscriptionRequest(r *http.Request) 
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfContractRequest(r *http.Request) (
-	req OptWebhookEventContract,
+	req *WebhookEventContract,
 	close func() error,
 	rerr error,
 ) {
@@ -2092,9 +1818,6 @@ func (s *Server) decodeReceiveWebhookOfContractRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2102,7 +1825,7 @@ func (s *Server) decodeReceiveWebhookOfContractRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2110,14 +1833,13 @@ func (s *Server) decodeReceiveWebhookOfContractRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventContract
+		var request WebhookEventContract
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2134,28 +1856,21 @@ func (s *Server) decodeReceiveWebhookOfContractRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfCustomerPaymentMethodRequest(r *http.Request) (
-	req OptWebhookEventCustomerPaymentMethod,
+	req *WebhookEventCustomerPaymentMethod,
 	close func() error,
 	rerr error,
 ) {
@@ -2174,9 +1889,6 @@ func (s *Server) decodeReceiveWebhookOfCustomerPaymentMethodRequest(r *http.Requ
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2184,7 +1896,7 @@ func (s *Server) decodeReceiveWebhookOfCustomerPaymentMethodRequest(r *http.Requ
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2192,14 +1904,13 @@ func (s *Server) decodeReceiveWebhookOfCustomerPaymentMethodRequest(r *http.Requ
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventCustomerPaymentMethod
+		var request WebhookEventCustomerPaymentMethod
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2216,28 +1927,21 @@ func (s *Server) decodeReceiveWebhookOfCustomerPaymentMethodRequest(r *http.Requ
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfDirectDebitPaymentRequest(r *http.Request) (
-	req OptWebhookEventPaymentDirectDebit,
+	req *WebhookEventPaymentDirectDebit,
 	close func() error,
 	rerr error,
 ) {
@@ -2256,9 +1960,6 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitPaymentRequest(r *http.Request
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2266,7 +1967,7 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitPaymentRequest(r *http.Request
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2274,14 +1975,13 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitPaymentRequest(r *http.Request
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventPaymentDirectDebit
+		var request WebhookEventPaymentDirectDebit
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2298,28 +1998,21 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitPaymentRequest(r *http.Request
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfDirectDebitRecurringBatchRequest(r *http.Request) (
-	req OptWebhookEventRecurringBatchDirectDebit,
+	req *WebhookEventRecurringBatchDirectDebit,
 	close func() error,
 	rerr error,
 ) {
@@ -2338,9 +2031,6 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitRecurringBatchRequest(r *http.
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2348,7 +2038,7 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitRecurringBatchRequest(r *http.
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2356,14 +2046,13 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitRecurringBatchRequest(r *http.
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventRecurringBatchDirectDebit
+		var request WebhookEventRecurringBatchDirectDebit
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2380,28 +2069,21 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitRecurringBatchRequest(r *http.
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfDirectDebitSubscriptionRequest(r *http.Request) (
-	req OptWebhookEventSubscriptionDirectDebit,
+	req *WebhookEventSubscriptionDirectDebit,
 	close func() error,
 	rerr error,
 ) {
@@ -2420,9 +2102,6 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitSubscriptionRequest(r *http.Re
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2430,7 +2109,7 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitSubscriptionRequest(r *http.Re
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2438,14 +2117,13 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitSubscriptionRequest(r *http.Re
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventSubscriptionDirectDebit
+		var request WebhookEventSubscriptionDirectDebit
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2462,28 +2140,21 @@ func (s *Server) decodeReceiveWebhookOfDirectDebitSubscriptionRequest(r *http.Re
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfKonbiniPaymentRequest(r *http.Request) (
-	req OptWebhookEventPaymentKonbini,
+	req *WebhookEventPaymentKonbini,
 	close func() error,
 	rerr error,
 ) {
@@ -2502,9 +2173,6 @@ func (s *Server) decodeReceiveWebhookOfKonbiniPaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2512,7 +2180,7 @@ func (s *Server) decodeReceiveWebhookOfKonbiniPaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2520,14 +2188,13 @@ func (s *Server) decodeReceiveWebhookOfKonbiniPaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventPaymentKonbini
+		var request WebhookEventPaymentKonbini
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2544,28 +2211,21 @@ func (s *Server) decodeReceiveWebhookOfKonbiniPaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfPayPayPaymentRequest(r *http.Request) (
-	req OptWebhookEventPaymentPayPay,
+	req *WebhookEventPaymentPayPay,
 	close func() error,
 	rerr error,
 ) {
@@ -2584,9 +2244,6 @@ func (s *Server) decodeReceiveWebhookOfPayPayPaymentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2594,7 +2251,7 @@ func (s *Server) decodeReceiveWebhookOfPayPayPaymentRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2602,14 +2259,13 @@ func (s *Server) decodeReceiveWebhookOfPayPayPaymentRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventPaymentPayPay
+		var request WebhookEventPaymentPayPay
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2626,28 +2282,21 @@ func (s *Server) decodeReceiveWebhookOfPayPayPaymentRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReceiveWebhookOfRegisteringCardPaymentBulkRequest(r *http.Request) (
-	req OptWebhookEventPaymentBulkRegistCard,
+	req *WebhookEventPaymentBulkRegistCard,
 	close func() error,
 	rerr error,
 ) {
@@ -2666,9 +2315,6 @@ func (s *Server) decodeReceiveWebhookOfRegisteringCardPaymentBulkRequest(r *http
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2676,7 +2322,7 @@ func (s *Server) decodeReceiveWebhookOfRegisteringCardPaymentBulkRequest(r *http
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -2684,14 +2330,13 @@ func (s *Server) decodeReceiveWebhookOfRegisteringCardPaymentBulkRequest(r *http
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookEventPaymentBulkRegistCard
+		var request WebhookEventPaymentBulkRegistCard
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -2708,28 +2353,21 @@ func (s *Server) decodeReceiveWebhookOfRegisteringCardPaymentBulkRequest(r *http
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeRequestProductionEnvironmentRequest(r *http.Request) (
-	req OptPOSTContractsExaminationsRequestMultipart,
+	req *POSTContractsExaminationsRequestMultipart,
 	close func() error,
 	rerr error,
 ) {
@@ -2748,9 +2386,6 @@ func (s *Server) decodeRequestProductionEnvironmentRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2758,7 +2393,7 @@ func (s *Server) decodeRequestProductionEnvironmentRequest(r *http.Request) (
 	switch {
 	case ct == "multipart/form-data":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		if err := r.ParseMultipartForm(s.cfg.MaxMultipartMemory); err != nil {
 			return req, close, errors.Wrap(err, "parse multipart form")
@@ -2772,115 +2407,108 @@ func (s *Server) decodeRequestProductionEnvironmentRequest(r *http.Request) (
 		form := url.Values(r.MultipartForm.Value)
 		_ = form
 
-		var request OptPOSTContractsExaminationsRequestMultipart
+		var request POSTContractsExaminationsRequestMultipart
+		q := uri.NewQueryDecoder(form)
 		{
-			var optForm POSTContractsExaminationsRequestMultipart
-			q := uri.NewQueryDecoder(form)
-			{
-				cfg := uri.QueryParameterDecodingConfig{
-					Name:    "shop_id",
-					Style:   uri.QueryStyleForm,
-					Explode: true,
-				}
-				if err := q.HasParam(cfg); err == nil {
-					if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-						val, err := d.DecodeValue()
-						if err != nil {
+			cfg := uri.QueryParameterDecodingConfig{
+				Name:    "shop_id",
+				Style:   uri.QueryStyleForm,
+				Explode: true,
+			}
+			if err := q.HasParam(cfg); err == nil {
+				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+					if err := func(d *jx.Decoder) error {
+						request.ShopID.Reset()
+						if err := request.ShopID.Decode(d); err != nil {
 							return err
 						}
-						if err := func(d *jx.Decoder) error {
-							optForm.ShopID.Reset()
-							if err := optForm.ShopID.Decode(d); err != nil {
-								return err
+						return nil
+					}(jx.DecodeStr(val)); err != nil {
+						return err
+					}
+					return nil
+				}); err != nil {
+					return req, close, errors.Wrap(err, "decode \"shop_id\"")
+				}
+				if err := func() error {
+					if value, ok := request.ShopID.Get(); ok {
+						if err := func() error {
+							if err := (validate.String{
+								MinLength:    13,
+								MinLengthSet: true,
+								MaxLength:    13,
+								MaxLengthSet: true,
+								Email:        false,
+								Hostname:     false,
+								Regex:        nil,
+							}).Validate(string(value)); err != nil {
+								return errors.Wrap(err, "string")
 							}
 							return nil
-						}(jx.DecodeStr(val)); err != nil {
+						}(); err != nil {
 							return err
 						}
-						return nil
-					}); err != nil {
-						return req, close, errors.Wrap(err, "decode \"shop_id\"")
 					}
-					if err := func() error {
-						if value, ok := optForm.ShopID.Get(); ok {
-							if err := func() error {
-								if err := (validate.String{
-									MinLength:    13,
-									MinLengthSet: true,
-									MaxLength:    13,
-									MaxLengthSet: true,
-									Email:        false,
-									Hostname:     false,
-									Regex:        nil,
-								}).Validate(string(value)); err != nil {
-									return errors.Wrap(err, "string")
-								}
-								return nil
-							}(); err != nil {
-								return err
-							}
-						}
-						return nil
-					}(); err != nil {
-						return req, close, errors.Wrap(err, "validate")
-					}
+					return nil
+				}(); err != nil {
+					return req, close, errors.Wrap(err, "validate")
 				}
-			}
-			{
-				cfg := uri.QueryParameterDecodingConfig{
-					Name:    "enable_immediate_use",
-					Style:   uri.QueryStyleForm,
-					Explode: true,
-				}
-				if err := q.HasParam(cfg); err == nil {
-					if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-						val, err := d.DecodeValue()
-						if err != nil {
-							return err
-						}
-						if err := func(d *jx.Decoder) error {
-							optForm.EnableImmediateUse.Reset()
-							if err := optForm.EnableImmediateUse.Decode(d); err != nil {
-								return err
-							}
-							return nil
-						}(jx.DecodeStr(val)); err != nil {
-							return err
-						}
-						return nil
-					}); err != nil {
-						return req, close, errors.Wrap(err, "decode \"enable_immediate_use\"")
-					}
-					if err := func() error {
-						if value, ok := optForm.EnableImmediateUse.Get(); ok {
-							if err := func() error {
-								if err := value.Validate(); err != nil {
-									return err
-								}
-								return nil
-							}(); err != nil {
-								return err
-							}
-						}
-						return nil
-					}(); err != nil {
-						return req, close, errors.Wrap(err, "validate")
-					}
-				}
-			}
-			request = OptPOSTContractsExaminationsRequestMultipart{
-				Value: optForm,
-				Set:   true,
 			}
 		}
-		return request, close, nil
+		{
+			cfg := uri.QueryParameterDecodingConfig{
+				Name:    "enable_immediate_use",
+				Style:   uri.QueryStyleForm,
+				Explode: true,
+			}
+			if err := q.HasParam(cfg); err == nil {
+				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+					if err := func(d *jx.Decoder) error {
+						request.EnableImmediateUse.Reset()
+						if err := request.EnableImmediateUse.Decode(d); err != nil {
+							return err
+						}
+						return nil
+					}(jx.DecodeStr(val)); err != nil {
+						return err
+					}
+					return nil
+				}); err != nil {
+					return req, close, errors.Wrap(err, "decode \"enable_immediate_use\"")
+				}
+				if err := func() error {
+					if value, ok := request.EnableImmediateUse.Get(); ok {
+						if err := func() error {
+							if err := value.Validate(); err != nil {
+								return err
+							}
+							return nil
+						}(); err != nil {
+							return err
+						}
+					}
+					return nil
+				}(); err != nil {
+					return req, close, errors.Wrap(err, "validate")
+				}
+			}
+		}
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeReserveProviderRequest(r *http.Request) (
-	req OptPOSTProviderReserveRequestMultipart,
+	req *POSTProviderReserveRequestMultipart,
 	close func() error,
 	rerr error,
 ) {
@@ -2899,9 +2527,6 @@ func (s *Server) decodeReserveProviderRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -2909,7 +2534,7 @@ func (s *Server) decodeReserveProviderRequest(r *http.Request) (
 	switch {
 	case ct == "multipart/form-data":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		if err := r.ParseMultipartForm(s.cfg.MaxMultipartMemory); err != nil {
 			return req, close, errors.Wrap(err, "parse multipart form")
@@ -2923,84 +2548,77 @@ func (s *Server) decodeReserveProviderRequest(r *http.Request) (
 		form := url.Values(r.MultipartForm.Value)
 		_ = form
 
-		var request OptPOSTProviderReserveRequestMultipart
+		var request POSTProviderReserveRequestMultipart
+		q := uri.NewQueryDecoder(form)
 		{
-			var optForm POSTProviderReserveRequestMultipart
-			q := uri.NewQueryDecoder(form)
-			{
-				cfg := uri.QueryParameterDecodingConfig{
-					Name:    "provider",
-					Style:   uri.QueryStyleForm,
-					Explode: true,
-				}
-				if err := q.HasParam(cfg); err == nil {
-					if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-						val, err := d.DecodeValue()
-						if err != nil {
+			cfg := uri.QueryParameterDecodingConfig{
+				Name:    "provider",
+				Style:   uri.QueryStyleForm,
+				Explode: true,
+			}
+			if err := q.HasParam(cfg); err == nil {
+				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+					if err := func(d *jx.Decoder) error {
+						request.Provider = make([]POSTProviderReserveRequestMultipartProviderItem, 0)
+						if err := d.Arr(func(d *jx.Decoder) error {
+							var elem POSTProviderReserveRequestMultipartProviderItem
+							if err := elem.Decode(d); err != nil {
+								return err
+							}
+							request.Provider = append(request.Provider, elem)
+							return nil
+						}); err != nil {
 							return err
 						}
-						if err := func(d *jx.Decoder) error {
-							optForm.Provider = make([]POSTProviderReserveRequestMultipartProviderItem, 0)
-							if err := d.Arr(func(d *jx.Decoder) error {
-								var elem POSTProviderReserveRequestMultipartProviderItem
-								if err := elem.Decode(d); err != nil {
-									return err
-								}
-								optForm.Provider = append(optForm.Provider, elem)
-								return nil
-							}); err != nil {
+						return nil
+					}(jx.DecodeStr(val)); err != nil {
+						return err
+					}
+					return nil
+				}); err != nil {
+					return req, close, errors.Wrap(err, "decode \"provider\"")
+				}
+				if err := func() error {
+					if request.Provider == nil {
+						return errors.New("nil is invalid value")
+					}
+					var failures []validate.FieldError
+					for i, elem := range request.Provider {
+						if err := func() error {
+							if err := elem.Validate(); err != nil {
 								return err
 							}
 							return nil
-						}(jx.DecodeStr(val)); err != nil {
-							return err
+						}(); err != nil {
+							failures = append(failures, validate.FieldError{
+								Name:  fmt.Sprintf("[%d]", i),
+								Error: err,
+							})
 						}
-						return nil
-					}); err != nil {
-						return req, close, errors.Wrap(err, "decode \"provider\"")
 					}
-					if err := func() error {
-						if optForm.Provider == nil {
-							return errors.New("nil is invalid value")
-						}
-						var failures []validate.FieldError
-						for i, elem := range optForm.Provider {
-							if err := func() error {
-								if err := elem.Validate(); err != nil {
-									return err
-								}
-								return nil
-							}(); err != nil {
-								failures = append(failures, validate.FieldError{
-									Name:  fmt.Sprintf("[%d]", i),
-									Error: err,
-								})
-							}
-						}
-						if len(failures) > 0 {
-							return &validate.Error{Fields: failures}
-						}
-						return nil
-					}(); err != nil {
-						return req, close, errors.Wrap(err, "validate")
+					if len(failures) > 0 {
+						return &validate.Error{Fields: failures}
 					}
-				} else {
-					return req, close, errors.Wrap(err, "query")
+					return nil
+				}(); err != nil {
+					return req, close, errors.Wrap(err, "validate")
 				}
-			}
-			request = OptPOSTProviderReserveRequestMultipart{
-				Value: optForm,
-				Set:   true,
+			} else {
+				return req, close, errors.Wrap(err, "query")
 			}
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdateCustomerRequest(r *http.Request) (
-	req OptCustomerUpdatingRequest,
+	req *CustomerUpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3019,9 +2637,6 @@ func (s *Server) decodeUpdateCustomerRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3029,7 +2644,7 @@ func (s *Server) decodeUpdateCustomerRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3037,14 +2652,13 @@ func (s *Server) decodeUpdateCustomerRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptCustomerUpdatingRequest
+		var request CustomerUpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3061,28 +2675,21 @@ func (s *Server) decodeUpdateCustomerRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdateCustomerCardRequest(r *http.Request) (
-	req OptCustomerCardUpdatingRequest,
+	req *CustomerCardUpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3101,9 +2708,6 @@ func (s *Server) decodeUpdateCustomerCardRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3111,7 +2715,7 @@ func (s *Server) decodeUpdateCustomerCardRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3119,14 +2723,13 @@ func (s *Server) decodeUpdateCustomerCardRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptCustomerCardUpdatingRequest
+		var request CustomerCardUpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3143,28 +2746,21 @@ func (s *Server) decodeUpdateCustomerCardRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdatePlanRequest(r *http.Request) (
-	req OptPlanUpdatingRequest,
+	req *PlanUpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3183,9 +2779,6 @@ func (s *Server) decodeUpdatePlanRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3193,7 +2786,7 @@ func (s *Server) decodeUpdatePlanRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3201,14 +2794,13 @@ func (s *Server) decodeUpdatePlanRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptPlanUpdatingRequest
+		var request PlanUpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3225,28 +2817,21 @@ func (s *Server) decodeUpdatePlanRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdatePlatformShopRequest(r *http.Request) (
-	req OptPlatformShopUpdatingRequest,
+	req *PlatformShopUpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3265,9 +2850,6 @@ func (s *Server) decodeUpdatePlatformShopRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3275,7 +2857,7 @@ func (s *Server) decodeUpdatePlatformShopRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3283,14 +2865,13 @@ func (s *Server) decodeUpdatePlatformShopRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptPlatformShopUpdatingRequest
+		var request PlatformShopUpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3307,28 +2888,21 @@ func (s *Server) decodeUpdatePlatformShopRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdateSubscriptionRequest(r *http.Request) (
-	req OptSubscriptionUpdatingRequest,
+	req *SubscriptionUpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3347,9 +2921,6 @@ func (s *Server) decodeUpdateSubscriptionRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3357,7 +2928,7 @@ func (s *Server) decodeUpdateSubscriptionRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3365,14 +2936,13 @@ func (s *Server) decodeUpdateSubscriptionRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptSubscriptionUpdatingRequest
+		var request SubscriptionUpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3389,28 +2959,21 @@ func (s *Server) decodeUpdateSubscriptionRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdateTenantExaminationInfoRequest(r *http.Request) (
-	req OptExaminationInfoUpdatingRequest,
+	req *ExaminationInfoUpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3429,9 +2992,6 @@ func (s *Server) decodeUpdateTenantExaminationInfoRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3439,7 +2999,7 @@ func (s *Server) decodeUpdateTenantExaminationInfoRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3447,14 +3007,13 @@ func (s *Server) decodeUpdateTenantExaminationInfoRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptExaminationInfoUpdatingRequest
+		var request ExaminationInfoUpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3471,28 +3030,21 @@ func (s *Server) decodeUpdateTenantExaminationInfoRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdateTenantExaminationInfoV2Request(r *http.Request) (
-	req OptExaminationInfoV2UpdatingRequest,
+	req *ExaminationInfoV2UpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3511,9 +3063,6 @@ func (s *Server) decodeUpdateTenantExaminationInfoV2Request(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3521,7 +3070,7 @@ func (s *Server) decodeUpdateTenantExaminationInfoV2Request(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3529,14 +3078,13 @@ func (s *Server) decodeUpdateTenantExaminationInfoV2Request(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptExaminationInfoV2UpdatingRequest
+		var request ExaminationInfoV2UpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3553,28 +3101,21 @@ func (s *Server) decodeUpdateTenantExaminationInfoV2Request(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdateTenantShopRequest(r *http.Request) (
-	req OptTenantShopUpdatingRequest,
+	req *TenantShopUpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3593,9 +3134,6 @@ func (s *Server) decodeUpdateTenantShopRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3603,7 +3141,7 @@ func (s *Server) decodeUpdateTenantShopRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3611,14 +3149,13 @@ func (s *Server) decodeUpdateTenantShopRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptTenantShopUpdatingRequest
+		var request TenantShopUpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3635,28 +3172,21 @@ func (s *Server) decodeUpdateTenantShopRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUpdateWebhookSettingRequest(r *http.Request) (
-	req OptWebhookSettingUpdatingRequest,
+	req *WebhookSettingUpdatingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -3675,9 +3205,6 @@ func (s *Server) decodeUpdateWebhookSettingRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3685,7 +3212,7 @@ func (s *Server) decodeUpdateWebhookSettingRequest(r *http.Request) (
 	switch {
 	case ct == "application/json":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		buf, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -3693,14 +3220,13 @@ func (s *Server) decodeUpdateWebhookSettingRequest(r *http.Request) (
 		}
 
 		if len(buf) == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 
 		d := jx.DecodeBytes(buf)
 
-		var request OptWebhookSettingUpdatingRequest
+		var request WebhookSettingUpdatingRequest
 		if err := func() error {
-			request.Reset()
 			if err := request.Decode(d); err != nil {
 				return err
 			}
@@ -3717,28 +3243,21 @@ func (s *Server) decodeUpdateWebhookSettingRequest(r *http.Request) (
 			return req, close, err
 		}
 		if err := func() error {
-			if value, ok := request.Get(); ok {
-				if err := func() error {
-					if err := value.Validate(); err != nil {
-						return err
-					}
-					return nil
-				}(); err != nil {
-					return err
-				}
+			if err := request.Validate(); err != nil {
+				return err
 			}
 			return nil
 		}(); err != nil {
 			return req, close, errors.Wrap(err, "validate")
 		}
-		return request, close, nil
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
 }
 
 func (s *Server) decodeUploadExaminationFileRequest(r *http.Request) (
-	req OptExaminationFileUploadingRequestMultipart,
+	req *ExaminationFileUploadingRequestMultipart,
 	close func() error,
 	rerr error,
 ) {
@@ -3757,9 +3276,6 @@ func (s *Server) decodeUploadExaminationFileRequest(r *http.Request) (
 			rerr = multierr.Append(rerr, close())
 		}
 	}()
-	if _, ok := r.Header["Content-Type"]; !ok && r.ContentLength == 0 {
-		return req, close, nil
-	}
 	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	if err != nil {
 		return req, close, errors.Wrap(err, "parse media type")
@@ -3767,7 +3283,7 @@ func (s *Server) decodeUploadExaminationFileRequest(r *http.Request) (
 	switch {
 	case ct == "multipart/form-data":
 		if r.ContentLength == 0 {
-			return req, close, nil
+			return req, close, validate.ErrBodyRequired
 		}
 		if err := r.ParseMultipartForm(s.cfg.MaxMultipartMemory); err != nil {
 			return req, close, errors.Wrap(err, "parse multipart form")
@@ -3781,86 +3297,79 @@ func (s *Server) decodeUploadExaminationFileRequest(r *http.Request) (
 		form := url.Values(r.MultipartForm.Value)
 		_ = form
 
-		var request OptExaminationFileUploadingRequestMultipart
+		var request ExaminationFileUploadingRequestMultipart
+		q := uri.NewQueryDecoder(form)
 		{
-			var optForm ExaminationFileUploadingRequestMultipart
-			q := uri.NewQueryDecoder(form)
-			{
-				cfg := uri.QueryParameterDecodingConfig{
-					Name:    "type",
-					Style:   uri.QueryStyleForm,
-					Explode: true,
-				}
-				if err := q.HasParam(cfg); err == nil {
-					if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-						val, err := d.DecodeValue()
-						if err != nil {
+			cfg := uri.QueryParameterDecodingConfig{
+				Name:    "type",
+				Style:   uri.QueryStyleForm,
+				Explode: true,
+			}
+			if err := q.HasParam(cfg); err == nil {
+				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+					if err := func(d *jx.Decoder) error {
+						request.Type.Reset()
+						if err := request.Type.Decode(d); err != nil {
 							return err
 						}
-						if err := func(d *jx.Decoder) error {
-							optForm.Type.Reset()
-							if err := optForm.Type.Decode(d); err != nil {
+						return nil
+					}(jx.DecodeStr(val)); err != nil {
+						return err
+					}
+					return nil
+				}); err != nil {
+					return req, close, errors.Wrap(err, "decode \"type\"")
+				}
+				if err := func() error {
+					if value, ok := request.Type.Get(); ok {
+						if err := func() error {
+							if err := value.Validate(); err != nil {
 								return err
 							}
 							return nil
-						}(jx.DecodeStr(val)); err != nil {
+						}(); err != nil {
 							return err
 						}
-						return nil
-					}); err != nil {
-						return req, close, errors.Wrap(err, "decode \"type\"")
 					}
-					if err := func() error {
-						if value, ok := optForm.Type.Get(); ok {
-							if err := func() error {
-								if err := value.Validate(); err != nil {
-									return err
-								}
-								return nil
-							}(); err != nil {
-								return err
-							}
-						}
-						return nil
-					}(); err != nil {
-						return req, close, errors.Wrap(err, "validate")
-					}
+					return nil
+				}(); err != nil {
+					return req, close, errors.Wrap(err, "validate")
 				}
-			}
-			{
-				cfg := uri.QueryParameterDecodingConfig{
-					Name:    "data",
-					Style:   uri.QueryStyleForm,
-					Explode: true,
-				}
-				if err := q.HasParam(cfg); err == nil {
-					if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-						val, err := d.DecodeValue()
-						if err != nil {
-							return err
-						}
-						if err := func(d *jx.Decoder) error {
-							v, err := d.RawAppend(nil)
-							optForm.Data = jx.Raw(v)
-							if err != nil {
-								return err
-							}
-							return nil
-						}(jx.DecodeStr(val)); err != nil {
-							return err
-						}
-						return nil
-					}); err != nil {
-						return req, close, errors.Wrap(err, "decode \"data\"")
-					}
-				}
-			}
-			request = OptExaminationFileUploadingRequestMultipart{
-				Value: optForm,
-				Set:   true,
 			}
 		}
-		return request, close, nil
+		{
+			cfg := uri.QueryParameterDecodingConfig{
+				Name:    "data",
+				Style:   uri.QueryStyleForm,
+				Explode: true,
+			}
+			if err := q.HasParam(cfg); err == nil {
+				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+					if err := func(d *jx.Decoder) error {
+						v, err := d.RawAppend(nil)
+						request.Data = jx.Raw(v)
+						if err != nil {
+							return err
+						}
+						return nil
+					}(jx.DecodeStr(val)); err != nil {
+						return err
+					}
+					return nil
+				}); err != nil {
+					return req, close, errors.Wrap(err, "decode \"data\"")
+				}
+			}
+		}
+		return &request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
