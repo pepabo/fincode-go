@@ -8,54 +8,551 @@ import (
 
 // Handler handles operations described by OpenAPI v3 specification.
 type Handler interface {
-	// CustomersCustomerIDCardsIDDelete implements DELETE /customers/{customer_id}/cards/{id} operation.
+	// AuthorizePayment implements authorizePayment operation.
 	//
-	// DELETE /customers/{customer_id}/cards/{id}
-	CustomersCustomerIDCardsIDDelete(ctx context.Context, params CustomersCustomerIDCardsIDDeleteParams) (CustomersCustomerIDCardsIDDeleteRes, error)
-	// CustomersCustomerIDCardsIDGet implements GET /customers/{customer_id}/cards/{id} operation.
+	// 決済のオーソリを再度実行します。\
+	// \
+	// `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
 	//
-	// GET /customers/{customer_id}/cards/{id}
-	CustomersCustomerIDCardsIDGet(ctx context.Context, params CustomersCustomerIDCardsIDGetParams) (CustomersCustomerIDCardsIDGetRes, error)
-	// CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete implements DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+	// PUT /v1/payments/{id}/auth
+	AuthorizePayment(ctx context.Context, req OptAuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error)
+	// CapturePayment implements capturePayment operation.
 	//
-	// DELETE /customers/{customer_id}/payment_methods/{payment_method_id}
-	CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, error)
-	// CustomersCustomerIDPaymentMethodsPaymentMethodIDGet implements GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+	// `status`が仮売上（`AUTHORIZED`）またはキャンセル（`CANCELED`）である決済に対して売上確定を行います。\
+	// 成功すると、ステータスが`CAPTURED`に遷移し、その時点を集計対象とした売上入金に反映されます。.
 	//
-	// GET /customers/{customer_id}/payment_methods/{payment_method_id}
-	CustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, error)
-	// CustomersCustomerIDPaymentMethodsPost implements POST /customers/{customer_id}/payment_methods operation.
+	// PUT /v1/payments/{id}/capture
+	CapturePayment(ctx context.Context, req OptCapturePaymentReq, params CapturePaymentParams) (CapturePaymentRes, error)
+	// ChangeAmountOfPayment implements changeAmountOfPayment operation.
 	//
-	// POST /customers/{customer_id}/payment_methods
-	CustomersCustomerIDPaymentMethodsPost(ctx context.Context, req CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (CustomersCustomerIDPaymentMethodsPostRes, error)
-	// CustomersIDDelete implements DELETE /customers/{id} operation.
+	// 決済の利用金額を変更します。\
+	// 既に売上確定となっている決済は請求金額が変更され、仮売上となっている決済は確保している与信枠の金額が変更されます。.
 	//
-	// DELETE /customers/{id}
-	CustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (CustomersIDDeleteRes, error)
-	// CustomersIDGet implements GET /customers/{id} operation.
+	// PUT /v1/payments/{id}/change
+	ChangeAmountOfPayment(ctx context.Context, req OptChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (ChangeAmountOfPaymentRes, error)
+	// Confirm3DSecureAuthentication implements confirm3DSecureAuthentication operation.
 	//
-	// GET /customers/{id}
-	CustomersIDGet(ctx context.Context, params CustomersIDGetParams) (CustomersIDGetRes, error)
-	// CustomersPost implements POST /customers operation.
+	// `access_id`で指定したカード決済取引の3Dセキュア認証の結果を確定します。\
+	// \
+	// `challenge_url`上で購入者がチャレンジ認証実施後、`tds2_ret_url`に対し`event`パラメータで`AuthResultReady`イベントが通知されたとき、このAPIを呼び出します。.
 	//
-	// POST /customers
-	CustomersPost(ctx context.Context, req *CustomersPostReq) (CustomersPostRes, error)
-	// PaymentsGet implements GET /payments operation.
+	// GET /v1/secure2/{access_id}
+	Confirm3DSecureAuthentication(ctx context.Context, params Confirm3DSecureAuthenticationParams) (Confirm3DSecureAuthenticationRes, error)
+	// CreateCardRegistrationSession implements createCardRegistrationSession operation.
 	//
-	// GET /payments
-	PaymentsGet(ctx context.Context, params PaymentsGetParams) (PaymentsGetRes, error)
-	// PaymentsIDGet implements GET /payments/{id} operation.
+	// Fincodeが提供するリダイレクト型カード登録ページを発行し、そのカード登録ページへのURLをレスポンスします。.
 	//
-	// GET /payments/{id}
-	PaymentsIDGet(ctx context.Context, params PaymentsIDGetParams) (PaymentsIDGetRes, error)
-	// PaymentsIDPut implements PUT /payments/{id} operation.
+	// POST /v1/card_sessions
+	CreateCardRegistrationSession(ctx context.Context, req OptCardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (CreateCardRegistrationSessionRes, error)
+	// CreateCustomer implements createCustomer operation.
 	//
-	// PUT /payments/{id}
-	PaymentsIDPut(ctx context.Context, req PaymentsIDPutReq, params PaymentsIDPutParams) (PaymentsIDPutRes, error)
-	// PaymentsPost implements POST /payments operation.
+	// 顧客情報を登録します。.
 	//
-	// POST /payments
-	PaymentsPost(ctx context.Context, req PaymentsPostReq) (PaymentsPostRes, error)
+	// POST /v1/customers
+	CreateCustomer(ctx context.Context, req OptCustomerCreatingRequest, params CreateCustomerParams) (CreateCustomerRes, error)
+	// CreateCustomerCard implements createCustomerCard operation.
+	//
+	// `customer_id`で指定した顧客に対しカードを登録します。.
+	//
+	// POST /v1/customers/{customer_id}/cards
+	CreateCustomerCard(ctx context.Context, req OptCustomerCardCreatingRequest, params CreateCustomerCardParams) (CreateCustomerCardRes, error)
+	// CreateCustomerPaymentMethod implements createCustomerPaymentMethod operation.
+	//
+	// `customer_id`で指定した顧客に対し、決済手段を登録します。.
+	//
+	// POST /v1/customers/{customer_id}/payment_methods
+	CreateCustomerPaymentMethod(ctx context.Context, req OptCustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (CreateCustomerPaymentMethodRes, error)
+	// CreatePayment implements createPayment operation.
+	//
+	// 決済情報をfincodeに登録します。決済登録に成功した時点ではまだ顧客に対して請求はされていません。.
+	//
+	// POST /v1/payments
+	CreatePayment(ctx context.Context, req OptCreatePaymentReq, params CreatePaymentParams) (CreatePaymentRes, error)
+	// CreatePaymentBulk implements createPaymentBulk operation.
+	//
+	// FincodeにJSON形式のファイルで一括決済情報を登録し、`process_plan_date`で指定した日時に一括決済処理を予約します。.
+	//
+	// POST /v1/payments/bulk
+	CreatePaymentBulk(ctx context.Context, req OptPaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (CreatePaymentBulkRes, error)
+	// CreatePaymentSession implements createPaymentSession operation.
+	//
+	// Fincodeが提供するリダイレクト型決済ページを発行し、その決済ページへのURLをレスポンスします。.
+	//
+	// POST /v1/sessions
+	CreatePaymentSession(ctx context.Context, req OptPaymentSessionCreatingRequest, params CreatePaymentSessionParams) (CreatePaymentSessionRes, error)
+	// CreatePlan implements createPlan operation.
+	//
+	// プラン情報を登録します。.
+	//
+	// POST /v1/plans
+	CreatePlan(ctx context.Context, req OptPlanCreatingRequest) (CreatePlanRes, error)
+	// CreateSubscription implements createSubscription operation.
+	//
+	// `customer_id`で指定した顧客に対して`plan_id`で指定したプランを適用したサブスクリプション情報を登録します。.
+	//
+	// POST /v1/subscriptions
+	CreateSubscription(ctx context.Context, req OptSubscriptionCreatingRequest) (CreateSubscriptionRes, error)
+	// CreateTenantWithExistingUser implements createTenantWithExistingUser operation.
+	//
+	// 指定したプラットフォームショップのユーザーをオーナーとして新規テナントショップを作成するAPIです。\
+	// \
+	// `password`パラメータに関して、ユーザーのパスワードがfincode管理画面アプリケーション上で更新されることを想定して実装・運用することが推奨されます。.
+	//
+	// POST /v1/join_tenants
+	CreateTenantWithExistingUser(ctx context.Context, req OptPOSTJoinTenantsRequest) (CreateTenantWithExistingUserRes, error)
+	// CreateTenantWithNewUser implements createTenantWithNewUser operation.
+	//
+	// 新規ユーザーを作成し、作成されたユーザーをオーナーとして新規テナントショップを作成するAPIです。\
+	// このAPIでのテナント作成に成功すると、登録されたメールアドレス宛にメールアドレス認証メールが送信されます。.
+	//
+	// POST /v1/tenant_entries
+	CreateTenantWithNewUser(ctx context.Context, req OptPOSTTenantEntriesRequest) (CreateTenantWithNewUserRes, error)
+	// CreateWebhookSetting implements createWebhookSetting operation.
+	//
+	// Webhook設定を登録します。.
+	//
+	// POST /v1/webhook_settings
+	CreateWebhookSetting(ctx context.Context, req OptWebhookSettingCreatingRequest, params CreateWebhookSettingParams) (CreateWebhookSettingRes, error)
+	// DeleteCustomer implements deleteCustomer operation.
+	//
+	// IDで指定した顧客情報を削除します。.
+	//
+	// DELETE /v1/customers/{id}
+	DeleteCustomer(ctx context.Context, params DeleteCustomerParams) (DeleteCustomerRes, error)
+	// DeleteCustomerCard implements deleteCustomerCard operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを削除します。.
+	//
+	// DELETE /v1/customers/{customer_id}/cards/{id}
+	DeleteCustomerCard(ctx context.Context, params DeleteCustomerCardParams) (DeleteCustomerCardRes, error)
+	// DeleteCustomerPaymentMethod implements deleteCustomerPaymentMethod operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づく決済手段のうち、`id`で指定したものを削除します。.
+	//
+	// DELETE /v1/customers/{customer_id}/payment_methods/{id}
+	DeleteCustomerPaymentMethod(ctx context.Context, params DeleteCustomerPaymentMethodParams) (DeleteCustomerPaymentMethodRes, error)
+	// DeletePaymentBulk implements deletePaymentBulk operation.
+	//
+	// IDで指定した一括決済情報を削除します。\
+	// 一括決済処理がチェック済み（`status`が`CHECKED`）のものに限り削除できます。.
+	//
+	// DELETE /v1/payments/bulk/{id}
+	DeletePaymentBulk(ctx context.Context, params DeletePaymentBulkParams) (DeletePaymentBulkRes, error)
+	// DeletePlan implements deletePlan operation.
+	//
+	// IDで指定したプラン情報を削除します。.
+	//
+	// DELETE /v1/plans/{id}
+	DeletePlan(ctx context.Context, params DeletePlanParams) (DeletePlanRes, error)
+	// DeleteSubscription implements deleteSubscription operation.
+	//
+	// IDで指定したサブスクリプションを解約し、請求を停止します。.
+	//
+	// DELETE /v1/subscriptions/{id}
+	DeleteSubscription(ctx context.Context, params DeleteSubscriptionParams) (DeleteSubscriptionRes, error)
+	// DeleteWebhookSetting implements deleteWebhookSetting operation.
+	//
+	// IDで指定したWebhook設定を削除します。.
+	//
+	// DELETE /v1/webhook_settings/{id}
+	DeleteWebhookSetting(ctx context.Context, params DeleteWebhookSettingParams) (DeleteWebhookSettingRes, error)
+	// Execute3DSecureAuthentication implements execute3DSecureAuthentication operation.
+	//
+	// `access_id`で指定したカード決済取引の3Dセキュア認証を開始します。\
+	// \
+	// 用意した`tds2_ret_url`に対し`event`パラメータで`3DSMethodFinished`もしくは`3DSMethodSkipped`イベントが通知されたとき、このAPIを呼び出します。.
+	//
+	// PUT /v1/secure2/{access_id}
+	Execute3DSecureAuthentication(ctx context.Context, req OptR3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (Execute3DSecureAuthenticationRes, error)
+	// ExecutePayment implements executePayment operation.
+	//
+	// Fincodeに登録された決済情報を指定し、請求を実行します。.
+	//
+	// PUT /v1/payments/{id}
+	ExecutePayment(ctx context.Context, req OptExecutePaymentReq, params ExecutePaymentParams) (ExecutePaymentRes, error)
+	// ExecutePaymentAfter3DSecure implements executePaymentAfter3DSecure operation.
+	//
+	// 3Dセキュア認証後の決済を実行します。\
+	// \
+	// 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
+	//
+	// PUT /v1/payments/{id}/secure
+	ExecutePaymentAfter3DSecure(ctx context.Context, req OptExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error)
+	// GenerateBarcodeOfPayment implements generateBarcodeOfPayment operation.
+	//
+	// リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
+	//
+	// PUT /v1/payments/{id}/barcode
+	GenerateBarcodeOfPayment(ctx context.Context, req OptGenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error)
+	// ReceiveWebhookOfApplePayPayment implements receiveWebhookOfApplePayPayment operation.
+	//
+	// Apple Payによる決済に関するイベント（`payments.applepay.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-applepay-payment
+	ReceiveWebhookOfApplePayPayment(ctx context.Context, req OptWebhookEventPaymentApplePay) (ReceiveWebhookOfApplePayPaymentRes, error)
+	// ReceiveWebhookOfCard implements receiveWebhookOfCard operation.
+	//
+	// カードに関するイベント（`card.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card
+	ReceiveWebhookOfCard(ctx context.Context, req OptWebhookEventCard) (ReceiveWebhookOfCardRes, error)
+	// ReceiveWebhookOfCardPayment implements receiveWebhookOfCardPayment operation.
+	//
+	// カード決済に関するイベント（`payments.card.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-payment
+	ReceiveWebhookOfCardPayment(ctx context.Context, req OptWebhookEventPaymentCard) (ReceiveWebhookOfCardPaymentRes, error)
+	// ReceiveWebhookOfCardPaymentBulkBatch implements receiveWebhookOfCardPaymentBulkBatch operation.
+	//
+	// カード決済による一括決済 課金イベント（`payments.bulk.card.
+	// batch`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-payment-bulk-batch
+	ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, req OptWebhookEventPaymentBulkBatchCard) (ReceiveWebhookOfCardPaymentBulkBatchRes, error)
+	// ReceiveWebhookOfCardRecurringBatch implements receiveWebhookOfCardRecurringBatch operation.
+	//
+	// カード決済によるサブスクリプション課金のイベント（`recurring.card.
+	// batch`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-recurring-batch
+	ReceiveWebhookOfCardRecurringBatch(ctx context.Context, req OptWebhookEventRecurringBatchCard) (ReceiveWebhookOfCardRecurringBatchRes, error)
+	// ReceiveWebhookOfCardSubscription implements receiveWebhookOfCardSubscription operation.
+	//
+	// カード決済によるサブスクリプションに関するイベント（`subscription.card.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-subscription
+	ReceiveWebhookOfCardSubscription(ctx context.Context, req OptWebhookEventSubscriptionCard) (ReceiveWebhookOfCardSubscriptionRes, error)
+	// ReceiveWebhookOfContract implements receiveWebhookOfContract operation.
+	//
+	// 決済手段 契約状況 更新イベント（`contracts.status_code.
+	// updated`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-contract
+	ReceiveWebhookOfContract(ctx context.Context, req OptWebhookEventContract) (ReceiveWebhookOfContractRes, error)
+	// ReceiveWebhookOfCustomerPaymentMethod implements receiveWebhookOfCustomerPaymentMethod operation.
+	//
+	// 顧客の決済手段に関するイベント（`customers.payment_methods.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-customer-payment_method
+	ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, req OptWebhookEventCustomerPaymentMethod) (ReceiveWebhookOfCustomerPaymentMethodRes, error)
+	// ReceiveWebhookOfDirectDebitPayment implements receiveWebhookOfDirectDebitPayment operation.
+	//
+	// 口座振替に関するイベント（`payments.directdebit.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-directdebit-payment
+	ReceiveWebhookOfDirectDebitPayment(ctx context.Context, req OptWebhookEventPaymentDirectDebit) (ReceiveWebhookOfDirectDebitPaymentRes, error)
+	// ReceiveWebhookOfDirectDebitRecurringBatch implements receiveWebhookOfDirectDebitRecurringBatch operation.
+	//
+	// 口座振替によるサブスクリプション課金に関するイベント（`recurring.
+	// directdebit.batch`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-directdebit-recurring-batch
+	ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, req OptWebhookEventRecurringBatchDirectDebit) (ReceiveWebhookOfDirectDebitRecurringBatchRes, error)
+	// ReceiveWebhookOfDirectDebitSubscription implements receiveWebhookOfDirectDebitSubscription operation.
+	//
+	// 口座振替によるサブスクリプションに関するイベント（`subscription.
+	// directdebit.*`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-directdebit-subscription
+	ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, req OptWebhookEventSubscriptionDirectDebit) (ReceiveWebhookOfDirectDebitSubscriptionRes, error)
+	// ReceiveWebhookOfKonbiniPayment implements receiveWebhookOfKonbiniPayment operation.
+	//
+	// コンビニ決済に関するイベント（`payments.konbini.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-konbini-payment
+	ReceiveWebhookOfKonbiniPayment(ctx context.Context, req OptWebhookEventPaymentKonbini) (ReceiveWebhookOfKonbiniPaymentRes, error)
+	// ReceiveWebhookOfPayPayPayment implements receiveWebhookOfPayPayPayment operation.
+	//
+	// PayPayによる決済に関するイベント（`payments.paypay.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-paypay-payment
+	ReceiveWebhookOfPayPayPayment(ctx context.Context, req OptWebhookEventPaymentPayPay) (ReceiveWebhookOfPayPayPaymentRes, error)
+	// ReceiveWebhookOfRegisteringCardPaymentBulk implements receiveWebhookOfRegisteringCardPaymentBulk operation.
+	//
+	// カード決済による一括決済 登録イベント（`payments.bulk.card.
+	// regist`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-payment-bulk-regist
+	ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, req OptWebhookEventPaymentBulkRegistCard) (ReceiveWebhookOfRegisteringCardPaymentBulkRes, error)
+	// RequestProductionEnvironment implements requestProductionEnvironment operation.
+	//
+	// `id`で指定したテナントショップの本番環境の利用申請を行います。このAPIを呼び出すまでにテナント本番環境申請情報 更新APIで申請情報を用意しておく必要があります。.
+	//
+	// POST /v1/contracts/examinations
+	RequestProductionEnvironment(ctx context.Context, req OptPOSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (RequestProductionEnvironmentRes, error)
+	// ReserveProvider implements reserveProvider operation.
+	//
+	// `id`で指定したテナントショップの決済手段の追加申請を行います。.
+	//
+	// POST /v1/contracts-examinations-tenants-{id}-providers-reserve.yml
+	ReserveProvider(ctx context.Context, req OptPOSTProviderReserveRequestMultipart, params ReserveProviderParams) (ReserveProviderRes, error)
+	// RetrieveAccount implements retrieveAccount operation.
+	//
+	// IDで指定した売上入金を取得します。\
+	// `aggregate_term_start`から`aggregate_term_end`までの期間における売上の集計結果が含まれます。\
+	// \
+	// 集計された個々のレコードについては 売上入金明細 一覧取得API
+	// を利用することで取得できます。.
+	//
+	// GET /v1/accounts/{id}
+	RetrieveAccount(ctx context.Context, params RetrieveAccountParams) (RetrieveAccountRes, error)
+	// RetrieveAccountDetailList implements retrieveAccountDetailList operation.
+	//
+	// IDで指定した売上入金に紐づく売上入金詳細を一覧で取得します。\
+	// 1つの売上入金明細は、1件の決済／キャンセル／チャージバック／チャージバック取消調整のいずれかに対応します。.
+	//
+	// GET /v1/accounts/{id}/detail
+	RetrieveAccountDetailList(ctx context.Context, params RetrieveAccountDetailListParams) (RetrieveAccountDetailListRes, error)
+	// RetrieveAccountList implements retrieveAccountList operation.
+	//
+	// 売上入金情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/accounts
+	RetrieveAccountList(ctx context.Context, params RetrieveAccountListParams) (RetrieveAccountListRes, error)
+	// RetrieveCustomer implements retrieveCustomer operation.
+	//
+	// IDで指定した顧客情報を取得します。.
+	//
+	// GET /v1/customers/{id}
+	RetrieveCustomer(ctx context.Context, params RetrieveCustomerParams) (RetrieveCustomerRes, error)
+	// RetrieveCustomerCard implements retrieveCustomerCard operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを取得します。.
+	//
+	// GET /v1/customers/{customer_id}/cards/{id}
+	RetrieveCustomerCard(ctx context.Context, params RetrieveCustomerCardParams) (RetrieveCustomerCardRes, error)
+	// RetrieveCustomerCardList implements retrieveCustomerCardList operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づくカードを一覧で取得します。.
+	//
+	// GET /v1/customers/{customer_id}/cards
+	RetrieveCustomerCardList(ctx context.Context, params RetrieveCustomerCardListParams) (RetrieveCustomerCardListRes, error)
+	// RetrieveCustomerList implements retrieveCustomerList operation.
+	//
+	// 顧客情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/customers
+	RetrieveCustomerList(ctx context.Context, params RetrieveCustomerListParams) (RetrieveCustomerListRes, error)
+	// RetrieveCustomerPaymentMethod implements retrieveCustomerPaymentMethod operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づく決済手段のうち、`id`で指定したものを取得します。.
+	//
+	// GET /v1/customers/{customer_id}/payment_methods/{id}
+	RetrieveCustomerPaymentMethod(ctx context.Context, params RetrieveCustomerPaymentMethodParams) (RetrieveCustomerPaymentMethodRes, error)
+	// RetrieveCustomerPaymentMethodList implements retrieveCustomerPaymentMethodList operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づく決済手段を一覧で取得します。.
+	//
+	// GET /v1/customers/{customer_id}/payment_methods
+	RetrieveCustomerPaymentMethodList(ctx context.Context, params RetrieveCustomerPaymentMethodListParams) (RetrieveCustomerPaymentMethodListRes, error)
+	// RetrievePayment implements retrievePayment operation.
+	//
+	// 指定した決済情報を取得します。.
+	//
+	// GET /v1/payments/{id}
+	RetrievePayment(ctx context.Context, params RetrievePaymentParams) (RetrievePaymentRes, error)
+	// RetrievePaymentBulkDetailList implements retrievePaymentBulkDetailList operation.
+	//
+	// IDで指定した一括決済情報の詳細（決済1件ごとの情報）と各決済で発生したエラーの情報を一覧で取得します。.
+	//
+	// GET /v1/payments/bulk/{id}
+	RetrievePaymentBulkDetailList(ctx context.Context, params RetrievePaymentBulkDetailListParams) (RetrievePaymentBulkDetailListRes, error)
+	// RetrievePaymentBulkList implements retrievePaymentBulkList operation.
+	//
+	// Fincodeに登録した一括決済の情報を一覧で取得します。.
+	//
+	// GET /v1/payments/bulk
+	RetrievePaymentBulkList(ctx context.Context, params RetrievePaymentBulkListParams) (RetrievePaymentBulkListRes, error)
+	// RetrievePlan implements retrievePlan operation.
+	//
+	// IDで指定したプラン情報を取得します。.
+	//
+	// GET /v1/plans/{id}
+	RetrievePlan(ctx context.Context, params RetrievePlanParams) (RetrievePlanRes, error)
+	// RetrievePlanList implements retrievePlanList operation.
+	//
+	// プラン情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/plans
+	RetrievePlanList(ctx context.Context, params RetrievePlanListParams) (RetrievePlanListRes, error)
+	// RetrievePlatformAccount implements retrievePlatformAccount operation.
+	//
+	// IDで指定したプラットフォーム利用料による売上入金情報を取得します。\
+	// `aggregate_term_start`から`aggregate_term_end`までの期間におけるプラットフォーム利用料による売上の集計結果が含まれます。\
+	// \
+	// テナントショップごとの利用料収入については
+	// プラットフォーム利用料収入サマリー 一覧取得API
+	// を利用することで取得できます。.
+	//
+	// GET /v1/platform_accounts/{id}
+	RetrievePlatformAccount(ctx context.Context, params RetrievePlatformAccountParams) (RetrievePlatformAccountRes, error)
+	// RetrievePlatformAccountList implements retrievePlatformAccountList operation.
+	//
+	// プラットフォーム利用料による売上入金情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/platform_accounts
+	RetrievePlatformAccountList(ctx context.Context, params RetrievePlatformAccountListParams) (RetrievePlatformAccountListRes, error)
+	// RetrievePlatformAccountSummaryList implements retrievePlatformAccountSummaryList operation.
+	//
+	// IDで指定したプラットフォーム利用料収入のサマリーを一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。\
+	// サマリー情報の中にはテナントショップごとの利用料収入についての情報が含まれます。.
+	//
+	// GET /v1/platform_accounts/{id}/summary
+	RetrievePlatformAccountSummaryList(ctx context.Context, params RetrievePlatformAccountSummaryListParams) (RetrievePlatformAccountSummaryListRes, error)
+	// RetrievePlatformShop implements retrievePlatformShop operation.
+	//
+	// `id`で指定したプラットフォームショップ（メインショップ・サブショップ）を取得します。.
+	//
+	// GET /v1/platforms/{id}
+	RetrievePlatformShop(ctx context.Context, params RetrievePlatformShopParams) (RetrievePlatformShopRes, error)
+	// RetrievePlatformShopList implements retrievePlatformShopList operation.
+	//
+	// プラットフォームショップ（メインショップ・サブショップ）を一覧で取得します。\
+	// クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/platforms
+	RetrievePlatformShopList(ctx context.Context, params RetrievePlatformShopListParams) (RetrievePlatformShopListRes, error)
+	// RetrieveSubscription implements retrieveSubscription operation.
+	//
+	// IDで指定したサブスクリプション情報を取得します。.
+	//
+	// GET /v1/subscriptions/{id}
+	RetrieveSubscription(ctx context.Context, params RetrieveSubscriptionParams) (RetrieveSubscriptionRes, error)
+	// RetrieveSubscriptionList implements retrieveSubscriptionList operation.
+	//
+	// サブスクリプション情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/subscriptions
+	RetrieveSubscriptionList(ctx context.Context, params RetrieveSubscriptionListParams) (RetrieveSubscriptionListRes, error)
+	// RetrieveSubscriptionResultList implements retrieveSubscriptionResultList operation.
+	//
+	// サブスクリプションにより発生した課金の結果を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/subscriptions/{id}/result
+	RetrieveSubscriptionResultList(ctx context.Context, params RetrieveSubscriptionResultListParams) (RetrieveSubscriptionResultListRes, error)
+	// RetrieveTenantContract implements retrieveTenantContract operation.
+	//
+	// `id`で指定したテナントショップの契約情報を取得します。.
+	//
+	// GET /v1/contracts/{id}
+	RetrieveTenantContract(ctx context.Context, params RetrieveTenantContractParams) (RetrieveTenantContractRes, error)
+	// RetrieveTenantExaminationInfo implements retrieveTenantExaminationInfo operation.
+	//
+	// ※
+	// このAPIの使用は現在非推奨です。新しいテナントショップ本番環境申請情報 取得APIをご利用ください。\
+	// `id`で指定したテナントショップの本番環境申請情報を取得します。.
+	//
+	// Deprecated: schema marks this operation as deprecated.
+	//
+	// GET /v1/contracts/examinations/tenants/{id}
+	RetrieveTenantExaminationInfo(ctx context.Context, params RetrieveTenantExaminationInfoParams) (RetrieveTenantExaminationInfoRes, error)
+	// RetrieveTenantExaminationInfoV2 implements retrieveTenantExaminationInfoV2 operation.
+	//
+	// `id`で指定したテナントショップの本番環境申請情報を取得します。.
+	//
+	// GET /v1/contracts/examinations_v2/tenants/{id}
+	RetrieveTenantExaminationInfoV2(ctx context.Context, params RetrieveTenantExaminationInfoV2Params) (RetrieveTenantExaminationInfoV2Res, error)
+	// RetrieveTenantShop implements retrieveTenantShop operation.
+	//
+	// `id`で指定したテナント情報を取得します。.
+	//
+	// GET /v1/tenants/{id}
+	RetrieveTenantShop(ctx context.Context, params RetrieveTenantShopParams) (RetrieveTenantShopRes, error)
+	// RetrieveTenantShopList implements retrieveTenantShopList operation.
+	//
+	// テナントショップを一覧で取得します。\
+	// クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/tenants
+	RetrieveTenantShopList(ctx context.Context, params RetrieveTenantShopListParams) (RetrieveTenantShopListRes, error)
+	// RetrieveWebhookSetting implements retrieveWebhookSetting operation.
+	//
+	// IDで指定したWebhook設定を取得します。.
+	//
+	// GET /v1/webhook_settings/{id}
+	RetrieveWebhookSetting(ctx context.Context, params RetrieveWebhookSettingParams) (RetrieveWebhookSettingRes, error)
+	// RetrieveWebhookSettingList implements retrieveWebhookSettingList operation.
+	//
+	// Webhook設定を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/webhook_settings
+	RetrieveWebhookSettingList(ctx context.Context, params RetrieveWebhookSettingListParams) (RetrieveWebhookSettingListRes, error)
+	// UpdateCustomer implements updateCustomer operation.
+	//
+	// IDで指定した顧客情報を更新します。.
+	//
+	// PUT /v1/customers/{id}
+	UpdateCustomer(ctx context.Context, req OptCustomerUpdatingRequest, params UpdateCustomerParams) (UpdateCustomerRes, error)
+	// UpdateCustomerCard implements updateCustomerCard operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを更新します。.
+	//
+	// PUT /v1/customers/{customer_id}/cards/{id}
+	UpdateCustomerCard(ctx context.Context, req OptCustomerCardUpdatingRequest, params UpdateCustomerCardParams) (UpdateCustomerCardRes, error)
+	// UpdatePlan implements updatePlan operation.
+	//
+	// IDで指定したプラン情報を更新します。\
+	// プランが1つ以上のサブスクリプションで使用されているとき（`used_flag =
+	// 1`のとき）、プランは更新できません。.
+	//
+	// PUT /v1/plans/{id}
+	UpdatePlan(ctx context.Context, req OptPlanUpdatingRequest, params UpdatePlanParams) (UpdatePlanRes, error)
+	// UpdatePlatformShop implements updatePlatformShop operation.
+	//
+	// `examination_master_id`で指定した決済手段に関してプラットフォーム利用料を更新します。.
+	//
+	// PUT /v1/platforms/{id}
+	UpdatePlatformShop(ctx context.Context, req OptPlatformShopUpdatingRequest, params UpdatePlatformShopParams) (UpdatePlatformShopRes, error)
+	// UpdateSubscription implements updateSubscription operation.
+	//
+	// IDで指定したサブスクリプション情報を更新します。\
+	// サブスクリプションの初回課金がすでに行われているとき（`start_date ≤
+	// {{現在時刻}}`のとき）、サブスクリプションは更新できません。.
+	//
+	// PUT /v1/subscriptions/{id}
+	UpdateSubscription(ctx context.Context, req OptSubscriptionUpdatingRequest, params UpdateSubscriptionParams) (UpdateSubscriptionRes, error)
+	// UpdateTenantExaminationInfo implements updateTenantExaminationInfo operation.
+	//
+	// ※
+	// このAPIの使用は現在非推奨です。新しいテナントショップ本番環境申請情報 更新APIをご利用ください。\
+	// `id`で指定したテナントショップの本番環境申請情報を更新します。.
+	//
+	// Deprecated: schema marks this operation as deprecated.
+	//
+	// PUT /v1/contracts/examinations/tenants/{id}
+	UpdateTenantExaminationInfo(ctx context.Context, req OptExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (UpdateTenantExaminationInfoRes, error)
+	// UpdateTenantExaminationInfoV2 implements updateTenantExaminationInfoV2 operation.
+	//
+	// `id`で指定したテナントショップの本番環境申請情報を更新します。.
+	//
+	// PUT /v1/contracts/examinations_v2/tenants/{id}
+	UpdateTenantExaminationInfoV2(ctx context.Context, req OptExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (UpdateTenantExaminationInfoV2Res, error)
+	// UpdateTenantShop implements updateTenantShop operation.
+	//
+	// `examination_master_id`で指定した決済手段におけるプラットフォーム利用料などの設定の変更を`id`で指定したテナントに対して実行します。.
+	//
+	// PUT /v1/tenants/{id}
+	UpdateTenantShop(ctx context.Context, req OptTenantShopUpdatingRequest, params UpdateTenantShopParams) (UpdateTenantShopRes, error)
+	// UpdateWebhookSetting implements updateWebhookSetting operation.
+	//
+	// IDで指定したWebhook設定を更新します。.
+	//
+	// PUT /v1/webhook_settings/{id}
+	UpdateWebhookSetting(ctx context.Context, req OptWebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (UpdateWebhookSettingRes, error)
+	// UploadExaminationFile implements uploadExaminationFile operation.
+	//
+	// `id`で指定したテナントショップの審査に必要なファイルのアップロードを行います。.
+	//
+	// POST /v1/contracts/examinations/tenants/{id}/files
+	UploadExaminationFile(ctx context.Context, req OptExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (UploadExaminationFileRes, error)
 }
 
 // Server implements http server based on OpenAPI v3 specification and

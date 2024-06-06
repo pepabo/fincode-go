@@ -15,549 +15,27 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-// CustomersCustomerIDCardsIDDeleteParams is parameters of DELETE /customers/{customer_id}/cards/{id} operation.
-type CustomersCustomerIDCardsIDDeleteParams struct {
-	CustomerID string
-	ID         string
-}
-
-func unpackCustomersCustomerIDCardsIDDeleteParams(packed middleware.Parameters) (params CustomersCustomerIDCardsIDDeleteParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "customer_id",
-			In:   "path",
-		}
-		params.CustomerID = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "id",
-			In:   "path",
-		}
-		params.ID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeCustomersCustomerIDCardsIDDeleteParams(args [2]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDCardsIDDeleteParams, _ error) {
-	// Decode path: customer_id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "customer_id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "customer_id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	// Decode path: id.
-	if err := func() error {
-		param := args[1]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[1])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// CustomersCustomerIDCardsIDGetParams is parameters of GET /customers/{customer_id}/cards/{id} operation.
-type CustomersCustomerIDCardsIDGetParams struct {
-	CustomerID string
-	ID         string
-}
-
-func unpackCustomersCustomerIDCardsIDGetParams(packed middleware.Parameters) (params CustomersCustomerIDCardsIDGetParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "customer_id",
-			In:   "path",
-		}
-		params.CustomerID = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "id",
-			In:   "path",
-		}
-		params.ID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeCustomersCustomerIDCardsIDGetParams(args [2]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDCardsIDGetParams, _ error) {
-	// Decode path: customer_id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "customer_id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "customer_id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	// Decode path: id.
-	if err := func() error {
-		param := args[1]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[1])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams is parameters of DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
-type CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams struct {
-	CustomerID      string
-	PaymentMethodID string
-}
-
-func unpackCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams(packed middleware.Parameters) (params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "customer_id",
-			In:   "path",
-		}
-		params.CustomerID = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "payment_method_id",
-			In:   "path",
-		}
-		params.PaymentMethodID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams(args [2]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams, _ error) {
-	// Decode path: customer_id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "customer_id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "customer_id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	// Decode path: payment_method_id.
-	if err := func() error {
-		param := args[1]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[1])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "payment_method_id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.PaymentMethodID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "payment_method_id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams is parameters of GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
-type CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams struct {
-	CustomerID      string
-	PaymentMethodID string
-}
-
-func unpackCustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams(packed middleware.Parameters) (params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "customer_id",
-			In:   "path",
-		}
-		params.CustomerID = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "payment_method_id",
-			In:   "path",
-		}
-		params.PaymentMethodID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeCustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams(args [2]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams, _ error) {
-	// Decode path: customer_id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "customer_id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "customer_id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	// Decode path: payment_method_id.
-	if err := func() error {
-		param := args[1]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[1])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "payment_method_id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.PaymentMethodID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "payment_method_id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// CustomersCustomerIDPaymentMethodsPostParams is parameters of POST /customers/{customer_id}/payment_methods operation.
-type CustomersCustomerIDPaymentMethodsPostParams struct {
-	CustomerID string
-}
-
-func unpackCustomersCustomerIDPaymentMethodsPostParams(packed middleware.Parameters) (params CustomersCustomerIDPaymentMethodsPostParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "customer_id",
-			In:   "path",
-		}
-		params.CustomerID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeCustomersCustomerIDPaymentMethodsPostParams(args [1]string, argsEscaped bool, r *http.Request) (params CustomersCustomerIDPaymentMethodsPostParams, _ error) {
-	// Decode path: customer_id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "customer_id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "customer_id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// CustomersIDDeleteParams is parameters of DELETE /customers/{id} operation.
-type CustomersIDDeleteParams struct {
+// AuthorizePaymentParams is parameters of authorizePayment operation.
+type AuthorizePaymentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済のオーソリを再度実行します。.
+	TenantShopID OptString
+	// オーダーID（決済情報のID）.
 	ID string
 }
 
-func unpackCustomersIDDeleteParams(packed middleware.Parameters) (params CustomersIDDeleteParams) {
+func unpackAuthorizePaymentParams(packed middleware.Parameters) (params AuthorizePaymentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
@@ -568,7 +46,47 @@ func unpackCustomersIDDeleteParams(packed middleware.Parameters) (params Custome
 	return params
 }
 
-func decodeCustomersIDDeleteParams(args [1]string, argsEscaped bool, r *http.Request) (params CustomersIDDeleteParams, _ error) {
+func decodeAuthorizePaymentParams(args [1]string, argsEscaped bool, r *http.Request) (params AuthorizePaymentParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
 	// Decode path: id.
 	if err := func() error {
 		param := args[0]
@@ -617,12 +135,27 @@ func decodeCustomersIDDeleteParams(args [1]string, argsEscaped bool, r *http.Req
 	return params, nil
 }
 
-// CustomersIDGetParams is parameters of GET /customers/{id} operation.
-type CustomersIDGetParams struct {
+// CapturePaymentParams is parameters of capturePayment operation.
+type CapturePaymentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済の売上確定を実行します。.
+	TenantShopID OptString
+	// オーダーID（決済情報のID）.
 	ID string
 }
 
-func unpackCustomersIDGetParams(packed middleware.Parameters) (params CustomersIDGetParams) {
+func unpackCapturePaymentParams(packed middleware.Parameters) (params CapturePaymentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
@@ -633,7 +166,47 @@ func unpackCustomersIDGetParams(packed middleware.Parameters) (params CustomersI
 	return params
 }
 
-func decodeCustomersIDGetParams(args [1]string, argsEscaped bool, r *http.Request) (params CustomersIDGetParams, _ error) {
+func decodeCapturePaymentParams(args [1]string, argsEscaped bool, r *http.Request) (params CapturePaymentParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
 	// Decode path: id.
 	if err := func() error {
 		param := args[0]
@@ -682,407 +255,1678 @@ func decodeCustomersIDGetParams(args [1]string, argsEscaped bool, r *http.Reques
 	return params, nil
 }
 
-// PaymentsGetParams is parameters of GET /payments operation.
-type PaymentsGetParams struct {
-	// 1回で取得するデータ件数.
-	Limit OptInt
-	// ページ数.
-	Page OptInt
-	// 総件数のみを取得するフラグ.
-	CountOnly OptBool
-	// ソート順の定義
-	// ※ソート可能な項目
-	// status - 決済ステータス
-	// process_date - 処理日時
-	// total_amount - 利用金額と税送料の合計金額
-	// auth_max_date - 仮売上有効期限
-	// created - 作成日時
-	// updated - 更新日時.
-	Sort OptNilString
-	// 決済種別
-	// Card- クレジットカード決済
-	// Applepay - Apple Pay
-	// Konbini- コンビニ決済
-	// Paypay- PayPay.
-	PayType string
-	// 加盟店自由項目1-3に対する部分一致.
-	Keyword OptString
-	// 利用金額+税送料の合計(min).
-	TotalAmountMin OptInt
-	// 利用金額+税送料の合計(max).
-	TotalAmountMax OptString
+// ChangeAmountOfPaymentParams is parameters of changeAmountOfPayment operation.
+type ChangeAmountOfPaymentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済の利用金額を変更します。.
+	TenantShopID OptString
+	// オーダーID（決済情報のID）.
+	ID string
+}
+
+func unpackChangeAmountOfPaymentParams(packed middleware.Parameters) (params ChangeAmountOfPaymentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeChangeAmountOfPaymentParams(args [1]string, argsEscaped bool, r *http.Request) (params ChangeAmountOfPaymentParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// Confirm3DSecureAuthenticationParams is parameters of confirm3DSecureAuthentication operation.
+type Confirm3DSecureAuthenticationParams struct {
+	// 取引ID.
+	AccessID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップの決済情報のうち、指定した`access_id`のカード決済の3Dセキュア認証の結果を確定します。.
+	TenantShopID OptString
+}
+
+func unpackConfirm3DSecureAuthenticationParams(packed middleware.Parameters) (params Confirm3DSecureAuthenticationParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "access_id",
+			In:   "path",
+		}
+		params.AccessID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeConfirm3DSecureAuthenticationParams(args [1]string, argsEscaped bool, r *http.Request) (params Confirm3DSecureAuthenticationParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: access_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "access_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.AccessID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "access_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CreateCardRegistrationSessionParams is parameters of createCardRegistrationSession operation.
+type CreateCardRegistrationSessionParams struct {
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップ上の顧客に対してカードを登録するためのカード登録URLを発行します。.
+	TenantShopID OptString
+}
+
+func unpackCreateCardRegistrationSessionParams(packed middleware.Parameters) (params CreateCardRegistrationSessionParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeCreateCardRegistrationSessionParams(args [0]string, argsEscaped bool, r *http.Request) (params CreateCardRegistrationSessionParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CreateCustomerParams is parameters of createCustomer operation.
+type CreateCustomerParams struct {
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップに紐づく形で顧客情報を登録します。.
+	TenantShopID OptString
+}
+
+func unpackCreateCustomerParams(packed middleware.Parameters) (params CreateCustomerParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeCreateCustomerParams(args [0]string, argsEscaped bool, r *http.Request) (params CreateCustomerParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CreateCustomerCardParams is parameters of createCustomerCard operation.
+type CreateCustomerCardParams struct {
+	// このカードが紐づく顧客のID.
+	CustomerID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対してカードを登録します。.
+	TenantShopID OptString
+}
+
+func unpackCreateCustomerCardParams(packed middleware.Parameters) (params CreateCustomerCardParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeCreateCustomerCardParams(args [1]string, argsEscaped bool, r *http.Request) (params CreateCustomerCardParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CreateCustomerPaymentMethodParams is parameters of createCustomerPaymentMethod operation.
+type CreateCustomerPaymentMethodParams struct {
 	// 顧客ID.
-	CustomerID OptString
-	// 作成日の範囲指定の始点。YYYY/MM/dd 形式.
-	ProcessDataFrom OptString
-	// 作成日の範囲指定の終点。YYYY/MM/dd 形式.
-	ProcessDataTo OptString
-	// 仮売上有効期限の始点。YYYY/MM/dd 形式.
-	AuthMaxDateFrom OptString
-	// 仮売上有効期限の終点。YYYY/MM/dd 形式.
-	AuthMaxDateTo OptString
-	// 更新日の範囲指定の始値。YYYY/MM/dd 形式.
-	UpdateDateFrom OptString
-	// 更新日の範囲指定の終点。YYYY/MM/dd 形式.
-	UpdateDateTo OptString
-	// 決済ステータス
-	// (カンマ区切りで複数指定可能)
-	// UNPROCESSED - 未決済
-	// CHECKED - 有効性チェック
-	// AUTHORIZED - 仮売上
-	// CAPTURED - 売上確定
-	// CANCELED - キャンセル
-	// AUTHENTICATED - 未決済（3Dセキュア）.
-	Status OptString
-	// 課金種別
-	// (カンマ区切りで複数指定可能)
-	// onetime - サブスクリプション以外
-	// subscription - サブスクリプション.
-	PayPattern OptString
+	CustomerID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して決済手段を登録します。.
+	TenantShopID OptString
+}
+
+func unpackCreateCustomerPaymentMethodParams(packed middleware.Parameters) (params CreateCustomerPaymentMethodParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeCreateCustomerPaymentMethodParams(args [1]string, argsEscaped bool, r *http.Request) (params CreateCustomerPaymentMethodParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CreatePaymentParams is parameters of createPayment operation.
+type CreatePaymentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主として決済を登録します。テナントが`pay_type`で指定する決済手段契約の審査を完了させている必要があります。.
+	TenantShopID OptString
+}
+
+func unpackCreatePaymentParams(packed middleware.Parameters) (params CreatePaymentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeCreatePaymentParams(args [0]string, argsEscaped bool, r *http.Request) (params CreatePaymentParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CreatePaymentBulkParams is parameters of createPaymentBulk operation.
+type CreatePaymentBulkParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした決済情報を一括登録します。.
+	TenantShopID    OptString
+	PayType         CreatePaymentBulkPayType
+	ProcessPlanDate string
+}
+
+func unpackCreatePaymentBulkParams(packed middleware.Parameters) (params CreatePaymentBulkParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "pay_type",
+			In:   "query",
+		}
+		params.PayType = packed[key].(CreatePaymentBulkPayType)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "process_plan_date",
+			In:   "query",
+		}
+		params.ProcessPlanDate = packed[key].(string)
+	}
+	return params
+}
+
+func decodeCreatePaymentBulkParams(args [0]string, argsEscaped bool, r *http.Request) (params CreatePaymentBulkParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode query: pay_type.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "pay_type",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.PayType = CreatePaymentBulkPayType(c)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := params.PayType.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "pay_type",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode query: process_plan_date.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "process_plan_date",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ProcessPlanDate = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "process_plan_date",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CreatePaymentSessionParams is parameters of createPaymentSession operation.
+type CreatePaymentSessionParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップで決済を行います。.
+	TenantShopID OptString
+}
+
+func unpackCreatePaymentSessionParams(packed middleware.Parameters) (params CreatePaymentSessionParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeCreatePaymentSessionParams(args [0]string, argsEscaped bool, r *http.Request) (params CreatePaymentSessionParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// CreateWebhookSettingParams is parameters of createWebhookSetting operation.
+type CreateWebhookSettingParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップ上で発生したイベントを購読するWebhook設定を登録します。.
+	TenantShopID OptString
+}
+
+func unpackCreateWebhookSettingParams(packed middleware.Parameters) (params CreateWebhookSettingParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeCreateWebhookSettingParams(args [0]string, argsEscaped bool, r *http.Request) (params CreateWebhookSettingParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// DeleteCustomerParams is parameters of deleteCustomer operation.
+type DeleteCustomerParams struct {
+	// 顧客ID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客情報を削除します。.
+	TenantShopID OptString
+}
+
+func unpackDeleteCustomerParams(packed middleware.Parameters) (params DeleteCustomerParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeDeleteCustomerParams(args [1]string, argsEscaped bool, r *http.Request) (params DeleteCustomerParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// DeleteCustomerCardParams is parameters of deleteCustomerCard operation.
+type DeleteCustomerCardParams struct {
+	// このカードが紐づく顧客のID.
+	CustomerID string
+	// 削除するカードのID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードを削除します。.
+	TenantShopID OptString
+}
+
+func unpackDeleteCustomerCardParams(packed middleware.Parameters) (params DeleteCustomerCardParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeDeleteCustomerCardParams(args [2]string, argsEscaped bool, r *http.Request) (params DeleteCustomerCardParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[1]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[1])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// DeleteCustomerPaymentMethodParams is parameters of deleteCustomerPaymentMethod operation.
+type DeleteCustomerPaymentMethodParams struct {
+	// 顧客ID.
+	CustomerID string
+	// 決済手段ID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に紐づく決済手段からIDで指定した決済手段を削除します。.
+	TenantShopID OptString
+}
+
+func unpackDeleteCustomerPaymentMethodParams(packed middleware.Parameters) (params DeleteCustomerPaymentMethodParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeDeleteCustomerPaymentMethodParams(args [2]string, argsEscaped bool, r *http.Request) (params DeleteCustomerPaymentMethodParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[1]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[1])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// DeletePaymentBulkParams is parameters of deletePaymentBulk operation.
+type DeletePaymentBulkParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした一括決済情報を削除します。.
+	TenantShopID OptString
+	// 一括決済ID。\
+	// 削除対象の一括決済情報のIDを指定します。.
+	ID PaymentBulkIdSchema
+}
+
+func unpackDeletePaymentBulkParams(packed middleware.Parameters) (params DeletePaymentBulkParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(PaymentBulkIdSchema)
+	}
+	return params
+}
+
+func decodeDeletePaymentBulkParams(args [1]string, argsEscaped bool, r *http.Request) (params DeletePaymentBulkParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = PaymentBulkIdSchema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// DeletePlanParams is parameters of deletePlan operation.
+type DeletePlanParams struct {
+	// プランID.
+	ID string
+}
+
+func unpackDeletePlanParams(packed middleware.Parameters) (params DeletePlanParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeDeletePlanParams(args [1]string, argsEscaped bool, r *http.Request) (params DeletePlanParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// DeleteSubscriptionParams is parameters of deleteSubscription operation.
+type DeleteSubscriptionParams struct {
 	// サブスクリプションID.
-	SubscriptionID OptString
+	ID string
 }
 
-func unpackPaymentsGetParams(packed middleware.Parameters) (params PaymentsGetParams) {
+func unpackDeleteSubscriptionParams(packed middleware.Parameters) (params DeleteSubscriptionParams) {
 	{
 		key := middleware.ParameterKey{
-			Name: "limit",
-			In:   "query",
+			Name: "id",
+			In:   "path",
 		}
-		if v, ok := packed[key]; ok {
-			params.Limit = v.(OptInt)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "page",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Page = v.(OptInt)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "count_only",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.CountOnly = v.(OptBool)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "sort",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Sort = v.(OptNilString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "pay_type",
-			In:   "query",
-		}
-		params.PayType = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "keyword",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Keyword = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "total_amount_min",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.TotalAmountMin = v.(OptInt)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "total_amount_max",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.TotalAmountMax = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "customer_id",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.CustomerID = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "process_data_from",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ProcessDataFrom = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "process_data_to",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.ProcessDataTo = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "auth_max_date_from",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.AuthMaxDateFrom = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "auth_max_date_to",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.AuthMaxDateTo = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "update_date_from",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.UpdateDateFrom = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "update_date_to",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.UpdateDateTo = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "status",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.Status = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "pay_pattern",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.PayPattern = v.(OptString)
-		}
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "subscription_id",
-			In:   "query",
-		}
-		if v, ok := packed[key]; ok {
-			params.SubscriptionID = v.(OptString)
-		}
+		params.ID = packed[key].(string)
 	}
 	return params
 }
 
-func decodePaymentsGetParams(args [0]string, argsEscaped bool, r *http.Request) (params PaymentsGetParams, _ error) {
-	q := uri.NewQueryDecoder(r.URL.Query())
-	// Decode query: limit.
+func decodeDeleteSubscriptionParams(args [1]string, argsEscaped bool, r *http.Request) (params DeleteSubscriptionParams, _ error) {
+	// Decode path: id.
 	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "limit",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotLimitVal int
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToInt(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotLimitVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Limit.SetTo(paramsDotLimitVal)
-				return nil
-			}); err != nil {
-				return err
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
 			}
+			param = unescaped
 		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "limit",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: page.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "page",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
 
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotPageVal int
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToInt(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotPageVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Page.SetTo(paramsDotPageVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "page",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: count_only.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "count_only",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCountOnlyVal bool
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToBool(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotCountOnlyVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.CountOnly.SetTo(paramsDotCountOnlyVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "count_only",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: sort.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "sort",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotSortVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotSortVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Sort.SetTo(paramsDotSortVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "sort",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: pay_type.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "pay_type",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+			if err := func() error {
 				val, err := d.DecodeValue()
 				if err != nil {
 					return err
@@ -1093,7 +1937,666 @@ func decodePaymentsGetParams(args [0]string, argsEscaped bool, r *http.Request) 
 					return err
 				}
 
-				params.PayType = c
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// DeleteWebhookSettingParams is parameters of deleteWebhookSetting operation.
+type DeleteWebhookSettingParams struct {
+	// Webhook設定のID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づくWebhook設定のうち、指定したIDのWebhook設定を削除します。.
+	TenantShopID OptString
+}
+
+func unpackDeleteWebhookSettingParams(packed middleware.Parameters) (params DeleteWebhookSettingParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeDeleteWebhookSettingParams(args [1]string, argsEscaped bool, r *http.Request) (params DeleteWebhookSettingParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// Execute3DSecureAuthenticationParams is parameters of execute3DSecureAuthentication operation.
+type Execute3DSecureAuthenticationParams struct {
+	// 取引ID.
+	AccessID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップの決済情報のうち、指定した`access_id`のカード決済を3Dセキュア認証します。.
+	TenantShopID OptString
+}
+
+func unpackExecute3DSecureAuthenticationParams(packed middleware.Parameters) (params Execute3DSecureAuthenticationParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "access_id",
+			In:   "path",
+		}
+		params.AccessID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeExecute3DSecureAuthenticationParams(args [1]string, argsEscaped bool, r *http.Request) (params Execute3DSecureAuthenticationParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: access_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "access_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.AccessID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "access_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// ExecutePaymentParams is parameters of executePayment operation.
+type ExecutePaymentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済処理を実行します。.
+	TenantShopID OptString
+	// オーダーID（決済情報のID）.
+	ID string
+}
+
+func unpackExecutePaymentParams(packed middleware.Parameters) (params ExecutePaymentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeExecutePaymentParams(args [1]string, argsEscaped bool, r *http.Request) (params ExecutePaymentParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// ExecutePaymentAfter3DSecureParams is parameters of executePaymentAfter3DSecure operation.
+type ExecutePaymentAfter3DSecureParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済の3Dセキュア認証後決済を実行します。.
+	TenantShopID OptString
+	// オーダーID（決済情報のID）.
+	ID string
+}
+
+func unpackExecutePaymentAfter3DSecureParams(packed middleware.Parameters) (params ExecutePaymentAfter3DSecureParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeExecutePaymentAfter3DSecureParams(args [1]string, argsEscaped bool, r *http.Request) (params ExecutePaymentAfter3DSecureParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// GenerateBarcodeOfPaymentParams is parameters of generateBarcodeOfPayment operation.
+type GenerateBarcodeOfPaymentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主としたコンビニ決済のうち、`id`で指定した決済のバーコードを再度発行します。.
+	TenantShopID OptString
+	// オーダーID（決済情報のID）.
+	ID string
+}
+
+func unpackGenerateBarcodeOfPaymentParams(packed middleware.Parameters) (params GenerateBarcodeOfPaymentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeGenerateBarcodeOfPaymentParams(args [1]string, argsEscaped bool, r *http.Request) (params GenerateBarcodeOfPaymentParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RequestProductionEnvironmentParams is parameters of requestProductionEnvironment operation.
+type RequestProductionEnvironmentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップのものとしてファイルをアップロードします。.
+	TenantShopID string
+}
+
+func unpackRequestProductionEnvironmentParams(packed middleware.Parameters) (params RequestProductionEnvironmentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRequestProductionEnvironmentParams(args [0]string, argsEscaped bool, r *http.Request) (params RequestProductionEnvironmentParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.TenantShopID = c
 				return nil
 			}); err != nil {
 				return err
@@ -1104,561 +2607,26 @@ func decodePaymentsGetParams(args [0]string, argsEscaped bool, r *http.Request) 
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "pay_type",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: keyword.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "keyword",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotKeywordVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotKeywordVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Keyword.SetTo(paramsDotKeywordVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "keyword",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: total_amount_min.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "total_amount_min",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTotalAmountMinVal int
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToInt(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTotalAmountMinVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.TotalAmountMin.SetTo(paramsDotTotalAmountMinVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "total_amount_min",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: total_amount_max.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "total_amount_max",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTotalAmountMaxVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTotalAmountMaxVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.TotalAmountMax.SetTo(paramsDotTotalAmountMaxVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "total_amount_max",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: customer_id.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "customer_id",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotCustomerIDVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotCustomerIDVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.CustomerID.SetTo(paramsDotCustomerIDVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "customer_id",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: process_data_from.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "process_data_from",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotProcessDataFromVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotProcessDataFromVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.ProcessDataFrom.SetTo(paramsDotProcessDataFromVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "process_data_from",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: process_data_to.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "process_data_to",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotProcessDataToVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotProcessDataToVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.ProcessDataTo.SetTo(paramsDotProcessDataToVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "process_data_to",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: auth_max_date_from.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "auth_max_date_from",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotAuthMaxDateFromVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotAuthMaxDateFromVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.AuthMaxDateFrom.SetTo(paramsDotAuthMaxDateFromVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "auth_max_date_from",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: auth_max_date_to.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "auth_max_date_to",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotAuthMaxDateToVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotAuthMaxDateToVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.AuthMaxDateTo.SetTo(paramsDotAuthMaxDateToVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "auth_max_date_to",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: update_date_from.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "update_date_from",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotUpdateDateFromVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotUpdateDateFromVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.UpdateDateFrom.SetTo(paramsDotUpdateDateFromVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "update_date_from",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: update_date_to.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "update_date_to",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotUpdateDateToVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotUpdateDateToVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.UpdateDateTo.SetTo(paramsDotUpdateDateToVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "update_date_to",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: status.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "status",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotStatusVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotStatusVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.Status.SetTo(paramsDotStatusVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "status",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: pay_pattern.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "pay_pattern",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotPayPatternVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotPayPatternVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.PayPattern.SetTo(paramsDotPayPatternVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "pay_pattern",
-			In:   "query",
-			Err:  err,
-		}
-	}
-	// Decode query: subscription_id.
-	if err := func() error {
-		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "subscription_id",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.HasParam(cfg); err == nil {
-			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotSubscriptionIDVal string
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotSubscriptionIDVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				params.SubscriptionID.SetTo(paramsDotSubscriptionIDVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "subscription_id",
-			In:   "query",
+			Name: "Tenant-Shop-Id",
+			In:   "header",
 			Err:  err,
 		}
 	}
 	return params, nil
 }
 
-// PaymentsIDGetParams is parameters of GET /payments/{id} operation.
-type PaymentsIDGetParams struct {
+// ReserveProviderParams is parameters of reserveProvider operation.
+type ReserveProviderParams struct {
+	// 指定したテナントショップに対して決済手段を追加申請します。。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
 	ID string
-	// 決済種別
-	// Card- クレジットカード決済
-	// Applepay - Apple Pay
-	// Konbini- コンビニ決済
-	// Paypay- PayPay
-	// Directdebit - 口座振替
-	// Virtualaccount - 銀行振込（バーチャル口座）.
-	PayType string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップに対して決済手段を追加申請します。.
+	TenantShopID string
 }
 
-func unpackPaymentsIDGetParams(packed middleware.Parameters) (params PaymentsIDGetParams) {
+func unpackReserveProviderParams(packed middleware.Parameters) (params ReserveProviderParams) {
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
@@ -1668,15 +2636,2209 @@ func unpackPaymentsIDGetParams(packed middleware.Parameters) (params PaymentsIDG
 	}
 	{
 		key := middleware.ParameterKey{
-			Name: "pay_type",
-			In:   "query",
+			Name: "Tenant-Shop-Id",
+			In:   "header",
 		}
-		params.PayType = packed[key].(string)
+		params.TenantShopID = packed[key].(string)
 	}
 	return params
 }
 
-func decodePaymentsIDGetParams(args [1]string, argsEscaped bool, r *http.Request) (params PaymentsIDGetParams, _ error) {
+func decodeReserveProviderParams(args [1]string, argsEscaped bool, r *http.Request) (params ReserveProviderParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.TenantShopID = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveAccountParams is parameters of retrieveAccount operation.
+type RetrieveAccountParams struct {
+	// 売上入金情報のID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップの売上入金情報のうち、指定したIDの売上入金情報を取得します。.
+	TenantShopID OptString
+}
+
+func unpackRetrieveAccountParams(packed middleware.Parameters) (params RetrieveAccountParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveAccountParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveAccountParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveAccountDetailListParams is parameters of retrieveAccountDetailList operation.
+type RetrieveAccountDetailListParams struct {
+	// 売上入金情報のID.
+	ID AccountIdSchema
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップの売上入金情報のうち、指定したIDの売上入金情報の売上入金詳細を取得します。.
+	TenantShopID OptString
+	// 売上入金詳細の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrieveAccountDetailListQuery
+}
+
+func unpackRetrieveAccountDetailListParams(packed middleware.Parameters) (params RetrieveAccountDetailListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(AccountIdSchema)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrieveAccountDetailListQuery)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveAccountDetailListParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveAccountDetailListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = AccountIdSchema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrieveAccountDetailListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveAccountListParams is parameters of retrieveAccountList operation.
+type RetrieveAccountListParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップの売上入金情報から一覧で取得します。.
+	TenantShopID OptString
+	// 売上入金情報の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrieveAccountListQuery
+}
+
+func unpackRetrieveAccountListParams(packed middleware.Parameters) (params RetrieveAccountListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrieveAccountListQuery)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveAccountListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrieveAccountListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "processed", Required: false}, {Name: "status", Required: false}, {Name: "scheduled_from", Required: false}, {Name: "scheduled_to", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrieveAccountListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveCustomerParams is parameters of retrieveCustomer operation.
+type RetrieveCustomerParams struct {
+	// 顧客ID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客情報を取得します。.
+	TenantShopID OptString
+}
+
+func unpackRetrieveCustomerParams(packed middleware.Parameters) (params RetrieveCustomerParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveCustomerParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveCustomerParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveCustomerCardParams is parameters of retrieveCustomerCard operation.
+type RetrieveCustomerCardParams struct {
+	// このカードが紐づく顧客のID.
+	CustomerID string
+	// 取得するカードのID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードから取得します。.
+	TenantShopID OptString
+}
+
+func unpackRetrieveCustomerCardParams(packed middleware.Parameters) (params RetrieveCustomerCardParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveCustomerCardParams(args [2]string, argsEscaped bool, r *http.Request) (params RetrieveCustomerCardParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[1]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[1])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveCustomerCardListParams is parameters of retrieveCustomerCardList operation.
+type RetrieveCustomerCardListParams struct {
+	// 顧客ID。 \
+	// この顧客に紐づくカードを一覧で取得します。.
+	CustomerID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードの一覧を取得します。.
+	TenantShopID OptString
+}
+
+func unpackRetrieveCustomerCardListParams(packed middleware.Parameters) (params RetrieveCustomerCardListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveCustomerCardListParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveCustomerCardListParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveCustomerListParams is parameters of retrieveCustomerList operation.
+type RetrieveCustomerListParams struct {
+	// 顧客情報の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrieveCustomerListQuery
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客から一覧で取得します。.
+	TenantShopID OptString
+}
+
+func unpackRetrieveCustomerListParams(packed middleware.Parameters) (params RetrieveCustomerListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrieveCustomerListQuery)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveCustomerListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrieveCustomerListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "id", Required: false}, {Name: "name", Required: false}, {Name: "email", Required: false}, {Name: "created_from", Required: false}, {Name: "created_to", Required: false}, {Name: "sort", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrieveCustomerListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveCustomerPaymentMethodParams is parameters of retrieveCustomerPaymentMethod operation.
+type RetrieveCustomerPaymentMethodParams struct {
+	// 顧客ID.
+	CustomerID string
+	// 決済手段ID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に紐づく決済手段からIDで指定した決済手段を取得します。.
+	TenantShopID OptString
+	// 決済手段の取得において検索条件となるクエリパラメータ.
+	Query RetrieveCustomerPaymentMethodQuery
+}
+
+func unpackRetrieveCustomerPaymentMethodParams(packed middleware.Parameters) (params RetrieveCustomerPaymentMethodParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		params.Query = packed[key].(RetrieveCustomerPaymentMethodQuery)
+	}
+	return params
+}
+
+func decodeRetrieveCustomerPaymentMethodParams(args [2]string, argsEscaped bool, r *http.Request) (params RetrieveCustomerPaymentMethodParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[1]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[1])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "pay_type", Required: true}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				return params.Query.DecodeURI(d)
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := params.Query.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveCustomerPaymentMethodListParams is parameters of retrieveCustomerPaymentMethodList operation.
+type RetrieveCustomerPaymentMethodListParams struct {
+	// 顧客ID.
+	CustomerID string
+	// 決済手段の一覧取得において検索条件となるクエリパラメータ.
+	Query RetrieveCustomerPaymentMethodListQuery
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に紐づく決済手段から一覧で取得します。.
+	TenantShopID OptString
+}
+
+func unpackRetrieveCustomerPaymentMethodListParams(packed middleware.Parameters) (params RetrieveCustomerPaymentMethodListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		params.Query = packed[key].(RetrieveCustomerPaymentMethodListQuery)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveCustomerPaymentMethodListParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveCustomerPaymentMethodListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "pay_type", Required: true}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				return params.Query.DecodeURI(d)
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := params.Query.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePaymentParams is parameters of retrievePayment operation.
+type RetrievePaymentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済情報を取得します。.
+	TenantShopID OptString
+	// オーダーID（決済情報のID）.
+	ID string
+	// 決済の取得において検索条件となるクエリパラメータ.
+	Query RetrievePaymentQuery
+}
+
+func unpackRetrievePaymentParams(packed middleware.Parameters) (params RetrievePaymentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		params.Query = packed[key].(RetrievePaymentQuery)
+	}
+	return params
+}
+
+func decodeRetrievePaymentParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrievePaymentParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "pay_type", Required: true}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				return params.Query.DecodeURI(d)
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := params.Query.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePaymentBulkDetailListParams is parameters of retrievePaymentBulkDetailList operation.
+type RetrievePaymentBulkDetailListParams struct {
+	// 一括決済ID。\
+	// 詳細を取得する一括決済情報のIDを指定します。.
+	ID PaymentBulkIdSchema
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした一括決済の詳細を一覧で取得します。.
+	TenantShopID OptString
+	// 一括決済情報の一覧取得において検索条件となるクエリパラメータ.
+	Query RetrievePaymentBulkDetailListQuery
+}
+
+func unpackRetrievePaymentBulkDetailListParams(packed middleware.Parameters) (params RetrievePaymentBulkDetailListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(PaymentBulkIdSchema)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		params.Query = packed[key].(RetrievePaymentBulkDetailListQuery)
+	}
+	return params
+}
+
+func decodeRetrievePaymentBulkDetailListParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrievePaymentBulkDetailListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = PaymentBulkIdSchema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "pay_type", Required: true}, {Name: "order_id", Required: false}, {Name: "status", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				return params.Query.DecodeURI(d)
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := params.Query.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePaymentBulkListParams is parameters of retrievePaymentBulkList operation.
+type RetrievePaymentBulkListParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした一括決済情報を一覧で取得します。.
+	TenantShopID OptString
+	// 一括決済情報の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrievePaymentBulkListQuery
+}
+
+func unpackRetrievePaymentBulkListParams(packed middleware.Parameters) (params RetrievePaymentBulkListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrievePaymentBulkListQuery)
+		}
+	}
+	return params
+}
+
+func decodeRetrievePaymentBulkListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrievePaymentBulkListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "process_plan_date_from", Required: false}, {Name: "process_plan_date_to", Required: false}, {Name: "status", Required: false}, {Name: "pay_type", Required: false}, {Name: "file_name", Required: false}, {Name: "delete_flag", Required: false}, {Name: "created_from", Required: false}, {Name: "created_to", Required: false}, {Name: "sort", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrievePaymentBulkListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePlanParams is parameters of retrievePlan operation.
+type RetrievePlanParams struct {
+	// プランID.
+	ID string
+}
+
+func unpackRetrievePlanParams(packed middleware.Parameters) (params RetrievePlanParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRetrievePlanParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrievePlanParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePlanListParams is parameters of retrievePlanList operation.
+type RetrievePlanListParams struct {
+	// プラン情報の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrievePlanListQuery
+}
+
+func unpackRetrievePlanListParams(packed middleware.Parameters) (params RetrievePlanListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrievePlanListQuery)
+		}
+	}
+	return params
+}
+
+func decodeRetrievePlanListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrievePlanListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "total_amount_min", Required: false}, {Name: "total_amount_max", Required: false}, {Name: "interval_pattern", Required: false}, {Name: "update_date_from", Required: false}, {Name: "update_date_to", Required: false}, {Name: "plan_name", Required: false}, {Name: "delete_flag", Required: false}, {Name: "sort", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrievePlanListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePlatformAccountParams is parameters of retrievePlatformAccount operation.
+type RetrievePlatformAccountParams struct {
+	// プラットフォーム利用料収入ID.
+	ID string
+}
+
+func unpackRetrievePlatformAccountParams(packed middleware.Parameters) (params RetrievePlatformAccountParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRetrievePlatformAccountParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrievePlatformAccountParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePlatformAccountListParams is parameters of retrievePlatformAccountList operation.
+type RetrievePlatformAccountListParams struct {
+	// プラットフォーム利用料による売上入金情報の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrievePlatformAccountListQuery
+}
+
+func unpackRetrievePlatformAccountListParams(packed middleware.Parameters) (params RetrievePlatformAccountListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrievePlatformAccountListQuery)
+		}
+	}
+	return params
+}
+
+func decodeRetrievePlatformAccountListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrievePlatformAccountListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "processed", Required: false}, {Name: "status", Required: false}, {Name: "scheduled_from", Required: false}, {Name: "scheduled_to", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrievePlatformAccountListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePlatformAccountSummaryListParams is parameters of retrievePlatformAccountSummaryList operation.
+type RetrievePlatformAccountSummaryListParams struct {
+	// プラットフォーム利用料収入ID.
+	ID string
+	// プラットフォーム利用料による売上入金情報の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrievePlatformAccountSummaryListQuery
+}
+
+func unpackRetrievePlatformAccountSummaryListParams(packed middleware.Parameters) (params RetrievePlatformAccountSummaryListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrievePlatformAccountSummaryListQuery)
+		}
+	}
+	return params
+}
+
+func decodeRetrievePlatformAccountSummaryListParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrievePlatformAccountSummaryListParams, _ error) {
 	q := uri.NewQueryDecoder(r.URL.Query())
 	// Decode path: id.
 	if err := func() error {
@@ -1723,38 +4885,48 @@ func decodePaymentsIDGetParams(args [1]string, argsEscaped bool, r *http.Request
 			Err:  err,
 		}
 	}
-	// Decode query: pay_type.
+	// Decode query: Query.
 	if err := func() error {
 		cfg := uri.QueryParameterDecodingConfig{
-			Name:    "pay_type",
+			Name:    "Query",
 			Style:   uri.QueryStyleForm,
 			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "scheduled_from", Required: false}, {Name: "scheduled_to", Required: false}},
 		}
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotQueryVal RetrievePlatformAccountSummaryListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.PayType = c
+				params.Query.SetTo(paramsDotQueryVal)
 				return nil
 			}); err != nil {
 				return err
 			}
-		} else {
-			return validate.ErrFieldRequired
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
 		}
 		return nil
 	}(); err != nil {
 		return params, &ogenerrors.DecodeParamError{
-			Name: "pay_type",
+			Name: "Query",
 			In:   "query",
 			Err:  err,
 		}
@@ -1762,12 +4934,13 @@ func decodePaymentsIDGetParams(args [1]string, argsEscaped bool, r *http.Request
 	return params, nil
 }
 
-// PaymentsIDPutParams is parameters of PUT /payments/{id} operation.
-type PaymentsIDPutParams struct {
+// RetrievePlatformShopParams is parameters of retrievePlatformShop operation.
+type RetrievePlatformShopParams struct {
+	// ショップID.
 	ID string
 }
 
-func unpackPaymentsIDPutParams(packed middleware.Parameters) (params PaymentsIDPutParams) {
+func unpackRetrievePlatformShopParams(packed middleware.Parameters) (params RetrievePlatformShopParams) {
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
@@ -1778,7 +4951,7 @@ func unpackPaymentsIDPutParams(packed middleware.Parameters) (params PaymentsIDP
 	return params
 }
 
-func decodePaymentsIDPutParams(args [1]string, argsEscaped bool, r *http.Request) (params PaymentsIDPutParams, _ error) {
+func decodeRetrievePlatformShopParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrievePlatformShopParams, _ error) {
 	// Decode path: id.
 	if err := func() error {
 		param := args[0]
@@ -1821,6 +4994,2044 @@ func decodePaymentsIDPutParams(args [1]string, argsEscaped bool, r *http.Request
 		return params, &ogenerrors.DecodeParamError{
 			Name: "id",
 			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrievePlatformShopListParams is parameters of retrievePlatformShopList operation.
+type RetrievePlatformShopListParams struct {
+	// プラットフォーム情報の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrievePlatformShopListQuery
+}
+
+func unpackRetrievePlatformShopListParams(packed middleware.Parameters) (params RetrievePlatformShopListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrievePlatformShopListQuery)
+		}
+	}
+	return params
+}
+
+func decodeRetrievePlatformShopListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrievePlatformShopListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "id", Required: false}, {Name: "shop_name", Required: false}, {Name: "shop_mail_address", Required: false}, {Name: "created_from", Required: false}, {Name: "created_to", Required: false}, {Name: "sort", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrievePlatformShopListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveSubscriptionParams is parameters of retrieveSubscription operation.
+type RetrieveSubscriptionParams struct {
+	// サブスクリプションID.
+	ID string
+}
+
+func unpackRetrieveSubscriptionParams(packed middleware.Parameters) (params RetrieveSubscriptionParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRetrieveSubscriptionParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveSubscriptionParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveSubscriptionListParams is parameters of retrieveSubscriptionList operation.
+type RetrieveSubscriptionListParams struct {
+	// サブスクリプション情報の一覧取得において検索条件となるクエリパラメータ.
+	Query RetrieveSubscriptionListQuery
+}
+
+func unpackRetrieveSubscriptionListParams(packed middleware.Parameters) (params RetrieveSubscriptionListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		params.Query = packed[key].(RetrieveSubscriptionListQuery)
+	}
+	return params
+}
+
+func decodeRetrieveSubscriptionListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrieveSubscriptionListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "pay_type", Required: true}, {Name: "id", Required: false}, {Name: "customer_id", Required: false}, {Name: "plan_id", Required: false}, {Name: "status", Required: false}, {Name: "total_amount_min", Required: false}, {Name: "total_amount_max", Required: false}, {Name: "interval_pattern", Required: false}, {Name: "start_date_from", Required: false}, {Name: "start_date_to", Required: false}, {Name: "stop_date_from", Required: false}, {Name: "stop_date_to", Required: false}, {Name: "next_charge_date_from", Required: false}, {Name: "next_charge_date_to", Required: false}, {Name: "update_date_from", Required: false}, {Name: "update_date_to", Required: false}, {Name: "sort", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				return params.Query.DecodeURI(d)
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := params.Query.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveSubscriptionResultListParams is parameters of retrieveSubscriptionResultList operation.
+type RetrieveSubscriptionResultListParams struct {
+	// サブスクリプション結果の一覧取得において検索条件となるクエリパラメータ.
+	Query RetrieveSubscriptionResultListQuery
+	// サブスクリプションID.
+	ID string
+}
+
+func unpackRetrieveSubscriptionResultListParams(packed middleware.Parameters) (params RetrieveSubscriptionResultListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		params.Query = packed[key].(RetrieveSubscriptionResultListQuery)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRetrieveSubscriptionResultListParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveSubscriptionResultListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "pay_type", Required: true}, {Name: "sort", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				return params.Query.DecodeURI(d)
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if err := params.Query.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveTenantContractParams is parameters of retrieveTenantContract operation.
+type RetrieveTenantContractParams struct {
+	// 指定したテナントショップの契約情報を取得します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップの契約情報を取得します。.
+	TenantShopID string
+}
+
+func unpackRetrieveTenantContractParams(packed middleware.Parameters) (params RetrieveTenantContractParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRetrieveTenantContractParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveTenantContractParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.TenantShopID = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveTenantExaminationInfoParams is parameters of retrieveTenantExaminationInfo operation.
+type RetrieveTenantExaminationInfoParams struct {
+	// 指定したテナントショップの本番環境申請情報を取得します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップの本番環境申請情報を取得します。.
+	TenantShopID string
+}
+
+func unpackRetrieveTenantExaminationInfoParams(packed middleware.Parameters) (params RetrieveTenantExaminationInfoParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRetrieveTenantExaminationInfoParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveTenantExaminationInfoParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.TenantShopID = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveTenantExaminationInfoV2Params is parameters of retrieveTenantExaminationInfoV2 operation.
+type RetrieveTenantExaminationInfoV2Params struct {
+	// 指定したテナントショップの本番環境申請情報を取得します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップの本番環境申請情報を取得します。.
+	TenantShopID string
+}
+
+func unpackRetrieveTenantExaminationInfoV2Params(packed middleware.Parameters) (params RetrieveTenantExaminationInfoV2Params) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRetrieveTenantExaminationInfoV2Params(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveTenantExaminationInfoV2Params, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.TenantShopID = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveTenantShopParams is parameters of retrieveTenantShop operation.
+type RetrieveTenantShopParams struct {
+	// ショップID.
+	ID string
+}
+
+func unpackRetrieveTenantShopParams(packed middleware.Parameters) (params RetrieveTenantShopParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeRetrieveTenantShopParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveTenantShopParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveTenantShopListParams is parameters of retrieveTenantShopList operation.
+type RetrieveTenantShopListParams struct {
+	// テナント情報の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrieveTenantShopListQuery
+}
+
+func unpackRetrieveTenantShopListParams(packed middleware.Parameters) (params RetrieveTenantShopListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrieveTenantShopListQuery)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveTenantShopListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrieveTenantShopListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}, {Name: "id", Required: false}, {Name: "shop_name", Required: false}, {Name: "shop_mail_address", Required: false}, {Name: "created_from", Required: false}, {Name: "created_to", Required: false}, {Name: "sort", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrieveTenantShopListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveWebhookSettingParams is parameters of retrieveWebhookSetting operation.
+type RetrieveWebhookSettingParams struct {
+	// Webhook設定のID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づくWebhook設定のうち、指定したIDのWebhook設定を取得します。.
+	TenantShopID OptString
+}
+
+func unpackRetrieveWebhookSettingParams(packed middleware.Parameters) (params RetrieveWebhookSettingParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveWebhookSettingParams(args [1]string, argsEscaped bool, r *http.Request) (params RetrieveWebhookSettingParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// RetrieveWebhookSettingListParams is parameters of retrieveWebhookSettingList operation.
+type RetrieveWebhookSettingListParams struct {
+	// Webhook設定の一覧取得において検索条件となるクエリパラメータ.
+	Query OptRetrieveWebhookSettingListQuery
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づくWebhook設定から一覧で取得します。.
+	TenantShopID OptString
+}
+
+func unpackRetrieveWebhookSettingListParams(packed middleware.Parameters) (params RetrieveWebhookSettingListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Query",
+			In:   "query",
+		}
+		if v, ok := packed[key]; ok {
+			params.Query = v.(OptRetrieveWebhookSettingListQuery)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeRetrieveWebhookSettingListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrieveWebhookSettingListParams, _ error) {
+	q := uri.NewQueryDecoder(r.URL.Query())
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode query: Query.
+	if err := func() error {
+		cfg := uri.QueryParameterDecodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+			Fields:  []uri.QueryParameterObjectField{{Name: "page", Required: false}, {Name: "limit", Required: false}, {Name: "count_only", Required: false}},
+		}
+
+		if err := q.HasParam(cfg); err == nil {
+			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotQueryVal RetrieveWebhookSettingListQuery
+				if err := func() error {
+					return paramsDotQueryVal.DecodeURI(d)
+				}(); err != nil {
+					return err
+				}
+				params.Query.SetTo(paramsDotQueryVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+			if err := func() error {
+				if value, ok := params.Query.Get(); ok {
+					if err := func() error {
+						if err := value.Validate(); err != nil {
+							return err
+						}
+						return nil
+					}(); err != nil {
+						return err
+					}
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Query",
+			In:   "query",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateCustomerParams is parameters of updateCustomer operation.
+type UpdateCustomerParams struct {
+	// 顧客ID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客情報を更新します。.
+	TenantShopID OptString
+}
+
+func unpackUpdateCustomerParams(packed middleware.Parameters) (params UpdateCustomerParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeUpdateCustomerParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateCustomerParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateCustomerCardParams is parameters of updateCustomerCard operation.
+type UpdateCustomerCardParams struct {
+	// このカードが紐づく顧客のID.
+	CustomerID string
+	// 更新するカードのID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードの情報を更新します。.
+	TenantShopID OptString
+}
+
+func unpackUpdateCustomerCardParams(packed middleware.Parameters) (params UpdateCustomerCardParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "customer_id",
+			In:   "path",
+		}
+		params.CustomerID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeUpdateCustomerCardParams(args [2]string, argsEscaped bool, r *http.Request) (params UpdateCustomerCardParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: customer_id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "customer_id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.CustomerID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "customer_id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[1]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[1])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdatePlanParams is parameters of updatePlan operation.
+type UpdatePlanParams struct {
+	// プランID.
+	ID string
+}
+
+func unpackUpdatePlanParams(packed middleware.Parameters) (params UpdatePlanParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeUpdatePlanParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdatePlanParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdatePlatformShopParams is parameters of updatePlatformShop operation.
+type UpdatePlatformShopParams struct {
+	// ショップID.
+	ID string
+}
+
+func unpackUpdatePlatformShopParams(packed middleware.Parameters) (params UpdatePlatformShopParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeUpdatePlatformShopParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdatePlatformShopParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateSubscriptionParams is parameters of updateSubscription operation.
+type UpdateSubscriptionParams struct {
+	// サブスクリプションID.
+	ID string
+}
+
+func unpackUpdateSubscriptionParams(packed middleware.Parameters) (params UpdateSubscriptionParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeUpdateSubscriptionParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateSubscriptionParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateTenantExaminationInfoParams is parameters of updateTenantExaminationInfo operation.
+type UpdateTenantExaminationInfoParams struct {
+	// 指定したテナントショップの本番環境申請情報を更新します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップの本番環境申請情報を更新します。.
+	TenantShopID string
+}
+
+func unpackUpdateTenantExaminationInfoParams(packed middleware.Parameters) (params UpdateTenantExaminationInfoParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeUpdateTenantExaminationInfoParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateTenantExaminationInfoParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.TenantShopID = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateTenantExaminationInfoV2Params is parameters of updateTenantExaminationInfoV2 operation.
+type UpdateTenantExaminationInfoV2Params struct {
+	// 指定したテナントショップの本番環境申請情報を更新します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップの本番環境申請情報を更新します。.
+	TenantShopID string
+}
+
+func unpackUpdateTenantExaminationInfoV2Params(packed middleware.Parameters) (params UpdateTenantExaminationInfoV2Params) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeUpdateTenantExaminationInfoV2Params(args [1]string, argsEscaped bool, r *http.Request) (params UpdateTenantExaminationInfoV2Params, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.TenantShopID = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateTenantShopParams is parameters of updateTenantShop operation.
+type UpdateTenantShopParams struct {
+	// ショップID.
+	ID string
+}
+
+func unpackUpdateTenantShopParams(packed middleware.Parameters) (params UpdateTenantShopParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeUpdateTenantShopParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateTenantShopParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateWebhookSettingParams is parameters of updateWebhookSetting operation.
+type UpdateWebhookSettingParams struct {
+	// Webhook設定のID.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づくWebhook設定のうち、指定したIDのWebhook設定を更新します。.
+	TenantShopID OptString
+}
+
+func unpackUpdateWebhookSettingParams(packed middleware.Parameters) (params UpdateWebhookSettingParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptString)
+		}
+	}
+	return params
+}
+
+func decodeUpdateWebhookSettingParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateWebhookSettingParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UploadExaminationFileParams is parameters of uploadExaminationFile operation.
+type UploadExaminationFileParams struct {
+	// 指定したテナントショップのものとしてファイルをアップロードします。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
+	ID string
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップのものとしてファイルをアップロードします。.
+	TenantShopID string
+}
+
+func unpackUploadExaminationFileParams(packed middleware.Parameters) (params UploadExaminationFileParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(string)
+	}
+	return params
+}
+
+func decodeUploadExaminationFileParams(args [1]string, argsEscaped bool, r *http.Request) (params UploadExaminationFileParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.TenantShopID = c
+				return nil
+			}); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
 			Err:  err,
 		}
 	}

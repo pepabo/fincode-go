@@ -18,59 +18,557 @@ import (
 	"github.com/ogen-go/ogen/conv"
 	ht "github.com/ogen-go/ogen/http"
 	"github.com/ogen-go/ogen/ogenerrors"
+	"github.com/ogen-go/ogen/otelogen"
 	"github.com/ogen-go/ogen/uri"
 )
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
-	// CustomersCustomerIDCardsIDDelete invokes DELETE /customers/{customer_id}/cards/{id} operation.
+	// AuthorizePayment invokes authorizePayment operation.
 	//
-	// DELETE /customers/{customer_id}/cards/{id}
-	CustomersCustomerIDCardsIDDelete(ctx context.Context, params CustomersCustomerIDCardsIDDeleteParams) (CustomersCustomerIDCardsIDDeleteRes, error)
-	// CustomersCustomerIDCardsIDGet invokes GET /customers/{customer_id}/cards/{id} operation.
+	// 決済のオーソリを再度実行します。\
+	// \
+	// `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
 	//
-	// GET /customers/{customer_id}/cards/{id}
-	CustomersCustomerIDCardsIDGet(ctx context.Context, params CustomersCustomerIDCardsIDGetParams) (CustomersCustomerIDCardsIDGetRes, error)
-	// CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete invokes DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+	// PUT /v1/payments/{id}/auth
+	AuthorizePayment(ctx context.Context, request OptAuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error)
+	// CapturePayment invokes capturePayment operation.
 	//
-	// DELETE /customers/{customer_id}/payment_methods/{payment_method_id}
-	CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, error)
-	// CustomersCustomerIDPaymentMethodsPaymentMethodIDGet invokes GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
+	// `status`が仮売上（`AUTHORIZED`）またはキャンセル（`CANCELED`）である決済に対して売上確定を行います。\
+	// 成功すると、ステータスが`CAPTURED`に遷移し、その時点を集計対象とした売上入金に反映されます。.
 	//
-	// GET /customers/{customer_id}/payment_methods/{payment_method_id}
-	CustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, error)
-	// CustomersCustomerIDPaymentMethodsPost invokes POST /customers/{customer_id}/payment_methods operation.
+	// PUT /v1/payments/{id}/capture
+	CapturePayment(ctx context.Context, request OptCapturePaymentReq, params CapturePaymentParams) (CapturePaymentRes, error)
+	// ChangeAmountOfPayment invokes changeAmountOfPayment operation.
 	//
-	// POST /customers/{customer_id}/payment_methods
-	CustomersCustomerIDPaymentMethodsPost(ctx context.Context, request CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (CustomersCustomerIDPaymentMethodsPostRes, error)
-	// CustomersIDDelete invokes DELETE /customers/{id} operation.
+	// 決済の利用金額を変更します。\
+	// 既に売上確定となっている決済は請求金額が変更され、仮売上となっている決済は確保している与信枠の金額が変更されます。.
 	//
-	// DELETE /customers/{id}
-	CustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (CustomersIDDeleteRes, error)
-	// CustomersIDGet invokes GET /customers/{id} operation.
+	// PUT /v1/payments/{id}/change
+	ChangeAmountOfPayment(ctx context.Context, request OptChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (ChangeAmountOfPaymentRes, error)
+	// Confirm3DSecureAuthentication invokes confirm3DSecureAuthentication operation.
 	//
-	// GET /customers/{id}
-	CustomersIDGet(ctx context.Context, params CustomersIDGetParams) (CustomersIDGetRes, error)
-	// CustomersPost invokes POST /customers operation.
+	// `access_id`で指定したカード決済取引の3Dセキュア認証の結果を確定します。\
+	// \
+	// `challenge_url`上で購入者がチャレンジ認証実施後、`tds2_ret_url`に対し`event`パラメータで`AuthResultReady`イベントが通知されたとき、このAPIを呼び出します。.
 	//
-	// POST /customers
-	CustomersPost(ctx context.Context, request *CustomersPostReq) (CustomersPostRes, error)
-	// PaymentsGet invokes GET /payments operation.
+	// GET /v1/secure2/{access_id}
+	Confirm3DSecureAuthentication(ctx context.Context, params Confirm3DSecureAuthenticationParams) (Confirm3DSecureAuthenticationRes, error)
+	// CreateCardRegistrationSession invokes createCardRegistrationSession operation.
 	//
-	// GET /payments
-	PaymentsGet(ctx context.Context, params PaymentsGetParams) (PaymentsGetRes, error)
-	// PaymentsIDGet invokes GET /payments/{id} operation.
+	// Fincodeが提供するリダイレクト型カード登録ページを発行し、そのカード登録ページへのURLをレスポンスします。.
 	//
-	// GET /payments/{id}
-	PaymentsIDGet(ctx context.Context, params PaymentsIDGetParams) (PaymentsIDGetRes, error)
-	// PaymentsIDPut invokes PUT /payments/{id} operation.
+	// POST /v1/card_sessions
+	CreateCardRegistrationSession(ctx context.Context, request OptCardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (CreateCardRegistrationSessionRes, error)
+	// CreateCustomer invokes createCustomer operation.
 	//
-	// PUT /payments/{id}
-	PaymentsIDPut(ctx context.Context, request PaymentsIDPutReq, params PaymentsIDPutParams) (PaymentsIDPutRes, error)
-	// PaymentsPost invokes POST /payments operation.
+	// 顧客情報を登録します。.
 	//
-	// POST /payments
-	PaymentsPost(ctx context.Context, request PaymentsPostReq) (PaymentsPostRes, error)
+	// POST /v1/customers
+	CreateCustomer(ctx context.Context, request OptCustomerCreatingRequest, params CreateCustomerParams) (CreateCustomerRes, error)
+	// CreateCustomerCard invokes createCustomerCard operation.
+	//
+	// `customer_id`で指定した顧客に対しカードを登録します。.
+	//
+	// POST /v1/customers/{customer_id}/cards
+	CreateCustomerCard(ctx context.Context, request OptCustomerCardCreatingRequest, params CreateCustomerCardParams) (CreateCustomerCardRes, error)
+	// CreateCustomerPaymentMethod invokes createCustomerPaymentMethod operation.
+	//
+	// `customer_id`で指定した顧客に対し、決済手段を登録します。.
+	//
+	// POST /v1/customers/{customer_id}/payment_methods
+	CreateCustomerPaymentMethod(ctx context.Context, request OptCustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (CreateCustomerPaymentMethodRes, error)
+	// CreatePayment invokes createPayment operation.
+	//
+	// 決済情報をfincodeに登録します。決済登録に成功した時点ではまだ顧客に対して請求はされていません。.
+	//
+	// POST /v1/payments
+	CreatePayment(ctx context.Context, request OptCreatePaymentReq, params CreatePaymentParams) (CreatePaymentRes, error)
+	// CreatePaymentBulk invokes createPaymentBulk operation.
+	//
+	// FincodeにJSON形式のファイルで一括決済情報を登録し、`process_plan_date`で指定した日時に一括決済処理を予約します。.
+	//
+	// POST /v1/payments/bulk
+	CreatePaymentBulk(ctx context.Context, request OptPaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (CreatePaymentBulkRes, error)
+	// CreatePaymentSession invokes createPaymentSession operation.
+	//
+	// Fincodeが提供するリダイレクト型決済ページを発行し、その決済ページへのURLをレスポンスします。.
+	//
+	// POST /v1/sessions
+	CreatePaymentSession(ctx context.Context, request OptPaymentSessionCreatingRequest, params CreatePaymentSessionParams) (CreatePaymentSessionRes, error)
+	// CreatePlan invokes createPlan operation.
+	//
+	// プラン情報を登録します。.
+	//
+	// POST /v1/plans
+	CreatePlan(ctx context.Context, request OptPlanCreatingRequest) (CreatePlanRes, error)
+	// CreateSubscription invokes createSubscription operation.
+	//
+	// `customer_id`で指定した顧客に対して`plan_id`で指定したプランを適用したサブスクリプション情報を登録します。.
+	//
+	// POST /v1/subscriptions
+	CreateSubscription(ctx context.Context, request OptSubscriptionCreatingRequest) (CreateSubscriptionRes, error)
+	// CreateTenantWithExistingUser invokes createTenantWithExistingUser operation.
+	//
+	// 指定したプラットフォームショップのユーザーをオーナーとして新規テナントショップを作成するAPIです。\
+	// \
+	// `password`パラメータに関して、ユーザーのパスワードがfincode管理画面アプリケーション上で更新されることを想定して実装・運用することが推奨されます。.
+	//
+	// POST /v1/join_tenants
+	CreateTenantWithExistingUser(ctx context.Context, request OptPOSTJoinTenantsRequest) (CreateTenantWithExistingUserRes, error)
+	// CreateTenantWithNewUser invokes createTenantWithNewUser operation.
+	//
+	// 新規ユーザーを作成し、作成されたユーザーをオーナーとして新規テナントショップを作成するAPIです。\
+	// このAPIでのテナント作成に成功すると、登録されたメールアドレス宛にメールアドレス認証メールが送信されます。.
+	//
+	// POST /v1/tenant_entries
+	CreateTenantWithNewUser(ctx context.Context, request OptPOSTTenantEntriesRequest) (CreateTenantWithNewUserRes, error)
+	// CreateWebhookSetting invokes createWebhookSetting operation.
+	//
+	// Webhook設定を登録します。.
+	//
+	// POST /v1/webhook_settings
+	CreateWebhookSetting(ctx context.Context, request OptWebhookSettingCreatingRequest, params CreateWebhookSettingParams) (CreateWebhookSettingRes, error)
+	// DeleteCustomer invokes deleteCustomer operation.
+	//
+	// IDで指定した顧客情報を削除します。.
+	//
+	// DELETE /v1/customers/{id}
+	DeleteCustomer(ctx context.Context, params DeleteCustomerParams) (DeleteCustomerRes, error)
+	// DeleteCustomerCard invokes deleteCustomerCard operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを削除します。.
+	//
+	// DELETE /v1/customers/{customer_id}/cards/{id}
+	DeleteCustomerCard(ctx context.Context, params DeleteCustomerCardParams) (DeleteCustomerCardRes, error)
+	// DeleteCustomerPaymentMethod invokes deleteCustomerPaymentMethod operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づく決済手段のうち、`id`で指定したものを削除します。.
+	//
+	// DELETE /v1/customers/{customer_id}/payment_methods/{id}
+	DeleteCustomerPaymentMethod(ctx context.Context, params DeleteCustomerPaymentMethodParams) (DeleteCustomerPaymentMethodRes, error)
+	// DeletePaymentBulk invokes deletePaymentBulk operation.
+	//
+	// IDで指定した一括決済情報を削除します。\
+	// 一括決済処理がチェック済み（`status`が`CHECKED`）のものに限り削除できます。.
+	//
+	// DELETE /v1/payments/bulk/{id}
+	DeletePaymentBulk(ctx context.Context, params DeletePaymentBulkParams) (DeletePaymentBulkRes, error)
+	// DeletePlan invokes deletePlan operation.
+	//
+	// IDで指定したプラン情報を削除します。.
+	//
+	// DELETE /v1/plans/{id}
+	DeletePlan(ctx context.Context, params DeletePlanParams) (DeletePlanRes, error)
+	// DeleteSubscription invokes deleteSubscription operation.
+	//
+	// IDで指定したサブスクリプションを解約し、請求を停止します。.
+	//
+	// DELETE /v1/subscriptions/{id}
+	DeleteSubscription(ctx context.Context, params DeleteSubscriptionParams) (DeleteSubscriptionRes, error)
+	// DeleteWebhookSetting invokes deleteWebhookSetting operation.
+	//
+	// IDで指定したWebhook設定を削除します。.
+	//
+	// DELETE /v1/webhook_settings/{id}
+	DeleteWebhookSetting(ctx context.Context, params DeleteWebhookSettingParams) (DeleteWebhookSettingRes, error)
+	// Execute3DSecureAuthentication invokes execute3DSecureAuthentication operation.
+	//
+	// `access_id`で指定したカード決済取引の3Dセキュア認証を開始します。\
+	// \
+	// 用意した`tds2_ret_url`に対し`event`パラメータで`3DSMethodFinished`もしくは`3DSMethodSkipped`イベントが通知されたとき、このAPIを呼び出します。.
+	//
+	// PUT /v1/secure2/{access_id}
+	Execute3DSecureAuthentication(ctx context.Context, request OptR3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (Execute3DSecureAuthenticationRes, error)
+	// ExecutePayment invokes executePayment operation.
+	//
+	// Fincodeに登録された決済情報を指定し、請求を実行します。.
+	//
+	// PUT /v1/payments/{id}
+	ExecutePayment(ctx context.Context, request OptExecutePaymentReq, params ExecutePaymentParams) (ExecutePaymentRes, error)
+	// ExecutePaymentAfter3DSecure invokes executePaymentAfter3DSecure operation.
+	//
+	// 3Dセキュア認証後の決済を実行します。\
+	// \
+	// 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
+	//
+	// PUT /v1/payments/{id}/secure
+	ExecutePaymentAfter3DSecure(ctx context.Context, request OptExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error)
+	// GenerateBarcodeOfPayment invokes generateBarcodeOfPayment operation.
+	//
+	// リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
+	//
+	// PUT /v1/payments/{id}/barcode
+	GenerateBarcodeOfPayment(ctx context.Context, request OptGenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error)
+	// ReceiveWebhookOfApplePayPayment invokes receiveWebhookOfApplePayPayment operation.
+	//
+	// Apple Payによる決済に関するイベント（`payments.applepay.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-applepay-payment
+	ReceiveWebhookOfApplePayPayment(ctx context.Context, request OptWebhookEventPaymentApplePay) (ReceiveWebhookOfApplePayPaymentRes, error)
+	// ReceiveWebhookOfCard invokes receiveWebhookOfCard operation.
+	//
+	// カードに関するイベント（`card.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card
+	ReceiveWebhookOfCard(ctx context.Context, request OptWebhookEventCard) (ReceiveWebhookOfCardRes, error)
+	// ReceiveWebhookOfCardPayment invokes receiveWebhookOfCardPayment operation.
+	//
+	// カード決済に関するイベント（`payments.card.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-payment
+	ReceiveWebhookOfCardPayment(ctx context.Context, request OptWebhookEventPaymentCard) (ReceiveWebhookOfCardPaymentRes, error)
+	// ReceiveWebhookOfCardPaymentBulkBatch invokes receiveWebhookOfCardPaymentBulkBatch operation.
+	//
+	// カード決済による一括決済 課金イベント（`payments.bulk.card.
+	// batch`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-payment-bulk-batch
+	ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request OptWebhookEventPaymentBulkBatchCard) (ReceiveWebhookOfCardPaymentBulkBatchRes, error)
+	// ReceiveWebhookOfCardRecurringBatch invokes receiveWebhookOfCardRecurringBatch operation.
+	//
+	// カード決済によるサブスクリプション課金のイベント（`recurring.card.
+	// batch`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-recurring-batch
+	ReceiveWebhookOfCardRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchCard) (ReceiveWebhookOfCardRecurringBatchRes, error)
+	// ReceiveWebhookOfCardSubscription invokes receiveWebhookOfCardSubscription operation.
+	//
+	// カード決済によるサブスクリプションに関するイベント（`subscription.card.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-subscription
+	ReceiveWebhookOfCardSubscription(ctx context.Context, request OptWebhookEventSubscriptionCard) (ReceiveWebhookOfCardSubscriptionRes, error)
+	// ReceiveWebhookOfContract invokes receiveWebhookOfContract operation.
+	//
+	// 決済手段 契約状況 更新イベント（`contracts.status_code.
+	// updated`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-contract
+	ReceiveWebhookOfContract(ctx context.Context, request OptWebhookEventContract) (ReceiveWebhookOfContractRes, error)
+	// ReceiveWebhookOfCustomerPaymentMethod invokes receiveWebhookOfCustomerPaymentMethod operation.
+	//
+	// 顧客の決済手段に関するイベント（`customers.payment_methods.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-customer-payment_method
+	ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request OptWebhookEventCustomerPaymentMethod) (ReceiveWebhookOfCustomerPaymentMethodRes, error)
+	// ReceiveWebhookOfDirectDebitPayment invokes receiveWebhookOfDirectDebitPayment operation.
+	//
+	// 口座振替に関するイベント（`payments.directdebit.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-directdebit-payment
+	ReceiveWebhookOfDirectDebitPayment(ctx context.Context, request OptWebhookEventPaymentDirectDebit) (ReceiveWebhookOfDirectDebitPaymentRes, error)
+	// ReceiveWebhookOfDirectDebitRecurringBatch invokes receiveWebhookOfDirectDebitRecurringBatch operation.
+	//
+	// 口座振替によるサブスクリプション課金に関するイベント（`recurring.
+	// directdebit.batch`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-directdebit-recurring-batch
+	ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchDirectDebit) (ReceiveWebhookOfDirectDebitRecurringBatchRes, error)
+	// ReceiveWebhookOfDirectDebitSubscription invokes receiveWebhookOfDirectDebitSubscription operation.
+	//
+	// 口座振替によるサブスクリプションに関するイベント（`subscription.
+	// directdebit.*`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-directdebit-subscription
+	ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request OptWebhookEventSubscriptionDirectDebit) (ReceiveWebhookOfDirectDebitSubscriptionRes, error)
+	// ReceiveWebhookOfKonbiniPayment invokes receiveWebhookOfKonbiniPayment operation.
+	//
+	// コンビニ決済に関するイベント（`payments.konbini.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-konbini-payment
+	ReceiveWebhookOfKonbiniPayment(ctx context.Context, request OptWebhookEventPaymentKonbini) (ReceiveWebhookOfKonbiniPaymentRes, error)
+	// ReceiveWebhookOfPayPayPayment invokes receiveWebhookOfPayPayPayment operation.
+	//
+	// PayPayによる決済に関するイベント（`payments.paypay.
+	// *`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-paypay-payment
+	ReceiveWebhookOfPayPayPayment(ctx context.Context, request OptWebhookEventPaymentPayPay) (ReceiveWebhookOfPayPayPaymentRes, error)
+	// ReceiveWebhookOfRegisteringCardPaymentBulk invokes receiveWebhookOfRegisteringCardPaymentBulk operation.
+	//
+	// カード決済による一括決済 登録イベント（`payments.bulk.card.
+	// regist`）で通知されるリクエストのリクエストボディの仕様です。.
+	//
+	// POST /your-endpoint-on-card-payment-bulk-regist
+	ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request OptWebhookEventPaymentBulkRegistCard) (ReceiveWebhookOfRegisteringCardPaymentBulkRes, error)
+	// RequestProductionEnvironment invokes requestProductionEnvironment operation.
+	//
+	// `id`で指定したテナントショップの本番環境の利用申請を行います。このAPIを呼び出すまでにテナント本番環境申請情報 更新APIで申請情報を用意しておく必要があります。.
+	//
+	// POST /v1/contracts/examinations
+	RequestProductionEnvironment(ctx context.Context, request OptPOSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (RequestProductionEnvironmentRes, error)
+	// ReserveProvider invokes reserveProvider operation.
+	//
+	// `id`で指定したテナントショップの決済手段の追加申請を行います。.
+	//
+	// POST /v1/contracts-examinations-tenants-{id}-providers-reserve.yml
+	ReserveProvider(ctx context.Context, request OptPOSTProviderReserveRequestMultipart, params ReserveProviderParams) (ReserveProviderRes, error)
+	// RetrieveAccount invokes retrieveAccount operation.
+	//
+	// IDで指定した売上入金を取得します。\
+	// `aggregate_term_start`から`aggregate_term_end`までの期間における売上の集計結果が含まれます。\
+	// \
+	// 集計された個々のレコードについては 売上入金明細 一覧取得API
+	// を利用することで取得できます。.
+	//
+	// GET /v1/accounts/{id}
+	RetrieveAccount(ctx context.Context, params RetrieveAccountParams) (RetrieveAccountRes, error)
+	// RetrieveAccountDetailList invokes retrieveAccountDetailList operation.
+	//
+	// IDで指定した売上入金に紐づく売上入金詳細を一覧で取得します。\
+	// 1つの売上入金明細は、1件の決済／キャンセル／チャージバック／チャージバック取消調整のいずれかに対応します。.
+	//
+	// GET /v1/accounts/{id}/detail
+	RetrieveAccountDetailList(ctx context.Context, params RetrieveAccountDetailListParams) (RetrieveAccountDetailListRes, error)
+	// RetrieveAccountList invokes retrieveAccountList operation.
+	//
+	// 売上入金情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/accounts
+	RetrieveAccountList(ctx context.Context, params RetrieveAccountListParams) (RetrieveAccountListRes, error)
+	// RetrieveCustomer invokes retrieveCustomer operation.
+	//
+	// IDで指定した顧客情報を取得します。.
+	//
+	// GET /v1/customers/{id}
+	RetrieveCustomer(ctx context.Context, params RetrieveCustomerParams) (RetrieveCustomerRes, error)
+	// RetrieveCustomerCard invokes retrieveCustomerCard operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを取得します。.
+	//
+	// GET /v1/customers/{customer_id}/cards/{id}
+	RetrieveCustomerCard(ctx context.Context, params RetrieveCustomerCardParams) (RetrieveCustomerCardRes, error)
+	// RetrieveCustomerCardList invokes retrieveCustomerCardList operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づくカードを一覧で取得します。.
+	//
+	// GET /v1/customers/{customer_id}/cards
+	RetrieveCustomerCardList(ctx context.Context, params RetrieveCustomerCardListParams) (RetrieveCustomerCardListRes, error)
+	// RetrieveCustomerList invokes retrieveCustomerList operation.
+	//
+	// 顧客情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/customers
+	RetrieveCustomerList(ctx context.Context, params RetrieveCustomerListParams) (RetrieveCustomerListRes, error)
+	// RetrieveCustomerPaymentMethod invokes retrieveCustomerPaymentMethod operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づく決済手段のうち、`id`で指定したものを取得します。.
+	//
+	// GET /v1/customers/{customer_id}/payment_methods/{id}
+	RetrieveCustomerPaymentMethod(ctx context.Context, params RetrieveCustomerPaymentMethodParams) (RetrieveCustomerPaymentMethodRes, error)
+	// RetrieveCustomerPaymentMethodList invokes retrieveCustomerPaymentMethodList operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づく決済手段を一覧で取得します。.
+	//
+	// GET /v1/customers/{customer_id}/payment_methods
+	RetrieveCustomerPaymentMethodList(ctx context.Context, params RetrieveCustomerPaymentMethodListParams) (RetrieveCustomerPaymentMethodListRes, error)
+	// RetrievePayment invokes retrievePayment operation.
+	//
+	// 指定した決済情報を取得します。.
+	//
+	// GET /v1/payments/{id}
+	RetrievePayment(ctx context.Context, params RetrievePaymentParams) (RetrievePaymentRes, error)
+	// RetrievePaymentBulkDetailList invokes retrievePaymentBulkDetailList operation.
+	//
+	// IDで指定した一括決済情報の詳細（決済1件ごとの情報）と各決済で発生したエラーの情報を一覧で取得します。.
+	//
+	// GET /v1/payments/bulk/{id}
+	RetrievePaymentBulkDetailList(ctx context.Context, params RetrievePaymentBulkDetailListParams) (RetrievePaymentBulkDetailListRes, error)
+	// RetrievePaymentBulkList invokes retrievePaymentBulkList operation.
+	//
+	// Fincodeに登録した一括決済の情報を一覧で取得します。.
+	//
+	// GET /v1/payments/bulk
+	RetrievePaymentBulkList(ctx context.Context, params RetrievePaymentBulkListParams) (RetrievePaymentBulkListRes, error)
+	// RetrievePlan invokes retrievePlan operation.
+	//
+	// IDで指定したプラン情報を取得します。.
+	//
+	// GET /v1/plans/{id}
+	RetrievePlan(ctx context.Context, params RetrievePlanParams) (RetrievePlanRes, error)
+	// RetrievePlanList invokes retrievePlanList operation.
+	//
+	// プラン情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/plans
+	RetrievePlanList(ctx context.Context, params RetrievePlanListParams) (RetrievePlanListRes, error)
+	// RetrievePlatformAccount invokes retrievePlatformAccount operation.
+	//
+	// IDで指定したプラットフォーム利用料による売上入金情報を取得します。\
+	// `aggregate_term_start`から`aggregate_term_end`までの期間におけるプラットフォーム利用料による売上の集計結果が含まれます。\
+	// \
+	// テナントショップごとの利用料収入については
+	// プラットフォーム利用料収入サマリー 一覧取得API
+	// を利用することで取得できます。.
+	//
+	// GET /v1/platform_accounts/{id}
+	RetrievePlatformAccount(ctx context.Context, params RetrievePlatformAccountParams) (RetrievePlatformAccountRes, error)
+	// RetrievePlatformAccountList invokes retrievePlatformAccountList operation.
+	//
+	// プラットフォーム利用料による売上入金情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/platform_accounts
+	RetrievePlatformAccountList(ctx context.Context, params RetrievePlatformAccountListParams) (RetrievePlatformAccountListRes, error)
+	// RetrievePlatformAccountSummaryList invokes retrievePlatformAccountSummaryList operation.
+	//
+	// IDで指定したプラットフォーム利用料収入のサマリーを一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。\
+	// サマリー情報の中にはテナントショップごとの利用料収入についての情報が含まれます。.
+	//
+	// GET /v1/platform_accounts/{id}/summary
+	RetrievePlatformAccountSummaryList(ctx context.Context, params RetrievePlatformAccountSummaryListParams) (RetrievePlatformAccountSummaryListRes, error)
+	// RetrievePlatformShop invokes retrievePlatformShop operation.
+	//
+	// `id`で指定したプラットフォームショップ（メインショップ・サブショップ）を取得します。.
+	//
+	// GET /v1/platforms/{id}
+	RetrievePlatformShop(ctx context.Context, params RetrievePlatformShopParams) (RetrievePlatformShopRes, error)
+	// RetrievePlatformShopList invokes retrievePlatformShopList operation.
+	//
+	// プラットフォームショップ（メインショップ・サブショップ）を一覧で取得します。\
+	// クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/platforms
+	RetrievePlatformShopList(ctx context.Context, params RetrievePlatformShopListParams) (RetrievePlatformShopListRes, error)
+	// RetrieveSubscription invokes retrieveSubscription operation.
+	//
+	// IDで指定したサブスクリプション情報を取得します。.
+	//
+	// GET /v1/subscriptions/{id}
+	RetrieveSubscription(ctx context.Context, params RetrieveSubscriptionParams) (RetrieveSubscriptionRes, error)
+	// RetrieveSubscriptionList invokes retrieveSubscriptionList operation.
+	//
+	// サブスクリプション情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/subscriptions
+	RetrieveSubscriptionList(ctx context.Context, params RetrieveSubscriptionListParams) (RetrieveSubscriptionListRes, error)
+	// RetrieveSubscriptionResultList invokes retrieveSubscriptionResultList operation.
+	//
+	// サブスクリプションにより発生した課金の結果を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/subscriptions/{id}/result
+	RetrieveSubscriptionResultList(ctx context.Context, params RetrieveSubscriptionResultListParams) (RetrieveSubscriptionResultListRes, error)
+	// RetrieveTenantContract invokes retrieveTenantContract operation.
+	//
+	// `id`で指定したテナントショップの契約情報を取得します。.
+	//
+	// GET /v1/contracts/{id}
+	RetrieveTenantContract(ctx context.Context, params RetrieveTenantContractParams) (RetrieveTenantContractRes, error)
+	// RetrieveTenantExaminationInfo invokes retrieveTenantExaminationInfo operation.
+	//
+	// ※
+	// このAPIの使用は現在非推奨です。新しいテナントショップ本番環境申請情報 取得APIをご利用ください。\
+	// `id`で指定したテナントショップの本番環境申請情報を取得します。.
+	//
+	// Deprecated: schema marks this operation as deprecated.
+	//
+	// GET /v1/contracts/examinations/tenants/{id}
+	RetrieveTenantExaminationInfo(ctx context.Context, params RetrieveTenantExaminationInfoParams) (RetrieveTenantExaminationInfoRes, error)
+	// RetrieveTenantExaminationInfoV2 invokes retrieveTenantExaminationInfoV2 operation.
+	//
+	// `id`で指定したテナントショップの本番環境申請情報を取得します。.
+	//
+	// GET /v1/contracts/examinations_v2/tenants/{id}
+	RetrieveTenantExaminationInfoV2(ctx context.Context, params RetrieveTenantExaminationInfoV2Params) (RetrieveTenantExaminationInfoV2Res, error)
+	// RetrieveTenantShop invokes retrieveTenantShop operation.
+	//
+	// `id`で指定したテナント情報を取得します。.
+	//
+	// GET /v1/tenants/{id}
+	RetrieveTenantShop(ctx context.Context, params RetrieveTenantShopParams) (RetrieveTenantShopRes, error)
+	// RetrieveTenantShopList invokes retrieveTenantShopList operation.
+	//
+	// テナントショップを一覧で取得します。\
+	// クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/tenants
+	RetrieveTenantShopList(ctx context.Context, params RetrieveTenantShopListParams) (RetrieveTenantShopListRes, error)
+	// RetrieveWebhookSetting invokes retrieveWebhookSetting operation.
+	//
+	// IDで指定したWebhook設定を取得します。.
+	//
+	// GET /v1/webhook_settings/{id}
+	RetrieveWebhookSetting(ctx context.Context, params RetrieveWebhookSettingParams) (RetrieveWebhookSettingRes, error)
+	// RetrieveWebhookSettingList invokes retrieveWebhookSettingList operation.
+	//
+	// Webhook設定を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+	//
+	// GET /v1/webhook_settings
+	RetrieveWebhookSettingList(ctx context.Context, params RetrieveWebhookSettingListParams) (RetrieveWebhookSettingListRes, error)
+	// UpdateCustomer invokes updateCustomer operation.
+	//
+	// IDで指定した顧客情報を更新します。.
+	//
+	// PUT /v1/customers/{id}
+	UpdateCustomer(ctx context.Context, request OptCustomerUpdatingRequest, params UpdateCustomerParams) (UpdateCustomerRes, error)
+	// UpdateCustomerCard invokes updateCustomerCard operation.
+	//
+	// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを更新します。.
+	//
+	// PUT /v1/customers/{customer_id}/cards/{id}
+	UpdateCustomerCard(ctx context.Context, request OptCustomerCardUpdatingRequest, params UpdateCustomerCardParams) (UpdateCustomerCardRes, error)
+	// UpdatePlan invokes updatePlan operation.
+	//
+	// IDで指定したプラン情報を更新します。\
+	// プランが1つ以上のサブスクリプションで使用されているとき（`used_flag =
+	// 1`のとき）、プランは更新できません。.
+	//
+	// PUT /v1/plans/{id}
+	UpdatePlan(ctx context.Context, request OptPlanUpdatingRequest, params UpdatePlanParams) (UpdatePlanRes, error)
+	// UpdatePlatformShop invokes updatePlatformShop operation.
+	//
+	// `examination_master_id`で指定した決済手段に関してプラットフォーム利用料を更新します。.
+	//
+	// PUT /v1/platforms/{id}
+	UpdatePlatformShop(ctx context.Context, request OptPlatformShopUpdatingRequest, params UpdatePlatformShopParams) (UpdatePlatformShopRes, error)
+	// UpdateSubscription invokes updateSubscription operation.
+	//
+	// IDで指定したサブスクリプション情報を更新します。\
+	// サブスクリプションの初回課金がすでに行われているとき（`start_date ≤
+	// {{現在時刻}}`のとき）、サブスクリプションは更新できません。.
+	//
+	// PUT /v1/subscriptions/{id}
+	UpdateSubscription(ctx context.Context, request OptSubscriptionUpdatingRequest, params UpdateSubscriptionParams) (UpdateSubscriptionRes, error)
+	// UpdateTenantExaminationInfo invokes updateTenantExaminationInfo operation.
+	//
+	// ※
+	// このAPIの使用は現在非推奨です。新しいテナントショップ本番環境申請情報 更新APIをご利用ください。\
+	// `id`で指定したテナントショップの本番環境申請情報を更新します。.
+	//
+	// Deprecated: schema marks this operation as deprecated.
+	//
+	// PUT /v1/contracts/examinations/tenants/{id}
+	UpdateTenantExaminationInfo(ctx context.Context, request OptExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (UpdateTenantExaminationInfoRes, error)
+	// UpdateTenantExaminationInfoV2 invokes updateTenantExaminationInfoV2 operation.
+	//
+	// `id`で指定したテナントショップの本番環境申請情報を更新します。.
+	//
+	// PUT /v1/contracts/examinations_v2/tenants/{id}
+	UpdateTenantExaminationInfoV2(ctx context.Context, request OptExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (UpdateTenantExaminationInfoV2Res, error)
+	// UpdateTenantShop invokes updateTenantShop operation.
+	//
+	// `examination_master_id`で指定した決済手段におけるプラットフォーム利用料などの設定の変更を`id`で指定したテナントに対して実行します。.
+	//
+	// PUT /v1/tenants/{id}
+	UpdateTenantShop(ctx context.Context, request OptTenantShopUpdatingRequest, params UpdateTenantShopParams) (UpdateTenantShopRes, error)
+	// UpdateWebhookSetting invokes updateWebhookSetting operation.
+	//
+	// IDで指定したWebhook設定を更新します。.
+	//
+	// PUT /v1/webhook_settings/{id}
+	UpdateWebhookSetting(ctx context.Context, request OptWebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (UpdateWebhookSettingRes, error)
+	// UploadExaminationFile invokes uploadExaminationFile operation.
+	//
+	// `id`で指定したテナントショップの審査に必要なファイルのアップロードを行います。.
+	//
+	// POST /v1/contracts/examinations/tenants/{id}/files
+	UploadExaminationFile(ctx context.Context, request OptExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (UploadExaminationFileRes, error)
 }
 
 // Client implements OAS client.
@@ -123,18 +621,23 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 	return u
 }
 
-// CustomersCustomerIDCardsIDDelete invokes DELETE /customers/{customer_id}/cards/{id} operation.
+// AuthorizePayment invokes authorizePayment operation.
 //
-// DELETE /customers/{customer_id}/cards/{id}
-func (c *Client) CustomersCustomerIDCardsIDDelete(ctx context.Context, params CustomersCustomerIDCardsIDDeleteParams) (CustomersCustomerIDCardsIDDeleteRes, error) {
-	res, err := c.sendCustomersCustomerIDCardsIDDelete(ctx, params)
+// 決済のオーソリを再度実行します。\
+// \
+// `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
+//
+// PUT /v1/payments/{id}/auth
+func (c *Client) AuthorizePayment(ctx context.Context, request OptAuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error) {
+	res, err := c.sendAuthorizePayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCustomersCustomerIDCardsIDDelete(ctx context.Context, params CustomersCustomerIDCardsIDDeleteParams) (res CustomersCustomerIDCardsIDDeleteRes, err error) {
+func (c *Client) sendAuthorizePayment(ctx context.Context, request OptAuthorizePaymentReq, params AuthorizePaymentParams) (res AuthorizePaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("DELETE"),
-		semconv.HTTPRouteKey.String("/customers/{customer_id}/cards/{id}"),
+		otelogen.OperationID("authorizePayment"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/payments/{id}/auth"),
 	}
 
 	// Run stopwatch.
@@ -149,563 +652,7 @@ func (c *Client) sendCustomersCustomerIDCardsIDDelete(ctx context.Context, param
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDCardsIDDelete",
-		trace.WithAttributes(otelAttrs...),
-		clientSpanKind,
-	)
-	// Track stage for error reporting.
-	var stage string
-	defer func() {
-		if err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		span.End()
-	}()
-
-	stage = "BuildURL"
-	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [4]string
-	pathParts[0] = "/customers/"
-	{
-		// Encode "customer_id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "customer_id",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[1] = encoded
-	}
-	pathParts[2] = "/cards/"
-	{
-		// Encode "id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "id",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[3] = encoded
-	}
-	uri.AddPathParts(u, pathParts[:]...)
-
-	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "DELETE", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
-	}
-
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDCardsIDDelete", r); {
-			case err == nil: // if NO error
-				satisfied[0] |= 1 << 0
-			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
-				// Skip this security.
-			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
-		}
-	}
-
-	stage = "SendRequest"
-	resp, err := c.cfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	stage = "DecodeResponse"
-	result, err := decodeCustomersCustomerIDCardsIDDeleteResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
-// CustomersCustomerIDCardsIDGet invokes GET /customers/{customer_id}/cards/{id} operation.
-//
-// GET /customers/{customer_id}/cards/{id}
-func (c *Client) CustomersCustomerIDCardsIDGet(ctx context.Context, params CustomersCustomerIDCardsIDGetParams) (CustomersCustomerIDCardsIDGetRes, error) {
-	res, err := c.sendCustomersCustomerIDCardsIDGet(ctx, params)
-	return res, err
-}
-
-func (c *Client) sendCustomersCustomerIDCardsIDGet(ctx context.Context, params CustomersCustomerIDCardsIDGetParams) (res CustomersCustomerIDCardsIDGetRes, err error) {
-	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/customers/{customer_id}/cards/{id}"),
-	}
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDCardsIDGet",
-		trace.WithAttributes(otelAttrs...),
-		clientSpanKind,
-	)
-	// Track stage for error reporting.
-	var stage string
-	defer func() {
-		if err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		span.End()
-	}()
-
-	stage = "BuildURL"
-	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [4]string
-	pathParts[0] = "/customers/"
-	{
-		// Encode "customer_id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "customer_id",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[1] = encoded
-	}
-	pathParts[2] = "/cards/"
-	{
-		// Encode "id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "id",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[3] = encoded
-	}
-	uri.AddPathParts(u, pathParts[:]...)
-
-	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "GET", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
-	}
-
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDCardsIDGet", r); {
-			case err == nil: // if NO error
-				satisfied[0] |= 1 << 0
-			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
-				// Skip this security.
-			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
-		}
-	}
-
-	stage = "SendRequest"
-	resp, err := c.cfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	stage = "DecodeResponse"
-	result, err := decodeCustomersCustomerIDCardsIDGetResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
-// CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete invokes DELETE /customers/{customer_id}/payment_methods/{payment_method_id} operation.
-//
-// DELETE /customers/{customer_id}/payment_methods/{payment_method_id}
-func (c *Client) CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, error) {
-	res, err := c.sendCustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx, params)
-	return res, err
-}
-
-func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (res CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, err error) {
-	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("DELETE"),
-		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods/{payment_method_id}"),
-	}
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete",
-		trace.WithAttributes(otelAttrs...),
-		clientSpanKind,
-	)
-	// Track stage for error reporting.
-	var stage string
-	defer func() {
-		if err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		span.End()
-	}()
-
-	stage = "BuildURL"
-	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [4]string
-	pathParts[0] = "/customers/"
-	{
-		// Encode "customer_id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "customer_id",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[1] = encoded
-	}
-	pathParts[2] = "/payment_methods/"
-	{
-		// Encode "payment_method_id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "payment_method_id",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.PaymentMethodID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[3] = encoded
-	}
-	uri.AddPathParts(u, pathParts[:]...)
-
-	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "DELETE", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
-	}
-
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete", r); {
-			case err == nil: // if NO error
-				satisfied[0] |= 1 << 0
-			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
-				// Skip this security.
-			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
-		}
-	}
-
-	stage = "SendRequest"
-	resp, err := c.cfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	stage = "DecodeResponse"
-	result, err := decodeCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
-// CustomersCustomerIDPaymentMethodsPaymentMethodIDGet invokes GET /customers/{customer_id}/payment_methods/{payment_method_id} operation.
-//
-// GET /customers/{customer_id}/payment_methods/{payment_method_id}
-func (c *Client) CustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, error) {
-	res, err := c.sendCustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx, params)
-	return res, err
-}
-
-func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (res CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, err error) {
-	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods/{payment_method_id}"),
-	}
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet",
-		trace.WithAttributes(otelAttrs...),
-		clientSpanKind,
-	)
-	// Track stage for error reporting.
-	var stage string
-	defer func() {
-		if err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		span.End()
-	}()
-
-	stage = "BuildURL"
-	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [4]string
-	pathParts[0] = "/customers/"
-	{
-		// Encode "customer_id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "customer_id",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[1] = encoded
-	}
-	pathParts[2] = "/payment_methods/"
-	{
-		// Encode "payment_method_id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "payment_method_id",
-			Style:   uri.PathStyleSimple,
-			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.PaymentMethodID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[3] = encoded
-	}
-	uri.AddPathParts(u, pathParts[:]...)
-
-	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "GET", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
-	}
-
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet", r); {
-			case err == nil: // if NO error
-				satisfied[0] |= 1 << 0
-			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
-				// Skip this security.
-			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
-		}
-	}
-
-	stage = "SendRequest"
-	resp, err := c.cfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	stage = "DecodeResponse"
-	result, err := decodeCustomersCustomerIDPaymentMethodsPaymentMethodIDGetResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
-// CustomersCustomerIDPaymentMethodsPost invokes POST /customers/{customer_id}/payment_methods operation.
-//
-// POST /customers/{customer_id}/payment_methods
-func (c *Client) CustomersCustomerIDPaymentMethodsPost(ctx context.Context, request CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (CustomersCustomerIDPaymentMethodsPostRes, error) {
-	res, err := c.sendCustomersCustomerIDPaymentMethodsPost(ctx, request, params)
-	return res, err
-}
-
-func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, request CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (res CustomersCustomerIDPaymentMethodsPostRes, err error) {
-	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods"),
-	}
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPost",
+	ctx, span := c.cfg.Tracer.Start(ctx, "AuthorizePayment",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -723,7 +670,1073 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, 
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [3]string
-	pathParts[0] = "/customers/"
+	pathParts[0] = "/v1/payments/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/auth"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeAuthorizePaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "AuthorizePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "AuthorizePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeAuthorizePaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CapturePayment invokes capturePayment operation.
+//
+// `status`が仮売上（`AUTHORIZED`）またはキャンセル（`CANCELED`）である決済に対して売上確定を行います。\
+// 成功すると、ステータスが`CAPTURED`に遷移し、その時点を集計対象とした売上入金に反映されます。.
+//
+// PUT /v1/payments/{id}/capture
+func (c *Client) CapturePayment(ctx context.Context, request OptCapturePaymentReq, params CapturePaymentParams) (CapturePaymentRes, error) {
+	res, err := c.sendCapturePayment(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCapturePayment(ctx context.Context, request OptCapturePaymentReq, params CapturePaymentParams) (res CapturePaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("capturePayment"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/payments/{id}/capture"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CapturePayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/payments/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/capture"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCapturePaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CapturePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CapturePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCapturePaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ChangeAmountOfPayment invokes changeAmountOfPayment operation.
+//
+// 決済の利用金額を変更します。\
+// 既に売上確定となっている決済は請求金額が変更され、仮売上となっている決済は確保している与信枠の金額が変更されます。.
+//
+// PUT /v1/payments/{id}/change
+func (c *Client) ChangeAmountOfPayment(ctx context.Context, request OptChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (ChangeAmountOfPaymentRes, error) {
+	res, err := c.sendChangeAmountOfPayment(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendChangeAmountOfPayment(ctx context.Context, request OptChangeAmountOfPaymentReq, params ChangeAmountOfPaymentParams) (res ChangeAmountOfPaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("changeAmountOfPayment"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/payments/{id}/change"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ChangeAmountOfPayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/payments/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/change"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeChangeAmountOfPaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ChangeAmountOfPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ChangeAmountOfPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeChangeAmountOfPaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// Confirm3DSecureAuthentication invokes confirm3DSecureAuthentication operation.
+//
+// `access_id`で指定したカード決済取引の3Dセキュア認証の結果を確定します。\
+// \
+// `challenge_url`上で購入者がチャレンジ認証実施後、`tds2_ret_url`に対し`event`パラメータで`AuthResultReady`イベントが通知されたとき、このAPIを呼び出します。.
+//
+// GET /v1/secure2/{access_id}
+func (c *Client) Confirm3DSecureAuthentication(ctx context.Context, params Confirm3DSecureAuthenticationParams) (Confirm3DSecureAuthenticationRes, error) {
+	res, err := c.sendConfirm3DSecureAuthentication(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendConfirm3DSecureAuthentication(ctx context.Context, params Confirm3DSecureAuthenticationParams) (res Confirm3DSecureAuthenticationRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("confirm3DSecureAuthentication"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/secure2/{access_id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "Confirm3DSecureAuthentication",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/secure2/"
+	{
+		// Encode "access_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "access_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.AccessID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "Confirm3DSecureAuthentication", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "Confirm3DSecureAuthentication", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "Confirm3DSecureAuthentication", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+				{0b00000100},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeConfirm3DSecureAuthenticationResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateCardRegistrationSession invokes createCardRegistrationSession operation.
+//
+// Fincodeが提供するリダイレクト型カード登録ページを発行し、そのカード登録ページへのURLをレスポンスします。.
+//
+// POST /v1/card_sessions
+func (c *Client) CreateCardRegistrationSession(ctx context.Context, request OptCardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (CreateCardRegistrationSessionRes, error) {
+	res, err := c.sendCreateCardRegistrationSession(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateCardRegistrationSession(ctx context.Context, request OptCardRegistrationSessionCreatingRequest, params CreateCardRegistrationSessionParams) (res CreateCardRegistrationSessionRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createCardRegistrationSession"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/card_sessions"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateCardRegistrationSession",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/card_sessions"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateCardRegistrationSessionRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreateCardRegistrationSession", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreateCardRegistrationSession", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreateCardRegistrationSessionResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateCustomer invokes createCustomer operation.
+//
+// 顧客情報を登録します。.
+//
+// POST /v1/customers
+func (c *Client) CreateCustomer(ctx context.Context, request OptCustomerCreatingRequest, params CreateCustomerParams) (CreateCustomerRes, error) {
+	res, err := c.sendCreateCustomer(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateCustomer(ctx context.Context, request OptCustomerCreatingRequest, params CreateCustomerParams) (res CreateCustomerRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createCustomer"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/customers"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateCustomer",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/customers"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateCustomerRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreateCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreateCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreateCustomerResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateCustomerCard invokes createCustomerCard operation.
+//
+// `customer_id`で指定した顧客に対しカードを登録します。.
+//
+// POST /v1/customers/{customer_id}/cards
+func (c *Client) CreateCustomerCard(ctx context.Context, request OptCustomerCardCreatingRequest, params CreateCustomerCardParams) (CreateCustomerCardRes, error) {
+	res, err := c.sendCreateCustomerCard(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateCustomerCard(ctx context.Context, request OptCustomerCardCreatingRequest, params CreateCustomerCardParams) (res CreateCustomerCardRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createCustomerCard"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/cards"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateCustomerCard",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/cards"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateCustomerCardRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreateCustomerCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreateCustomerCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreateCustomerCardResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateCustomerPaymentMethod invokes createCustomerPaymentMethod operation.
+//
+// `customer_id`で指定した顧客に対し、決済手段を登録します。.
+//
+// POST /v1/customers/{customer_id}/payment_methods
+func (c *Client) CreateCustomerPaymentMethod(ctx context.Context, request OptCustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (CreateCustomerPaymentMethodRes, error) {
+	res, err := c.sendCreateCustomerPaymentMethod(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateCustomerPaymentMethod(ctx context.Context, request OptCustomerPaymentMethodCreatingRequest, params CreateCustomerPaymentMethodParams) (res CreateCustomerPaymentMethodRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createCustomerPaymentMethod"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/payment_methods"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateCustomerPaymentMethod",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/customers/"
 	{
 		// Encode "customer_id" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -750,22 +1763,61 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, 
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
-	if err := encodeCustomersCustomerIDPaymentMethodsPostRequest(request, r); err != nil {
+	if err := encodeCreateCustomerPaymentMethodRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
 	}
 
 	{
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPost", r); {
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreateCustomerPaymentMethod", r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "CreateCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreateCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
 			}
 		}
 
@@ -773,6 +1825,8 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, 
 		nextRequirement:
 			for _, requirement := range []bitset{
 				{0b00000001},
+				{0b00000010},
+				{0b00000100},
 			} {
 				for i, mask := range requirement {
 					if satisfied[i]&mask != mask {
@@ -795,7 +1849,7 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, 
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodeCustomersCustomerIDPaymentMethodsPostResponse(resp)
+	result, err := decodeCreateCustomerPaymentMethodResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -803,18 +1857,21 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, 
 	return result, nil
 }
 
-// CustomersIDDelete invokes DELETE /customers/{id} operation.
+// CreatePayment invokes createPayment operation.
 //
-// DELETE /customers/{id}
-func (c *Client) CustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (CustomersIDDeleteRes, error) {
-	res, err := c.sendCustomersIDDelete(ctx, params)
+// 決済情報をfincodeに登録します。決済登録に成功した時点ではまだ顧客に対して請求はされていません。.
+//
+// POST /v1/payments
+func (c *Client) CreatePayment(ctx context.Context, request OptCreatePaymentReq, params CreatePaymentParams) (CreatePaymentRes, error) {
+	res, err := c.sendCreatePayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (res CustomersIDDeleteRes, err error) {
+func (c *Client) sendCreatePayment(ctx context.Context, request OptCreatePaymentReq, params CreatePaymentParams) (res CreatePaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("DELETE"),
-		semconv.HTTPRouteKey.String("/customers/{id}"),
+		otelogen.OperationID("createPayment"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/payments"),
 	}
 
 	// Run stopwatch.
@@ -829,7 +1886,1070 @@ func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDe
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersIDDelete",
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreatePayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/payments"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreatePaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreatePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreatePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreatePaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreatePaymentBulk invokes createPaymentBulk operation.
+//
+// FincodeにJSON形式のファイルで一括決済情報を登録し、`process_plan_date`で指定した日時に一括決済処理を予約します。.
+//
+// POST /v1/payments/bulk
+func (c *Client) CreatePaymentBulk(ctx context.Context, request OptPaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (CreatePaymentBulkRes, error) {
+	res, err := c.sendCreatePaymentBulk(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreatePaymentBulk(ctx context.Context, request OptPaymentBulkCreatingRequestMultipart, params CreatePaymentBulkParams) (res CreatePaymentBulkRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createPaymentBulk"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/payments/bulk"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreatePaymentBulk",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/payments/bulk"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "pay_type" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "pay_type",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(string(params.PayType)))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "process_plan_date" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "process_plan_date",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.ProcessPlanDate))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreatePaymentBulkRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreatePaymentBulk", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreatePaymentBulk", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreatePaymentBulkResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreatePaymentSession invokes createPaymentSession operation.
+//
+// Fincodeが提供するリダイレクト型決済ページを発行し、その決済ページへのURLをレスポンスします。.
+//
+// POST /v1/sessions
+func (c *Client) CreatePaymentSession(ctx context.Context, request OptPaymentSessionCreatingRequest, params CreatePaymentSessionParams) (CreatePaymentSessionRes, error) {
+	res, err := c.sendCreatePaymentSession(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreatePaymentSession(ctx context.Context, request OptPaymentSessionCreatingRequest, params CreatePaymentSessionParams) (res CreatePaymentSessionRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createPaymentSession"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/sessions"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreatePaymentSession",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/sessions"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreatePaymentSessionRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreatePaymentSession", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreatePaymentSession", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreatePaymentSessionResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreatePlan invokes createPlan operation.
+//
+// プラン情報を登録します。.
+//
+// POST /v1/plans
+func (c *Client) CreatePlan(ctx context.Context, request OptPlanCreatingRequest) (CreatePlanRes, error) {
+	res, err := c.sendCreatePlan(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreatePlan(ctx context.Context, request OptPlanCreatingRequest) (res CreatePlanRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createPlan"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/plans"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreatePlan",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/plans"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreatePlanRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreatePlan", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreatePlan", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreatePlanResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateSubscription invokes createSubscription operation.
+//
+// `customer_id`で指定した顧客に対して`plan_id`で指定したプランを適用したサブスクリプション情報を登録します。.
+//
+// POST /v1/subscriptions
+func (c *Client) CreateSubscription(ctx context.Context, request OptSubscriptionCreatingRequest) (CreateSubscriptionRes, error) {
+	res, err := c.sendCreateSubscription(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateSubscription(ctx context.Context, request OptSubscriptionCreatingRequest) (res CreateSubscriptionRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createSubscription"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/subscriptions"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateSubscription",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/subscriptions"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateSubscriptionRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreateSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreateSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreateSubscriptionResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateTenantWithExistingUser invokes createTenantWithExistingUser operation.
+//
+// 指定したプラットフォームショップのユーザーをオーナーとして新規テナントショップを作成するAPIです。\
+// \
+// `password`パラメータに関して、ユーザーのパスワードがfincode管理画面アプリケーション上で更新されることを想定して実装・運用することが推奨されます。.
+//
+// POST /v1/join_tenants
+func (c *Client) CreateTenantWithExistingUser(ctx context.Context, request OptPOSTJoinTenantsRequest) (CreateTenantWithExistingUserRes, error) {
+	res, err := c.sendCreateTenantWithExistingUser(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateTenantWithExistingUser(ctx context.Context, request OptPOSTJoinTenantsRequest) (res CreateTenantWithExistingUserRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createTenantWithExistingUser"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/join_tenants"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateTenantWithExistingUser",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/join_tenants"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateTenantWithExistingUserRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreateTenantWithExistingUser", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreateTenantWithExistingUser", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreateTenantWithExistingUserResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateTenantWithNewUser invokes createTenantWithNewUser operation.
+//
+// 新規ユーザーを作成し、作成されたユーザーをオーナーとして新規テナントショップを作成するAPIです。\
+// このAPIでのテナント作成に成功すると、登録されたメールアドレス宛にメールアドレス認証メールが送信されます。.
+//
+// POST /v1/tenant_entries
+func (c *Client) CreateTenantWithNewUser(ctx context.Context, request OptPOSTTenantEntriesRequest) (CreateTenantWithNewUserRes, error) {
+	res, err := c.sendCreateTenantWithNewUser(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateTenantWithNewUser(ctx context.Context, request OptPOSTTenantEntriesRequest) (res CreateTenantWithNewUserRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createTenantWithNewUser"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/tenant_entries"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateTenantWithNewUser",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/tenant_entries"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateTenantWithNewUserRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreateTenantWithNewUser", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreateTenantWithNewUser", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreateTenantWithNewUserResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateWebhookSetting invokes createWebhookSetting operation.
+//
+// Webhook設定を登録します。.
+//
+// POST /v1/webhook_settings
+func (c *Client) CreateWebhookSetting(ctx context.Context, request OptWebhookSettingCreatingRequest, params CreateWebhookSettingParams) (CreateWebhookSettingRes, error) {
+	res, err := c.sendCreateWebhookSetting(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateWebhookSetting(ctx context.Context, request OptWebhookSettingCreatingRequest, params CreateWebhookSettingParams) (res CreateWebhookSettingRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("createWebhookSetting"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/webhook_settings"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CreateWebhookSetting",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/webhook_settings"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateWebhookSettingRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CreateWebhookSetting", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CreateWebhookSetting", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCreateWebhookSettingResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteCustomer invokes deleteCustomer operation.
+//
+// IDで指定した顧客情報を削除します。.
+//
+// DELETE /v1/customers/{id}
+func (c *Client) DeleteCustomer(ctx context.Context, params DeleteCustomerParams) (DeleteCustomerRes, error) {
+	res, err := c.sendDeleteCustomer(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteCustomer(ctx context.Context, params DeleteCustomerParams) (res DeleteCustomerRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("deleteCustomer"),
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/v1/customers/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeleteCustomer",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -847,7 +2967,624 @@ func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDe
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
-	pathParts[0] = "/customers/"
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "DeleteCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "DeleteCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeDeleteCustomerResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteCustomerCard invokes deleteCustomerCard operation.
+//
+// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを削除します。.
+//
+// DELETE /v1/customers/{customer_id}/cards/{id}
+func (c *Client) DeleteCustomerCard(ctx context.Context, params DeleteCustomerCardParams) (DeleteCustomerCardRes, error) {
+	res, err := c.sendDeleteCustomerCard(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteCustomerCard(ctx context.Context, params DeleteCustomerCardParams) (res DeleteCustomerCardRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("deleteCustomerCard"),
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/cards/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeleteCustomerCard",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/cards/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeDeleteCustomerCardResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteCustomerPaymentMethod invokes deleteCustomerPaymentMethod operation.
+//
+// `customer_id`で指定した顧客に対し紐づく決済手段のうち、`id`で指定したものを削除します。.
+//
+// DELETE /v1/customers/{customer_id}/payment_methods/{id}
+func (c *Client) DeleteCustomerPaymentMethod(ctx context.Context, params DeleteCustomerPaymentMethodParams) (DeleteCustomerPaymentMethodRes, error) {
+	res, err := c.sendDeleteCustomerPaymentMethod(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteCustomerPaymentMethod(ctx context.Context, params DeleteCustomerPaymentMethodParams) (res DeleteCustomerPaymentMethodRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("deleteCustomerPaymentMethod"),
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/payment_methods/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeleteCustomerPaymentMethod",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/payment_methods/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "DeleteCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "DeleteCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "DeleteCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+				{0b00000100},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeDeleteCustomerPaymentMethodResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeletePaymentBulk invokes deletePaymentBulk operation.
+//
+// IDで指定した一括決済情報を削除します。\
+// 一括決済処理がチェック済み（`status`が`CHECKED`）のものに限り削除できます。.
+//
+// DELETE /v1/payments/bulk/{id}
+func (c *Client) DeletePaymentBulk(ctx context.Context, params DeletePaymentBulkParams) (DeletePaymentBulkRes, error) {
+	res, err := c.sendDeletePaymentBulk(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeletePaymentBulk(ctx context.Context, params DeletePaymentBulkParams) (res DeletePaymentBulkRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("deletePaymentBulk"),
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/v1/payments/bulk/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeletePaymentBulk",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/payments/bulk/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "DeletePaymentBulk", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "DeletePaymentBulk", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeDeletePaymentBulkResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeletePlan invokes deletePlan operation.
+//
+// IDで指定したプラン情報を削除します。.
+//
+// DELETE /v1/plans/{id}
+func (c *Client) DeletePlan(ctx context.Context, params DeletePlanParams) (DeletePlanRes, error) {
+	res, err := c.sendDeletePlan(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeletePlan(ctx context.Context, params DeletePlanParams) (res DeletePlanRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("deletePlan"),
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/v1/plans/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeletePlan",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/plans/"
 	{
 		// Encode "id" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -878,14 +3615,25 @@ func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDe
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersIDDelete", r); {
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "DeletePlan", r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "DeletePlan", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
 			}
 		}
 
@@ -893,6 +3641,7 @@ func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDe
 		nextRequirement:
 			for _, requirement := range []bitset{
 				{0b00000001},
+				{0b00000010},
 			} {
 				for i, mask := range requirement {
 					if satisfied[i]&mask != mask {
@@ -915,7 +3664,7 @@ func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDe
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodeCustomersIDDeleteResponse(resp)
+	result, err := decodeDeletePlanResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -923,18 +3672,21 @@ func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDe
 	return result, nil
 }
 
-// CustomersIDGet invokes GET /customers/{id} operation.
+// DeleteSubscription invokes deleteSubscription operation.
 //
-// GET /customers/{id}
-func (c *Client) CustomersIDGet(ctx context.Context, params CustomersIDGetParams) (CustomersIDGetRes, error) {
-	res, err := c.sendCustomersIDGet(ctx, params)
+// IDで指定したサブスクリプションを解約し、請求を停止します。.
+//
+// DELETE /v1/subscriptions/{id}
+func (c *Client) DeleteSubscription(ctx context.Context, params DeleteSubscriptionParams) (DeleteSubscriptionRes, error) {
+	res, err := c.sendDeleteSubscription(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetParams) (res CustomersIDGetRes, err error) {
+func (c *Client) sendDeleteSubscription(ctx context.Context, params DeleteSubscriptionParams) (res DeleteSubscriptionRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/customers/{id}"),
+		otelogen.OperationID("deleteSubscription"),
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/v1/subscriptions/{id}"),
 	}
 
 	// Run stopwatch.
@@ -949,7 +3701,7 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersIDGet",
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeleteSubscription",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -967,7 +3719,7 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
-	pathParts[0] = "/customers/"
+	pathParts[0] = "/v1/subscriptions/"
 	{
 		// Encode "id" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -989,7 +3741,7 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 	uri.AddPathParts(u, pathParts[:]...)
 
 	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "GET", u)
+	r, err := ht.NewRequest(ctx, "DELETE", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
@@ -998,14 +3750,25 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersIDGet", r); {
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "DeleteSubscription", r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "DeleteSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
 			}
 		}
 
@@ -1013,6 +3776,7 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 		nextRequirement:
 			for _, requirement := range []bitset{
 				{0b00000001},
+				{0b00000010},
 			} {
 				for i, mask := range requirement {
 					if satisfied[i]&mask != mask {
@@ -1035,7 +3799,7 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodeCustomersIDGetResponse(resp)
+	result, err := decodeDeleteSubscriptionResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1043,18 +3807,21 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 	return result, nil
 }
 
-// CustomersPost invokes POST /customers operation.
+// DeleteWebhookSetting invokes deleteWebhookSetting operation.
 //
-// POST /customers
-func (c *Client) CustomersPost(ctx context.Context, request *CustomersPostReq) (CustomersPostRes, error) {
-	res, err := c.sendCustomersPost(ctx, request)
+// IDで指定したWebhook設定を削除します。.
+//
+// DELETE /v1/webhook_settings/{id}
+func (c *Client) DeleteWebhookSetting(ctx context.Context, params DeleteWebhookSettingParams) (DeleteWebhookSettingRes, error) {
+	res, err := c.sendDeleteWebhookSetting(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendCustomersPost(ctx context.Context, request *CustomersPostReq) (res CustomersPostRes, err error) {
+func (c *Client) sendDeleteWebhookSetting(ctx context.Context, params DeleteWebhookSettingParams) (res DeleteWebhookSettingRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/customers"),
+		otelogen.OperationID("deleteWebhookSetting"),
+		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRouteKey.String("/v1/webhook_settings/{id}"),
 	}
 
 	// Run stopwatch.
@@ -1069,7 +3836,7 @@ func (c *Client) sendCustomersPost(ctx context.Context, request *CustomersPostRe
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersPost",
+	ctx, span := c.cfg.Tracer.Start(ctx, "DeleteWebhookSetting",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1086,578 +3853,242 @@ func (c *Client) sendCustomersPost(ctx context.Context, request *CustomersPostRe
 
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [1]string
-	pathParts[0] = "/customers"
+	var pathParts [2]string
+	pathParts[0] = "/v1/webhook_settings/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
 	uri.AddPathParts(u, pathParts[:]...)
 
 	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "POST", u)
+	r, err := ht.NewRequest(ctx, "DELETE", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
-	if err := encodeCustomersPostRequest(request, r); err != nil {
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "DeleteWebhookSetting", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "DeleteWebhookSetting", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeDeleteWebhookSettingResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// Execute3DSecureAuthentication invokes execute3DSecureAuthentication operation.
+//
+// `access_id`で指定したカード決済取引の3Dセキュア認証を開始します。\
+// \
+// 用意した`tds2_ret_url`に対し`event`パラメータで`3DSMethodFinished`もしくは`3DSMethodSkipped`イベントが通知されたとき、このAPIを呼び出します。.
+//
+// PUT /v1/secure2/{access_id}
+func (c *Client) Execute3DSecureAuthentication(ctx context.Context, request OptR3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (Execute3DSecureAuthenticationRes, error) {
+	res, err := c.sendExecute3DSecureAuthentication(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendExecute3DSecureAuthentication(ctx context.Context, request OptR3DSAuthorizingRequest, params Execute3DSecureAuthenticationParams) (res Execute3DSecureAuthenticationRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("execute3DSecureAuthentication"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/secure2/{access_id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "Execute3DSecureAuthentication",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/secure2/"
+	{
+		// Encode "access_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "access_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.AccessID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeExecute3DSecureAuthenticationRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
 	}
 
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
 	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersPost", r); {
-			case err == nil: // if NO error
-				satisfied[0] |= 1 << 0
-			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
-				// Skip this security.
-			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
-		}
-	}
-
-	stage = "SendRequest"
-	resp, err := c.cfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	stage = "DecodeResponse"
-	result, err := decodeCustomersPostResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
-// PaymentsGet invokes GET /payments operation.
-//
-// GET /payments
-func (c *Client) PaymentsGet(ctx context.Context, params PaymentsGetParams) (PaymentsGetRes, error) {
-	res, err := c.sendPaymentsGet(ctx, params)
-	return res, err
-}
-
-func (c *Client) sendPaymentsGet(ctx context.Context, params PaymentsGetParams) (res PaymentsGetRes, err error) {
-	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/payments"),
-	}
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsGet",
-		trace.WithAttributes(otelAttrs...),
-		clientSpanKind,
-	)
-	// Track stage for error reporting.
-	var stage string
-	defer func() {
-		if err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		span.End()
-	}()
-
-	stage = "BuildURL"
-	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [1]string
-	pathParts[0] = "/payments"
-	uri.AddPathParts(u, pathParts[:]...)
-
-	stage = "EncodeQueryParams"
-	q := uri.NewQueryEncoder()
-	{
-		// Encode "limit" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "limit",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Limit.Get(); ok {
-				return e.EncodeValue(conv.IntToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "page" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "page",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Page.Get(); ok {
-				return e.EncodeValue(conv.IntToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "count_only" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "count_only",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.CountOnly.Get(); ok {
-				return e.EncodeValue(conv.BoolToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "sort" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "sort",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Sort.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "pay_type" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "pay_type",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.PayType))
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "keyword" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "keyword",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Keyword.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "total_amount_min" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "total_amount_min",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.TotalAmountMin.Get(); ok {
-				return e.EncodeValue(conv.IntToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "total_amount_max" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "total_amount_max",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.TotalAmountMax.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "customer_id" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "customer_id",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.CustomerID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "process_data_from" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "process_data_from",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.ProcessDataFrom.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "process_data_to" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "process_data_to",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.ProcessDataTo.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "auth_max_date_from" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "auth_max_date_from",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.AuthMaxDateFrom.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "auth_max_date_to" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "auth_max_date_to",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.AuthMaxDateTo.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "update_date_from" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "update_date_from",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.UpdateDateFrom.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "update_date_to" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "update_date_to",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.UpdateDateTo.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "status" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "status",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Status.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "pay_pattern" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "pay_pattern",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.PayPattern.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "subscription_id" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "subscription_id",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.SubscriptionID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	u.RawQuery = q.Values().Encode()
-
-	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "GET", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
-	}
-
-	{
-		type bitset = [1]uint8
-		var satisfied bitset
-		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsGet", r); {
-			case err == nil: // if NO error
-				satisfied[0] |= 1 << 0
-			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
-				// Skip this security.
-			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
-			}
-		}
-
-		if ok := func() bool {
-		nextRequirement:
-			for _, requirement := range []bitset{
-				{0b00000001},
-			} {
-				for i, mask := range requirement {
-					if satisfied[i]&mask != mask {
-						continue nextRequirement
-					}
-				}
-				return true
-			}
-			return false
-		}(); !ok {
-			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
-		}
-	}
-
-	stage = "SendRequest"
-	resp, err := c.cfg.Client.Do(r)
-	if err != nil {
-		return res, errors.Wrap(err, "do request")
-	}
-	defer resp.Body.Close()
-
-	stage = "DecodeResponse"
-	result, err := decodePaymentsGetResponse(resp)
-	if err != nil {
-		return res, errors.Wrap(err, "decode response")
-	}
-
-	return result, nil
-}
-
-// PaymentsIDGet invokes GET /payments/{id} operation.
-//
-// GET /payments/{id}
-func (c *Client) PaymentsIDGet(ctx context.Context, params PaymentsIDGetParams) (PaymentsIDGetRes, error) {
-	res, err := c.sendPaymentsIDGet(ctx, params)
-	return res, err
-}
-
-func (c *Client) sendPaymentsIDGet(ctx context.Context, params PaymentsIDGetParams) (res PaymentsIDGetRes, err error) {
-	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
-		semconv.HTTPRouteKey.String("/payments/{id}"),
-	}
-
-	// Run stopwatch.
-	startTime := time.Now()
-	defer func() {
-		// Use floating point division here for higher precision (instead of Millisecond method).
-		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
-	}()
-
-	// Increment request counter.
-	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-
-	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsIDGet",
-		trace.WithAttributes(otelAttrs...),
-		clientSpanKind,
-	)
-	// Track stage for error reporting.
-	var stage string
-	defer func() {
-		if err != nil {
-			span.RecordError(err)
-			span.SetStatus(codes.Error, stage)
-			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
-		}
-		span.End()
-	}()
-
-	stage = "BuildURL"
-	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [2]string
-	pathParts[0] = "/payments/"
-	{
-		// Encode "id" parameter.
-		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "id",
-			Style:   uri.PathStyleSimple,
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
 			Explode: false,
-		})
-		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
-		}(); err != nil {
-			return res, errors.Wrap(err, "encode path")
 		}
-		encoded, err := e.Result()
-		if err != nil {
-			return res, errors.Wrap(err, "encode path")
-		}
-		pathParts[1] = encoded
-	}
-	uri.AddPathParts(u, pathParts[:]...)
-
-	stage = "EncodeQueryParams"
-	q := uri.NewQueryEncoder()
-	{
-		// Encode "pay_type" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "pay_type",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.PayType))
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
 		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
+			return res, errors.Wrap(err, "encode header")
 		}
-	}
-	u.RawQuery = q.Values().Encode()
-
-	stage = "EncodeRequest"
-	r, err := ht.NewRequest(ctx, "GET", u)
-	if err != nil {
-		return res, errors.Wrap(err, "create request")
 	}
 
 	{
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsIDGet", r); {
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "Execute3DSecureAuthentication", r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "Execute3DSecureAuthentication", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "Execute3DSecureAuthentication", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
 			}
 		}
 
@@ -1665,6 +4096,8 @@ func (c *Client) sendPaymentsIDGet(ctx context.Context, params PaymentsIDGetPara
 		nextRequirement:
 			for _, requirement := range []bitset{
 				{0b00000001},
+				{0b00000010},
+				{0b00000100},
 			} {
 				for i, mask := range requirement {
 					if satisfied[i]&mask != mask {
@@ -1687,7 +4120,7 @@ func (c *Client) sendPaymentsIDGet(ctx context.Context, params PaymentsIDGetPara
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodePaymentsIDGetResponse(resp)
+	result, err := decodeExecute3DSecureAuthenticationResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1695,18 +4128,21 @@ func (c *Client) sendPaymentsIDGet(ctx context.Context, params PaymentsIDGetPara
 	return result, nil
 }
 
-// PaymentsIDPut invokes PUT /payments/{id} operation.
+// ExecutePayment invokes executePayment operation.
 //
-// PUT /payments/{id}
-func (c *Client) PaymentsIDPut(ctx context.Context, request PaymentsIDPutReq, params PaymentsIDPutParams) (PaymentsIDPutRes, error) {
-	res, err := c.sendPaymentsIDPut(ctx, request, params)
+// Fincodeに登録された決済情報を指定し、請求を実行します。.
+//
+// PUT /v1/payments/{id}
+func (c *Client) ExecutePayment(ctx context.Context, request OptExecutePaymentReq, params ExecutePaymentParams) (ExecutePaymentRes, error) {
+	res, err := c.sendExecutePayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq, params PaymentsIDPutParams) (res PaymentsIDPutRes, err error) {
+func (c *Client) sendExecutePayment(ctx context.Context, request OptExecutePaymentReq, params ExecutePaymentParams) (res ExecutePaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("executePayment"),
 		semconv.HTTPMethodKey.String("PUT"),
-		semconv.HTTPRouteKey.String("/payments/{id}"),
+		semconv.HTTPRouteKey.String("/v1/payments/{id}"),
 	}
 
 	// Run stopwatch.
@@ -1721,7 +4157,7 @@ func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsIDPut",
+	ctx, span := c.cfg.Tracer.Start(ctx, "ExecutePayment",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1739,7 +4175,7 @@ func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
-	pathParts[0] = "/payments/"
+	pathParts[0] = "/v1/payments/"
 	{
 		// Encode "id" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -1765,22 +4201,61 @@ func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
-	if err := encodePaymentsIDPutRequest(request, r); err != nil {
+	if err := encodeExecutePaymentRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
 	}
 
 	{
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsIDPut", r); {
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ExecutePayment", r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "ExecutePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ExecutePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
 			}
 		}
 
@@ -1788,6 +4263,8 @@ func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq
 		nextRequirement:
 			for _, requirement := range []bitset{
 				{0b00000001},
+				{0b00000010},
+				{0b00000100},
 			} {
 				for i, mask := range requirement {
 					if satisfied[i]&mask != mask {
@@ -1810,7 +4287,7 @@ func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodePaymentsIDPutResponse(resp)
+	result, err := decodeExecutePaymentResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1818,18 +4295,23 @@ func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq
 	return result, nil
 }
 
-// PaymentsPost invokes POST /payments operation.
+// ExecutePaymentAfter3DSecure invokes executePaymentAfter3DSecure operation.
 //
-// POST /payments
-func (c *Client) PaymentsPost(ctx context.Context, request PaymentsPostReq) (PaymentsPostRes, error) {
-	res, err := c.sendPaymentsPost(ctx, request)
+// 3Dセキュア認証後の決済を実行します。\
+// \
+// 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
+//
+// PUT /v1/payments/{id}/secure
+func (c *Client) ExecutePaymentAfter3DSecure(ctx context.Context, request OptExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error) {
+	res, err := c.sendExecutePaymentAfter3DSecure(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) (res PaymentsPostRes, err error) {
+func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request OptExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (res ExecutePaymentAfter3DSecureRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("POST"),
-		semconv.HTTPRouteKey.String("/payments"),
+		otelogen.OperationID("executePaymentAfter3DSecure"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/payments/{id}/secure"),
 	}
 
 	// Run stopwatch.
@@ -1844,7 +4326,332 @@ func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) 
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsPost",
+	ctx, span := c.cfg.Tracer.Start(ctx, "ExecutePaymentAfter3DSecure",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/payments/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/secure"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeExecutePaymentAfter3DSecureRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ExecutePaymentAfter3DSecure", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "ExecutePaymentAfter3DSecure", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ExecutePaymentAfter3DSecure", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+				{0b00000100},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeExecutePaymentAfter3DSecureResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GenerateBarcodeOfPayment invokes generateBarcodeOfPayment operation.
+//
+// リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
+//
+// PUT /v1/payments/{id}/barcode
+func (c *Client) GenerateBarcodeOfPayment(ctx context.Context, request OptGenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error) {
+	res, err := c.sendGenerateBarcodeOfPayment(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendGenerateBarcodeOfPayment(ctx context.Context, request OptGenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (res GenerateBarcodeOfPaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("generateBarcodeOfPayment"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/payments/{id}/barcode"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "GenerateBarcodeOfPayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/payments/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/barcode"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeGenerateBarcodeOfPaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "GenerateBarcodeOfPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "GenerateBarcodeOfPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeGenerateBarcodeOfPaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfApplePayPayment invokes receiveWebhookOfApplePayPayment operation.
+//
+// Apple Payによる決済に関するイベント（`payments.applepay.
+// *`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-applepay-payment
+func (c *Client) ReceiveWebhookOfApplePayPayment(ctx context.Context, request OptWebhookEventPaymentApplePay) (ReceiveWebhookOfApplePayPaymentRes, error) {
+	res, err := c.sendReceiveWebhookOfApplePayPayment(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfApplePayPayment(ctx context.Context, request OptWebhookEventPaymentApplePay) (res ReceiveWebhookOfApplePayPaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfApplePayPayment"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-applepay-payment"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfApplePayPayment",
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1862,7 +4669,7 @@ func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) 
 	stage = "BuildURL"
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
-	pathParts[0] = "/payments"
+	pathParts[0] = "/your-endpoint-on-applepay-payment"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	stage = "EncodeRequest"
@@ -1870,7 +4677,7 @@ func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) 
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
-	if err := encodePaymentsPostRequest(request, r); err != nil {
+	if err := encodeReceiveWebhookOfApplePayPaymentRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
 	}
 
@@ -1878,14 +4685,25 @@ func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) 
 		type bitset = [1]uint8
 		var satisfied bitset
 		{
-			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsPost", r); {
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfApplePayPayment", r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfApplePayPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
 			}
 		}
 
@@ -1893,6 +4711,7 @@ func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) 
 		nextRequirement:
 			for _, requirement := range []bitset{
 				{0b00000001},
+				{0b00000010},
 			} {
 				for i, mask := range requirement {
 					if satisfied[i]&mask != mask {
@@ -1915,7 +4734,7710 @@ func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) 
 	defer resp.Body.Close()
 
 	stage = "DecodeResponse"
-	result, err := decodePaymentsPostResponse(resp)
+	result, err := decodeReceiveWebhookOfApplePayPaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfCard invokes receiveWebhookOfCard operation.
+//
+// カードに関するイベント（`card.
+// *`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-card
+func (c *Client) ReceiveWebhookOfCard(ctx context.Context, request OptWebhookEventCard) (ReceiveWebhookOfCardRes, error) {
+	res, err := c.sendReceiveWebhookOfCard(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfCard(ctx context.Context, request OptWebhookEventCard) (res ReceiveWebhookOfCardRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfCard"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-card"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfCard",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-card"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfCardRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfCardResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfCardPayment invokes receiveWebhookOfCardPayment operation.
+//
+// カード決済に関するイベント（`payments.card.
+// *`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-card-payment
+func (c *Client) ReceiveWebhookOfCardPayment(ctx context.Context, request OptWebhookEventPaymentCard) (ReceiveWebhookOfCardPaymentRes, error) {
+	res, err := c.sendReceiveWebhookOfCardPayment(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfCardPayment(ctx context.Context, request OptWebhookEventPaymentCard) (res ReceiveWebhookOfCardPaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfCardPayment"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-card-payment"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfCardPayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-card-payment"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfCardPaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfCardPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfCardPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfCardPaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfCardPaymentBulkBatch invokes receiveWebhookOfCardPaymentBulkBatch operation.
+//
+// カード決済による一括決済 課金イベント（`payments.bulk.card.
+// batch`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-card-payment-bulk-batch
+func (c *Client) ReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request OptWebhookEventPaymentBulkBatchCard) (ReceiveWebhookOfCardPaymentBulkBatchRes, error) {
+	res, err := c.sendReceiveWebhookOfCardPaymentBulkBatch(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfCardPaymentBulkBatch(ctx context.Context, request OptWebhookEventPaymentBulkBatchCard) (res ReceiveWebhookOfCardPaymentBulkBatchRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfCardPaymentBulkBatch"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-card-payment-bulk-batch"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfCardPaymentBulkBatch",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-card-payment-bulk-batch"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfCardPaymentBulkBatchRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfCardPaymentBulkBatch", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfCardPaymentBulkBatch", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfCardPaymentBulkBatchResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfCardRecurringBatch invokes receiveWebhookOfCardRecurringBatch operation.
+//
+// カード決済によるサブスクリプション課金のイベント（`recurring.card.
+// batch`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-card-recurring-batch
+func (c *Client) ReceiveWebhookOfCardRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchCard) (ReceiveWebhookOfCardRecurringBatchRes, error) {
+	res, err := c.sendReceiveWebhookOfCardRecurringBatch(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfCardRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchCard) (res ReceiveWebhookOfCardRecurringBatchRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfCardRecurringBatch"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-card-recurring-batch"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfCardRecurringBatch",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-card-recurring-batch"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfCardRecurringBatchRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfCardRecurringBatch", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfCardRecurringBatch", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfCardRecurringBatchResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfCardSubscription invokes receiveWebhookOfCardSubscription operation.
+//
+// カード決済によるサブスクリプションに関するイベント（`subscription.card.
+// *`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-card-subscription
+func (c *Client) ReceiveWebhookOfCardSubscription(ctx context.Context, request OptWebhookEventSubscriptionCard) (ReceiveWebhookOfCardSubscriptionRes, error) {
+	res, err := c.sendReceiveWebhookOfCardSubscription(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfCardSubscription(ctx context.Context, request OptWebhookEventSubscriptionCard) (res ReceiveWebhookOfCardSubscriptionRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfCardSubscription"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-card-subscription"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfCardSubscription",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-card-subscription"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfCardSubscriptionRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfCardSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfCardSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfCardSubscriptionResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfContract invokes receiveWebhookOfContract operation.
+//
+// 決済手段 契約状況 更新イベント（`contracts.status_code.
+// updated`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-contract
+func (c *Client) ReceiveWebhookOfContract(ctx context.Context, request OptWebhookEventContract) (ReceiveWebhookOfContractRes, error) {
+	res, err := c.sendReceiveWebhookOfContract(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfContract(ctx context.Context, request OptWebhookEventContract) (res ReceiveWebhookOfContractRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfContract"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-contract"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfContract",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-contract"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfContractRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfContract", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfContract", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfContractResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfCustomerPaymentMethod invokes receiveWebhookOfCustomerPaymentMethod operation.
+//
+// 顧客の決済手段に関するイベント（`customers.payment_methods.
+// *`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-customer-payment_method
+func (c *Client) ReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request OptWebhookEventCustomerPaymentMethod) (ReceiveWebhookOfCustomerPaymentMethodRes, error) {
+	res, err := c.sendReceiveWebhookOfCustomerPaymentMethod(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfCustomerPaymentMethod(ctx context.Context, request OptWebhookEventCustomerPaymentMethod) (res ReceiveWebhookOfCustomerPaymentMethodRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfCustomerPaymentMethod"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-customer-payment_method"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfCustomerPaymentMethod",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-customer-payment_method"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfCustomerPaymentMethodRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfCustomerPaymentMethodResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfDirectDebitPayment invokes receiveWebhookOfDirectDebitPayment operation.
+//
+// 口座振替に関するイベント（`payments.directdebit.
+// *`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-directdebit-payment
+func (c *Client) ReceiveWebhookOfDirectDebitPayment(ctx context.Context, request OptWebhookEventPaymentDirectDebit) (ReceiveWebhookOfDirectDebitPaymentRes, error) {
+	res, err := c.sendReceiveWebhookOfDirectDebitPayment(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfDirectDebitPayment(ctx context.Context, request OptWebhookEventPaymentDirectDebit) (res ReceiveWebhookOfDirectDebitPaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfDirectDebitPayment"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-directdebit-payment"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfDirectDebitPayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-directdebit-payment"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfDirectDebitPaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfDirectDebitPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfDirectDebitPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfDirectDebitPaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfDirectDebitRecurringBatch invokes receiveWebhookOfDirectDebitRecurringBatch operation.
+//
+// 口座振替によるサブスクリプション課金に関するイベント（`recurring.
+// directdebit.batch`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-directdebit-recurring-batch
+func (c *Client) ReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchDirectDebit) (ReceiveWebhookOfDirectDebitRecurringBatchRes, error) {
+	res, err := c.sendReceiveWebhookOfDirectDebitRecurringBatch(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfDirectDebitRecurringBatch(ctx context.Context, request OptWebhookEventRecurringBatchDirectDebit) (res ReceiveWebhookOfDirectDebitRecurringBatchRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfDirectDebitRecurringBatch"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-directdebit-recurring-batch"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfDirectDebitRecurringBatch",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-directdebit-recurring-batch"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfDirectDebitRecurringBatchRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfDirectDebitRecurringBatch", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfDirectDebitRecurringBatch", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfDirectDebitRecurringBatchResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfDirectDebitSubscription invokes receiveWebhookOfDirectDebitSubscription operation.
+//
+// 口座振替によるサブスクリプションに関するイベント（`subscription.
+// directdebit.*`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-directdebit-subscription
+func (c *Client) ReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request OptWebhookEventSubscriptionDirectDebit) (ReceiveWebhookOfDirectDebitSubscriptionRes, error) {
+	res, err := c.sendReceiveWebhookOfDirectDebitSubscription(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfDirectDebitSubscription(ctx context.Context, request OptWebhookEventSubscriptionDirectDebit) (res ReceiveWebhookOfDirectDebitSubscriptionRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfDirectDebitSubscription"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-directdebit-subscription"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfDirectDebitSubscription",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-directdebit-subscription"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfDirectDebitSubscriptionRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfDirectDebitSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfDirectDebitSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfDirectDebitSubscriptionResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfKonbiniPayment invokes receiveWebhookOfKonbiniPayment operation.
+//
+// コンビニ決済に関するイベント（`payments.konbini.
+// *`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-konbini-payment
+func (c *Client) ReceiveWebhookOfKonbiniPayment(ctx context.Context, request OptWebhookEventPaymentKonbini) (ReceiveWebhookOfKonbiniPaymentRes, error) {
+	res, err := c.sendReceiveWebhookOfKonbiniPayment(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfKonbiniPayment(ctx context.Context, request OptWebhookEventPaymentKonbini) (res ReceiveWebhookOfKonbiniPaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfKonbiniPayment"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-konbini-payment"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfKonbiniPayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-konbini-payment"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfKonbiniPaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfKonbiniPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfKonbiniPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfKonbiniPaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfPayPayPayment invokes receiveWebhookOfPayPayPayment operation.
+//
+// PayPayによる決済に関するイベント（`payments.paypay.
+// *`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-paypay-payment
+func (c *Client) ReceiveWebhookOfPayPayPayment(ctx context.Context, request OptWebhookEventPaymentPayPay) (ReceiveWebhookOfPayPayPaymentRes, error) {
+	res, err := c.sendReceiveWebhookOfPayPayPayment(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfPayPayPayment(ctx context.Context, request OptWebhookEventPaymentPayPay) (res ReceiveWebhookOfPayPayPaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfPayPayPayment"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-paypay-payment"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfPayPayPayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-paypay-payment"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfPayPayPaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfPayPayPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfPayPayPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfPayPayPaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReceiveWebhookOfRegisteringCardPaymentBulk invokes receiveWebhookOfRegisteringCardPaymentBulk operation.
+//
+// カード決済による一括決済 登録イベント（`payments.bulk.card.
+// regist`）で通知されるリクエストのリクエストボディの仕様です。.
+//
+// POST /your-endpoint-on-card-payment-bulk-regist
+func (c *Client) ReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request OptWebhookEventPaymentBulkRegistCard) (ReceiveWebhookOfRegisteringCardPaymentBulkRes, error) {
+	res, err := c.sendReceiveWebhookOfRegisteringCardPaymentBulk(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendReceiveWebhookOfRegisteringCardPaymentBulk(ctx context.Context, request OptWebhookEventPaymentBulkRegistCard) (res ReceiveWebhookOfRegisteringCardPaymentBulkRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("receiveWebhookOfRegisteringCardPaymentBulk"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/your-endpoint-on-card-payment-bulk-regist"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReceiveWebhookOfRegisteringCardPaymentBulk",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/your-endpoint-on-card-payment-bulk-regist"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReceiveWebhookOfRegisteringCardPaymentBulkRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReceiveWebhookOfRegisteringCardPaymentBulk", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReceiveWebhookOfRegisteringCardPaymentBulk", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReceiveWebhookOfRegisteringCardPaymentBulkResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RequestProductionEnvironment invokes requestProductionEnvironment operation.
+//
+// `id`で指定したテナントショップの本番環境の利用申請を行います。このAPIを呼び出すまでにテナント本番環境申請情報 更新APIで申請情報を用意しておく必要があります。.
+//
+// POST /v1/contracts/examinations
+func (c *Client) RequestProductionEnvironment(ctx context.Context, request OptPOSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (RequestProductionEnvironmentRes, error) {
+	res, err := c.sendRequestProductionEnvironment(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendRequestProductionEnvironment(ctx context.Context, request OptPOSTContractsExaminationsRequestMultipart, params RequestProductionEnvironmentParams) (res RequestProductionEnvironmentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("requestProductionEnvironment"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/contracts/examinations"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RequestProductionEnvironment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/contracts/examinations"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeRequestProductionEnvironmentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RequestProductionEnvironment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RequestProductionEnvironment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRequestProductionEnvironmentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ReserveProvider invokes reserveProvider operation.
+//
+// `id`で指定したテナントショップの決済手段の追加申請を行います。.
+//
+// POST /v1/contracts-examinations-tenants-{id}-providers-reserve.yml
+func (c *Client) ReserveProvider(ctx context.Context, request OptPOSTProviderReserveRequestMultipart, params ReserveProviderParams) (ReserveProviderRes, error) {
+	res, err := c.sendReserveProvider(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendReserveProvider(ctx context.Context, request OptPOSTProviderReserveRequestMultipart, params ReserveProviderParams) (res ReserveProviderRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("reserveProvider"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/contracts-examinations-tenants-{id}-providers-reserve.yml"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "ReserveProvider",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/contracts-examinations-tenants-"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "-providers-reserve.yml"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeReserveProviderRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "ReserveProvider", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "ReserveProvider", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeReserveProviderResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveAccount invokes retrieveAccount operation.
+//
+// IDで指定した売上入金を取得します。\
+// `aggregate_term_start`から`aggregate_term_end`までの期間における売上の集計結果が含まれます。\
+// \
+// 集計された個々のレコードについては 売上入金明細 一覧取得API
+// を利用することで取得できます。.
+//
+// GET /v1/accounts/{id}
+func (c *Client) RetrieveAccount(ctx context.Context, params RetrieveAccountParams) (RetrieveAccountRes, error) {
+	res, err := c.sendRetrieveAccount(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveAccount(ctx context.Context, params RetrieveAccountParams) (res RetrieveAccountRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveAccount"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/accounts/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveAccount",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/accounts/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveAccount", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveAccount", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveAccountResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveAccountDetailList invokes retrieveAccountDetailList operation.
+//
+// IDで指定した売上入金に紐づく売上入金詳細を一覧で取得します。\
+// 1つの売上入金明細は、1件の決済／キャンセル／チャージバック／チャージバック取消調整のいずれかに対応します。.
+//
+// GET /v1/accounts/{id}/detail
+func (c *Client) RetrieveAccountDetailList(ctx context.Context, params RetrieveAccountDetailListParams) (RetrieveAccountDetailListRes, error) {
+	res, err := c.sendRetrieveAccountDetailList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveAccountDetailList(ctx context.Context, params RetrieveAccountDetailListParams) (res RetrieveAccountDetailListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveAccountDetailList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/accounts/{id}/detail"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveAccountDetailList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/accounts/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/detail"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveAccountDetailList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveAccountDetailList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveAccountDetailListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveAccountList invokes retrieveAccountList operation.
+//
+// 売上入金情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/accounts
+func (c *Client) RetrieveAccountList(ctx context.Context, params RetrieveAccountListParams) (RetrieveAccountListRes, error) {
+	res, err := c.sendRetrieveAccountList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveAccountList(ctx context.Context, params RetrieveAccountListParams) (res RetrieveAccountListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveAccountList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/accounts"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveAccountList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/accounts"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveAccountList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveAccountList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveAccountListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveCustomer invokes retrieveCustomer operation.
+//
+// IDで指定した顧客情報を取得します。.
+//
+// GET /v1/customers/{id}
+func (c *Client) RetrieveCustomer(ctx context.Context, params RetrieveCustomerParams) (RetrieveCustomerRes, error) {
+	res, err := c.sendRetrieveCustomer(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveCustomer(ctx context.Context, params RetrieveCustomerParams) (res RetrieveCustomerRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveCustomer"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/customers/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveCustomer",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "RetrieveCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+				{0b00000100},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveCustomerResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveCustomerCard invokes retrieveCustomerCard operation.
+//
+// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを取得します。.
+//
+// GET /v1/customers/{customer_id}/cards/{id}
+func (c *Client) RetrieveCustomerCard(ctx context.Context, params RetrieveCustomerCardParams) (RetrieveCustomerCardRes, error) {
+	res, err := c.sendRetrieveCustomerCard(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveCustomerCard(ctx context.Context, params RetrieveCustomerCardParams) (res RetrieveCustomerCardRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveCustomerCard"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/cards/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveCustomerCard",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/cards/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveCustomerCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "RetrieveCustomerCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveCustomerCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+				{0b00000100},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveCustomerCardResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveCustomerCardList invokes retrieveCustomerCardList operation.
+//
+// `customer_id`で指定した顧客に対し紐づくカードを一覧で取得します。.
+//
+// GET /v1/customers/{customer_id}/cards
+func (c *Client) RetrieveCustomerCardList(ctx context.Context, params RetrieveCustomerCardListParams) (RetrieveCustomerCardListRes, error) {
+	res, err := c.sendRetrieveCustomerCardList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveCustomerCardList(ctx context.Context, params RetrieveCustomerCardListParams) (res RetrieveCustomerCardListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveCustomerCardList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/cards"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveCustomerCardList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/cards"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveCustomerCardList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "RetrieveCustomerCardList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveCustomerCardList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+				{0b00000100},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveCustomerCardListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveCustomerList invokes retrieveCustomerList operation.
+//
+// 顧客情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/customers
+func (c *Client) RetrieveCustomerList(ctx context.Context, params RetrieveCustomerListParams) (RetrieveCustomerListRes, error) {
+	res, err := c.sendRetrieveCustomerList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveCustomerList(ctx context.Context, params RetrieveCustomerListParams) (res RetrieveCustomerListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveCustomerList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/customers"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveCustomerList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/customers"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveCustomerList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveCustomerList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveCustomerListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveCustomerPaymentMethod invokes retrieveCustomerPaymentMethod operation.
+//
+// `customer_id`で指定した顧客に対し紐づく決済手段のうち、`id`で指定したものを取得します。.
+//
+// GET /v1/customers/{customer_id}/payment_methods/{id}
+func (c *Client) RetrieveCustomerPaymentMethod(ctx context.Context, params RetrieveCustomerPaymentMethodParams) (RetrieveCustomerPaymentMethodRes, error) {
+	res, err := c.sendRetrieveCustomerPaymentMethod(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveCustomerPaymentMethod(ctx context.Context, params RetrieveCustomerPaymentMethodParams) (res RetrieveCustomerPaymentMethodRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveCustomerPaymentMethod"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/payment_methods/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveCustomerPaymentMethod",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/payment_methods/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			return params.Query.EncodeURI(e)
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "RetrieveCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveCustomerPaymentMethod", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+				{0b00000100},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveCustomerPaymentMethodResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveCustomerPaymentMethodList invokes retrieveCustomerPaymentMethodList operation.
+//
+// `customer_id`で指定した顧客に対し紐づく決済手段を一覧で取得します。.
+//
+// GET /v1/customers/{customer_id}/payment_methods
+func (c *Client) RetrieveCustomerPaymentMethodList(ctx context.Context, params RetrieveCustomerPaymentMethodListParams) (RetrieveCustomerPaymentMethodListRes, error) {
+	res, err := c.sendRetrieveCustomerPaymentMethodList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveCustomerPaymentMethodList(ctx context.Context, params RetrieveCustomerPaymentMethodListParams) (res RetrieveCustomerPaymentMethodListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveCustomerPaymentMethodList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/payment_methods"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveCustomerPaymentMethodList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/payment_methods"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			return params.Query.EncodeURI(e)
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveCustomerPaymentMethodList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:PublicBearerAuth"
+			switch err := c.securityPublicBearerAuth(ctx, "RetrieveCustomerPaymentMethodList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"PublicBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveCustomerPaymentMethodList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 2
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+				{0b00000100},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveCustomerPaymentMethodListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePayment invokes retrievePayment operation.
+//
+// 指定した決済情報を取得します。.
+//
+// GET /v1/payments/{id}
+func (c *Client) RetrievePayment(ctx context.Context, params RetrievePaymentParams) (RetrievePaymentRes, error) {
+	res, err := c.sendRetrievePayment(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePayment(ctx context.Context, params RetrievePaymentParams) (res RetrievePaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePayment"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/payments/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/payments/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			return params.Query.EncodeURI(e)
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePaymentBulkDetailList invokes retrievePaymentBulkDetailList operation.
+//
+// IDで指定した一括決済情報の詳細（決済1件ごとの情報）と各決済で発生したエラーの情報を一覧で取得します。.
+//
+// GET /v1/payments/bulk/{id}
+func (c *Client) RetrievePaymentBulkDetailList(ctx context.Context, params RetrievePaymentBulkDetailListParams) (RetrievePaymentBulkDetailListRes, error) {
+	res, err := c.sendRetrievePaymentBulkDetailList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePaymentBulkDetailList(ctx context.Context, params RetrievePaymentBulkDetailListParams) (res RetrievePaymentBulkDetailListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePaymentBulkDetailList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/payments/bulk/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePaymentBulkDetailList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/payments/bulk/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			return params.Query.EncodeURI(e)
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePaymentBulkDetailList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePaymentBulkDetailList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePaymentBulkDetailListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePaymentBulkList invokes retrievePaymentBulkList operation.
+//
+// Fincodeに登録した一括決済の情報を一覧で取得します。.
+//
+// GET /v1/payments/bulk
+func (c *Client) RetrievePaymentBulkList(ctx context.Context, params RetrievePaymentBulkListParams) (RetrievePaymentBulkListRes, error) {
+	res, err := c.sendRetrievePaymentBulkList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePaymentBulkList(ctx context.Context, params RetrievePaymentBulkListParams) (res RetrievePaymentBulkListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePaymentBulkList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/payments/bulk"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePaymentBulkList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/payments/bulk"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePaymentBulkList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePaymentBulkList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePaymentBulkListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePlan invokes retrievePlan operation.
+//
+// IDで指定したプラン情報を取得します。.
+//
+// GET /v1/plans/{id}
+func (c *Client) RetrievePlan(ctx context.Context, params RetrievePlanParams) (RetrievePlanRes, error) {
+	res, err := c.sendRetrievePlan(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePlan(ctx context.Context, params RetrievePlanParams) (res RetrievePlanRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePlan"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/plans/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePlan",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/plans/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePlan", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePlan", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePlanResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePlanList invokes retrievePlanList operation.
+//
+// プラン情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/plans
+func (c *Client) RetrievePlanList(ctx context.Context, params RetrievePlanListParams) (RetrievePlanListRes, error) {
+	res, err := c.sendRetrievePlanList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePlanList(ctx context.Context, params RetrievePlanListParams) (res RetrievePlanListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePlanList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/plans"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePlanList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/plans"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePlanList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePlanList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePlanListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePlatformAccount invokes retrievePlatformAccount operation.
+//
+// IDで指定したプラットフォーム利用料による売上入金情報を取得します。\
+// `aggregate_term_start`から`aggregate_term_end`までの期間におけるプラットフォーム利用料による売上の集計結果が含まれます。\
+// \
+// テナントショップごとの利用料収入については
+// プラットフォーム利用料収入サマリー 一覧取得API
+// を利用することで取得できます。.
+//
+// GET /v1/platform_accounts/{id}
+func (c *Client) RetrievePlatformAccount(ctx context.Context, params RetrievePlatformAccountParams) (RetrievePlatformAccountRes, error) {
+	res, err := c.sendRetrievePlatformAccount(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePlatformAccount(ctx context.Context, params RetrievePlatformAccountParams) (res RetrievePlatformAccountRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePlatformAccount"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/platform_accounts/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePlatformAccount",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/platform_accounts/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePlatformAccount", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePlatformAccount", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePlatformAccountResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePlatformAccountList invokes retrievePlatformAccountList operation.
+//
+// プラットフォーム利用料による売上入金情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/platform_accounts
+func (c *Client) RetrievePlatformAccountList(ctx context.Context, params RetrievePlatformAccountListParams) (RetrievePlatformAccountListRes, error) {
+	res, err := c.sendRetrievePlatformAccountList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePlatformAccountList(ctx context.Context, params RetrievePlatformAccountListParams) (res RetrievePlatformAccountListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePlatformAccountList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/platform_accounts"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePlatformAccountList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/platform_accounts"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePlatformAccountList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePlatformAccountList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePlatformAccountListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePlatformAccountSummaryList invokes retrievePlatformAccountSummaryList operation.
+//
+// IDで指定したプラットフォーム利用料収入のサマリーを一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。\
+// サマリー情報の中にはテナントショップごとの利用料収入についての情報が含まれます。.
+//
+// GET /v1/platform_accounts/{id}/summary
+func (c *Client) RetrievePlatformAccountSummaryList(ctx context.Context, params RetrievePlatformAccountSummaryListParams) (RetrievePlatformAccountSummaryListRes, error) {
+	res, err := c.sendRetrievePlatformAccountSummaryList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePlatformAccountSummaryList(ctx context.Context, params RetrievePlatformAccountSummaryListParams) (res RetrievePlatformAccountSummaryListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePlatformAccountSummaryList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/platform_accounts/{id}/summary"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePlatformAccountSummaryList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/platform_accounts/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/summary"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePlatformAccountSummaryList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePlatformAccountSummaryList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePlatformAccountSummaryListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePlatformShop invokes retrievePlatformShop operation.
+//
+// `id`で指定したプラットフォームショップ（メインショップ・サブショップ）を取得します。.
+//
+// GET /v1/platforms/{id}
+func (c *Client) RetrievePlatformShop(ctx context.Context, params RetrievePlatformShopParams) (RetrievePlatformShopRes, error) {
+	res, err := c.sendRetrievePlatformShop(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePlatformShop(ctx context.Context, params RetrievePlatformShopParams) (res RetrievePlatformShopRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePlatformShop"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/platforms/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePlatformShop",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/platforms/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePlatformShop", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePlatformShop", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePlatformShopResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrievePlatformShopList invokes retrievePlatformShopList operation.
+//
+// プラットフォームショップ（メインショップ・サブショップ）を一覧で取得します。\
+// クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/platforms
+func (c *Client) RetrievePlatformShopList(ctx context.Context, params RetrievePlatformShopListParams) (RetrievePlatformShopListRes, error) {
+	res, err := c.sendRetrievePlatformShopList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePlatformShopList(ctx context.Context, params RetrievePlatformShopListParams) (res RetrievePlatformShopListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePlatformShopList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/platforms"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePlatformShopList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/platforms"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePlatformShopListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveSubscription invokes retrieveSubscription operation.
+//
+// IDで指定したサブスクリプション情報を取得します。.
+//
+// GET /v1/subscriptions/{id}
+func (c *Client) RetrieveSubscription(ctx context.Context, params RetrieveSubscriptionParams) (RetrieveSubscriptionRes, error) {
+	res, err := c.sendRetrieveSubscription(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveSubscription(ctx context.Context, params RetrieveSubscriptionParams) (res RetrieveSubscriptionRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveSubscription"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/subscriptions/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveSubscription",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/subscriptions/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveSubscriptionResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveSubscriptionList invokes retrieveSubscriptionList operation.
+//
+// サブスクリプション情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/subscriptions
+func (c *Client) RetrieveSubscriptionList(ctx context.Context, params RetrieveSubscriptionListParams) (RetrieveSubscriptionListRes, error) {
+	res, err := c.sendRetrieveSubscriptionList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveSubscriptionList(ctx context.Context, params RetrieveSubscriptionListParams) (res RetrieveSubscriptionListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveSubscriptionList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/subscriptions"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveSubscriptionList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/subscriptions"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			return params.Query.EncodeURI(e)
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveSubscriptionList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveSubscriptionList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveSubscriptionListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveSubscriptionResultList invokes retrieveSubscriptionResultList operation.
+//
+// サブスクリプションにより発生した課金の結果を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/subscriptions/{id}/result
+func (c *Client) RetrieveSubscriptionResultList(ctx context.Context, params RetrieveSubscriptionResultListParams) (RetrieveSubscriptionResultListRes, error) {
+	res, err := c.sendRetrieveSubscriptionResultList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveSubscriptionResultList(ctx context.Context, params RetrieveSubscriptionResultListParams) (res RetrieveSubscriptionResultListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveSubscriptionResultList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/subscriptions/{id}/result"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveSubscriptionResultList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/subscriptions/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/result"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			return params.Query.EncodeURI(e)
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveSubscriptionResultList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveSubscriptionResultList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveSubscriptionResultListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveTenantContract invokes retrieveTenantContract operation.
+//
+// `id`で指定したテナントショップの契約情報を取得します。.
+//
+// GET /v1/contracts/{id}
+func (c *Client) RetrieveTenantContract(ctx context.Context, params RetrieveTenantContractParams) (RetrieveTenantContractRes, error) {
+	res, err := c.sendRetrieveTenantContract(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveTenantContract(ctx context.Context, params RetrieveTenantContractParams) (res RetrieveTenantContractRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveTenantContract"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/contracts/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveTenantContract",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/contracts/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveTenantContract", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveTenantContract", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveTenantContractResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveTenantExaminationInfo invokes retrieveTenantExaminationInfo operation.
+//
+// ※
+// このAPIの使用は現在非推奨です。新しいテナントショップ本番環境申請情報 取得APIをご利用ください。\
+// `id`で指定したテナントショップの本番環境申請情報を取得します。.
+//
+// Deprecated: schema marks this operation as deprecated.
+//
+// GET /v1/contracts/examinations/tenants/{id}
+func (c *Client) RetrieveTenantExaminationInfo(ctx context.Context, params RetrieveTenantExaminationInfoParams) (RetrieveTenantExaminationInfoRes, error) {
+	res, err := c.sendRetrieveTenantExaminationInfo(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveTenantExaminationInfo(ctx context.Context, params RetrieveTenantExaminationInfoParams) (res RetrieveTenantExaminationInfoRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveTenantExaminationInfo"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/contracts/examinations/tenants/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveTenantExaminationInfo",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/contracts/examinations/tenants/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveTenantExaminationInfo", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveTenantExaminationInfo", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveTenantExaminationInfoResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveTenantExaminationInfoV2 invokes retrieveTenantExaminationInfoV2 operation.
+//
+// `id`で指定したテナントショップの本番環境申請情報を取得します。.
+//
+// GET /v1/contracts/examinations_v2/tenants/{id}
+func (c *Client) RetrieveTenantExaminationInfoV2(ctx context.Context, params RetrieveTenantExaminationInfoV2Params) (RetrieveTenantExaminationInfoV2Res, error) {
+	res, err := c.sendRetrieveTenantExaminationInfoV2(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveTenantExaminationInfoV2(ctx context.Context, params RetrieveTenantExaminationInfoV2Params) (res RetrieveTenantExaminationInfoV2Res, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveTenantExaminationInfoV2"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/contracts/examinations_v2/tenants/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveTenantExaminationInfoV2",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/contracts/examinations_v2/tenants/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveTenantExaminationInfoV2", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveTenantExaminationInfoV2", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveTenantExaminationInfoV2Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveTenantShop invokes retrieveTenantShop operation.
+//
+// `id`で指定したテナント情報を取得します。.
+//
+// GET /v1/tenants/{id}
+func (c *Client) RetrieveTenantShop(ctx context.Context, params RetrieveTenantShopParams) (RetrieveTenantShopRes, error) {
+	res, err := c.sendRetrieveTenantShop(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveTenantShop(ctx context.Context, params RetrieveTenantShopParams) (res RetrieveTenantShopRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveTenantShop"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/tenants/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveTenantShop",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/tenants/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveTenantShopResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveTenantShopList invokes retrieveTenantShopList operation.
+//
+// テナントショップを一覧で取得します。\
+// クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/tenants
+func (c *Client) RetrieveTenantShopList(ctx context.Context, params RetrieveTenantShopListParams) (RetrieveTenantShopListRes, error) {
+	res, err := c.sendRetrieveTenantShopList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveTenantShopList(ctx context.Context, params RetrieveTenantShopListParams) (res RetrieveTenantShopListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveTenantShopList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/tenants"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveTenantShopList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/tenants"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveTenantShopListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveWebhookSetting invokes retrieveWebhookSetting operation.
+//
+// IDで指定したWebhook設定を取得します。.
+//
+// GET /v1/webhook_settings/{id}
+func (c *Client) RetrieveWebhookSetting(ctx context.Context, params RetrieveWebhookSettingParams) (RetrieveWebhookSettingRes, error) {
+	res, err := c.sendRetrieveWebhookSetting(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveWebhookSetting(ctx context.Context, params RetrieveWebhookSettingParams) (res RetrieveWebhookSettingRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveWebhookSetting"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/webhook_settings/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveWebhookSetting",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/webhook_settings/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveWebhookSetting", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveWebhookSetting", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveWebhookSettingResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// RetrieveWebhookSettingList invokes retrieveWebhookSettingList operation.
+//
+// Webhook設定を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。.
+//
+// GET /v1/webhook_settings
+func (c *Client) RetrieveWebhookSettingList(ctx context.Context, params RetrieveWebhookSettingListParams) (RetrieveWebhookSettingListRes, error) {
+	res, err := c.sendRetrieveWebhookSettingList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrieveWebhookSettingList(ctx context.Context, params RetrieveWebhookSettingListParams) (res RetrieveWebhookSettingListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrieveWebhookSettingList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/webhook_settings"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrieveWebhookSettingList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/webhook_settings"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeQueryParams"
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "Query" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "Query",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Query.Get(); ok {
+				return val.EncodeURI(e)
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrieveWebhookSettingList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrieveWebhookSettingList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrieveWebhookSettingListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateCustomer invokes updateCustomer operation.
+//
+// IDで指定した顧客情報を更新します。.
+//
+// PUT /v1/customers/{id}
+func (c *Client) UpdateCustomer(ctx context.Context, request OptCustomerUpdatingRequest, params UpdateCustomerParams) (UpdateCustomerRes, error) {
+	res, err := c.sendUpdateCustomer(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateCustomer(ctx context.Context, request OptCustomerUpdatingRequest, params UpdateCustomerParams) (res UpdateCustomerRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateCustomer"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/customers/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateCustomer",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateCustomerRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdateCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdateCustomer", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdateCustomerResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateCustomerCard invokes updateCustomerCard operation.
+//
+// `customer_id`で指定した顧客に対し紐づくカードのうち`id`で指定したものを更新します。.
+//
+// PUT /v1/customers/{customer_id}/cards/{id}
+func (c *Client) UpdateCustomerCard(ctx context.Context, request OptCustomerCardUpdatingRequest, params UpdateCustomerCardParams) (UpdateCustomerCardRes, error) {
+	res, err := c.sendUpdateCustomerCard(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateCustomerCard(ctx context.Context, request OptCustomerCardUpdatingRequest, params UpdateCustomerCardParams) (res UpdateCustomerCardRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateCustomerCard"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/customers/{customer_id}/cards/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateCustomerCard",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/v1/customers/"
+	{
+		// Encode "customer_id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "customer_id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.CustomerID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/cards/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateCustomerCardRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdateCustomerCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdateCustomerCard", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdateCustomerCardResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdatePlan invokes updatePlan operation.
+//
+// IDで指定したプラン情報を更新します。\
+// プランが1つ以上のサブスクリプションで使用されているとき（`used_flag =
+// 1`のとき）、プランは更新できません。.
+//
+// PUT /v1/plans/{id}
+func (c *Client) UpdatePlan(ctx context.Context, request OptPlanUpdatingRequest, params UpdatePlanParams) (UpdatePlanRes, error) {
+	res, err := c.sendUpdatePlan(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdatePlan(ctx context.Context, request OptPlanUpdatingRequest, params UpdatePlanParams) (res UpdatePlanRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updatePlan"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/plans/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdatePlan",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/plans/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdatePlanRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdatePlan", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdatePlan", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdatePlanResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdatePlatformShop invokes updatePlatformShop operation.
+//
+// `examination_master_id`で指定した決済手段に関してプラットフォーム利用料を更新します。.
+//
+// PUT /v1/platforms/{id}
+func (c *Client) UpdatePlatformShop(ctx context.Context, request OptPlatformShopUpdatingRequest, params UpdatePlatformShopParams) (UpdatePlatformShopRes, error) {
+	res, err := c.sendUpdatePlatformShop(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdatePlatformShop(ctx context.Context, request OptPlatformShopUpdatingRequest, params UpdatePlatformShopParams) (res UpdatePlatformShopRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updatePlatformShop"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/platforms/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdatePlatformShop",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/platforms/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdatePlatformShopRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdatePlatformShop", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdatePlatformShop", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdatePlatformShopResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateSubscription invokes updateSubscription operation.
+//
+// IDで指定したサブスクリプション情報を更新します。\
+// サブスクリプションの初回課金がすでに行われているとき（`start_date ≤
+// {{現在時刻}}`のとき）、サブスクリプションは更新できません。.
+//
+// PUT /v1/subscriptions/{id}
+func (c *Client) UpdateSubscription(ctx context.Context, request OptSubscriptionUpdatingRequest, params UpdateSubscriptionParams) (UpdateSubscriptionRes, error) {
+	res, err := c.sendUpdateSubscription(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateSubscription(ctx context.Context, request OptSubscriptionUpdatingRequest, params UpdateSubscriptionParams) (res UpdateSubscriptionRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateSubscription"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/subscriptions/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateSubscription",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/subscriptions/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateSubscriptionRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdateSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdateSubscription", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdateSubscriptionResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateTenantExaminationInfo invokes updateTenantExaminationInfo operation.
+//
+// ※
+// このAPIの使用は現在非推奨です。新しいテナントショップ本番環境申請情報 更新APIをご利用ください。\
+// `id`で指定したテナントショップの本番環境申請情報を更新します。.
+//
+// Deprecated: schema marks this operation as deprecated.
+//
+// PUT /v1/contracts/examinations/tenants/{id}
+func (c *Client) UpdateTenantExaminationInfo(ctx context.Context, request OptExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (UpdateTenantExaminationInfoRes, error) {
+	res, err := c.sendUpdateTenantExaminationInfo(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateTenantExaminationInfo(ctx context.Context, request OptExaminationInfoUpdatingRequest, params UpdateTenantExaminationInfoParams) (res UpdateTenantExaminationInfoRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateTenantExaminationInfo"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/contracts/examinations/tenants/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateTenantExaminationInfo",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/contracts/examinations/tenants/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateTenantExaminationInfoRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdateTenantExaminationInfo", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdateTenantExaminationInfo", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdateTenantExaminationInfoResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateTenantExaminationInfoV2 invokes updateTenantExaminationInfoV2 operation.
+//
+// `id`で指定したテナントショップの本番環境申請情報を更新します。.
+//
+// PUT /v1/contracts/examinations_v2/tenants/{id}
+func (c *Client) UpdateTenantExaminationInfoV2(ctx context.Context, request OptExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (UpdateTenantExaminationInfoV2Res, error) {
+	res, err := c.sendUpdateTenantExaminationInfoV2(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateTenantExaminationInfoV2(ctx context.Context, request OptExaminationInfoV2UpdatingRequest, params UpdateTenantExaminationInfoV2Params) (res UpdateTenantExaminationInfoV2Res, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateTenantExaminationInfoV2"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/contracts/examinations_v2/tenants/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateTenantExaminationInfoV2",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/contracts/examinations_v2/tenants/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateTenantExaminationInfoV2Request(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdateTenantExaminationInfoV2", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdateTenantExaminationInfoV2", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdateTenantExaminationInfoV2Response(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateTenantShop invokes updateTenantShop operation.
+//
+// `examination_master_id`で指定した決済手段におけるプラットフォーム利用料などの設定の変更を`id`で指定したテナントに対して実行します。.
+//
+// PUT /v1/tenants/{id}
+func (c *Client) UpdateTenantShop(ctx context.Context, request OptTenantShopUpdatingRequest, params UpdateTenantShopParams) (UpdateTenantShopRes, error) {
+	res, err := c.sendUpdateTenantShop(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateTenantShop(ctx context.Context, request OptTenantShopUpdatingRequest, params UpdateTenantShopParams) (res UpdateTenantShopRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateTenantShop"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/tenants/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateTenantShop",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/tenants/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateTenantShopRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdateTenantShop", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdateTenantShop", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdateTenantShopResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateWebhookSetting invokes updateWebhookSetting operation.
+//
+// IDで指定したWebhook設定を更新します。.
+//
+// PUT /v1/webhook_settings/{id}
+func (c *Client) UpdateWebhookSetting(ctx context.Context, request OptWebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (UpdateWebhookSettingRes, error) {
+	res, err := c.sendUpdateWebhookSetting(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateWebhookSetting(ctx context.Context, request OptWebhookSettingUpdatingRequest, params UpdateWebhookSettingParams) (res UpdateWebhookSettingRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("updateWebhookSetting"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/webhook_settings/{id}"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UpdateWebhookSetting",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/v1/webhook_settings/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateWebhookSettingRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UpdateWebhookSetting", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UpdateWebhookSetting", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUpdateWebhookSettingResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UploadExaminationFile invokes uploadExaminationFile operation.
+//
+// `id`で指定したテナントショップの審査に必要なファイルのアップロードを行います。.
+//
+// POST /v1/contracts/examinations/tenants/{id}/files
+func (c *Client) UploadExaminationFile(ctx context.Context, request OptExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (UploadExaminationFileRes, error) {
+	res, err := c.sendUploadExaminationFile(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUploadExaminationFile(ctx context.Context, request OptExaminationFileUploadingRequestMultipart, params UploadExaminationFileParams) (res UploadExaminationFileRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("uploadExaminationFile"),
+		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRouteKey.String("/v1/contracts/examinations/tenants/{id}/files"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "UploadExaminationFile",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/contracts/examinations/tenants/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/files"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUploadExaminationFileRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "UploadExaminationFile", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "UploadExaminationFile", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeUploadExaminationFileResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

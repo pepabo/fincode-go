@@ -17,8 +17,10 @@ import (
 )
 
 var regexMap = map[string]ogenregex.Regexp{
-	"^(\\d{4})$": ogenregex.MustCompile("^(\\d{4})$"),
-	"^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$": ogenregex.MustCompile("^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"),
+	"^\\d{11,12}$":           ogenregex.MustCompile("^\\d{11,12}$"),
+	"^\\d{2}\\d{2}$":         ogenregex.MustCompile("^\\d{2}\\d{2}$"),
+	"^\\d{3}-\\d{4}$":        ogenregex.MustCompile("^\\d{3}-\\d{4}$"),
+	"^\\d{4}/\\d{2}/\\d{2}$": ogenregex.MustCompile("^\\d{4}/\\d{2}/\\d{2}$"),
 }
 var (
 	// Allocate option closure once.

@@ -14,8 +14,33 @@ import (
 
 // SecurityHandler is handler for security parameters.
 type SecurityHandler interface {
-	// HandleBearerAuth handles BearerAuth security.
-	HandleBearerAuth(ctx context.Context, operationName string, t BearerAuth) (context.Context, error)
+	// HandlePublicBearerAuth handles Public-Bearer-Auth security.
+	// このAPIはパブリックキーによる認証で利用できます。\
+	// Bearer認証を用いる場合、リクエストヘッダー
+	// `Authorization`に下記の形式でパブリックキーを指定します。
+	// ```
+	// Authorization: Bearer␣{APIキー}
+	// ```
+	// パブリックキーはfincodeの管理画面から取得できます。.
+	HandlePublicBearerAuth(ctx context.Context, operationName string, t PublicBearerAuth) (context.Context, error)
+	// HandleSecretBasicAuth handles Secret-Basic-Auth security.
+	// このAPIはシークレットキーによる認証を必要とします。\
+	// Basic認証を用いる場合、リクエストヘッダー
+	// `Authorization`に下記の形式でシークレットキーを指定します。
+	// ``` JavaScript
+	// Authorization: Basic␣{Base64でエンコードしたAPIキー}
+	// ```
+	// シークレットキーはfincodeの管理画面から取得できます。.
+	HandleSecretBasicAuth(ctx context.Context, operationName string, t SecretBasicAuth) (context.Context, error)
+	// HandleSecretBearerAuth handles Secret-Bearer-Auth security.
+	// このAPIはシークレットキーによる認証を必要とします。\
+	// Bearer認証を用いる場合、リクエストヘッダー
+	// `Authorization`に下記の形式でシークレットキーを指定します。
+	// ```
+	// Authorization: Bearer␣{APIキー}
+	// ```
+	// シークレットキーはfincodeの管理画面から取得できます。.
+	HandleSecretBearerAuth(ctx context.Context, operationName string, t SecretBearerAuth) (context.Context, error)
 }
 
 func findAuthorization(h http.Header, prefix string) (string, bool) {
@@ -33,14 +58,48 @@ func findAuthorization(h http.Header, prefix string) (string, bool) {
 	return "", false
 }
 
-func (s *Server) securityBearerAuth(ctx context.Context, operationName string, req *http.Request) (context.Context, bool, error) {
-	var t BearerAuth
+func (s *Server) securityPublicBearerAuth(ctx context.Context, operationName string, req *http.Request) (context.Context, bool, error) {
+	var t PublicBearerAuth
 	token, ok := findAuthorization(req.Header, "Bearer")
 	if !ok {
 		return ctx, false, nil
 	}
 	t.Token = token
-	rctx, err := s.sec.HandleBearerAuth(ctx, operationName, t)
+	rctx, err := s.sec.HandlePublicBearerAuth(ctx, operationName, t)
+	if errors.Is(err, ogenerrors.ErrSkipServerSecurity) {
+		return nil, false, nil
+	} else if err != nil {
+		return nil, false, err
+	}
+	return rctx, true, err
+}
+func (s *Server) securitySecretBasicAuth(ctx context.Context, operationName string, req *http.Request) (context.Context, bool, error) {
+	var t SecretBasicAuth
+	if _, ok := findAuthorization(req.Header, "Basic"); !ok {
+		return ctx, false, nil
+	}
+	username, password, ok := req.BasicAuth()
+	if !ok {
+		return nil, false, errors.New("invalid basic auth")
+	}
+	t.Username = username
+	t.Password = password
+	rctx, err := s.sec.HandleSecretBasicAuth(ctx, operationName, t)
+	if errors.Is(err, ogenerrors.ErrSkipServerSecurity) {
+		return nil, false, nil
+	} else if err != nil {
+		return nil, false, err
+	}
+	return rctx, true, err
+}
+func (s *Server) securitySecretBearerAuth(ctx context.Context, operationName string, req *http.Request) (context.Context, bool, error) {
+	var t SecretBearerAuth
+	token, ok := findAuthorization(req.Header, "Bearer")
+	if !ok {
+		return ctx, false, nil
+	}
+	t.Token = token
+	rctx, err := s.sec.HandleSecretBearerAuth(ctx, operationName, t)
 	if errors.Is(err, ogenerrors.ErrSkipServerSecurity) {
 		return nil, false, nil
 	} else if err != nil {
@@ -51,14 +110,55 @@ func (s *Server) securityBearerAuth(ctx context.Context, operationName string, r
 
 // SecuritySource is provider of security values (tokens, passwords, etc.).
 type SecuritySource interface {
-	// BearerAuth provides BearerAuth security value.
-	BearerAuth(ctx context.Context, operationName string) (BearerAuth, error)
+	// PublicBearerAuth provides Public-Bearer-Auth security value.
+	// このAPIはパブリックキーによる認証で利用できます。\
+	// Bearer認証を用いる場合、リクエストヘッダー
+	// `Authorization`に下記の形式でパブリックキーを指定します。
+	// ```
+	// Authorization: Bearer␣{APIキー}
+	// ```
+	// パブリックキーはfincodeの管理画面から取得できます。.
+	PublicBearerAuth(ctx context.Context, operationName string) (PublicBearerAuth, error)
+	// SecretBasicAuth provides Secret-Basic-Auth security value.
+	// このAPIはシークレットキーによる認証を必要とします。\
+	// Basic認証を用いる場合、リクエストヘッダー
+	// `Authorization`に下記の形式でシークレットキーを指定します。
+	// ``` JavaScript
+	// Authorization: Basic␣{Base64でエンコードしたAPIキー}
+	// ```
+	// シークレットキーはfincodeの管理画面から取得できます。.
+	SecretBasicAuth(ctx context.Context, operationName string) (SecretBasicAuth, error)
+	// SecretBearerAuth provides Secret-Bearer-Auth security value.
+	// このAPIはシークレットキーによる認証を必要とします。\
+	// Bearer認証を用いる場合、リクエストヘッダー
+	// `Authorization`に下記の形式でシークレットキーを指定します。
+	// ```
+	// Authorization: Bearer␣{APIキー}
+	// ```
+	// シークレットキーはfincodeの管理画面から取得できます。.
+	SecretBearerAuth(ctx context.Context, operationName string) (SecretBearerAuth, error)
 }
 
-func (s *Client) securityBearerAuth(ctx context.Context, operationName string, req *http.Request) error {
-	t, err := s.sec.BearerAuth(ctx, operationName)
+func (s *Client) securityPublicBearerAuth(ctx context.Context, operationName string, req *http.Request) error {
+	t, err := s.sec.PublicBearerAuth(ctx, operationName)
 	if err != nil {
-		return errors.Wrap(err, "security source \"BearerAuth\"")
+		return errors.Wrap(err, "security source \"PublicBearerAuth\"")
+	}
+	req.Header.Set("Authorization", "Bearer "+t.Token)
+	return nil
+}
+func (s *Client) securitySecretBasicAuth(ctx context.Context, operationName string, req *http.Request) error {
+	t, err := s.sec.SecretBasicAuth(ctx, operationName)
+	if err != nil {
+		return errors.Wrap(err, "security source \"SecretBasicAuth\"")
+	}
+	req.SetBasicAuth(t.Username, t.Password)
+	return nil
+}
+func (s *Client) securitySecretBearerAuth(ctx context.Context, operationName string, req *http.Request) error {
+	t, err := s.sec.SecretBearerAuth(ctx, operationName)
+	if err != nil {
+		return errors.Wrap(err, "security source \"SecretBearerAuth\"")
 	}
 	req.Header.Set("Authorization", "Bearer "+t.Token)
 	return nil

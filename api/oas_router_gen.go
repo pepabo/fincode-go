@@ -61,54 +61,32 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 			switch elem[0] {
-			case 'c': // Prefix: "customers"
+			case 'v': // Prefix: "v1/"
 				origElem := elem
-				if l := len("customers"); len(elem) >= l && elem[0:l] == "customers" {
+				if l := len("v1/"); len(elem) >= l && elem[0:l] == "v1/" {
 					elem = elem[l:]
 				} else {
 					break
 				}
 
 				if len(elem) == 0 {
-					switch r.Method {
-					case "POST":
-						s.handleCustomersPostRequest([0]string{}, elemIsEscaped, w, r)
-					default:
-						s.notAllowed(w, r, "POST")
-					}
-
-					return
+					break
 				}
 				switch elem[0] {
-				case '/': // Prefix: "/"
+				case 'a': // Prefix: "accounts"
 					origElem := elem
-					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+					if l := len("accounts"); len(elem) >= l && elem[0:l] == "accounts" {
 						elem = elem[l:]
 					} else {
 						break
 					}
 
-					// Param: "customer_id"
-					// Match until "/"
-					idx := strings.IndexByte(elem, '/')
-					if idx < 0 {
-						idx = len(elem)
-					}
-					args[0] = elem[:idx]
-					elem = elem[idx:]
-
 					if len(elem) == 0 {
 						switch r.Method {
-						case "DELETE":
-							s.handleCustomersIDDeleteRequest([1]string{
-								args[0],
-							}, elemIsEscaped, w, r)
 						case "GET":
-							s.handleCustomersIDGetRequest([1]string{
-								args[0],
-							}, elemIsEscaped, w, r)
+							s.handleRetrieveAccountListRequest([0]string{}, elemIsEscaped, w, r)
 						default:
-							s.notAllowed(w, r, "DELETE,GET")
+							s.notAllowed(w, r, "GET")
 						}
 
 						return
@@ -122,60 +100,353 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 							break
 						}
 
+						// Param: "id"
+						// Match until "/"
+						idx := strings.IndexByte(elem, '/')
+						if idx < 0 {
+							idx = len(elem)
+						}
+						args[0] = elem[:idx]
+						elem = elem[idx:]
+
 						if len(elem) == 0 {
-							break
+							switch r.Method {
+							case "GET":
+								s.handleRetrieveAccountRequest([1]string{
+									args[0],
+								}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "GET")
+							}
+
+							return
 						}
 						switch elem[0] {
-						case 'c': // Prefix: "cards/"
+						case '/': // Prefix: "/detail"
 							origElem := elem
-							if l := len("cards/"); len(elem) >= l && elem[0:l] == "cards/" {
+							if l := len("/detail"); len(elem) >= l && elem[0:l] == "/detail" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
-							// Param: "id"
-							// Leaf parameter
-							args[1] = elem
-							elem = ""
-
 							if len(elem) == 0 {
 								// Leaf node.
 								switch r.Method {
-								case "DELETE":
-									s.handleCustomersCustomerIDCardsIDDeleteRequest([2]string{
-										args[0],
-										args[1],
-									}, elemIsEscaped, w, r)
 								case "GET":
-									s.handleCustomersCustomerIDCardsIDGetRequest([2]string{
+									s.handleRetrieveAccountDetailListRequest([1]string{
 										args[0],
-										args[1],
 									}, elemIsEscaped, w, r)
 								default:
-									s.notAllowed(w, r, "DELETE,GET")
+									s.notAllowed(w, r, "GET")
 								}
 
 								return
 							}
 
 							elem = origElem
-						case 'p': // Prefix: "payment_methods"
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'c': // Prefix: "c"
+					origElem := elem
+					if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'a': // Prefix: "ard_sessions"
+						origElem := elem
+						if l := len("ard_sessions"); len(elem) >= l && elem[0:l] == "ard_sessions" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch r.Method {
+							case "POST":
+								s.handleCreateCardRegistrationSessionRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+
+						elem = origElem
+					case 'o': // Prefix: "ontracts"
+						origElem := elem
+						if l := len("ontracts"); len(elem) >= l && elem[0:l] == "ontracts" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							break
+						}
+						switch elem[0] {
+						case '-': // Prefix: "-examinations-tenants-"
 							origElem := elem
-							if l := len("payment_methods"); len(elem) >= l && elem[0:l] == "payment_methods" {
+							if l := len("-examinations-tenants-"); len(elem) >= l && elem[0:l] == "-examinations-tenants-" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Match until "-"
+							idx := strings.IndexByte(elem, '-')
+							if idx < 0 {
+								idx = len(elem)
+							}
+							args[0] = elem[:idx]
+							elem = elem[idx:]
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case '-': // Prefix: "-providers-reserve.yml"
+								origElem := elem
+								if l := len("-providers-reserve.yml"); len(elem) >= l && elem[0:l] == "-providers-reserve.yml" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "POST":
+										s.handleReserveProviderRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "POST")
+									}
+
+									return
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
 							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'e': // Prefix: "examinations"
+								origElem := elem
+								if l := len("examinations"); len(elem) >= l && elem[0:l] == "examinations" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch r.Method {
+									case "POST":
+										s.handleRequestProductionEnvironmentRequest([0]string{}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "POST")
+									}
+
+									return
+								}
+								switch elem[0] {
+								case '/': // Prefix: "/tenants/"
+									origElem := elem
+									if l := len("/tenants/"); len(elem) >= l && elem[0:l] == "/tenants/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Match until "/"
+									idx := strings.IndexByte(elem, '/')
+									if idx < 0 {
+										idx = len(elem)
+									}
+									args[0] = elem[:idx]
+									elem = elem[idx:]
+
+									if len(elem) == 0 {
+										switch r.Method {
+										case "GET":
+											s.handleRetrieveTenantExaminationInfoRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										case "PUT":
+											s.handleUpdateTenantExaminationInfoRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "GET,PUT")
+										}
+
+										return
+									}
+									switch elem[0] {
+									case '/': // Prefix: "/files"
+										origElem := elem
+										if l := len("/files"); len(elem) >= l && elem[0:l] == "/files" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch r.Method {
+											case "POST":
+												s.handleUploadExaminationFileRequest([1]string{
+													args[0],
+												}, elemIsEscaped, w, r)
+											default:
+												s.notAllowed(w, r, "POST")
+											}
+
+											return
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								case '_': // Prefix: "_v2/tenants/"
+									origElem := elem
+									if l := len("_v2/tenants/"); len(elem) >= l && elem[0:l] == "_v2/tenants/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Leaf parameter
+									args[0] = elem
+									elem = ""
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch r.Method {
+										case "GET":
+											s.handleRetrieveTenantExaminationInfoV2Request([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										case "PUT":
+											s.handleUpdateTenantExaminationInfoV2Request([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "GET,PUT")
+										}
+
+										return
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+							// Param: "id"
+							// Leaf parameter
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
 								switch r.Method {
-								case "POST":
-									s.handleCustomersCustomerIDPaymentMethodsPostRequest([1]string{
+								case "GET":
+									s.handleRetrieveTenantContractRequest([1]string{
 										args[0],
 									}, elemIsEscaped, w, r)
 								default:
-									s.notAllowed(w, r, "POST")
+									s.notAllowed(w, r, "GET")
+								}
+
+								return
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					case 'u': // Prefix: "ustomers"
+						origElem := elem
+						if l := len("ustomers"); len(elem) >= l && elem[0:l] == "ustomers" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch r.Method {
+							case "GET":
+								s.handleRetrieveCustomerListRequest([0]string{}, elemIsEscaped, w, r)
+							case "POST":
+								s.handleCreateCustomerRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "GET,POST")
+							}
+
+							return
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "customer_id"
+							// Match until "/"
+							idx := strings.IndexByte(elem, '/')
+							if idx < 0 {
+								idx = len(elem)
+							}
+							args[0] = elem[:idx]
+							elem = elem[idx:]
+
+							if len(elem) == 0 {
+								switch r.Method {
+								case "DELETE":
+									s.handleDeleteCustomerRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "GET":
+									s.handleRetrieveCustomerRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "PUT":
+									s.handleUpdateCustomerRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "DELETE,GET,PUT")
 								}
 
 								return
@@ -189,26 +460,830 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 									break
 								}
 
-								// Param: "payment_method_id"
+								if len(elem) == 0 {
+									break
+								}
+								switch elem[0] {
+								case 'c': // Prefix: "cards"
+									origElem := elem
+									if l := len("cards"); len(elem) >= l && elem[0:l] == "cards" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										switch r.Method {
+										case "GET":
+											s.handleRetrieveCustomerCardListRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										case "POST":
+											s.handleCreateCustomerCardRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "GET,POST")
+										}
+
+										return
+									}
+									switch elem[0] {
+									case '/': // Prefix: "/"
+										origElem := elem
+										if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										// Param: "id"
+										// Leaf parameter
+										args[1] = elem
+										elem = ""
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch r.Method {
+											case "DELETE":
+												s.handleDeleteCustomerCardRequest([2]string{
+													args[0],
+													args[1],
+												}, elemIsEscaped, w, r)
+											case "GET":
+												s.handleRetrieveCustomerCardRequest([2]string{
+													args[0],
+													args[1],
+												}, elemIsEscaped, w, r)
+											case "PUT":
+												s.handleUpdateCustomerCardRequest([2]string{
+													args[0],
+													args[1],
+												}, elemIsEscaped, w, r)
+											default:
+												s.notAllowed(w, r, "DELETE,GET,PUT")
+											}
+
+											return
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								case 'p': // Prefix: "payment_methods"
+									origElem := elem
+									if l := len("payment_methods"); len(elem) >= l && elem[0:l] == "payment_methods" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										switch r.Method {
+										case "GET":
+											s.handleRetrieveCustomerPaymentMethodListRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										case "POST":
+											s.handleCreateCustomerPaymentMethodRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "GET,POST")
+										}
+
+										return
+									}
+									switch elem[0] {
+									case '/': // Prefix: "/"
+										origElem := elem
+										if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										// Param: "id"
+										// Leaf parameter
+										args[1] = elem
+										elem = ""
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch r.Method {
+											case "DELETE":
+												s.handleDeleteCustomerPaymentMethodRequest([2]string{
+													args[0],
+													args[1],
+												}, elemIsEscaped, w, r)
+											case "GET":
+												s.handleRetrieveCustomerPaymentMethodRequest([2]string{
+													args[0],
+													args[1],
+												}, elemIsEscaped, w, r)
+											default:
+												s.notAllowed(w, r, "DELETE,GET")
+											}
+
+											return
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'j': // Prefix: "join_tenants"
+					origElem := elem
+					if l := len("join_tenants"); len(elem) >= l && elem[0:l] == "join_tenants" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						// Leaf node.
+						switch r.Method {
+						case "POST":
+							s.handleCreateTenantWithExistingUserRequest([0]string{}, elemIsEscaped, w, r)
+						default:
+							s.notAllowed(w, r, "POST")
+						}
+
+						return
+					}
+
+					elem = origElem
+				case 'p': // Prefix: "p"
+					origElem := elem
+					if l := len("p"); len(elem) >= l && elem[0:l] == "p" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'a': // Prefix: "ayments"
+						origElem := elem
+						if l := len("ayments"); len(elem) >= l && elem[0:l] == "ayments" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch r.Method {
+							case "POST":
+								s.handleCreatePaymentRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'b': // Prefix: "bulk"
+								origElem := elem
+								if l := len("bulk"); len(elem) >= l && elem[0:l] == "bulk" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch r.Method {
+									case "GET":
+										s.handleRetrievePaymentBulkListRequest([0]string{}, elemIsEscaped, w, r)
+									case "POST":
+										s.handleCreatePaymentBulkRequest([0]string{}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET,POST")
+									}
+
+									return
+								}
+								switch elem[0] {
+								case '/': // Prefix: "/"
+									origElem := elem
+									if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Leaf parameter
+									args[0] = elem
+									elem = ""
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch r.Method {
+										case "DELETE":
+											s.handleDeletePaymentBulkRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										case "GET":
+											s.handleRetrievePaymentBulkDetailListRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "DELETE,GET")
+										}
+
+										return
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+							// Param: "id"
+							// Match until "/"
+							idx := strings.IndexByte(elem, '/')
+							if idx < 0 {
+								idx = len(elem)
+							}
+							args[0] = elem[:idx]
+							elem = elem[idx:]
+
+							if len(elem) == 0 {
+								switch r.Method {
+								case "GET":
+									s.handleRetrievePaymentRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "PUT":
+									s.handleExecutePaymentRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET,PUT")
+								}
+
+								return
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+								origElem := elem
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									break
+								}
+								switch elem[0] {
+								case 'a': // Prefix: "auth"
+									origElem := elem
+									if l := len("auth"); len(elem) >= l && elem[0:l] == "auth" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch r.Method {
+										case "PUT":
+											s.handleAuthorizePaymentRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "PUT")
+										}
+
+										return
+									}
+
+									elem = origElem
+								case 'b': // Prefix: "barcode"
+									origElem := elem
+									if l := len("barcode"); len(elem) >= l && elem[0:l] == "barcode" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch r.Method {
+										case "PUT":
+											s.handleGenerateBarcodeOfPaymentRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "PUT")
+										}
+
+										return
+									}
+
+									elem = origElem
+								case 'c': // Prefix: "c"
+									origElem := elem
+									if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										break
+									}
+									switch elem[0] {
+									case 'a': // Prefix: "apture"
+										origElem := elem
+										if l := len("apture"); len(elem) >= l && elem[0:l] == "apture" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch r.Method {
+											case "PUT":
+												s.handleCapturePaymentRequest([1]string{
+													args[0],
+												}, elemIsEscaped, w, r)
+											default:
+												s.notAllowed(w, r, "PUT")
+											}
+
+											return
+										}
+
+										elem = origElem
+									case 'h': // Prefix: "hange"
+										origElem := elem
+										if l := len("hange"); len(elem) >= l && elem[0:l] == "hange" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch r.Method {
+											case "PUT":
+												s.handleChangeAmountOfPaymentRequest([1]string{
+													args[0],
+												}, elemIsEscaped, w, r)
+											default:
+												s.notAllowed(w, r, "PUT")
+											}
+
+											return
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								case 's': // Prefix: "secure"
+									origElem := elem
+									if l := len("secure"); len(elem) >= l && elem[0:l] == "secure" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch r.Method {
+										case "PUT":
+											s.handleExecutePaymentAfter3DSecureRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "PUT")
+										}
+
+										return
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					case 'l': // Prefix: "la"
+						origElem := elem
+						if l := len("la"); len(elem) >= l && elem[0:l] == "la" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							break
+						}
+						switch elem[0] {
+						case 'n': // Prefix: "ns"
+							origElem := elem
+							if l := len("ns"); len(elem) >= l && elem[0:l] == "ns" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch r.Method {
+								case "GET":
+									s.handleRetrievePlanListRequest([0]string{}, elemIsEscaped, w, r)
+								case "POST":
+									s.handleCreatePlanRequest([0]string{}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET,POST")
+								}
+
+								return
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+								origElem := elem
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								// Param: "id"
 								// Leaf parameter
-								args[1] = elem
+								args[0] = elem
 								elem = ""
 
 								if len(elem) == 0 {
 									// Leaf node.
 									switch r.Method {
 									case "DELETE":
-										s.handleCustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRequest([2]string{
+										s.handleDeletePlanRequest([1]string{
 											args[0],
-											args[1],
 										}, elemIsEscaped, w, r)
 									case "GET":
-										s.handleCustomersCustomerIDPaymentMethodsPaymentMethodIDGetRequest([2]string{
+										s.handleRetrievePlanRequest([1]string{
 											args[0],
-											args[1],
+										}, elemIsEscaped, w, r)
+									case "PUT":
+										s.handleUpdatePlanRequest([1]string{
+											args[0],
 										}, elemIsEscaped, w, r)
 									default:
-										s.notAllowed(w, r, "DELETE,GET")
+										s.notAllowed(w, r, "DELETE,GET,PUT")
+									}
+
+									return
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						case 't': // Prefix: "tform"
+							origElem := elem
+							if l := len("tform"); len(elem) >= l && elem[0:l] == "tform" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case '_': // Prefix: "_accounts"
+								origElem := elem
+								if l := len("_accounts"); len(elem) >= l && elem[0:l] == "_accounts" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch r.Method {
+									case "GET":
+										s.handleRetrievePlatformAccountListRequest([0]string{}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+								switch elem[0] {
+								case '/': // Prefix: "/"
+									origElem := elem
+									if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Match until "/"
+									idx := strings.IndexByte(elem, '/')
+									if idx < 0 {
+										idx = len(elem)
+									}
+									args[0] = elem[:idx]
+									elem = elem[idx:]
+
+									if len(elem) == 0 {
+										switch r.Method {
+										case "GET":
+											s.handleRetrievePlatformAccountRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "GET")
+										}
+
+										return
+									}
+									switch elem[0] {
+									case '/': // Prefix: "/summary"
+										origElem := elem
+										if l := len("/summary"); len(elem) >= l && elem[0:l] == "/summary" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch r.Method {
+											case "GET":
+												s.handleRetrievePlatformAccountSummaryListRequest([1]string{
+													args[0],
+												}, elemIsEscaped, w, r)
+											default:
+												s.notAllowed(w, r, "GET")
+											}
+
+											return
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							case 's': // Prefix: "s"
+								origElem := elem
+								if l := len("s"); len(elem) >= l && elem[0:l] == "s" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch r.Method {
+									case "GET":
+										s.handleRetrievePlatformShopListRequest([0]string{}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
+									}
+
+									return
+								}
+								switch elem[0] {
+								case '/': // Prefix: "/"
+									origElem := elem
+									if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Leaf parameter
+									args[0] = elem
+									elem = ""
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch r.Method {
+										case "GET":
+											s.handleRetrievePlatformShopRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										case "PUT":
+											s.handleUpdatePlatformShopRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "GET,PUT")
+										}
+
+										return
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 's': // Prefix: "s"
+					origElem := elem
+					if l := len("s"); len(elem) >= l && elem[0:l] == "s" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'e': // Prefix: "e"
+						origElem := elem
+						if l := len("e"); len(elem) >= l && elem[0:l] == "e" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							break
+						}
+						switch elem[0] {
+						case 'c': // Prefix: "cure2/"
+							origElem := elem
+							if l := len("cure2/"); len(elem) >= l && elem[0:l] == "cure2/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "access_id"
+							// Leaf parameter
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleConfirm3DSecureAuthenticationRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "PUT":
+									s.handleExecute3DSecureAuthenticationRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET,PUT")
+								}
+
+								return
+							}
+
+							elem = origElem
+						case 's': // Prefix: "ssions"
+							origElem := elem
+							if l := len("ssions"); len(elem) >= l && elem[0:l] == "ssions" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "POST":
+									s.handleCreatePaymentSessionRequest([0]string{}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "POST")
+								}
+
+								return
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					case 'u': // Prefix: "ubscriptions"
+						origElem := elem
+						if l := len("ubscriptions"); len(elem) >= l && elem[0:l] == "ubscriptions" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch r.Method {
+							case "GET":
+								s.handleRetrieveSubscriptionListRequest([0]string{}, elemIsEscaped, w, r)
+							case "POST":
+								s.handleCreateSubscriptionRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "GET,POST")
+							}
+
+							return
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Match until "/"
+							idx := strings.IndexByte(elem, '/')
+							if idx < 0 {
+								idx = len(elem)
+							}
+							args[0] = elem[:idx]
+							elem = elem[idx:]
+
+							if len(elem) == 0 {
+								switch r.Method {
+								case "DELETE":
+									s.handleDeleteSubscriptionRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "GET":
+									s.handleRetrieveSubscriptionRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "PUT":
+									s.handleUpdateSubscriptionRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "DELETE,GET,PUT")
+								}
+
+								return
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/result"
+								origElem := elem
+								if l := len("/result"); len(elem) >= l && elem[0:l] == "/result" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "GET":
+										s.handleRetrieveSubscriptionResultListRequest([1]string{
+											args[0],
+										}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "GET")
 									}
 
 									return
@@ -224,56 +1299,521 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					}
 
 					elem = origElem
+				case 't': // Prefix: "tenant"
+					origElem := elem
+					if l := len("tenant"); len(elem) >= l && elem[0:l] == "tenant" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case '_': // Prefix: "_entries"
+						origElem := elem
+						if l := len("_entries"); len(elem) >= l && elem[0:l] == "_entries" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch r.Method {
+							case "POST":
+								s.handleCreateTenantWithNewUserRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+
+						elem = origElem
+					case 's': // Prefix: "s"
+						origElem := elem
+						if l := len("s"); len(elem) >= l && elem[0:l] == "s" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch r.Method {
+							case "GET":
+								s.handleRetrieveTenantShopListRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "GET")
+							}
+
+							return
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Leaf parameter
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "GET":
+									s.handleRetrieveTenantShopRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								case "PUT":
+									s.handleUpdateTenantShopRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "GET,PUT")
+								}
+
+								return
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'w': // Prefix: "webhook_settings"
+					origElem := elem
+					if l := len("webhook_settings"); len(elem) >= l && elem[0:l] == "webhook_settings" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						switch r.Method {
+						case "GET":
+							s.handleRetrieveWebhookSettingListRequest([0]string{}, elemIsEscaped, w, r)
+						case "POST":
+							s.handleCreateWebhookSettingRequest([0]string{}, elemIsEscaped, w, r)
+						default:
+							s.notAllowed(w, r, "GET,POST")
+						}
+
+						return
+					}
+					switch elem[0] {
+					case '/': // Prefix: "/"
+						origElem := elem
+						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						// Param: "id"
+						// Leaf parameter
+						args[0] = elem
+						elem = ""
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch r.Method {
+							case "DELETE":
+								s.handleDeleteWebhookSettingRequest([1]string{
+									args[0],
+								}, elemIsEscaped, w, r)
+							case "GET":
+								s.handleRetrieveWebhookSettingRequest([1]string{
+									args[0],
+								}, elemIsEscaped, w, r)
+							case "PUT":
+								s.handleUpdateWebhookSettingRequest([1]string{
+									args[0],
+								}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "DELETE,GET,PUT")
+							}
+
+							return
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
 				}
 
 				elem = origElem
-			case 'p': // Prefix: "payments"
+			case 'y': // Prefix: "your-endpoint-on-"
 				origElem := elem
-				if l := len("payments"); len(elem) >= l && elem[0:l] == "payments" {
+				if l := len("your-endpoint-on-"); len(elem) >= l && elem[0:l] == "your-endpoint-on-" {
 					elem = elem[l:]
 				} else {
 					break
 				}
 
 				if len(elem) == 0 {
-					switch r.Method {
-					case "GET":
-						s.handlePaymentsGetRequest([0]string{}, elemIsEscaped, w, r)
-					case "POST":
-						s.handlePaymentsPostRequest([0]string{}, elemIsEscaped, w, r)
-					default:
-						s.notAllowed(w, r, "GET,POST")
-					}
-
-					return
+					break
 				}
 				switch elem[0] {
-				case '/': // Prefix: "/"
+				case 'a': // Prefix: "applepay-payment"
 					origElem := elem
-					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+					if l := len("applepay-payment"); len(elem) >= l && elem[0:l] == "applepay-payment" {
 						elem = elem[l:]
 					} else {
 						break
 					}
 
-					// Param: "id"
-					// Leaf parameter
-					args[0] = elem
-					elem = ""
+					if len(elem) == 0 {
+						// Leaf node.
+						switch r.Method {
+						case "POST":
+							s.handleReceiveWebhookOfApplePayPaymentRequest([0]string{}, elemIsEscaped, w, r)
+						default:
+							s.notAllowed(w, r, "POST")
+						}
+
+						return
+					}
+
+					elem = origElem
+				case 'c': // Prefix: "c"
+					origElem := elem
+					if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'a': // Prefix: "ard"
+						origElem := elem
+						if l := len("ard"); len(elem) >= l && elem[0:l] == "ard" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch r.Method {
+							case "POST":
+								s.handleReceiveWebhookOfCardRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+						switch elem[0] {
+						case '-': // Prefix: "-"
+							origElem := elem
+							if l := len("-"); len(elem) >= l && elem[0:l] == "-" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'p': // Prefix: "payment"
+								origElem := elem
+								if l := len("payment"); len(elem) >= l && elem[0:l] == "payment" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch r.Method {
+									case "POST":
+										s.handleReceiveWebhookOfCardPaymentRequest([0]string{}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "POST")
+									}
+
+									return
+								}
+								switch elem[0] {
+								case '-': // Prefix: "-bulk-"
+									origElem := elem
+									if l := len("-bulk-"); len(elem) >= l && elem[0:l] == "-bulk-" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										break
+									}
+									switch elem[0] {
+									case 'b': // Prefix: "batch"
+										origElem := elem
+										if l := len("batch"); len(elem) >= l && elem[0:l] == "batch" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch r.Method {
+											case "POST":
+												s.handleReceiveWebhookOfCardPaymentBulkBatchRequest([0]string{}, elemIsEscaped, w, r)
+											default:
+												s.notAllowed(w, r, "POST")
+											}
+
+											return
+										}
+
+										elem = origElem
+									case 'r': // Prefix: "regist"
+										origElem := elem
+										if l := len("regist"); len(elem) >= l && elem[0:l] == "regist" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch r.Method {
+											case "POST":
+												s.handleReceiveWebhookOfRegisteringCardPaymentBulkRequest([0]string{}, elemIsEscaped, w, r)
+											default:
+												s.notAllowed(w, r, "POST")
+											}
+
+											return
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							case 'r': // Prefix: "recurring-batch"
+								origElem := elem
+								if l := len("recurring-batch"); len(elem) >= l && elem[0:l] == "recurring-batch" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "POST":
+										s.handleReceiveWebhookOfCardRecurringBatchRequest([0]string{}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "POST")
+									}
+
+									return
+								}
+
+								elem = origElem
+							case 's': // Prefix: "subscription"
+								origElem := elem
+								if l := len("subscription"); len(elem) >= l && elem[0:l] == "subscription" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch r.Method {
+									case "POST":
+										s.handleReceiveWebhookOfCardSubscriptionRequest([0]string{}, elemIsEscaped, w, r)
+									default:
+										s.notAllowed(w, r, "POST")
+									}
+
+									return
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					case 'o': // Prefix: "ontract"
+						origElem := elem
+						if l := len("ontract"); len(elem) >= l && elem[0:l] == "ontract" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch r.Method {
+							case "POST":
+								s.handleReceiveWebhookOfContractRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+
+						elem = origElem
+					case 'u': // Prefix: "ustomer-payment_method"
+						origElem := elem
+						if l := len("ustomer-payment_method"); len(elem) >= l && elem[0:l] == "ustomer-payment_method" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch r.Method {
+							case "POST":
+								s.handleReceiveWebhookOfCustomerPaymentMethodRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'd': // Prefix: "directdebit-"
+					origElem := elem
+					if l := len("directdebit-"); len(elem) >= l && elem[0:l] == "directdebit-" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'p': // Prefix: "payment"
+						origElem := elem
+						if l := len("payment"); len(elem) >= l && elem[0:l] == "payment" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch r.Method {
+							case "POST":
+								s.handleReceiveWebhookOfDirectDebitPaymentRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+
+						elem = origElem
+					case 'r': // Prefix: "recurring-batch"
+						origElem := elem
+						if l := len("recurring-batch"); len(elem) >= l && elem[0:l] == "recurring-batch" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch r.Method {
+							case "POST":
+								s.handleReceiveWebhookOfDirectDebitRecurringBatchRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+
+						elem = origElem
+					case 's': // Prefix: "subscription"
+						origElem := elem
+						if l := len("subscription"); len(elem) >= l && elem[0:l] == "subscription" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch r.Method {
+							case "POST":
+								s.handleReceiveWebhookOfDirectDebitSubscriptionRequest([0]string{}, elemIsEscaped, w, r)
+							default:
+								s.notAllowed(w, r, "POST")
+							}
+
+							return
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'k': // Prefix: "konbini-payment"
+					origElem := elem
+					if l := len("konbini-payment"); len(elem) >= l && elem[0:l] == "konbini-payment" {
+						elem = elem[l:]
+					} else {
+						break
+					}
 
 					if len(elem) == 0 {
 						// Leaf node.
 						switch r.Method {
-						case "GET":
-							s.handlePaymentsIDGetRequest([1]string{
-								args[0],
-							}, elemIsEscaped, w, r)
-						case "PUT":
-							s.handlePaymentsIDPutRequest([1]string{
-								args[0],
-							}, elemIsEscaped, w, r)
+						case "POST":
+							s.handleReceiveWebhookOfKonbiniPaymentRequest([0]string{}, elemIsEscaped, w, r)
 						default:
-							s.notAllowed(w, r, "GET,PUT")
+							s.notAllowed(w, r, "POST")
+						}
+
+						return
+					}
+
+					elem = origElem
+				case 'p': // Prefix: "paypay-payment"
+					origElem := elem
+					if l := len("paypay-payment"); len(elem) >= l && elem[0:l] == "paypay-payment" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						// Leaf node.
+						switch r.Method {
+						case "POST":
+							s.handleReceiveWebhookOfPayPayPaymentRequest([0]string{}, elemIsEscaped, w, r)
+						default:
+							s.notAllowed(w, r, "POST")
 						}
 
 						return
@@ -378,63 +1918,35 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 				break
 			}
 			switch elem[0] {
-			case 'c': // Prefix: "customers"
+			case 'v': // Prefix: "v1/"
 				origElem := elem
-				if l := len("customers"); len(elem) >= l && elem[0:l] == "customers" {
+				if l := len("v1/"); len(elem) >= l && elem[0:l] == "v1/" {
 					elem = elem[l:]
 				} else {
 					break
 				}
 
 				if len(elem) == 0 {
-					switch method {
-					case "POST":
-						r.name = "CustomersPost"
-						r.summary = ""
-						r.operationID = ""
-						r.pathPattern = "/customers"
-						r.args = args
-						r.count = 0
-						return r, true
-					default:
-						return
-					}
+					break
 				}
 				switch elem[0] {
-				case '/': // Prefix: "/"
+				case 'a': // Prefix: "accounts"
 					origElem := elem
-					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+					if l := len("accounts"); len(elem) >= l && elem[0:l] == "accounts" {
 						elem = elem[l:]
 					} else {
 						break
 					}
 
-					// Param: "customer_id"
-					// Match until "/"
-					idx := strings.IndexByte(elem, '/')
-					if idx < 0 {
-						idx = len(elem)
-					}
-					args[0] = elem[:idx]
-					elem = elem[idx:]
-
 					if len(elem) == 0 {
 						switch method {
-						case "DELETE":
-							r.name = "CustomersIDDelete"
-							r.summary = ""
-							r.operationID = ""
-							r.pathPattern = "/customers/{id}"
-							r.args = args
-							r.count = 1
-							return r, true
 						case "GET":
-							r.name = "CustomersIDGet"
-							r.summary = ""
-							r.operationID = ""
-							r.pathPattern = "/customers/{id}"
+							r.name = "RetrieveAccountList"
+							r.summary = "売上入金 一覧取得"
+							r.operationID = "retrieveAccountList"
+							r.pathPattern = "/v1/accounts"
 							r.args = args
-							r.count = 1
+							r.count = 0
 							return r, true
 						default:
 							return
@@ -449,41 +1961,48 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							break
 						}
 
+						// Param: "id"
+						// Match until "/"
+						idx := strings.IndexByte(elem, '/')
+						if idx < 0 {
+							idx = len(elem)
+						}
+						args[0] = elem[:idx]
+						elem = elem[idx:]
+
 						if len(elem) == 0 {
-							break
+							switch method {
+							case "GET":
+								r.name = "RetrieveAccount"
+								r.summary = "売上入金 取得"
+								r.operationID = "retrieveAccount"
+								r.pathPattern = "/v1/accounts/{id}"
+								r.args = args
+								r.count = 1
+								return r, true
+							default:
+								return
+							}
 						}
 						switch elem[0] {
-						case 'c': // Prefix: "cards/"
+						case '/': // Prefix: "/detail"
 							origElem := elem
-							if l := len("cards/"); len(elem) >= l && elem[0:l] == "cards/" {
+							if l := len("/detail"); len(elem) >= l && elem[0:l] == "/detail" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
-							// Param: "id"
-							// Leaf parameter
-							args[1] = elem
-							elem = ""
-
 							if len(elem) == 0 {
 								// Leaf node.
 								switch method {
-								case "DELETE":
-									r.name = "CustomersCustomerIDCardsIDDelete"
-									r.summary = ""
-									r.operationID = ""
-									r.pathPattern = "/customers/{customer_id}/cards/{id}"
-									r.args = args
-									r.count = 2
-									return r, true
 								case "GET":
-									r.name = "CustomersCustomerIDCardsIDGet"
-									r.summary = ""
-									r.operationID = ""
-									r.pathPattern = "/customers/{customer_id}/cards/{id}"
+									r.name = "RetrieveAccountDetailList"
+									r.summary = "売上入金詳細 一覧取得"
+									r.operationID = "retrieveAccountDetailList"
+									r.pathPattern = "/v1/accounts/{id}/detail"
 									r.args = args
-									r.count = 2
+									r.count = 1
 									return r, true
 								default:
 									return
@@ -491,21 +2010,351 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 							}
 
 							elem = origElem
-						case 'p': // Prefix: "payment_methods"
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'c': // Prefix: "c"
+					origElem := elem
+					if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'a': // Prefix: "ard_sessions"
+						origElem := elem
+						if l := len("ard_sessions"); len(elem) >= l && elem[0:l] == "ard_sessions" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch method {
+							case "POST":
+								r.name = "CreateCardRegistrationSession"
+								r.summary = "カード登録URL 作成"
+								r.operationID = "createCardRegistrationSession"
+								r.pathPattern = "/v1/card_sessions"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+
+						elem = origElem
+					case 'o': // Prefix: "ontracts"
+						origElem := elem
+						if l := len("ontracts"); len(elem) >= l && elem[0:l] == "ontracts" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							break
+						}
+						switch elem[0] {
+						case '-': // Prefix: "-examinations-tenants-"
 							origElem := elem
-							if l := len("payment_methods"); len(elem) >= l && elem[0:l] == "payment_methods" {
+							if l := len("-examinations-tenants-"); len(elem) >= l && elem[0:l] == "-examinations-tenants-" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Match until "-"
+							idx := strings.IndexByte(elem, '-')
+							if idx < 0 {
+								idx = len(elem)
+							}
+							args[0] = elem[:idx]
+							elem = elem[idx:]
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case '-': // Prefix: "-providers-reserve.yml"
+								origElem := elem
+								if l := len("-providers-reserve.yml"); len(elem) >= l && elem[0:l] == "-providers-reserve.yml" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch method {
+									case "POST":
+										r.name = "ReserveProvider"
+										r.summary = "テナントショップ 決済手段追加申請"
+										r.operationID = "reserveProvider"
+										r.pathPattern = "/v1/contracts-examinations-tenants-{id}-providers-reserve.yml"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 								elem = elem[l:]
 							} else {
 								break
 							}
 
 							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'e': // Prefix: "examinations"
+								origElem := elem
+								if l := len("examinations"); len(elem) >= l && elem[0:l] == "examinations" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "POST":
+										r.name = "RequestProductionEnvironment"
+										r.summary = "テナントショップ 本番環境申請"
+										r.operationID = "requestProductionEnvironment"
+										r.pathPattern = "/v1/contracts/examinations"
+										r.args = args
+										r.count = 0
+										return r, true
+									default:
+										return
+									}
+								}
+								switch elem[0] {
+								case '/': // Prefix: "/tenants/"
+									origElem := elem
+									if l := len("/tenants/"); len(elem) >= l && elem[0:l] == "/tenants/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Match until "/"
+									idx := strings.IndexByte(elem, '/')
+									if idx < 0 {
+										idx = len(elem)
+									}
+									args[0] = elem[:idx]
+									elem = elem[idx:]
+
+									if len(elem) == 0 {
+										switch method {
+										case "GET":
+											r.name = "RetrieveTenantExaminationInfo"
+											r.summary = "（旧）テナントショップ本番環境申請情報 取得"
+											r.operationID = "retrieveTenantExaminationInfo"
+											r.pathPattern = "/v1/contracts/examinations/tenants/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										case "PUT":
+											r.name = "UpdateTenantExaminationInfo"
+											r.summary = "（旧）テナントショップ本番環境申請情報 更新"
+											r.operationID = "updateTenantExaminationInfo"
+											r.pathPattern = "/v1/contracts/examinations/tenants/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+									switch elem[0] {
+									case '/': // Prefix: "/files"
+										origElem := elem
+										if l := len("/files"); len(elem) >= l && elem[0:l] == "/files" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch method {
+											case "POST":
+												r.name = "UploadExaminationFile"
+												r.summary = "テナントショップ 審査ファイルアップロード"
+												r.operationID = "uploadExaminationFile"
+												r.pathPattern = "/v1/contracts/examinations/tenants/{id}/files"
+												r.args = args
+												r.count = 1
+												return r, true
+											default:
+												return
+											}
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								case '_': // Prefix: "_v2/tenants/"
+									origElem := elem
+									if l := len("_v2/tenants/"); len(elem) >= l && elem[0:l] == "_v2/tenants/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Leaf parameter
+									args[0] = elem
+									elem = ""
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch method {
+										case "GET":
+											r.name = "RetrieveTenantExaminationInfoV2"
+											r.summary = "テナントショップ本番環境申請情報 取得"
+											r.operationID = "retrieveTenantExaminationInfoV2"
+											r.pathPattern = "/v1/contracts/examinations_v2/tenants/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										case "PUT":
+											r.name = "UpdateTenantExaminationInfoV2"
+											r.summary = "テナントショップ本番環境申請情報 更新"
+											r.operationID = "updateTenantExaminationInfoV2"
+											r.pathPattern = "/v1/contracts/examinations_v2/tenants/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+							// Param: "id"
+							// Leaf parameter
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
 								switch method {
-								case "POST":
-									r.name = "CustomersCustomerIDPaymentMethodsPost"
-									r.summary = ""
-									r.operationID = ""
-									r.pathPattern = "/customers/{customer_id}/payment_methods"
+								case "GET":
+									r.name = "RetrieveTenantContract"
+									r.summary = "テナントショップ契約情報 取得"
+									r.operationID = "retrieveTenantContract"
+									r.pathPattern = "/v1/contracts/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					case 'u': // Prefix: "ustomers"
+						origElem := elem
+						if l := len("ustomers"); len(elem) >= l && elem[0:l] == "ustomers" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch method {
+							case "GET":
+								r.name = "RetrieveCustomerList"
+								r.summary = "顧客 一覧取得"
+								r.operationID = "retrieveCustomerList"
+								r.pathPattern = "/v1/customers"
+								r.args = args
+								r.count = 0
+								return r, true
+							case "POST":
+								r.name = "CreateCustomer"
+								r.summary = "顧客 登録"
+								r.operationID = "createCustomer"
+								r.pathPattern = "/v1/customers"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "customer_id"
+							// Match until "/"
+							idx := strings.IndexByte(elem, '/')
+							if idx < 0 {
+								idx = len(elem)
+							}
+							args[0] = elem[:idx]
+							elem = elem[idx:]
+
+							if len(elem) == 0 {
+								switch method {
+								case "DELETE":
+									r.name = "DeleteCustomer"
+									r.summary = "顧客 削除"
+									r.operationID = "deleteCustomer"
+									r.pathPattern = "/v1/customers/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "GET":
+									r.name = "RetrieveCustomer"
+									r.summary = "顧客 取得"
+									r.operationID = "retrieveCustomer"
+									r.pathPattern = "/v1/customers/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "PUT":
+									r.name = "UpdateCustomer"
+									r.summary = "顧客 更新"
+									r.operationID = "updateCustomer"
+									r.pathPattern = "/v1/customers/{id}"
 									r.args = args
 									r.count = 1
 									return r, true
@@ -522,29 +2371,962 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									break
 								}
 
-								// Param: "payment_method_id"
+								if len(elem) == 0 {
+									break
+								}
+								switch elem[0] {
+								case 'c': // Prefix: "cards"
+									origElem := elem
+									if l := len("cards"); len(elem) >= l && elem[0:l] == "cards" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										switch method {
+										case "GET":
+											r.name = "RetrieveCustomerCardList"
+											r.summary = "カード 一覧取得"
+											r.operationID = "retrieveCustomerCardList"
+											r.pathPattern = "/v1/customers/{customer_id}/cards"
+											r.args = args
+											r.count = 1
+											return r, true
+										case "POST":
+											r.name = "CreateCustomerCard"
+											r.summary = "カード 登録"
+											r.operationID = "createCustomerCard"
+											r.pathPattern = "/v1/customers/{customer_id}/cards"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+									switch elem[0] {
+									case '/': // Prefix: "/"
+										origElem := elem
+										if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										// Param: "id"
+										// Leaf parameter
+										args[1] = elem
+										elem = ""
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch method {
+											case "DELETE":
+												r.name = "DeleteCustomerCard"
+												r.summary = "カード 削除"
+												r.operationID = "deleteCustomerCard"
+												r.pathPattern = "/v1/customers/{customer_id}/cards/{id}"
+												r.args = args
+												r.count = 2
+												return r, true
+											case "GET":
+												r.name = "RetrieveCustomerCard"
+												r.summary = "カード 取得"
+												r.operationID = "retrieveCustomerCard"
+												r.pathPattern = "/v1/customers/{customer_id}/cards/{id}"
+												r.args = args
+												r.count = 2
+												return r, true
+											case "PUT":
+												r.name = "UpdateCustomerCard"
+												r.summary = "カード 更新"
+												r.operationID = "updateCustomerCard"
+												r.pathPattern = "/v1/customers/{customer_id}/cards/{id}"
+												r.args = args
+												r.count = 2
+												return r, true
+											default:
+												return
+											}
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								case 'p': // Prefix: "payment_methods"
+									origElem := elem
+									if l := len("payment_methods"); len(elem) >= l && elem[0:l] == "payment_methods" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										switch method {
+										case "GET":
+											r.name = "RetrieveCustomerPaymentMethodList"
+											r.summary = "決済手段 一覧取得"
+											r.operationID = "retrieveCustomerPaymentMethodList"
+											r.pathPattern = "/v1/customers/{customer_id}/payment_methods"
+											r.args = args
+											r.count = 1
+											return r, true
+										case "POST":
+											r.name = "CreateCustomerPaymentMethod"
+											r.summary = "決済手段 登録"
+											r.operationID = "createCustomerPaymentMethod"
+											r.pathPattern = "/v1/customers/{customer_id}/payment_methods"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+									switch elem[0] {
+									case '/': // Prefix: "/"
+										origElem := elem
+										if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										// Param: "id"
+										// Leaf parameter
+										args[1] = elem
+										elem = ""
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch method {
+											case "DELETE":
+												r.name = "DeleteCustomerPaymentMethod"
+												r.summary = "決済手段 削除"
+												r.operationID = "deleteCustomerPaymentMethod"
+												r.pathPattern = "/v1/customers/{customer_id}/payment_methods/{id}"
+												r.args = args
+												r.count = 2
+												return r, true
+											case "GET":
+												r.name = "RetrieveCustomerPaymentMethod"
+												r.summary = "決済手段 取得"
+												r.operationID = "retrieveCustomerPaymentMethod"
+												r.pathPattern = "/v1/customers/{customer_id}/payment_methods/{id}"
+												r.args = args
+												r.count = 2
+												return r, true
+											default:
+												return
+											}
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'j': // Prefix: "join_tenants"
+					origElem := elem
+					if l := len("join_tenants"); len(elem) >= l && elem[0:l] == "join_tenants" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						// Leaf node.
+						switch method {
+						case "POST":
+							r.name = "CreateTenantWithExistingUser"
+							r.summary = "テナントショップ 作成（既存ユーザー参加）"
+							r.operationID = "createTenantWithExistingUser"
+							r.pathPattern = "/v1/join_tenants"
+							r.args = args
+							r.count = 0
+							return r, true
+						default:
+							return
+						}
+					}
+
+					elem = origElem
+				case 'p': // Prefix: "p"
+					origElem := elem
+					if l := len("p"); len(elem) >= l && elem[0:l] == "p" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'a': // Prefix: "ayments"
+						origElem := elem
+						if l := len("ayments"); len(elem) >= l && elem[0:l] == "ayments" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch method {
+							case "POST":
+								r.name = "CreatePayment"
+								r.summary = "決済 登録"
+								r.operationID = "createPayment"
+								r.pathPattern = "/v1/payments"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'b': // Prefix: "bulk"
+								origElem := elem
+								if l := len("bulk"); len(elem) >= l && elem[0:l] == "bulk" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "GET":
+										r.name = "RetrievePaymentBulkList"
+										r.summary = "一括決済 一覧取得"
+										r.operationID = "retrievePaymentBulkList"
+										r.pathPattern = "/v1/payments/bulk"
+										r.args = args
+										r.count = 0
+										return r, true
+									case "POST":
+										r.name = "CreatePaymentBulk"
+										r.summary = "一括決済 登録"
+										r.operationID = "createPaymentBulk"
+										r.pathPattern = "/v1/payments/bulk"
+										r.args = args
+										r.count = 0
+										return r, true
+									default:
+										return
+									}
+								}
+								switch elem[0] {
+								case '/': // Prefix: "/"
+									origElem := elem
+									if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Leaf parameter
+									args[0] = elem
+									elem = ""
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch method {
+										case "DELETE":
+											r.name = "DeletePaymentBulk"
+											r.summary = "一括決済 削除"
+											r.operationID = "deletePaymentBulk"
+											r.pathPattern = "/v1/payments/bulk/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										case "GET":
+											r.name = "RetrievePaymentBulkDetailList"
+											r.summary = "一括決済詳細 一覧取得"
+											r.operationID = "retrievePaymentBulkDetailList"
+											r.pathPattern = "/v1/payments/bulk/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+							// Param: "id"
+							// Match until "/"
+							idx := strings.IndexByte(elem, '/')
+							if idx < 0 {
+								idx = len(elem)
+							}
+							args[0] = elem[:idx]
+							elem = elem[idx:]
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									r.name = "RetrievePayment"
+									r.summary = "決済 取得"
+									r.operationID = "retrievePayment"
+									r.pathPattern = "/v1/payments/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "PUT":
+									r.name = "ExecutePayment"
+									r.summary = "決済 実行"
+									r.operationID = "executePayment"
+									r.pathPattern = "/v1/payments/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+								origElem := elem
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									break
+								}
+								switch elem[0] {
+								case 'a': // Prefix: "auth"
+									origElem := elem
+									if l := len("auth"); len(elem) >= l && elem[0:l] == "auth" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch method {
+										case "PUT":
+											r.name = "AuthorizePayment"
+											r.summary = "決済 再オーソリ"
+											r.operationID = "authorizePayment"
+											r.pathPattern = "/v1/payments/{id}/auth"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+
+									elem = origElem
+								case 'b': // Prefix: "barcode"
+									origElem := elem
+									if l := len("barcode"); len(elem) >= l && elem[0:l] == "barcode" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch method {
+										case "PUT":
+											r.name = "GenerateBarcodeOfPayment"
+											r.summary = "バーコード発行"
+											r.operationID = "generateBarcodeOfPayment"
+											r.pathPattern = "/v1/payments/{id}/barcode"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+
+									elem = origElem
+								case 'c': // Prefix: "c"
+									origElem := elem
+									if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										break
+									}
+									switch elem[0] {
+									case 'a': // Prefix: "apture"
+										origElem := elem
+										if l := len("apture"); len(elem) >= l && elem[0:l] == "apture" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch method {
+											case "PUT":
+												r.name = "CapturePayment"
+												r.summary = "決済 売上確定"
+												r.operationID = "capturePayment"
+												r.pathPattern = "/v1/payments/{id}/capture"
+												r.args = args
+												r.count = 1
+												return r, true
+											default:
+												return
+											}
+										}
+
+										elem = origElem
+									case 'h': // Prefix: "hange"
+										origElem := elem
+										if l := len("hange"); len(elem) >= l && elem[0:l] == "hange" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch method {
+											case "PUT":
+												r.name = "ChangeAmountOfPayment"
+												r.summary = "決済 金額変更"
+												r.operationID = "changeAmountOfPayment"
+												r.pathPattern = "/v1/payments/{id}/change"
+												r.args = args
+												r.count = 1
+												return r, true
+											default:
+												return
+											}
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								case 's': // Prefix: "secure"
+									origElem := elem
+									if l := len("secure"); len(elem) >= l && elem[0:l] == "secure" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch method {
+										case "PUT":
+											r.name = "ExecutePaymentAfter3DSecure"
+											r.summary = "認証後決済 実行"
+											r.operationID = "executePaymentAfter3DSecure"
+											r.pathPattern = "/v1/payments/{id}/secure"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					case 'l': // Prefix: "la"
+						origElem := elem
+						if l := len("la"); len(elem) >= l && elem[0:l] == "la" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							break
+						}
+						switch elem[0] {
+						case 'n': // Prefix: "ns"
+							origElem := elem
+							if l := len("ns"); len(elem) >= l && elem[0:l] == "ns" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								switch method {
+								case "GET":
+									r.name = "RetrievePlanList"
+									r.summary = "プラン 一覧取得"
+									r.operationID = "retrievePlanList"
+									r.pathPattern = "/v1/plans"
+									r.args = args
+									r.count = 0
+									return r, true
+								case "POST":
+									r.name = "CreatePlan"
+									r.summary = "プラン 登録"
+									r.operationID = "createPlan"
+									r.pathPattern = "/v1/plans"
+									r.args = args
+									r.count = 0
+									return r, true
+								default:
+									return
+								}
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/"
+								origElem := elem
+								if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								// Param: "id"
 								// Leaf parameter
-								args[1] = elem
+								args[0] = elem
 								elem = ""
 
 								if len(elem) == 0 {
 									// Leaf node.
 									switch method {
 									case "DELETE":
-										r.name = "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete"
-										r.summary = ""
-										r.operationID = ""
-										r.pathPattern = "/customers/{customer_id}/payment_methods/{payment_method_id}"
+										r.name = "DeletePlan"
+										r.summary = "プラン 削除"
+										r.operationID = "deletePlan"
+										r.pathPattern = "/v1/plans/{id}"
 										r.args = args
-										r.count = 2
+										r.count = 1
 										return r, true
 									case "GET":
-										r.name = "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet"
-										r.summary = ""
-										r.operationID = ""
-										r.pathPattern = "/customers/{customer_id}/payment_methods/{payment_method_id}"
+										r.name = "RetrievePlan"
+										r.summary = "プラン 取得"
+										r.operationID = "retrievePlan"
+										r.pathPattern = "/v1/plans/{id}"
 										r.args = args
-										r.count = 2
+										r.count = 1
+										return r, true
+									case "PUT":
+										r.name = "UpdatePlan"
+										r.summary = "プラン 更新"
+										r.operationID = "updatePlan"
+										r.pathPattern = "/v1/plans/{id}"
+										r.args = args
+										r.count = 1
+										return r, true
+									default:
+										return
+									}
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						case 't': // Prefix: "tform"
+							origElem := elem
+							if l := len("tform"); len(elem) >= l && elem[0:l] == "tform" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case '_': // Prefix: "_accounts"
+								origElem := elem
+								if l := len("_accounts"); len(elem) >= l && elem[0:l] == "_accounts" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "GET":
+										r.name = "RetrievePlatformAccountList"
+										r.summary = "プラットフォーム利用料収入 一覧取得"
+										r.operationID = "retrievePlatformAccountList"
+										r.pathPattern = "/v1/platform_accounts"
+										r.args = args
+										r.count = 0
+										return r, true
+									default:
+										return
+									}
+								}
+								switch elem[0] {
+								case '/': // Prefix: "/"
+									origElem := elem
+									if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Match until "/"
+									idx := strings.IndexByte(elem, '/')
+									if idx < 0 {
+										idx = len(elem)
+									}
+									args[0] = elem[:idx]
+									elem = elem[idx:]
+
+									if len(elem) == 0 {
+										switch method {
+										case "GET":
+											r.name = "RetrievePlatformAccount"
+											r.summary = "プラットフォーム利用料収入 取得"
+											r.operationID = "retrievePlatformAccount"
+											r.pathPattern = "/v1/platform_accounts/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+									switch elem[0] {
+									case '/': // Prefix: "/summary"
+										origElem := elem
+										if l := len("/summary"); len(elem) >= l && elem[0:l] == "/summary" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch method {
+											case "GET":
+												r.name = "RetrievePlatformAccountSummaryList"
+												r.summary = "プラットフォーム利用料収入サマリー 一覧取得"
+												r.operationID = "retrievePlatformAccountSummaryList"
+												r.pathPattern = "/v1/platform_accounts/{id}/summary"
+												r.args = args
+												r.count = 1
+												return r, true
+											default:
+												return
+											}
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							case 's': // Prefix: "s"
+								origElem := elem
+								if l := len("s"); len(elem) >= l && elem[0:l] == "s" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "GET":
+										r.name = "RetrievePlatformShopList"
+										r.summary = "プラットフォームショップ 一覧取得"
+										r.operationID = "retrievePlatformShopList"
+										r.pathPattern = "/v1/platforms"
+										r.args = args
+										r.count = 0
+										return r, true
+									default:
+										return
+									}
+								}
+								switch elem[0] {
+								case '/': // Prefix: "/"
+									origElem := elem
+									if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									// Param: "id"
+									// Leaf parameter
+									args[0] = elem
+									elem = ""
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch method {
+										case "GET":
+											r.name = "RetrievePlatformShop"
+											r.summary = "プラットフォームショップ 取得"
+											r.operationID = "retrievePlatformShop"
+											r.pathPattern = "/v1/platforms/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										case "PUT":
+											r.name = "UpdatePlatformShop"
+											r.summary = "プラットフォームショップ 更新"
+											r.operationID = "updatePlatformShop"
+											r.pathPattern = "/v1/platforms/{id}"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 's': // Prefix: "s"
+					origElem := elem
+					if l := len("s"); len(elem) >= l && elem[0:l] == "s" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'e': // Prefix: "e"
+						origElem := elem
+						if l := len("e"); len(elem) >= l && elem[0:l] == "e" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							break
+						}
+						switch elem[0] {
+						case 'c': // Prefix: "cure2/"
+							origElem := elem
+							if l := len("cure2/"); len(elem) >= l && elem[0:l] == "cure2/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "access_id"
+							// Leaf parameter
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch method {
+								case "GET":
+									r.name = "Confirm3DSecureAuthentication"
+									r.summary = "3Dセキュア 認証結果確定API"
+									r.operationID = "confirm3DSecureAuthentication"
+									r.pathPattern = "/v1/secure2/{access_id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "PUT":
+									r.name = "Execute3DSecureAuthentication"
+									r.summary = "3Dセキュア 認証API"
+									r.operationID = "execute3DSecureAuthentication"
+									r.pathPattern = "/v1/secure2/{access_id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+
+							elem = origElem
+						case 's': // Prefix: "ssions"
+							origElem := elem
+							if l := len("ssions"); len(elem) >= l && elem[0:l] == "ssions" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch method {
+								case "POST":
+									r.name = "CreatePaymentSession"
+									r.summary = "決済URL 作成"
+									r.operationID = "createPaymentSession"
+									r.pathPattern = "/v1/sessions"
+									r.args = args
+									r.count = 0
+									return r, true
+								default:
+									return
+								}
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					case 'u': // Prefix: "ubscriptions"
+						origElem := elem
+						if l := len("ubscriptions"); len(elem) >= l && elem[0:l] == "ubscriptions" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch method {
+							case "GET":
+								r.name = "RetrieveSubscriptionList"
+								r.summary = "サブスクリプション 一覧取得"
+								r.operationID = "retrieveSubscriptionList"
+								r.pathPattern = "/v1/subscriptions"
+								r.args = args
+								r.count = 0
+								return r, true
+							case "POST":
+								r.name = "CreateSubscription"
+								r.summary = "サブスクリプション 登録"
+								r.operationID = "createSubscription"
+								r.pathPattern = "/v1/subscriptions"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Match until "/"
+							idx := strings.IndexByte(elem, '/')
+							if idx < 0 {
+								idx = len(elem)
+							}
+							args[0] = elem[:idx]
+							elem = elem[idx:]
+
+							if len(elem) == 0 {
+								switch method {
+								case "DELETE":
+									r.name = "DeleteSubscription"
+									r.summary = "サブスクリプション 解約"
+									r.operationID = "deleteSubscription"
+									r.pathPattern = "/v1/subscriptions/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "GET":
+									r.name = "RetrieveSubscription"
+									r.summary = "サブスクリプション 取得"
+									r.operationID = "retrieveSubscription"
+									r.pathPattern = "/v1/subscriptions/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "PUT":
+									r.name = "UpdateSubscription"
+									r.summary = "サブスクリプション 更新"
+									r.operationID = "updateSubscription"
+									r.pathPattern = "/v1/subscriptions/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+							switch elem[0] {
+							case '/': // Prefix: "/result"
+								origElem := elem
+								if l := len("/result"); len(elem) >= l && elem[0:l] == "/result" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch method {
+									case "GET":
+										r.name = "RetrieveSubscriptionResultList"
+										r.summary = "サブスクリプション結果 一覧取得"
+										r.operationID = "retrieveSubscriptionResultList"
+										r.pathPattern = "/v1/subscriptions/{id}/result"
+										r.args = args
+										r.count = 1
 										return r, true
 									default:
 										return
@@ -561,71 +3343,610 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					}
 
 					elem = origElem
+				case 't': // Prefix: "tenant"
+					origElem := elem
+					if l := len("tenant"); len(elem) >= l && elem[0:l] == "tenant" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case '_': // Prefix: "_entries"
+						origElem := elem
+						if l := len("_entries"); len(elem) >= l && elem[0:l] == "_entries" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch method {
+							case "POST":
+								r.name = "CreateTenantWithNewUser"
+								r.summary = "テナントショップ 作成（新規ユーザー登録）"
+								r.operationID = "createTenantWithNewUser"
+								r.pathPattern = "/v1/tenant_entries"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+
+						elem = origElem
+					case 's': // Prefix: "s"
+						origElem := elem
+						if l := len("s"); len(elem) >= l && elem[0:l] == "s" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch method {
+							case "GET":
+								r.name = "RetrieveTenantShopList"
+								r.summary = "テナントショップ 一覧取得"
+								r.operationID = "retrieveTenantShopList"
+								r.pathPattern = "/v1/tenants"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+						switch elem[0] {
+						case '/': // Prefix: "/"
+							origElem := elem
+							if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							// Param: "id"
+							// Leaf parameter
+							args[0] = elem
+							elem = ""
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch method {
+								case "GET":
+									r.name = "RetrieveTenantShop"
+									r.summary = "テナントショップ 取得"
+									r.operationID = "retrieveTenantShop"
+									r.pathPattern = "/v1/tenants/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								case "PUT":
+									r.name = "UpdateTenantShop"
+									r.summary = "テナントショップ 更新"
+									r.operationID = "updateTenantShop"
+									r.pathPattern = "/v1/tenants/{id}"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'w': // Prefix: "webhook_settings"
+					origElem := elem
+					if l := len("webhook_settings"); len(elem) >= l && elem[0:l] == "webhook_settings" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						switch method {
+						case "GET":
+							r.name = "RetrieveWebhookSettingList"
+							r.summary = "Webhook設定 一覧取得"
+							r.operationID = "retrieveWebhookSettingList"
+							r.pathPattern = "/v1/webhook_settings"
+							r.args = args
+							r.count = 0
+							return r, true
+						case "POST":
+							r.name = "CreateWebhookSetting"
+							r.summary = "Webhook設定 登録"
+							r.operationID = "createWebhookSetting"
+							r.pathPattern = "/v1/webhook_settings"
+							r.args = args
+							r.count = 0
+							return r, true
+						default:
+							return
+						}
+					}
+					switch elem[0] {
+					case '/': // Prefix: "/"
+						origElem := elem
+						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						// Param: "id"
+						// Leaf parameter
+						args[0] = elem
+						elem = ""
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch method {
+							case "DELETE":
+								r.name = "DeleteWebhookSetting"
+								r.summary = "Webhook設定 削除"
+								r.operationID = "deleteWebhookSetting"
+								r.pathPattern = "/v1/webhook_settings/{id}"
+								r.args = args
+								r.count = 1
+								return r, true
+							case "GET":
+								r.name = "RetrieveWebhookSetting"
+								r.summary = "Webhook設定 取得"
+								r.operationID = "retrieveWebhookSetting"
+								r.pathPattern = "/v1/webhook_settings/{id}"
+								r.args = args
+								r.count = 1
+								return r, true
+							case "PUT":
+								r.name = "UpdateWebhookSetting"
+								r.summary = "Webhook設定 更新"
+								r.operationID = "updateWebhookSetting"
+								r.pathPattern = "/v1/webhook_settings/{id}"
+								r.args = args
+								r.count = 1
+								return r, true
+							default:
+								return
+							}
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
 				}
 
 				elem = origElem
-			case 'p': // Prefix: "payments"
+			case 'y': // Prefix: "your-endpoint-on-"
 				origElem := elem
-				if l := len("payments"); len(elem) >= l && elem[0:l] == "payments" {
+				if l := len("your-endpoint-on-"); len(elem) >= l && elem[0:l] == "your-endpoint-on-" {
 					elem = elem[l:]
 				} else {
 					break
 				}
 
 				if len(elem) == 0 {
-					switch method {
-					case "GET":
-						r.name = "PaymentsGet"
-						r.summary = ""
-						r.operationID = ""
-						r.pathPattern = "/payments"
-						r.args = args
-						r.count = 0
-						return r, true
-					case "POST":
-						r.name = "PaymentsPost"
-						r.summary = ""
-						r.operationID = ""
-						r.pathPattern = "/payments"
-						r.args = args
-						r.count = 0
-						return r, true
-					default:
-						return
-					}
+					break
 				}
 				switch elem[0] {
-				case '/': // Prefix: "/"
+				case 'a': // Prefix: "applepay-payment"
 					origElem := elem
-					if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
+					if l := len("applepay-payment"); len(elem) >= l && elem[0:l] == "applepay-payment" {
 						elem = elem[l:]
 					} else {
 						break
 					}
 
-					// Param: "id"
-					// Leaf parameter
-					args[0] = elem
-					elem = ""
+					if len(elem) == 0 {
+						// Leaf node.
+						switch method {
+						case "POST":
+							r.name = "ReceiveWebhookOfApplePayPayment"
+							r.summary = "Apple Pay"
+							r.operationID = "receiveWebhookOfApplePayPayment"
+							r.pathPattern = "/your-endpoint-on-applepay-payment"
+							r.args = args
+							r.count = 0
+							return r, true
+						default:
+							return
+						}
+					}
+
+					elem = origElem
+				case 'c': // Prefix: "c"
+					origElem := elem
+					if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'a': // Prefix: "ard"
+						origElem := elem
+						if l := len("ard"); len(elem) >= l && elem[0:l] == "ard" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							switch method {
+							case "POST":
+								r.name = "ReceiveWebhookOfCard"
+								r.summary = "カード"
+								r.operationID = "receiveWebhookOfCard"
+								r.pathPattern = "/your-endpoint-on-card"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+						switch elem[0] {
+						case '-': // Prefix: "-"
+							origElem := elem
+							if l := len("-"); len(elem) >= l && elem[0:l] == "-" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								break
+							}
+							switch elem[0] {
+							case 'p': // Prefix: "payment"
+								origElem := elem
+								if l := len("payment"); len(elem) >= l && elem[0:l] == "payment" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									switch method {
+									case "POST":
+										r.name = "ReceiveWebhookOfCardPayment"
+										r.summary = "カード決済"
+										r.operationID = "receiveWebhookOfCardPayment"
+										r.pathPattern = "/your-endpoint-on-card-payment"
+										r.args = args
+										r.count = 0
+										return r, true
+									default:
+										return
+									}
+								}
+								switch elem[0] {
+								case '-': // Prefix: "-bulk-"
+									origElem := elem
+									if l := len("-bulk-"); len(elem) >= l && elem[0:l] == "-bulk-" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										break
+									}
+									switch elem[0] {
+									case 'b': // Prefix: "batch"
+										origElem := elem
+										if l := len("batch"); len(elem) >= l && elem[0:l] == "batch" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch method {
+											case "POST":
+												r.name = "ReceiveWebhookOfCardPaymentBulkBatch"
+												r.summary = "一括決済課金（カード決済）"
+												r.operationID = "receiveWebhookOfCardPaymentBulkBatch"
+												r.pathPattern = "/your-endpoint-on-card-payment-bulk-batch"
+												r.args = args
+												r.count = 0
+												return r, true
+											default:
+												return
+											}
+										}
+
+										elem = origElem
+									case 'r': // Prefix: "regist"
+										origElem := elem
+										if l := len("regist"); len(elem) >= l && elem[0:l] == "regist" {
+											elem = elem[l:]
+										} else {
+											break
+										}
+
+										if len(elem) == 0 {
+											// Leaf node.
+											switch method {
+											case "POST":
+												r.name = "ReceiveWebhookOfRegisteringCardPaymentBulk"
+												r.summary = "一括決済（カード決済）"
+												r.operationID = "receiveWebhookOfRegisteringCardPaymentBulk"
+												r.pathPattern = "/your-endpoint-on-card-payment-bulk-regist"
+												r.args = args
+												r.count = 0
+												return r, true
+											default:
+												return
+											}
+										}
+
+										elem = origElem
+									}
+
+									elem = origElem
+								}
+
+								elem = origElem
+							case 'r': // Prefix: "recurring-batch"
+								origElem := elem
+								if l := len("recurring-batch"); len(elem) >= l && elem[0:l] == "recurring-batch" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch method {
+									case "POST":
+										r.name = "ReceiveWebhookOfCardRecurringBatch"
+										r.summary = "サブスクリプション課金（カード決済）"
+										r.operationID = "receiveWebhookOfCardRecurringBatch"
+										r.pathPattern = "/your-endpoint-on-card-recurring-batch"
+										r.args = args
+										r.count = 0
+										return r, true
+									default:
+										return
+									}
+								}
+
+								elem = origElem
+							case 's': // Prefix: "subscription"
+								origElem := elem
+								if l := len("subscription"); len(elem) >= l && elem[0:l] == "subscription" {
+									elem = elem[l:]
+								} else {
+									break
+								}
+
+								if len(elem) == 0 {
+									// Leaf node.
+									switch method {
+									case "POST":
+										r.name = "ReceiveWebhookOfCardSubscription"
+										r.summary = "サブスクリプション（カード決済）"
+										r.operationID = "receiveWebhookOfCardSubscription"
+										r.pathPattern = "/your-endpoint-on-card-subscription"
+										r.args = args
+										r.count = 0
+										return r, true
+									default:
+										return
+									}
+								}
+
+								elem = origElem
+							}
+
+							elem = origElem
+						}
+
+						elem = origElem
+					case 'o': // Prefix: "ontract"
+						origElem := elem
+						if l := len("ontract"); len(elem) >= l && elem[0:l] == "ontract" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch method {
+							case "POST":
+								r.name = "ReceiveWebhookOfContract"
+								r.summary = "決済手段 契約状況"
+								r.operationID = "receiveWebhookOfContract"
+								r.pathPattern = "/your-endpoint-on-contract"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+
+						elem = origElem
+					case 'u': // Prefix: "ustomer-payment_method"
+						origElem := elem
+						if l := len("ustomer-payment_method"); len(elem) >= l && elem[0:l] == "ustomer-payment_method" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch method {
+							case "POST":
+								r.name = "ReceiveWebhookOfCustomerPaymentMethod"
+								r.summary = "決済手段"
+								r.operationID = "receiveWebhookOfCustomerPaymentMethod"
+								r.pathPattern = "/your-endpoint-on-customer-payment_method"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'd': // Prefix: "directdebit-"
+					origElem := elem
+					if l := len("directdebit-"); len(elem) >= l && elem[0:l] == "directdebit-" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						break
+					}
+					switch elem[0] {
+					case 'p': // Prefix: "payment"
+						origElem := elem
+						if l := len("payment"); len(elem) >= l && elem[0:l] == "payment" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch method {
+							case "POST":
+								r.name = "ReceiveWebhookOfDirectDebitPayment"
+								r.summary = "口座振替"
+								r.operationID = "receiveWebhookOfDirectDebitPayment"
+								r.pathPattern = "/your-endpoint-on-directdebit-payment"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+
+						elem = origElem
+					case 'r': // Prefix: "recurring-batch"
+						origElem := elem
+						if l := len("recurring-batch"); len(elem) >= l && elem[0:l] == "recurring-batch" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch method {
+							case "POST":
+								r.name = "ReceiveWebhookOfDirectDebitRecurringBatch"
+								r.summary = "サブスクリプション課金（口座振替）"
+								r.operationID = "receiveWebhookOfDirectDebitRecurringBatch"
+								r.pathPattern = "/your-endpoint-on-directdebit-recurring-batch"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+
+						elem = origElem
+					case 's': // Prefix: "subscription"
+						origElem := elem
+						if l := len("subscription"); len(elem) >= l && elem[0:l] == "subscription" {
+							elem = elem[l:]
+						} else {
+							break
+						}
+
+						if len(elem) == 0 {
+							// Leaf node.
+							switch method {
+							case "POST":
+								r.name = "ReceiveWebhookOfDirectDebitSubscription"
+								r.summary = "サブスクリプション（口座振替）"
+								r.operationID = "receiveWebhookOfDirectDebitSubscription"
+								r.pathPattern = "/your-endpoint-on-directdebit-subscription"
+								r.args = args
+								r.count = 0
+								return r, true
+							default:
+								return
+							}
+						}
+
+						elem = origElem
+					}
+
+					elem = origElem
+				case 'k': // Prefix: "konbini-payment"
+					origElem := elem
+					if l := len("konbini-payment"); len(elem) >= l && elem[0:l] == "konbini-payment" {
+						elem = elem[l:]
+					} else {
+						break
+					}
 
 					if len(elem) == 0 {
 						// Leaf node.
 						switch method {
-						case "GET":
-							r.name = "PaymentsIDGet"
-							r.summary = ""
-							r.operationID = ""
-							r.pathPattern = "/payments/{id}"
+						case "POST":
+							r.name = "ReceiveWebhookOfKonbiniPayment"
+							r.summary = "コンビニ決済"
+							r.operationID = "receiveWebhookOfKonbiniPayment"
+							r.pathPattern = "/your-endpoint-on-konbini-payment"
 							r.args = args
-							r.count = 1
+							r.count = 0
 							return r, true
-						case "PUT":
-							r.name = "PaymentsIDPut"
-							r.summary = ""
-							r.operationID = ""
-							r.pathPattern = "/payments/{id}"
+						default:
+							return
+						}
+					}
+
+					elem = origElem
+				case 'p': // Prefix: "paypay-payment"
+					origElem := elem
+					if l := len("paypay-payment"); len(elem) >= l && elem[0:l] == "paypay-payment" {
+						elem = elem[l:]
+					} else {
+						break
+					}
+
+					if len(elem) == 0 {
+						// Leaf node.
+						switch method {
+						case "POST":
+							r.name = "ReceiveWebhookOfPayPayPayment"
+							r.summary = "PayPay"
+							r.operationID = "receiveWebhookOfPayPayPayment"
+							r.pathPattern = "/your-endpoint-on-paypay-payment"
 							r.args = args
-							r.count = 1
+							r.count = 0
 							return r, true
 						default:
 							return
