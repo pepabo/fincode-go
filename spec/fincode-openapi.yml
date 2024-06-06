@@ -318,7 +318,7 @@ paths:
         顧客情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。
       parameters:
         - in: query
-          name: クエリ
+          name: Query
           description: |
             顧客情報の一覧取得において検索条件となるクエリパラメータ
           required: false
@@ -2275,7 +2275,7 @@ paths:
             allOf:
               - $ref: '#/components/schemas/CustomerId_schema'
           required: true
-        - name: クエリ
+        - name: Query
           in: query
           required: true
           schema:
@@ -2488,7 +2488,7 @@ paths:
             <span class="smallText color--red-400">※ 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
             テナントショップID。\
             このテナントショップに紐づく顧客のうち、指定したIDの顧客に紐づく決済手段からIDで指定した決済手段を取得します。
-        - name: クエリ
+        - name: Query
           in: query
           required: true
           schema:
@@ -2879,7 +2879,7 @@ paths:
             <span class="smallText color--red-400">※ プラットフォームのメインショップのみ指定可</span>\
             テナントショップID。\
             このテナントショップに紐づく決済から一覧で取得します。
-        - name: クエリ
+        - name: Query
           in: query
           required: true
           schema:
@@ -3594,7 +3594,7 @@ paths:
             allOf:
               - $ref: '#/components/schemas/OrderId_schema'
           required: true
-        - name: クエリ
+        - name: Query
           in: query
           required: true
           schema:
@@ -6207,7 +6207,7 @@ paths:
         プラン情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。
       parameters:
         - in: query
-          name: クエリ
+          name: Query
           description: |
             プラン情報の一覧取得において検索条件となるクエリパラメータ
           required: false
@@ -7101,7 +7101,7 @@ paths:
         サブスクリプション情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。
       parameters:
         - in: query
-          name: クエリ
+          name: Query
           description: |
             サブスクリプション情報の一覧取得において検索条件となるクエリパラメータ
           required: true
@@ -7822,7 +7822,7 @@ paths:
         サブスクリプションにより発生した課金の結果を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。
       parameters:
         - in: query
-          name: クエリ
+          name: Query
           description: |
             サブスクリプション結果の一覧取得において検索条件となるクエリパラメータ
           required: true
@@ -8024,7 +8024,7 @@ paths:
             テナントショップID。\
             指定したテナントショップを販売主とした一括決済情報を一覧で取得します。
         - in: query
-          name: クエリ
+          name: Query
           description: |
             一括決済情報の一覧取得において検索条件となるクエリパラメータ
           required: false
@@ -8467,7 +8467,7 @@ paths:
             テナントショップID。\
             指定したテナントショップを販売主とした一括決済の詳細を一覧で取得します。
         - in: query
-          name: クエリ
+          name: Query
           description: |
             一括決済情報の一覧取得において検索条件となるクエリパラメータ
           required: true
@@ -8838,7 +8838,7 @@ paths:
             <span class="smallText color--red-400">※ プラットフォームのメインショップのみ指定可</span>\
             テナントショップID。\
             このテナントショップの売上入金情報から一覧で取得します。
-        - name: クエリ
+        - name: Query
           in: query
           description: |
             売上入金情報の一覧取得において検索条件となるクエリパラメータ
@@ -9197,7 +9197,7 @@ paths:
             このテナントショップの売上入金情報のうち、指定したIDの売上入金情報の売上入金詳細を取得します。
           required: false
         - in: query
-          name: クエリ
+          name: Query
           description: |
             売上入金詳細の一覧取得において検索条件となるクエリパラメータ
           schema:
@@ -9365,7 +9365,7 @@ paths:
       description: |
         プラットフォーム利用料による売上入金情報を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。
       parameters:
-        - name: クエリ
+        - name: Query
           in: query
           description: |
             プラットフォーム利用料による売上入金情報の一覧取得において検索条件となるクエリパラメータ
@@ -9711,7 +9711,7 @@ paths:
             allOf:
               - $ref: '#/components/schemas/PlatformAccountId_schema'
           required: true
-        - name: クエリ
+        - name: Query
           in: query
           description: |
             プラットフォーム利用料による売上入金情報の一覧取得において検索条件となるクエリパラメータ
@@ -9886,7 +9886,7 @@ paths:
         プラットフォームショップ（メインショップ・サブショップ）を一覧で取得します。\
         クエリパラメータを指定して取得する条件を絞り込めます。
       parameters:
-        - name: クエリ
+        - name: Query
           in: query
           description: |
             プラットフォーム情報の一覧取得において検索条件となるクエリパラメータ
@@ -10412,7 +10412,7 @@ paths:
         テナントショップを一覧で取得します。\
         クエリパラメータを指定して取得する条件を絞り込めます。
       parameters:
-        - name: クエリ
+        - name: Query
           in: query
           description: |
             テナント情報の一覧取得において検索条件となるクエリパラメータ
@@ -13605,7 +13605,7 @@ paths:
         Webhook設定を一覧で取得します。クエリパラメータを指定して取得する条件を絞り込めます。
       parameters:
         - in: query
-          name: クエリ
+          name: Query
           description: |
             Webhook設定の一覧取得において検索条件となるクエリパラメータ
           required: false
