@@ -6,6 +6,9 @@ depsdev:
 	go install github.com/Songmu/gocredits/cmd/gocredits@latest
 	go install github.com/ogen-go/ogen/cmd/ogen@latest
 
+fetch-spec:
+	curl https://docs.fincode.jp/assets/files/api/fincode-openapi.yml?`date +%s` -o spec/fincode-openapi.yml
+
 build:
 	go generate ./...
 	go mod tidy
