@@ -9,6 +9,9 @@ depsdev:
 fetch-spec:
 	curl https://docs.fincode.jp/assets/files/api/fincode-openapi.yml?`date +%s` -o spec/fincode-openapi.yml
 
+fetch-and-patch-spec: fetch-spec
+	env GOWORK=off go run -modfile=misc/openapi-yaml-patch/go.mod misc/openapi-yaml-patch/main.go
+
 build:
 	go generate ./...
 	go mod tidy
