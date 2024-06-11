@@ -1,3 +1,2 @@
 generator:
-  ignore_not_implemented: ["all"]
   convenient_errors: off

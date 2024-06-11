@@ -648,10 +648,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 						if len(elem) == 0 {
 							switch r.Method {
+							case "GET":
+								s.handleRetrievePaymentListRequest([0]string{}, elemIsEscaped, w, r)
 							case "POST":
 								s.handleCreatePaymentRequest([0]string{}, elemIsEscaped, w, r)
 							default:
-								s.notAllowed(w, r, "POST")
+								s.notAllowed(w, r, "GET,POST")
 							}
 
 							return
@@ -822,26 +824,64 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 										break
 									}
 									switch elem[0] {
-									case 'a': // Prefix: "apture"
+									case 'a': // Prefix: "a"
 										origElem := elem
-										if l := len("apture"); len(elem) >= l && elem[0:l] == "apture" {
+										if l := len("a"); len(elem) >= l && elem[0:l] == "a" {
 											elem = elem[l:]
 										} else {
 											break
 										}
 
 										if len(elem) == 0 {
-											// Leaf node.
-											switch r.Method {
-											case "PUT":
-												s.handleCapturePaymentRequest([1]string{
-													args[0],
-												}, elemIsEscaped, w, r)
-											default:
-												s.notAllowed(w, r, "PUT")
+											break
+										}
+										switch elem[0] {
+										case 'n': // Prefix: "ncel"
+											origElem := elem
+											if l := len("ncel"); len(elem) >= l && elem[0:l] == "ncel" {
+												elem = elem[l:]
+											} else {
+												break
 											}
 
-											return
+											if len(elem) == 0 {
+												// Leaf node.
+												switch r.Method {
+												case "PUT":
+													s.handleCancelPaymentRequest([1]string{
+														args[0],
+													}, elemIsEscaped, w, r)
+												default:
+													s.notAllowed(w, r, "PUT")
+												}
+
+												return
+											}
+
+											elem = origElem
+										case 'p': // Prefix: "pture"
+											origElem := elem
+											if l := len("pture"); len(elem) >= l && elem[0:l] == "pture" {
+												elem = elem[l:]
+											} else {
+												break
+											}
+
+											if len(elem) == 0 {
+												// Leaf node.
+												switch r.Method {
+												case "PUT":
+													s.handleCapturePaymentRequest([1]string{
+														args[0],
+													}, elemIsEscaped, w, r)
+												default:
+													s.notAllowed(w, r, "PUT")
+												}
+
+												return
+											}
+
+											elem = origElem
 										}
 
 										elem = origElem
@@ -2586,6 +2626,14 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 
 						if len(elem) == 0 {
 							switch method {
+							case "GET":
+								r.name = "RetrievePaymentList"
+								r.summary = "決済 一覧取得"
+								r.operationID = "retrievePaymentList"
+								r.pathPattern = "/v1/payments"
+								r.args = args
+								r.count = 0
+								return r, true
 							case "POST":
 								r.name = "CreatePayment"
 								r.summary = "決済 登録"
@@ -2790,28 +2838,68 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 										break
 									}
 									switch elem[0] {
-									case 'a': // Prefix: "apture"
+									case 'a': // Prefix: "a"
 										origElem := elem
-										if l := len("apture"); len(elem) >= l && elem[0:l] == "apture" {
+										if l := len("a"); len(elem) >= l && elem[0:l] == "a" {
 											elem = elem[l:]
 										} else {
 											break
 										}
 
 										if len(elem) == 0 {
-											// Leaf node.
-											switch method {
-											case "PUT":
-												r.name = "CapturePayment"
-												r.summary = "決済 売上確定"
-												r.operationID = "capturePayment"
-												r.pathPattern = "/v1/payments/{id}/capture"
-												r.args = args
-												r.count = 1
-												return r, true
-											default:
-												return
+											break
+										}
+										switch elem[0] {
+										case 'n': // Prefix: "ncel"
+											origElem := elem
+											if l := len("ncel"); len(elem) >= l && elem[0:l] == "ncel" {
+												elem = elem[l:]
+											} else {
+												break
 											}
+
+											if len(elem) == 0 {
+												// Leaf node.
+												switch method {
+												case "PUT":
+													r.name = "CancelPayment"
+													r.summary = "決済 キャンセル"
+													r.operationID = "cancelPayment"
+													r.pathPattern = "/v1/payments/{id}/cancel"
+													r.args = args
+													r.count = 1
+													return r, true
+												default:
+													return
+												}
+											}
+
+											elem = origElem
+										case 'p': // Prefix: "pture"
+											origElem := elem
+											if l := len("pture"); len(elem) >= l && elem[0:l] == "pture" {
+												elem = elem[l:]
+											} else {
+												break
+											}
+
+											if len(elem) == 0 {
+												// Leaf node.
+												switch method {
+												case "PUT":
+													r.name = "CapturePayment"
+													r.summary = "決済 売上確定"
+													r.operationID = "capturePayment"
+													r.pathPattern = "/v1/payments/{id}/capture"
+													r.args = args
+													r.count = 1
+													return r, true
+												default:
+													return
+												}
+											}
+
+											elem = origElem
 										}
 
 										elem = origElem

@@ -5,6 +5,10 @@ type AuthorizePaymentRes interface {
 	authorizePaymentRes()
 }
 
+type CancelPaymentRes interface {
+	cancelPaymentRes()
+}
+
 type CapturePaymentRes interface {
 	capturePaymentRes()
 }
@@ -215,6 +219,10 @@ type RetrievePaymentBulkDetailListRes interface {
 
 type RetrievePaymentBulkListRes interface {
 	retrievePaymentBulkListRes()
+}
+
+type RetrievePaymentListRes interface {
+	retrievePaymentListRes()
 }
 
 type RetrievePaymentRes interface {

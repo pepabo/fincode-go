@@ -30,6 +30,7 @@ func _main() error {
 		fixInvalidPayType,
 		fixInvalidAllOf,
 		appendRequiredToRequestBody,
+		//fincGetPayments,
 	}
 
 	applied, err := yrep.Apply(b, funcs...)
@@ -142,7 +143,6 @@ func fixInvalidPayType(in any) (any, error) {
 //
 // $ref: "#/components/schemas/CardBrand"
 // nullable: true
-
 func fixInvalidAllOf(in any) (any, error) {
 	v, ok := in.(yaml.MapSlice)
 	if !ok {
@@ -226,4 +226,61 @@ func appendRequiredToRequestBody(in any) (any, error) {
 	})
 	item.Value = v
 	return item, nil
+}
+
+func fincGetPayments(in any) (any, error) {
+	const before = `oneOf:
+- allOf:
+  - $ref: "#/components/schemas/Payment.ListRetrieving.QueryParams"
+  - $ref: "#/components/schemas/Payment.ListRetrieving.Card.QueryParams"
+  - $ref: "#/components/schemas/Pagination.QueryParams"
+  title: カード決済
+- allOf:
+  - $ref: "#/components/schemas/Payment.ListRetrieving.QueryParams"
+  - $ref: "#/components/schemas/Payment.ListRetrieving.ApplePay.QueryParams"
+  - $ref: "#/components/schemas/Pagination.QueryParams"
+  title: Apple Pay
+- allOf:
+  - $ref: "#/components/schemas/Payment.ListRetrieving.QueryParams"
+  - $ref: "#/components/schemas/Payment.ListRetrieving.Konbini.QueryParams"
+  - $ref: "#/components/schemas/Pagination.QueryParams"
+  title: コンビニ決済
+- allOf:
+  - $ref: "#/components/schemas/Payment.ListRetrieving.QueryParams"
+  - $ref: "#/components/schemas/Payment.ListRetrieving.PayPay.QueryParams"
+  - $ref: "#/components/schemas/Pagination.QueryParams"
+  title: PayPay
+- allOf:
+  - $ref: "#/components/schemas/Payment.ListRetrieving.QueryParams"
+  - $ref: "#/components/schemas/Payment.ListRetrieving.DirectDebit.QueryParams"
+  - $ref: "#/components/schemas/Pagination.QueryParams"
+  title: 口座振替
+`
+	const after = `oneOf:
+- $ref: "#/components/schemas/Payment.ListRetrieving.Card.QueryParams"
+- $ref: "#/components/schemas/Payment.ListRetrieving.ApplePay.QueryParams"
+- $ref: "#/components/schemas/Payment.ListRetrieving.Konbini.QueryParams"
+- $ref: "#/components/schemas/Payment.ListRetrieving.PayPay.QueryParams"
+- $ref: "#/components/schemas/Payment.ListRetrieving.DirectDebit.QueryParams"
+`
+	item, ok := in.(yaml.MapItem)
+	if !ok {
+		return in, yrep.ErrNotReplaced
+	}
+	if item.Key != "oneOf" {
+		return in, yrep.ErrNotReplaced
+	}
+	b, err := yaml.Marshal(item)
+	if err != nil {
+		return nil, err
+	}
+	if string(b) != before {
+		return in, yrep.ErrNotReplaced
+	}
+	// matched
+	var m yaml.MapSlice
+	if err := yaml.NewDecoder(strings.NewReader(after), yaml.UseOrderedMap()).Decode(&m); err != nil {
+		return nil, err
+	}
+	return m[0], nil
 }

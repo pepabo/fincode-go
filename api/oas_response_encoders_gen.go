@@ -13,7 +13,40 @@ import (
 
 func encodeAuthorizePaymentResponse(response AuthorizePaymentRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *AuthorizePaymentOK:
+	case *PaymentCardReauthorizingResponse:
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(200)
+		span.SetStatus(codes.Ok, http.StatusText(200))
+
+		e := new(jx.Encoder)
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *FincodeAPIErrorResponse:
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(400)
+		span.SetStatus(codes.Error, http.StatusText(400))
+
+		e := new(jx.Encoder)
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	default:
+		return errors.Errorf("unexpected response type: %T", response)
+	}
+}
+
+func encodeCancelPaymentResponse(response CancelPaymentRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *CancelPaymentOK:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -112,7 +145,7 @@ func encodeChangeAmountOfPaymentResponse(response ChangeAmountOfPaymentRes, w ht
 
 func encodeConfirm3DSecureAuthenticationResponse(response Confirm3DSecureAuthenticationRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *R3DSConfirmingResponse:
+	case *R3DS:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -145,7 +178,7 @@ func encodeConfirm3DSecureAuthenticationResponse(response Confirm3DSecureAuthent
 
 func encodeCreateCardRegistrationSessionResponse(response CreateCardRegistrationSessionRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CardRegistrationSessionCreatingResponse:
+	case *CardRegistrationSession:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -178,7 +211,7 @@ func encodeCreateCardRegistrationSessionResponse(response CreateCardRegistration
 
 func encodeCreateCustomerResponse(response CreateCustomerRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerCreatingResponse:
+	case *Customer:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -211,7 +244,7 @@ func encodeCreateCustomerResponse(response CreateCustomerRes, w http.ResponseWri
 
 func encodeCreateCustomerCardResponse(response CreateCustomerCardRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerCardCreatingResponse:
+	case *Card:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -244,7 +277,7 @@ func encodeCreateCustomerCardResponse(response CreateCustomerCardRes, w http.Res
 
 func encodeCreateCustomerPaymentMethodResponse(response CreateCustomerPaymentMethodRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerPaymentMethodCreatingResponse:
+	case *PaymentMethod:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -310,7 +343,7 @@ func encodeCreatePaymentResponse(response CreatePaymentRes, w http.ResponseWrite
 
 func encodeCreatePaymentBulkResponse(response CreatePaymentBulkRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PaymentBulkCreatingResponse:
+	case *PaymentBulk:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -343,7 +376,7 @@ func encodeCreatePaymentBulkResponse(response CreatePaymentBulkRes, w http.Respo
 
 func encodeCreatePaymentSessionResponse(response CreatePaymentSessionRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PaymentSessionCreatingResponse:
+	case *PaymentSession:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -376,7 +409,7 @@ func encodeCreatePaymentSessionResponse(response CreatePaymentSessionRes, w http
 
 func encodeCreatePlanResponse(response CreatePlanRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PlanCreatingResponse:
+	case *Plan:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -409,7 +442,7 @@ func encodeCreatePlanResponse(response CreatePlanRes, w http.ResponseWriter, spa
 
 func encodeCreateSubscriptionResponse(response CreateSubscriptionRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *SubscriptionCreatingResponse:
+	case *Subscription:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -442,7 +475,7 @@ func encodeCreateSubscriptionResponse(response CreateSubscriptionRes, w http.Res
 
 func encodeCreateTenantWithExistingUserResponse(response CreateTenantWithExistingUserRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *POSTJoinTenantsResponse:
+	case *POSTJoinTenants:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -475,7 +508,7 @@ func encodeCreateTenantWithExistingUserResponse(response CreateTenantWithExistin
 
 func encodeCreateTenantWithNewUserResponse(response CreateTenantWithNewUserRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *POSTTenantEntriesResponse:
+	case *POSTTenantEntries:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -508,7 +541,7 @@ func encodeCreateTenantWithNewUserResponse(response CreateTenantWithNewUserRes, 
 
 func encodeCreateWebhookSettingResponse(response CreateWebhookSettingRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *WebhookSettingCreatingResponse:
+	case *WebhookSetting:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -673,7 +706,7 @@ func encodeDeletePaymentBulkResponse(response DeletePaymentBulkRes, w http.Respo
 
 func encodeDeletePlanResponse(response DeletePlanRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PlanDeletingResponse:
+	case *Plan:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -706,7 +739,7 @@ func encodeDeletePlanResponse(response DeletePlanRes, w http.ResponseWriter, spa
 
 func encodeDeleteSubscriptionResponse(response DeleteSubscriptionRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *SubscriptionUnsubscribingResponse:
+	case *Subscription:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -838,7 +871,7 @@ func encodeExecutePaymentResponse(response ExecutePaymentRes, w http.ResponseWri
 
 func encodeExecutePaymentAfter3DSecureResponse(response ExecutePaymentAfter3DSecureRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *ExecutePaymentAfter3DSecureOK:
+	case *PaymentCardExecutingAfter3DSResponse:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -871,7 +904,7 @@ func encodeExecutePaymentAfter3DSecureResponse(response ExecutePaymentAfter3DSec
 
 func encodeGenerateBarcodeOfPaymentResponse(response GenerateBarcodeOfPaymentRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *GenerateBarcodeOfPaymentOK:
+	case *PaymentKonbiniGeneratingBarcodeResponse:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1268,7 +1301,7 @@ func encodeReceiveWebhookOfRegisteringCardPaymentBulkResponse(response ReceiveWe
 
 func encodeRequestProductionEnvironmentResponse(response RequestProductionEnvironmentRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *POSTContractsExaminationsResponse:
+	case *POSTContractsExaminations:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1301,7 +1334,7 @@ func encodeRequestProductionEnvironmentResponse(response RequestProductionEnviro
 
 func encodeReserveProviderResponse(response ReserveProviderRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *POSTProviderReserveResponse:
+	case *POSTProviderReserve:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1334,7 +1367,7 @@ func encodeReserveProviderResponse(response ReserveProviderRes, w http.ResponseW
 
 func encodeRetrieveAccountResponse(response RetrieveAccountRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *AccountRetrievingResponse:
+	case *Account:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1433,7 +1466,7 @@ func encodeRetrieveAccountListResponse(response RetrieveAccountListRes, w http.R
 
 func encodeRetrieveCustomerResponse(response RetrieveCustomerRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerRetrievingResponse:
+	case *Customer:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1466,7 +1499,7 @@ func encodeRetrieveCustomerResponse(response RetrieveCustomerRes, w http.Respons
 
 func encodeRetrieveCustomerCardResponse(response RetrieveCustomerCardRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerCardRetrievingResponse:
+	case *Card:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1499,7 +1532,7 @@ func encodeRetrieveCustomerCardResponse(response RetrieveCustomerCardRes, w http
 
 func encodeRetrieveCustomerCardListResponse(response RetrieveCustomerCardListRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerCardListRetrievingResponse:
+	case *CardList:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1565,7 +1598,7 @@ func encodeRetrieveCustomerListResponse(response RetrieveCustomerListRes, w http
 
 func encodeRetrieveCustomerPaymentMethodResponse(response RetrieveCustomerPaymentMethodRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerPaymentMethodRetrievingResponse:
+	case *PaymentMethod:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1598,7 +1631,7 @@ func encodeRetrieveCustomerPaymentMethodResponse(response RetrieveCustomerPaymen
 
 func encodeRetrieveCustomerPaymentMethodListResponse(response RetrieveCustomerPaymentMethodListRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerPaymentMethodListRetrievingResponse:
+	case *PaymentMethodList:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1728,9 +1761,42 @@ func encodeRetrievePaymentBulkListResponse(response RetrievePaymentBulkListRes, 
 	}
 }
 
+func encodeRetrievePaymentListResponse(response RetrievePaymentListRes, w http.ResponseWriter, span trace.Span) error {
+	switch response := response.(type) {
+	case *RetrievePaymentListOK:
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(200)
+		span.SetStatus(codes.Ok, http.StatusText(200))
+
+		e := new(jx.Encoder)
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	case *FincodeAPIErrorResponse:
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(400)
+		span.SetStatus(codes.Error, http.StatusText(400))
+
+		e := new(jx.Encoder)
+		response.Encode(e)
+		if _, err := e.WriteTo(w); err != nil {
+			return errors.Wrap(err, "write")
+		}
+
+		return nil
+
+	default:
+		return errors.Errorf("unexpected response type: %T", response)
+	}
+}
+
 func encodeRetrievePlanResponse(response RetrievePlanRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PlanRetrievingResponse:
+	case *Plan:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1796,7 +1862,7 @@ func encodeRetrievePlanListResponse(response RetrievePlanListRes, w http.Respons
 
 func encodeRetrievePlatformAccountResponse(response RetrievePlatformAccountRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PlatformAccountRetrievingResponse:
+	case *PlatformAccount:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1895,7 +1961,7 @@ func encodeRetrievePlatformAccountSummaryListResponse(response RetrievePlatformA
 
 func encodeRetrievePlatformShopResponse(response RetrievePlatformShopRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PlatformShopRetrievingResponse:
+	case *Shop:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1928,7 +1994,7 @@ func encodeRetrievePlatformShopResponse(response RetrievePlatformShopRes, w http
 
 func encodeRetrievePlatformShopListResponse(response RetrievePlatformShopListRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PlatformShopListRetrievingResponse:
+	case *ShopList:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1961,7 +2027,7 @@ func encodeRetrievePlatformShopListResponse(response RetrievePlatformShopListRes
 
 func encodeRetrieveSubscriptionResponse(response RetrieveSubscriptionRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *SubscriptionRetrievingResponse:
+	case *Subscription:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -1994,7 +2060,7 @@ func encodeRetrieveSubscriptionResponse(response RetrieveSubscriptionRes, w http
 
 func encodeRetrieveSubscriptionListResponse(response RetrieveSubscriptionListRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *SubscriptionListRetrievingResponse:
+	case *SubscriptionList:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2027,7 +2093,7 @@ func encodeRetrieveSubscriptionListResponse(response RetrieveSubscriptionListRes
 
 func encodeRetrieveSubscriptionResultListResponse(response RetrieveSubscriptionResultListRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *RetrieveSubscriptionResultListOK:
+	case *SubscriptionResultListRetrievingResponse:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2060,7 +2126,7 @@ func encodeRetrieveSubscriptionResultListResponse(response RetrieveSubscriptionR
 
 func encodeRetrieveTenantContractResponse(response RetrieveTenantContractRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *ContractsRetrievingResponse:
+	case *Contract:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2093,7 +2159,7 @@ func encodeRetrieveTenantContractResponse(response RetrieveTenantContractRes, w 
 
 func encodeRetrieveTenantExaminationInfoResponse(response RetrieveTenantExaminationInfoRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *ExaminationInfoRetrievingResponse:
+	case *ExaminationInfo:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2126,7 +2192,7 @@ func encodeRetrieveTenantExaminationInfoResponse(response RetrieveTenantExaminat
 
 func encodeRetrieveTenantExaminationInfoV2Response(response RetrieveTenantExaminationInfoV2Res, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *ExaminationInfoV2RetrievingResponse:
+	case *ExaminationInfoV2:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2159,7 +2225,7 @@ func encodeRetrieveTenantExaminationInfoV2Response(response RetrieveTenantExamin
 
 func encodeRetrieveTenantShopResponse(response RetrieveTenantShopRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *TenantShopRetrievingResponse:
+	case *Shop:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2192,7 +2258,7 @@ func encodeRetrieveTenantShopResponse(response RetrieveTenantShopRes, w http.Res
 
 func encodeRetrieveTenantShopListResponse(response RetrieveTenantShopListRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *TenantShopListRetrievingResponse:
+	case *ShopList:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2225,7 +2291,7 @@ func encodeRetrieveTenantShopListResponse(response RetrieveTenantShopListRes, w 
 
 func encodeRetrieveWebhookSettingResponse(response RetrieveWebhookSettingRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *WebhookSettingRetrievingResponse:
+	case *WebhookSetting:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2258,7 +2324,7 @@ func encodeRetrieveWebhookSettingResponse(response RetrieveWebhookSettingRes, w 
 
 func encodeRetrieveWebhookSettingListResponse(response RetrieveWebhookSettingListRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *WebhookSettingListRetrievingResponse:
+	case *WebhookSettingList:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2291,7 +2357,7 @@ func encodeRetrieveWebhookSettingListResponse(response RetrieveWebhookSettingLis
 
 func encodeUpdateCustomerResponse(response UpdateCustomerRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerUpdatingResponse:
+	case *Customer:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2324,7 +2390,7 @@ func encodeUpdateCustomerResponse(response UpdateCustomerRes, w http.ResponseWri
 
 func encodeUpdateCustomerCardResponse(response UpdateCustomerCardRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *CustomerCardUpdatingResponse:
+	case *Card:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2357,7 +2423,7 @@ func encodeUpdateCustomerCardResponse(response UpdateCustomerCardRes, w http.Res
 
 func encodeUpdatePlanResponse(response UpdatePlanRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PlanUpdatingResponse:
+	case *Plan:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2390,7 +2456,7 @@ func encodeUpdatePlanResponse(response UpdatePlanRes, w http.ResponseWriter, spa
 
 func encodeUpdatePlatformShopResponse(response UpdatePlatformShopRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *PlatformShopUpdatingResponse:
+	case *Shop:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2423,7 +2489,7 @@ func encodeUpdatePlatformShopResponse(response UpdatePlatformShopRes, w http.Res
 
 func encodeUpdateSubscriptionResponse(response UpdateSubscriptionRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *SubscriptionUpdatingResponse:
+	case *Subscription:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2456,7 +2522,7 @@ func encodeUpdateSubscriptionResponse(response UpdateSubscriptionRes, w http.Res
 
 func encodeUpdateTenantExaminationInfoResponse(response UpdateTenantExaminationInfoRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *ExaminationInfoUpdatingResponse:
+	case *ExaminationInfo:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2489,7 +2555,7 @@ func encodeUpdateTenantExaminationInfoResponse(response UpdateTenantExaminationI
 
 func encodeUpdateTenantExaminationInfoV2Response(response UpdateTenantExaminationInfoV2Res, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *ExaminationInfoV2UpdatingResponse:
+	case *ExaminationInfoV2:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2522,7 +2588,7 @@ func encodeUpdateTenantExaminationInfoV2Response(response UpdateTenantExaminatio
 
 func encodeUpdateTenantShopResponse(response UpdateTenantShopRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *TenantShopUpdatingResponse:
+	case *Shop:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2555,7 +2621,7 @@ func encodeUpdateTenantShopResponse(response UpdateTenantShopRes, w http.Respons
 
 func encodeUpdateWebhookSettingResponse(response UpdateWebhookSettingRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *WebhookSettingUpdatingResponse:
+	case *WebhookSetting:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))
@@ -2588,7 +2654,7 @@ func encodeUpdateWebhookSettingResponse(response UpdateWebhookSettingRes, w http
 
 func encodeUploadExaminationFileResponse(response UploadExaminationFileRes, w http.ResponseWriter, span trace.Span) error {
 	switch response := response.(type) {
-	case *ExaminationFileUploadingResponse:
+	case *ExaminationFileUpload:
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(200)
 		span.SetStatus(codes.Ok, http.StatusText(200))

@@ -20,7 +20,19 @@ var _ Handler = UnimplementedHandler{}
 // `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
 //
 // PUT /v1/payments/{id}/auth
-func (UnimplementedHandler) AuthorizePayment(ctx context.Context, req *AuthorizePaymentReq, params AuthorizePaymentParams) (r AuthorizePaymentRes, _ error) {
+func (UnimplementedHandler) AuthorizePayment(ctx context.Context, req *PaymentCardReauthorizingRequest, params AuthorizePaymentParams) (r AuthorizePaymentRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// CancelPayment implements cancelPayment operation.
+//
+// 決済をキャンセルします。キャンセルに成功すると`status`はキャンセル済み（`CANCELED`）に遷移します。\
+// \
+// ユーザーへの返金の行われ方などは決済手段によって異なります。\
+// 詳細は[Docs > 決済](https://docs.fincode.jp/payment)から参照できます。.
+//
+// PUT /v1/payments/{id}/cancel
+func (UnimplementedHandler) CancelPayment(ctx context.Context, req CancelPaymentReq, params CancelPaymentParams) (r CancelPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -257,7 +269,7 @@ func (UnimplementedHandler) ExecutePayment(ctx context.Context, req ExecutePayme
 // 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
 //
 // PUT /v1/payments/{id}/secure
-func (UnimplementedHandler) ExecutePaymentAfter3DSecure(ctx context.Context, req *ExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (r ExecutePaymentAfter3DSecureRes, _ error) {
+func (UnimplementedHandler) ExecutePaymentAfter3DSecure(ctx context.Context, req *PaymentCardExecutingAfter3DSRequest, params ExecutePaymentAfter3DSecureParams) (r ExecutePaymentAfter3DSecureRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -266,7 +278,7 @@ func (UnimplementedHandler) ExecutePaymentAfter3DSecure(ctx context.Context, req
 // リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
 //
 // PUT /v1/payments/{id}/barcode
-func (UnimplementedHandler) GenerateBarcodeOfPayment(ctx context.Context, req *GenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (r GenerateBarcodeOfPaymentRes, _ error) {
+func (UnimplementedHandler) GenerateBarcodeOfPayment(ctx context.Context, req *PaymentKonbiniGeneratingBarcodeRequest, params GenerateBarcodeOfPaymentParams) (r GenerateBarcodeOfPaymentRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 
@@ -538,6 +550,15 @@ func (UnimplementedHandler) RetrievePaymentBulkDetailList(ctx context.Context, p
 //
 // GET /v1/payments/bulk
 func (UnimplementedHandler) RetrievePaymentBulkList(ctx context.Context, params RetrievePaymentBulkListParams) (r RetrievePaymentBulkListRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
+// RetrievePaymentList implements retrievePaymentList operation.
+//
+// 決済情報の一覧を取得します。.
+//
+// GET /v1/payments
+func (UnimplementedHandler) RetrievePaymentList(ctx context.Context, params RetrievePaymentListParams) (r RetrievePaymentListRes, _ error) {
 	return r, ht.ErrNotImplemented
 }
 

@@ -30,7 +30,101 @@ func decodeAuthorizePaymentResponse(resp *http.Response) (res AuthorizePaymentRe
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response AuthorizePaymentOK
+			var response PaymentCardReauthorizingResponse
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			// Validate response.
+			if err := func() error {
+				if err := response.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return res, errors.Wrap(err, "validate")
+			}
+			return &response, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 400:
+		// Code 400.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response FincodeAPIErrorResponse
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			// Validate response.
+			if err := func() error {
+				if err := response.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return res, errors.Wrap(err, "validate")
+			}
+			return &response, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}
+	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+}
+
+func decodeCancelPaymentResponse(resp *http.Response) (res CancelPaymentRes, _ error) {
+	switch resp.StatusCode {
+	case 200:
+		// Code 200.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response CancelPaymentOK
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -312,7 +406,7 @@ func decodeConfirm3DSecureAuthenticationResponse(resp *http.Response) (res Confi
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response R3DSConfirmingResponse
+			var response R3DS
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -406,7 +500,7 @@ func decodeCreateCardRegistrationSessionResponse(resp *http.Response) (res Creat
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CardRegistrationSessionCreatingResponse
+			var response CardRegistrationSession
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -500,7 +594,7 @@ func decodeCreateCustomerResponse(resp *http.Response) (res CreateCustomerRes, _
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerCreatingResponse
+			var response Customer
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -594,7 +688,7 @@ func decodeCreateCustomerCardResponse(resp *http.Response) (res CreateCustomerCa
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerCardCreatingResponse
+			var response Card
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -688,7 +782,7 @@ func decodeCreateCustomerPaymentMethodResponse(resp *http.Response) (res CreateC
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerPaymentMethodCreatingResponse
+			var response PaymentMethod
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -876,7 +970,7 @@ func decodeCreatePaymentBulkResponse(resp *http.Response) (res CreatePaymentBulk
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PaymentBulkCreatingResponse
+			var response PaymentBulk
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -970,7 +1064,7 @@ func decodeCreatePaymentSessionResponse(resp *http.Response) (res CreatePaymentS
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PaymentSessionCreatingResponse
+			var response PaymentSession
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1064,7 +1158,7 @@ func decodeCreatePlanResponse(resp *http.Response) (res CreatePlanRes, _ error) 
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PlanCreatingResponse
+			var response Plan
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1158,7 +1252,7 @@ func decodeCreateSubscriptionResponse(resp *http.Response) (res CreateSubscripti
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response SubscriptionCreatingResponse
+			var response Subscription
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1252,7 +1346,7 @@ func decodeCreateTenantWithExistingUserResponse(resp *http.Response) (res Create
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response POSTJoinTenantsResponse
+			var response POSTJoinTenants
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1346,7 +1440,7 @@ func decodeCreateTenantWithNewUserResponse(resp *http.Response) (res CreateTenan
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response POSTTenantEntriesResponse
+			var response POSTTenantEntries
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1440,7 +1534,7 @@ func decodeCreateWebhookSettingResponse(resp *http.Response) (res CreateWebhookS
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response WebhookSettingCreatingResponse
+			var response WebhookSetting
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -1910,7 +2004,7 @@ func decodeDeletePlanResponse(resp *http.Response) (res DeletePlanRes, _ error) 
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PlanDeletingResponse
+			var response Plan
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -2004,7 +2098,7 @@ func decodeDeleteSubscriptionResponse(resp *http.Response) (res DeleteSubscripti
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response SubscriptionUnsubscribingResponse
+			var response Subscription
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -2380,7 +2474,7 @@ func decodeExecutePaymentAfter3DSecureResponse(resp *http.Response) (res Execute
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response ExecutePaymentAfter3DSecureOK
+			var response PaymentCardExecutingAfter3DSResponse
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -2474,7 +2568,7 @@ func decodeGenerateBarcodeOfPaymentResponse(resp *http.Response) (res GenerateBa
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response GenerateBarcodeOfPaymentOK
+			var response PaymentKonbiniGeneratingBarcodeResponse
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3310,7 +3404,7 @@ func decodeRequestProductionEnvironmentResponse(resp *http.Response) (res Reques
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response POSTContractsExaminationsResponse
+			var response POSTContractsExaminations
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3404,7 +3498,7 @@ func decodeReserveProviderResponse(resp *http.Response) (res ReserveProviderRes,
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response POSTProviderReserveResponse
+			var response POSTProviderReserve
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3498,7 +3592,7 @@ func decodeRetrieveAccountResponse(resp *http.Response) (res RetrieveAccountRes,
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response AccountRetrievingResponse
+			var response Account
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3780,7 +3874,7 @@ func decodeRetrieveCustomerResponse(resp *http.Response) (res RetrieveCustomerRe
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerRetrievingResponse
+			var response Customer
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3874,7 +3968,7 @@ func decodeRetrieveCustomerCardResponse(resp *http.Response) (res RetrieveCustom
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerCardRetrievingResponse
+			var response Card
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -3968,7 +4062,7 @@ func decodeRetrieveCustomerCardListResponse(resp *http.Response) (res RetrieveCu
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerCardListRetrievingResponse
+			var response CardList
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -4156,7 +4250,7 @@ func decodeRetrieveCustomerPaymentMethodResponse(resp *http.Response) (res Retri
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerPaymentMethodRetrievingResponse
+			var response PaymentMethod
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -4250,7 +4344,7 @@ func decodeRetrieveCustomerPaymentMethodListResponse(resp *http.Response) (res R
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerPaymentMethodListRetrievingResponse
+			var response PaymentMethodList
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -4610,6 +4704,100 @@ func decodeRetrievePaymentBulkListResponse(resp *http.Response) (res RetrievePay
 	return res, validate.UnexpectedStatusCode(resp.StatusCode)
 }
 
+func decodeRetrievePaymentListResponse(resp *http.Response) (res RetrievePaymentListRes, _ error) {
+	switch resp.StatusCode {
+	case 200:
+		// Code 200.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response RetrievePaymentListOK
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			// Validate response.
+			if err := func() error {
+				if err := response.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return res, errors.Wrap(err, "validate")
+			}
+			return &response, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	case 400:
+		// Code 400.
+		ct, _, err := mime.ParseMediaType(resp.Header.Get("Content-Type"))
+		if err != nil {
+			return res, errors.Wrap(err, "parse media type")
+		}
+		switch {
+		case ct == "application/json":
+			buf, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return res, err
+			}
+			d := jx.DecodeBytes(buf)
+
+			var response FincodeAPIErrorResponse
+			if err := func() error {
+				if err := response.Decode(d); err != nil {
+					return err
+				}
+				if err := d.Skip(); err != io.EOF {
+					return errors.New("unexpected trailing data")
+				}
+				return nil
+			}(); err != nil {
+				err = &ogenerrors.DecodeBodyError{
+					ContentType: ct,
+					Body:        buf,
+					Err:         err,
+				}
+				return res, err
+			}
+			// Validate response.
+			if err := func() error {
+				if err := response.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return res, errors.Wrap(err, "validate")
+			}
+			return &response, nil
+		default:
+			return res, validate.InvalidContentType(ct)
+		}
+	}
+	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+}
+
 func decodeRetrievePlanResponse(resp *http.Response) (res RetrievePlanRes, _ error) {
 	switch resp.StatusCode {
 	case 200:
@@ -4626,7 +4814,7 @@ func decodeRetrievePlanResponse(resp *http.Response) (res RetrievePlanRes, _ err
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PlanRetrievingResponse
+			var response Plan
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -4814,7 +5002,7 @@ func decodeRetrievePlatformAccountResponse(resp *http.Response) (res RetrievePla
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PlatformAccountRetrievingResponse
+			var response PlatformAccount
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5096,7 +5284,7 @@ func decodeRetrievePlatformShopResponse(resp *http.Response) (res RetrievePlatfo
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PlatformShopRetrievingResponse
+			var response Shop
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5190,7 +5378,7 @@ func decodeRetrievePlatformShopListResponse(resp *http.Response) (res RetrievePl
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PlatformShopListRetrievingResponse
+			var response ShopList
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5284,7 +5472,7 @@ func decodeRetrieveSubscriptionResponse(resp *http.Response) (res RetrieveSubscr
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response SubscriptionRetrievingResponse
+			var response Subscription
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5378,7 +5566,7 @@ func decodeRetrieveSubscriptionListResponse(resp *http.Response) (res RetrieveSu
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response SubscriptionListRetrievingResponse
+			var response SubscriptionList
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5472,7 +5660,7 @@ func decodeRetrieveSubscriptionResultListResponse(resp *http.Response) (res Retr
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response RetrieveSubscriptionResultListOK
+			var response SubscriptionResultListRetrievingResponse
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5566,7 +5754,7 @@ func decodeRetrieveTenantContractResponse(resp *http.Response) (res RetrieveTena
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response ContractsRetrievingResponse
+			var response Contract
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5660,7 +5848,7 @@ func decodeRetrieveTenantExaminationInfoResponse(resp *http.Response) (res Retri
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response ExaminationInfoRetrievingResponse
+			var response ExaminationInfo
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5754,7 +5942,7 @@ func decodeRetrieveTenantExaminationInfoV2Response(resp *http.Response) (res Ret
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response ExaminationInfoV2RetrievingResponse
+			var response ExaminationInfoV2
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5848,7 +6036,7 @@ func decodeRetrieveTenantShopResponse(resp *http.Response) (res RetrieveTenantSh
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response TenantShopRetrievingResponse
+			var response Shop
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -5942,7 +6130,7 @@ func decodeRetrieveTenantShopListResponse(resp *http.Response) (res RetrieveTena
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response TenantShopListRetrievingResponse
+			var response ShopList
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6036,7 +6224,7 @@ func decodeRetrieveWebhookSettingResponse(resp *http.Response) (res RetrieveWebh
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response WebhookSettingRetrievingResponse
+			var response WebhookSetting
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6130,7 +6318,7 @@ func decodeRetrieveWebhookSettingListResponse(resp *http.Response) (res Retrieve
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response WebhookSettingListRetrievingResponse
+			var response WebhookSettingList
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6224,7 +6412,7 @@ func decodeUpdateCustomerResponse(resp *http.Response) (res UpdateCustomerRes, _
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerUpdatingResponse
+			var response Customer
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6318,7 +6506,7 @@ func decodeUpdateCustomerCardResponse(resp *http.Response) (res UpdateCustomerCa
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response CustomerCardUpdatingResponse
+			var response Card
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6412,7 +6600,7 @@ func decodeUpdatePlanResponse(resp *http.Response) (res UpdatePlanRes, _ error) 
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PlanUpdatingResponse
+			var response Plan
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6506,7 +6694,7 @@ func decodeUpdatePlatformShopResponse(resp *http.Response) (res UpdatePlatformSh
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response PlatformShopUpdatingResponse
+			var response Shop
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6600,7 +6788,7 @@ func decodeUpdateSubscriptionResponse(resp *http.Response) (res UpdateSubscripti
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response SubscriptionUpdatingResponse
+			var response Subscription
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6694,7 +6882,7 @@ func decodeUpdateTenantExaminationInfoResponse(resp *http.Response) (res UpdateT
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response ExaminationInfoUpdatingResponse
+			var response ExaminationInfo
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6788,7 +6976,7 @@ func decodeUpdateTenantExaminationInfoV2Response(resp *http.Response) (res Updat
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response ExaminationInfoV2UpdatingResponse
+			var response ExaminationInfoV2
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6882,7 +7070,7 @@ func decodeUpdateTenantShopResponse(resp *http.Response) (res UpdateTenantShopRe
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response TenantShopUpdatingResponse
+			var response Shop
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -6976,7 +7164,7 @@ func decodeUpdateWebhookSettingResponse(resp *http.Response) (res UpdateWebhookS
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response WebhookSettingUpdatingResponse
+			var response WebhookSetting
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err
@@ -7070,7 +7258,7 @@ func decodeUploadExaminationFileResponse(resp *http.Response) (res UploadExamina
 			}
 			d := jx.DecodeBytes(buf)
 
-			var response ExaminationFileUploadingResponse
+			var response ExaminationFileUpload
 			if err := func() error {
 				if err := response.Decode(d); err != nil {
 					return err

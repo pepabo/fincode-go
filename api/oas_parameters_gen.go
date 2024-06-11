@@ -21,9 +21,9 @@ type AuthorizePaymentParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済のオーソリを再度実行します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// オーダーID（決済情報のID）.
-	ID string
+	ID OrderIdSchema
 }
 
 func unpackAuthorizePaymentParams(packed middleware.Parameters) (params AuthorizePaymentParams) {
@@ -33,7 +33,7 @@ func unpackAuthorizePaymentParams(packed middleware.Parameters) (params Authoriz
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -41,7 +41,7 @@ func unpackAuthorizePaymentParams(packed middleware.Parameters) (params Authoriz
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(OrderIdSchema)
 	}
 	return params
 }
@@ -56,19 +56,26 @@ func decodeAuthorizePaymentParams(args [1]string, argsEscaped bool, r *http.Requ
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -106,17 +113,158 @@ func decodeAuthorizePaymentParams(args [1]string, argsEscaped bool, r *http.Requ
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
+				params.ID = OrderIdSchema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
 
-				c, err := conv.ToString(val)
-				if err != nil {
+// CancelPaymentParams is parameters of cancelPayment operation.
+type CancelPaymentParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済をキャンセルします。.
+	TenantShopID OptSchema
+	// オーダーID（決済情報のID）.
+	ID OrderIdSchema
+}
+
+func unpackCancelPaymentParams(packed middleware.Parameters) (params CancelPaymentParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptSchema)
+		}
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(OrderIdSchema)
+	}
+	return params
+}
+
+func decodeCancelPaymentParams(args [1]string, argsEscaped bool, r *http.Request) (params CancelPaymentParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal Schema
+				if err := func() error {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
+						return err
+					}
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
+					return nil
+				}(); err != nil {
 					return err
 				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
 
-				params.ID = c
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = OrderIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -141,9 +289,9 @@ type CapturePaymentParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済の売上確定を実行します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// オーダーID（決済情報のID）.
-	ID string
+	ID OrderIdSchema
 }
 
 func unpackCapturePaymentParams(packed middleware.Parameters) (params CapturePaymentParams) {
@@ -153,7 +301,7 @@ func unpackCapturePaymentParams(packed middleware.Parameters) (params CapturePay
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -161,7 +309,7 @@ func unpackCapturePaymentParams(packed middleware.Parameters) (params CapturePay
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(OrderIdSchema)
 	}
 	return params
 }
@@ -176,19 +324,26 @@ func decodeCapturePaymentParams(args [1]string, argsEscaped bool, r *http.Reques
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -226,17 +381,24 @@ func decodeCapturePaymentParams(args [1]string, argsEscaped bool, r *http.Reques
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = OrderIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -261,9 +423,9 @@ type ChangeAmountOfPaymentParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済の利用金額を変更します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// オーダーID（決済情報のID）.
-	ID string
+	ID OrderIdSchema
 }
 
 func unpackChangeAmountOfPaymentParams(packed middleware.Parameters) (params ChangeAmountOfPaymentParams) {
@@ -273,7 +435,7 @@ func unpackChangeAmountOfPaymentParams(packed middleware.Parameters) (params Cha
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -281,7 +443,7 @@ func unpackChangeAmountOfPaymentParams(packed middleware.Parameters) (params Cha
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(OrderIdSchema)
 	}
 	return params
 }
@@ -296,19 +458,26 @@ func decodeChangeAmountOfPaymentParams(args [1]string, argsEscaped bool, r *http
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -346,17 +515,24 @@ func decodeChangeAmountOfPaymentParams(args [1]string, argsEscaped bool, r *http
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = OrderIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -378,12 +554,12 @@ func decodeChangeAmountOfPaymentParams(args [1]string, argsEscaped bool, r *http
 // Confirm3DSecureAuthenticationParams is parameters of confirm3DSecureAuthentication operation.
 type Confirm3DSecureAuthenticationParams struct {
 	// 取引ID.
-	AccessID string
+	AccessID AccessIdSchema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップの決済情報のうち、指定した`access_id`のカード決済の3Dセキュア認証の結果を確定します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackConfirm3DSecureAuthenticationParams(packed middleware.Parameters) (params Confirm3DSecureAuthenticationParams) {
@@ -392,7 +568,7 @@ func unpackConfirm3DSecureAuthenticationParams(packed middleware.Parameters) (pa
 			Name: "access_id",
 			In:   "path",
 		}
-		params.AccessID = packed[key].(string)
+		params.AccessID = packed[key].(AccessIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -400,7 +576,7 @@ func unpackConfirm3DSecureAuthenticationParams(packed middleware.Parameters) (pa
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -427,17 +603,24 @@ func decodeConfirm3DSecureAuthenticationParams(args [1]string, argsEscaped bool,
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotAccessIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotAccessIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.AccessID = c
+				params.AccessID = AccessIdSchema(paramsDotAccessIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -461,19 +644,26 @@ func decodeConfirm3DSecureAuthenticationParams(args [1]string, argsEscaped bool,
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -501,7 +691,7 @@ type CreateCardRegistrationSessionParams struct {
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップ上の顧客に対してカードを登録するためのカード登録URLを発行します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackCreateCardRegistrationSessionParams(packed middleware.Parameters) (params CreateCardRegistrationSessionParams) {
@@ -511,7 +701,7 @@ func unpackCreateCardRegistrationSessionParams(packed middleware.Parameters) (pa
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -527,19 +717,26 @@ func decodeCreateCardRegistrationSessionParams(args [0]string, argsEscaped bool,
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -567,7 +764,7 @@ type CreateCustomerParams struct {
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップに紐づく形で顧客情報を登録します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackCreateCustomerParams(packed middleware.Parameters) (params CreateCustomerParams) {
@@ -577,7 +774,7 @@ func unpackCreateCustomerParams(packed middleware.Parameters) (params CreateCust
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -593,19 +790,26 @@ func decodeCreateCustomerParams(args [0]string, argsEscaped bool, r *http.Reques
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -630,12 +834,12 @@ func decodeCreateCustomerParams(args [0]string, argsEscaped bool, r *http.Reques
 // CreateCustomerCardParams is parameters of createCustomerCard operation.
 type CreateCustomerCardParams struct {
 	// このカードが紐づく顧客のID.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対してカードを登録します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackCreateCustomerCardParams(packed middleware.Parameters) (params CreateCustomerCardParams) {
@@ -644,7 +848,7 @@ func unpackCreateCustomerCardParams(packed middleware.Parameters) (params Create
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -652,7 +856,7 @@ func unpackCreateCustomerCardParams(packed middleware.Parameters) (params Create
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -679,17 +883,24 @@ func decodeCreateCustomerCardParams(args [1]string, argsEscaped bool, r *http.Re
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -713,19 +924,26 @@ func decodeCreateCustomerCardParams(args [1]string, argsEscaped bool, r *http.Re
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -750,12 +968,12 @@ func decodeCreateCustomerCardParams(args [1]string, argsEscaped bool, r *http.Re
 // CreateCustomerPaymentMethodParams is parameters of createCustomerPaymentMethod operation.
 type CreateCustomerPaymentMethodParams struct {
 	// 顧客ID.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して決済手段を登録します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackCreateCustomerPaymentMethodParams(packed middleware.Parameters) (params CreateCustomerPaymentMethodParams) {
@@ -764,7 +982,7 @@ func unpackCreateCustomerPaymentMethodParams(packed middleware.Parameters) (para
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -772,7 +990,7 @@ func unpackCreateCustomerPaymentMethodParams(packed middleware.Parameters) (para
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -799,17 +1017,24 @@ func decodeCreateCustomerPaymentMethodParams(args [1]string, argsEscaped bool, r
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -833,19 +1058,26 @@ func decodeCreateCustomerPaymentMethodParams(args [1]string, argsEscaped bool, r
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -873,7 +1105,7 @@ type CreatePaymentParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主として決済を登録します。テナントが`pay_type`で指定する決済手段契約の審査を完了させている必要があります。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackCreatePaymentParams(packed middleware.Parameters) (params CreatePaymentParams) {
@@ -883,7 +1115,7 @@ func unpackCreatePaymentParams(packed middleware.Parameters) (params CreatePayme
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -899,19 +1131,26 @@ func decodeCreatePaymentParams(args [0]string, argsEscaped bool, r *http.Request
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -939,9 +1178,9 @@ type CreatePaymentBulkParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした決済情報を一括登録します。.
-	TenantShopID    OptString
-	PayType         CreatePaymentBulkPayType
-	ProcessPlanDate string
+	TenantShopID    OptSchema
+	PayType         PaymentBulkPayType
+	ProcessPlanDate ProcessPlanDate
 }
 
 func unpackCreatePaymentBulkParams(packed middleware.Parameters) (params CreatePaymentBulkParams) {
@@ -951,7 +1190,7 @@ func unpackCreatePaymentBulkParams(packed middleware.Parameters) (params CreateP
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -959,14 +1198,14 @@ func unpackCreatePaymentBulkParams(packed middleware.Parameters) (params CreateP
 			Name: "pay_type",
 			In:   "query",
 		}
-		params.PayType = packed[key].(CreatePaymentBulkPayType)
+		params.PayType = packed[key].(PaymentBulkPayType)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "process_plan_date",
 			In:   "query",
 		}
-		params.ProcessPlanDate = packed[key].(string)
+		params.ProcessPlanDate = packed[key].(ProcessPlanDate)
 	}
 	return params
 }
@@ -982,19 +1221,26 @@ func decodeCreatePaymentBulkParams(args [0]string, argsEscaped bool, r *http.Req
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1033,7 +1279,7 @@ func decodeCreatePaymentBulkParams(args [0]string, argsEscaped bool, r *http.Req
 					return err
 				}
 
-				params.PayType = CreatePaymentBulkPayType(c)
+				params.PayType = PaymentBulkPayType(c)
 				return nil
 			}); err != nil {
 				return err
@@ -1067,17 +1313,24 @@ func decodeCreatePaymentBulkParams(args [0]string, argsEscaped bool, r *http.Req
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotProcessPlanDateVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotProcessPlanDateVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ProcessPlanDate = c
+				params.ProcessPlanDate = ProcessPlanDate(paramsDotProcessPlanDateVal)
 				return nil
 			}); err != nil {
 				return err
@@ -1102,7 +1355,7 @@ type CreatePaymentSessionParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップで決済を行います。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackCreatePaymentSessionParams(packed middleware.Parameters) (params CreatePaymentSessionParams) {
@@ -1112,7 +1365,7 @@ func unpackCreatePaymentSessionParams(packed middleware.Parameters) (params Crea
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -1128,19 +1381,26 @@ func decodeCreatePaymentSessionParams(args [0]string, argsEscaped bool, r *http.
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1168,7 +1428,7 @@ type CreateWebhookSettingParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップ上で発生したイベントを購読するWebhook設定を登録します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackCreateWebhookSettingParams(packed middleware.Parameters) (params CreateWebhookSettingParams) {
@@ -1178,7 +1438,7 @@ func unpackCreateWebhookSettingParams(packed middleware.Parameters) (params Crea
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -1194,19 +1454,26 @@ func decodeCreateWebhookSettingParams(args [0]string, argsEscaped bool, r *http.
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1231,12 +1498,12 @@ func decodeCreateWebhookSettingParams(args [0]string, argsEscaped bool, r *http.
 // DeleteCustomerParams is parameters of deleteCustomer operation.
 type DeleteCustomerParams struct {
 	// 顧客ID.
-	ID string
+	ID CustomerIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客情報を削除します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackDeleteCustomerParams(packed middleware.Parameters) (params DeleteCustomerParams) {
@@ -1245,7 +1512,7 @@ func unpackDeleteCustomerParams(packed middleware.Parameters) (params DeleteCust
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -1253,7 +1520,7 @@ func unpackDeleteCustomerParams(packed middleware.Parameters) (params DeleteCust
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -1280,17 +1547,24 @@ func decodeDeleteCustomerParams(args [1]string, argsEscaped bool, r *http.Reques
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = CustomerIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -1314,19 +1588,26 @@ func decodeDeleteCustomerParams(args [1]string, argsEscaped bool, r *http.Reques
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1351,14 +1632,14 @@ func decodeDeleteCustomerParams(args [1]string, argsEscaped bool, r *http.Reques
 // DeleteCustomerCardParams is parameters of deleteCustomerCard operation.
 type DeleteCustomerCardParams struct {
 	// このカードが紐づく顧客のID.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// 削除するカードのID.
-	ID string
+	ID CardIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードを削除します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackDeleteCustomerCardParams(packed middleware.Parameters) (params DeleteCustomerCardParams) {
@@ -1367,14 +1648,14 @@ func unpackDeleteCustomerCardParams(packed middleware.Parameters) (params Delete
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(CardIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -1382,7 +1663,7 @@ func unpackDeleteCustomerCardParams(packed middleware.Parameters) (params Delete
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -1409,17 +1690,24 @@ func decodeDeleteCustomerCardParams(args [2]string, argsEscaped bool, r *http.Re
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -1454,17 +1742,24 @@ func decodeDeleteCustomerCardParams(args [2]string, argsEscaped bool, r *http.Re
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = CardIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -1488,19 +1783,26 @@ func decodeDeleteCustomerCardParams(args [2]string, argsEscaped bool, r *http.Re
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1525,14 +1827,14 @@ func decodeDeleteCustomerCardParams(args [2]string, argsEscaped bool, r *http.Re
 // DeleteCustomerPaymentMethodParams is parameters of deleteCustomerPaymentMethod operation.
 type DeleteCustomerPaymentMethodParams struct {
 	// 顧客ID.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// 決済手段ID.
-	ID string
+	ID PaymentMethodIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に紐づく決済手段からIDで指定した決済手段を削除します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackDeleteCustomerPaymentMethodParams(packed middleware.Parameters) (params DeleteCustomerPaymentMethodParams) {
@@ -1541,14 +1843,14 @@ func unpackDeleteCustomerPaymentMethodParams(packed middleware.Parameters) (para
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(PaymentMethodIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -1556,7 +1858,7 @@ func unpackDeleteCustomerPaymentMethodParams(packed middleware.Parameters) (para
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -1583,17 +1885,24 @@ func decodeDeleteCustomerPaymentMethodParams(args [2]string, argsEscaped bool, r
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -1628,17 +1937,24 @@ func decodeDeleteCustomerPaymentMethodParams(args [2]string, argsEscaped bool, r
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = PaymentMethodIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -1662,19 +1978,26 @@ func decodeDeleteCustomerPaymentMethodParams(args [2]string, argsEscaped bool, r
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1702,7 +2025,7 @@ type DeletePaymentBulkParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした一括決済情報を削除します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// 一括決済ID。\
 	// 削除対象の一括決済情報のIDを指定します。.
 	ID PaymentBulkIdSchema
@@ -1715,7 +2038,7 @@ func unpackDeletePaymentBulkParams(packed middleware.Parameters) (params DeleteP
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -1738,19 +2061,26 @@ func decodeDeletePaymentBulkParams(args [1]string, argsEscaped bool, r *http.Req
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1827,7 +2157,7 @@ func decodeDeletePaymentBulkParams(args [1]string, argsEscaped bool, r *http.Req
 // DeletePlanParams is parameters of deletePlan operation.
 type DeletePlanParams struct {
 	// プランID.
-	ID string
+	ID PlanIdSchema
 }
 
 func unpackDeletePlanParams(packed middleware.Parameters) (params DeletePlanParams) {
@@ -1836,7 +2166,7 @@ func unpackDeletePlanParams(packed middleware.Parameters) (params DeletePlanPara
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(PlanIdSchema)
 	}
 	return params
 }
@@ -1861,17 +2191,24 @@ func decodeDeletePlanParams(args [1]string, argsEscaped bool, r *http.Request) (
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = PlanIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -1893,7 +2230,7 @@ func decodeDeletePlanParams(args [1]string, argsEscaped bool, r *http.Request) (
 // DeleteSubscriptionParams is parameters of deleteSubscription operation.
 type DeleteSubscriptionParams struct {
 	// サブスクリプションID.
-	ID string
+	ID SubscriptionIdSchema
 }
 
 func unpackDeleteSubscriptionParams(packed middleware.Parameters) (params DeleteSubscriptionParams) {
@@ -1902,7 +2239,7 @@ func unpackDeleteSubscriptionParams(packed middleware.Parameters) (params Delete
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(SubscriptionIdSchema)
 	}
 	return params
 }
@@ -1927,17 +2264,24 @@ func decodeDeleteSubscriptionParams(args [1]string, argsEscaped bool, r *http.Re
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = SubscriptionIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -1959,12 +2303,12 @@ func decodeDeleteSubscriptionParams(args [1]string, argsEscaped bool, r *http.Re
 // DeleteWebhookSettingParams is parameters of deleteWebhookSetting operation.
 type DeleteWebhookSettingParams struct {
 	// Webhook設定のID.
-	ID string
+	ID WebhookSettingIdSchema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づくWebhook設定のうち、指定したIDのWebhook設定を削除します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackDeleteWebhookSettingParams(packed middleware.Parameters) (params DeleteWebhookSettingParams) {
@@ -1973,7 +2317,7 @@ func unpackDeleteWebhookSettingParams(packed middleware.Parameters) (params Dele
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(WebhookSettingIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -1981,7 +2325,7 @@ func unpackDeleteWebhookSettingParams(packed middleware.Parameters) (params Dele
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -2008,17 +2352,24 @@ func decodeDeleteWebhookSettingParams(args [1]string, argsEscaped bool, r *http.
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = WebhookSettingIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -2042,19 +2393,26 @@ func decodeDeleteWebhookSettingParams(args [1]string, argsEscaped bool, r *http.
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2079,12 +2437,12 @@ func decodeDeleteWebhookSettingParams(args [1]string, argsEscaped bool, r *http.
 // Execute3DSecureAuthenticationParams is parameters of execute3DSecureAuthentication operation.
 type Execute3DSecureAuthenticationParams struct {
 	// 取引ID.
-	AccessID string
+	AccessID AccessIdSchema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップの決済情報のうち、指定した`access_id`のカード決済を3Dセキュア認証します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackExecute3DSecureAuthenticationParams(packed middleware.Parameters) (params Execute3DSecureAuthenticationParams) {
@@ -2093,7 +2451,7 @@ func unpackExecute3DSecureAuthenticationParams(packed middleware.Parameters) (pa
 			Name: "access_id",
 			In:   "path",
 		}
-		params.AccessID = packed[key].(string)
+		params.AccessID = packed[key].(AccessIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -2101,7 +2459,7 @@ func unpackExecute3DSecureAuthenticationParams(packed middleware.Parameters) (pa
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -2128,17 +2486,24 @@ func decodeExecute3DSecureAuthenticationParams(args [1]string, argsEscaped bool,
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotAccessIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotAccessIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.AccessID = c
+				params.AccessID = AccessIdSchema(paramsDotAccessIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -2162,19 +2527,26 @@ func decodeExecute3DSecureAuthenticationParams(args [1]string, argsEscaped bool,
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2202,9 +2574,9 @@ type ExecutePaymentParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済処理を実行します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// オーダーID（決済情報のID）.
-	ID string
+	ID OrderIdSchema
 }
 
 func unpackExecutePaymentParams(packed middleware.Parameters) (params ExecutePaymentParams) {
@@ -2214,7 +2586,7 @@ func unpackExecutePaymentParams(packed middleware.Parameters) (params ExecutePay
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -2222,7 +2594,7 @@ func unpackExecutePaymentParams(packed middleware.Parameters) (params ExecutePay
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(OrderIdSchema)
 	}
 	return params
 }
@@ -2237,19 +2609,26 @@ func decodeExecutePaymentParams(args [1]string, argsEscaped bool, r *http.Reques
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2287,17 +2666,24 @@ func decodeExecutePaymentParams(args [1]string, argsEscaped bool, r *http.Reques
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = OrderIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -2322,9 +2708,9 @@ type ExecutePaymentAfter3DSecureParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済の3Dセキュア認証後決済を実行します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// オーダーID（決済情報のID）.
-	ID string
+	ID OrderIdSchema
 }
 
 func unpackExecutePaymentAfter3DSecureParams(packed middleware.Parameters) (params ExecutePaymentAfter3DSecureParams) {
@@ -2334,7 +2720,7 @@ func unpackExecutePaymentAfter3DSecureParams(packed middleware.Parameters) (para
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -2342,7 +2728,7 @@ func unpackExecutePaymentAfter3DSecureParams(packed middleware.Parameters) (para
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(OrderIdSchema)
 	}
 	return params
 }
@@ -2357,19 +2743,26 @@ func decodeExecutePaymentAfter3DSecureParams(args [1]string, argsEscaped bool, r
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2407,17 +2800,24 @@ func decodeExecutePaymentAfter3DSecureParams(args [1]string, argsEscaped bool, r
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = OrderIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -2442,9 +2842,9 @@ type GenerateBarcodeOfPaymentParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主としたコンビニ決済のうち、`id`で指定した決済のバーコードを再度発行します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// オーダーID（決済情報のID）.
-	ID string
+	ID OrderIdSchema
 }
 
 func unpackGenerateBarcodeOfPaymentParams(packed middleware.Parameters) (params GenerateBarcodeOfPaymentParams) {
@@ -2454,7 +2854,7 @@ func unpackGenerateBarcodeOfPaymentParams(packed middleware.Parameters) (params 
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -2462,7 +2862,7 @@ func unpackGenerateBarcodeOfPaymentParams(packed middleware.Parameters) (params 
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(OrderIdSchema)
 	}
 	return params
 }
@@ -2477,19 +2877,26 @@ func decodeGenerateBarcodeOfPaymentParams(args [1]string, argsEscaped bool, r *h
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2527,17 +2934,24 @@ func decodeGenerateBarcodeOfPaymentParams(args [1]string, argsEscaped bool, r *h
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = OrderIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -2562,7 +2976,7 @@ type RequestProductionEnvironmentParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップのものとしてファイルをアップロードします。.
-	TenantShopID string
+	TenantShopID Schema
 }
 
 func unpackRequestProductionEnvironmentParams(packed middleware.Parameters) (params RequestProductionEnvironmentParams) {
@@ -2571,7 +2985,7 @@ func unpackRequestProductionEnvironmentParams(packed middleware.Parameters) (par
 			Name: "Tenant-Shop-Id",
 			In:   "header",
 		}
-		params.TenantShopID = packed[key].(string)
+		params.TenantShopID = packed[key].(Schema)
 	}
 	return params
 }
@@ -2586,17 +3000,24 @@ func decodeRequestProductionEnvironmentParams(args [0]string, argsEscaped bool, 
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.TenantShopID = c
+				params.TenantShopID = Schema(paramsDotTenantShopIDVal)
 				return nil
 			}); err != nil {
 				return err
@@ -2618,12 +3039,12 @@ func decodeRequestProductionEnvironmentParams(args [0]string, argsEscaped bool, 
 // ReserveProviderParams is parameters of reserveProvider operation.
 type ReserveProviderParams struct {
 	// 指定したテナントショップに対して決済手段を追加申請します。。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
-	ID string
+	ID Schema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップに対して決済手段を追加申請します。.
-	TenantShopID string
+	TenantShopID Schema
 }
 
 func unpackReserveProviderParams(packed middleware.Parameters) (params ReserveProviderParams) {
@@ -2632,14 +3053,14 @@ func unpackReserveProviderParams(packed middleware.Parameters) (params ReservePr
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(Schema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "Tenant-Shop-Id",
 			In:   "header",
 		}
-		params.TenantShopID = packed[key].(string)
+		params.TenantShopID = packed[key].(Schema)
 	}
 	return params
 }
@@ -2665,17 +3086,24 @@ func decodeReserveProviderParams(args [1]string, argsEscaped bool, r *http.Reque
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -2699,17 +3127,24 @@ func decodeReserveProviderParams(args [1]string, argsEscaped bool, r *http.Reque
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.TenantShopID = c
+				params.TenantShopID = Schema(paramsDotTenantShopIDVal)
 				return nil
 			}); err != nil {
 				return err
@@ -2731,12 +3166,12 @@ func decodeReserveProviderParams(args [1]string, argsEscaped bool, r *http.Reque
 // RetrieveAccountParams is parameters of retrieveAccount operation.
 type RetrieveAccountParams struct {
 	// 売上入金情報のID.
-	ID string
+	ID AccountIdSchema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップの売上入金情報のうち、指定したIDの売上入金情報を取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackRetrieveAccountParams(packed middleware.Parameters) (params RetrieveAccountParams) {
@@ -2745,7 +3180,7 @@ func unpackRetrieveAccountParams(packed middleware.Parameters) (params RetrieveA
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(AccountIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -2753,7 +3188,7 @@ func unpackRetrieveAccountParams(packed middleware.Parameters) (params RetrieveA
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -2780,17 +3215,24 @@ func decodeRetrieveAccountParams(args [1]string, argsEscaped bool, r *http.Reque
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = AccountIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -2814,19 +3256,26 @@ func decodeRetrieveAccountParams(args [1]string, argsEscaped bool, r *http.Reque
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2856,9 +3305,9 @@ type RetrieveAccountDetailListParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップの売上入金情報のうち、指定したIDの売上入金情報の売上入金詳細を取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// 売上入金詳細の一覧取得において検索条件となるクエリパラメータ.
-	Query OptRetrieveAccountDetailListQuery
+	Query OptPaginationQueryParams
 }
 
 func unpackRetrieveAccountDetailListParams(packed middleware.Parameters) (params RetrieveAccountDetailListParams) {
@@ -2875,7 +3324,7 @@ func unpackRetrieveAccountDetailListParams(packed middleware.Parameters) (params
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -2884,7 +3333,7 @@ func unpackRetrieveAccountDetailListParams(packed middleware.Parameters) (params
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Query = v.(OptRetrieveAccountDetailListQuery)
+			params.Query = v.(OptPaginationQueryParams)
 		}
 	}
 	return params
@@ -2953,19 +3402,26 @@ func decodeRetrieveAccountDetailListParams(args [1]string, argsEscaped bool, r *
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2995,7 +3451,7 @@ func decodeRetrieveAccountDetailListParams(args [1]string, argsEscaped bool, r *
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotQueryVal RetrieveAccountDetailListQuery
+				var paramsDotQueryVal PaginationQueryParams
 				if err := func() error {
 					return paramsDotQueryVal.DecodeURI(d)
 				}(); err != nil {
@@ -3039,7 +3495,7 @@ type RetrieveAccountListParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップの売上入金情報から一覧で取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// 売上入金情報の一覧取得において検索条件となるクエリパラメータ.
 	Query OptRetrieveAccountListQuery
 }
@@ -3051,7 +3507,7 @@ func unpackRetrieveAccountListParams(packed middleware.Parameters) (params Retri
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -3077,19 +3533,26 @@ func decodeRetrieveAccountListParams(args [0]string, argsEscaped bool, r *http.R
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3160,12 +3623,12 @@ func decodeRetrieveAccountListParams(args [0]string, argsEscaped bool, r *http.R
 // RetrieveCustomerParams is parameters of retrieveCustomer operation.
 type RetrieveCustomerParams struct {
 	// 顧客ID.
-	ID string
+	ID CustomerIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客情報を取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackRetrieveCustomerParams(packed middleware.Parameters) (params RetrieveCustomerParams) {
@@ -3174,7 +3637,7 @@ func unpackRetrieveCustomerParams(packed middleware.Parameters) (params Retrieve
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -3182,7 +3645,7 @@ func unpackRetrieveCustomerParams(packed middleware.Parameters) (params Retrieve
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -3209,17 +3672,24 @@ func decodeRetrieveCustomerParams(args [1]string, argsEscaped bool, r *http.Requ
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = CustomerIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -3243,19 +3713,26 @@ func decodeRetrieveCustomerParams(args [1]string, argsEscaped bool, r *http.Requ
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3280,14 +3757,14 @@ func decodeRetrieveCustomerParams(args [1]string, argsEscaped bool, r *http.Requ
 // RetrieveCustomerCardParams is parameters of retrieveCustomerCard operation.
 type RetrieveCustomerCardParams struct {
 	// このカードが紐づく顧客のID.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// 取得するカードのID.
-	ID string
+	ID CardIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードから取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackRetrieveCustomerCardParams(packed middleware.Parameters) (params RetrieveCustomerCardParams) {
@@ -3296,14 +3773,14 @@ func unpackRetrieveCustomerCardParams(packed middleware.Parameters) (params Retr
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(CardIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -3311,7 +3788,7 @@ func unpackRetrieveCustomerCardParams(packed middleware.Parameters) (params Retr
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -3338,17 +3815,24 @@ func decodeRetrieveCustomerCardParams(args [2]string, argsEscaped bool, r *http.
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -3383,17 +3867,24 @@ func decodeRetrieveCustomerCardParams(args [2]string, argsEscaped bool, r *http.
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = CardIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -3417,19 +3908,26 @@ func decodeRetrieveCustomerCardParams(args [2]string, argsEscaped bool, r *http.
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3455,12 +3953,12 @@ func decodeRetrieveCustomerCardParams(args [2]string, argsEscaped bool, r *http.
 type RetrieveCustomerCardListParams struct {
 	// 顧客ID。 \
 	// この顧客に紐づくカードを一覧で取得します。.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードの一覧を取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackRetrieveCustomerCardListParams(packed middleware.Parameters) (params RetrieveCustomerCardListParams) {
@@ -3469,7 +3967,7 @@ func unpackRetrieveCustomerCardListParams(packed middleware.Parameters) (params 
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -3477,7 +3975,7 @@ func unpackRetrieveCustomerCardListParams(packed middleware.Parameters) (params 
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -3504,17 +4002,24 @@ func decodeRetrieveCustomerCardListParams(args [1]string, argsEscaped bool, r *h
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -3538,19 +4043,26 @@ func decodeRetrieveCustomerCardListParams(args [1]string, argsEscaped bool, r *h
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3580,7 +4092,7 @@ type RetrieveCustomerListParams struct {
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客から一覧で取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackRetrieveCustomerListParams(packed middleware.Parameters) (params RetrieveCustomerListParams) {
@@ -3599,7 +4111,7 @@ func unpackRetrieveCustomerListParams(packed middleware.Parameters) (params Retr
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -3662,19 +4174,26 @@ func decodeRetrieveCustomerListParams(args [0]string, argsEscaped bool, r *http.
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3699,16 +4218,16 @@ func decodeRetrieveCustomerListParams(args [0]string, argsEscaped bool, r *http.
 // RetrieveCustomerPaymentMethodParams is parameters of retrieveCustomerPaymentMethod operation.
 type RetrieveCustomerPaymentMethodParams struct {
 	// 顧客ID.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// 決済手段ID.
-	ID string
+	ID PaymentMethodIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に紐づく決済手段からIDで指定した決済手段を取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// 決済手段の取得において検索条件となるクエリパラメータ.
-	Query RetrieveCustomerPaymentMethodQuery
+	Query CustomerPaymentMethodRetrievingQueryParams
 }
 
 func unpackRetrieveCustomerPaymentMethodParams(packed middleware.Parameters) (params RetrieveCustomerPaymentMethodParams) {
@@ -3717,14 +4236,14 @@ func unpackRetrieveCustomerPaymentMethodParams(packed middleware.Parameters) (pa
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(PaymentMethodIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -3732,7 +4251,7 @@ func unpackRetrieveCustomerPaymentMethodParams(packed middleware.Parameters) (pa
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -3740,7 +4259,7 @@ func unpackRetrieveCustomerPaymentMethodParams(packed middleware.Parameters) (pa
 			Name: "Query",
 			In:   "query",
 		}
-		params.Query = packed[key].(RetrieveCustomerPaymentMethodQuery)
+		params.Query = packed[key].(CustomerPaymentMethodRetrievingQueryParams)
 	}
 	return params
 }
@@ -3767,17 +4286,24 @@ func decodeRetrieveCustomerPaymentMethodParams(args [2]string, argsEscaped bool,
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -3812,17 +4338,24 @@ func decodeRetrieveCustomerPaymentMethodParams(args [2]string, argsEscaped bool,
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = PaymentMethodIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -3846,19 +4379,26 @@ func decodeRetrieveCustomerPaymentMethodParams(args [2]string, argsEscaped bool,
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3917,14 +4457,14 @@ func decodeRetrieveCustomerPaymentMethodParams(args [2]string, argsEscaped bool,
 // RetrieveCustomerPaymentMethodListParams is parameters of retrieveCustomerPaymentMethodList operation.
 type RetrieveCustomerPaymentMethodListParams struct {
 	// 顧客ID.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// 決済手段の一覧取得において検索条件となるクエリパラメータ.
-	Query RetrieveCustomerPaymentMethodListQuery
+	Query CustomerPaymentMethodListRetrievingQueryParams
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に紐づく決済手段から一覧で取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackRetrieveCustomerPaymentMethodListParams(packed middleware.Parameters) (params RetrieveCustomerPaymentMethodListParams) {
@@ -3933,14 +4473,14 @@ func unpackRetrieveCustomerPaymentMethodListParams(packed middleware.Parameters)
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "Query",
 			In:   "query",
 		}
-		params.Query = packed[key].(RetrieveCustomerPaymentMethodListQuery)
+		params.Query = packed[key].(CustomerPaymentMethodListRetrievingQueryParams)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -3948,7 +4488,7 @@ func unpackRetrieveCustomerPaymentMethodListParams(packed middleware.Parameters)
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -3976,17 +4516,24 @@ func decodeRetrieveCustomerPaymentMethodListParams(args [1]string, argsEscaped b
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -4044,19 +4591,26 @@ func decodeRetrieveCustomerPaymentMethodListParams(args [1]string, argsEscaped b
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -4084,11 +4638,11 @@ type RetrievePaymentParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした決済のうち、`id`で指定した決済情報を取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// オーダーID（決済情報のID）.
-	ID string
+	ID OrderIdSchema
 	// 決済の取得において検索条件となるクエリパラメータ.
-	Query RetrievePaymentQuery
+	Query PaymentRetrievingQueryParams
 }
 
 func unpackRetrievePaymentParams(packed middleware.Parameters) (params RetrievePaymentParams) {
@@ -4098,7 +4652,7 @@ func unpackRetrievePaymentParams(packed middleware.Parameters) (params RetrieveP
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -4106,14 +4660,14 @@ func unpackRetrievePaymentParams(packed middleware.Parameters) (params RetrieveP
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(OrderIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "Query",
 			In:   "query",
 		}
-		params.Query = packed[key].(RetrievePaymentQuery)
+		params.Query = packed[key].(PaymentRetrievingQueryParams)
 	}
 	return params
 }
@@ -4129,19 +4683,26 @@ func decodeRetrievePaymentParams(args [1]string, argsEscaped bool, r *http.Reque
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -4179,17 +4740,24 @@ func decodeRetrievePaymentParams(args [1]string, argsEscaped bool, r *http.Reque
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = OrderIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -4251,7 +4819,7 @@ type RetrievePaymentBulkDetailListParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした一括決済の詳細を一覧で取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// 一括決済情報の一覧取得において検索条件となるクエリパラメータ.
 	Query RetrievePaymentBulkDetailListQuery
 }
@@ -4270,7 +4838,7 @@ func unpackRetrievePaymentBulkDetailListParams(packed middleware.Parameters) (pa
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -4346,19 +4914,26 @@ func decodeRetrievePaymentBulkDetailListParams(args [1]string, argsEscaped bool,
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -4420,7 +4995,7 @@ type RetrievePaymentBulkListParams struct {
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップを販売主とした一括決済情報を一覧で取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 	// 一括決済情報の一覧取得において検索条件となるクエリパラメータ.
 	Query OptRetrievePaymentBulkListQuery
 }
@@ -4432,7 +5007,7 @@ func unpackRetrievePaymentBulkListParams(packed middleware.Parameters) (params R
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	{
@@ -4458,19 +5033,26 @@ func decodeRetrievePaymentBulkListParams(args [0]string, argsEscaped bool, r *ht
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -4538,10 +5120,83 @@ func decodeRetrievePaymentBulkListParams(args [0]string, argsEscaped bool, r *ht
 	return params, nil
 }
 
+// RetrievePaymentListParams is parameters of retrievePaymentList operation.
+type RetrievePaymentListParams struct {
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// このテナントショップに紐づく決済から一覧で取得します。.
+	TenantShopID OptSchema
+}
+
+func unpackRetrievePaymentListParams(packed middleware.Parameters) (params RetrievePaymentListParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		if v, ok := packed[key]; ok {
+			params.TenantShopID = v.(OptSchema)
+		}
+	}
+	return params
+}
+
+func decodeRetrievePaymentListParams(args [0]string, argsEscaped bool, r *http.Request) (params RetrievePaymentListParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal Schema
+				if err := func() error {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
+						return err
+					}
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // RetrievePlanParams is parameters of retrievePlan operation.
 type RetrievePlanParams struct {
 	// プランID.
-	ID string
+	ID PlanIdSchema
 }
 
 func unpackRetrievePlanParams(packed middleware.Parameters) (params RetrievePlanParams) {
@@ -4550,7 +5205,7 @@ func unpackRetrievePlanParams(packed middleware.Parameters) (params RetrievePlan
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(PlanIdSchema)
 	}
 	return params
 }
@@ -4575,17 +5230,24 @@ func decodeRetrievePlanParams(args [1]string, argsEscaped bool, r *http.Request)
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = PlanIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -4677,7 +5339,7 @@ func decodeRetrievePlanListParams(args [0]string, argsEscaped bool, r *http.Requ
 // RetrievePlatformAccountParams is parameters of retrievePlatformAccount operation.
 type RetrievePlatformAccountParams struct {
 	// プラットフォーム利用料収入ID.
-	ID string
+	ID PlatformAccountIdSchema
 }
 
 func unpackRetrievePlatformAccountParams(packed middleware.Parameters) (params RetrievePlatformAccountParams) {
@@ -4686,7 +5348,7 @@ func unpackRetrievePlatformAccountParams(packed middleware.Parameters) (params R
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(PlatformAccountIdSchema)
 	}
 	return params
 }
@@ -4711,17 +5373,24 @@ func decodeRetrievePlatformAccountParams(args [1]string, argsEscaped bool, r *ht
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = PlatformAccountIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -4813,7 +5482,7 @@ func decodeRetrievePlatformAccountListParams(args [0]string, argsEscaped bool, r
 // RetrievePlatformAccountSummaryListParams is parameters of retrievePlatformAccountSummaryList operation.
 type RetrievePlatformAccountSummaryListParams struct {
 	// プラットフォーム利用料収入ID.
-	ID string
+	ID PlatformAccountIdSchema
 	// プラットフォーム利用料による売上入金情報の一覧取得において検索条件となるクエリパラメータ.
 	Query OptRetrievePlatformAccountSummaryListQuery
 }
@@ -4824,7 +5493,7 @@ func unpackRetrievePlatformAccountSummaryListParams(packed middleware.Parameters
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(PlatformAccountIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -4859,17 +5528,24 @@ func decodeRetrievePlatformAccountSummaryListParams(args [1]string, argsEscaped 
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = PlatformAccountIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -4937,7 +5613,7 @@ func decodeRetrievePlatformAccountSummaryListParams(args [1]string, argsEscaped 
 // RetrievePlatformShopParams is parameters of retrievePlatformShop operation.
 type RetrievePlatformShopParams struct {
 	// ショップID.
-	ID string
+	ID Schema
 }
 
 func unpackRetrievePlatformShopParams(packed middleware.Parameters) (params RetrievePlatformShopParams) {
@@ -4946,7 +5622,7 @@ func unpackRetrievePlatformShopParams(packed middleware.Parameters) (params Retr
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(Schema)
 	}
 	return params
 }
@@ -4971,17 +5647,24 @@ func decodeRetrievePlatformShopParams(args [1]string, argsEscaped bool, r *http.
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -5073,7 +5756,7 @@ func decodeRetrievePlatformShopListParams(args [0]string, argsEscaped bool, r *h
 // RetrieveSubscriptionParams is parameters of retrieveSubscription operation.
 type RetrieveSubscriptionParams struct {
 	// サブスクリプションID.
-	ID string
+	ID SubscriptionIdSchema
 }
 
 func unpackRetrieveSubscriptionParams(packed middleware.Parameters) (params RetrieveSubscriptionParams) {
@@ -5082,7 +5765,7 @@ func unpackRetrieveSubscriptionParams(packed middleware.Parameters) (params Retr
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(SubscriptionIdSchema)
 	}
 	return params
 }
@@ -5107,17 +5790,24 @@ func decodeRetrieveSubscriptionParams(args [1]string, argsEscaped bool, r *http.
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = SubscriptionIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -5197,7 +5887,7 @@ type RetrieveSubscriptionResultListParams struct {
 	// サブスクリプション結果の一覧取得において検索条件となるクエリパラメータ.
 	Query RetrieveSubscriptionResultListQuery
 	// サブスクリプションID.
-	ID string
+	ID SubscriptionIdSchema
 }
 
 func unpackRetrieveSubscriptionResultListParams(packed middleware.Parameters) (params RetrieveSubscriptionResultListParams) {
@@ -5213,7 +5903,7 @@ func unpackRetrieveSubscriptionResultListParams(packed middleware.Parameters) (p
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(SubscriptionIdSchema)
 	}
 	return params
 }
@@ -5273,17 +5963,24 @@ func decodeRetrieveSubscriptionResultListParams(args [1]string, argsEscaped bool
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = SubscriptionIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -5305,12 +6002,12 @@ func decodeRetrieveSubscriptionResultListParams(args [1]string, argsEscaped bool
 // RetrieveTenantContractParams is parameters of retrieveTenantContract operation.
 type RetrieveTenantContractParams struct {
 	// 指定したテナントショップの契約情報を取得します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
-	ID string
+	ID Schema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップの契約情報を取得します。.
-	TenantShopID string
+	TenantShopID Schema
 }
 
 func unpackRetrieveTenantContractParams(packed middleware.Parameters) (params RetrieveTenantContractParams) {
@@ -5319,14 +6016,14 @@ func unpackRetrieveTenantContractParams(packed middleware.Parameters) (params Re
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(Schema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "Tenant-Shop-Id",
 			In:   "header",
 		}
-		params.TenantShopID = packed[key].(string)
+		params.TenantShopID = packed[key].(Schema)
 	}
 	return params
 }
@@ -5352,17 +6049,24 @@ func decodeRetrieveTenantContractParams(args [1]string, argsEscaped bool, r *htt
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -5386,17 +6090,24 @@ func decodeRetrieveTenantContractParams(args [1]string, argsEscaped bool, r *htt
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.TenantShopID = c
+				params.TenantShopID = Schema(paramsDotTenantShopIDVal)
 				return nil
 			}); err != nil {
 				return err
@@ -5418,12 +6129,12 @@ func decodeRetrieveTenantContractParams(args [1]string, argsEscaped bool, r *htt
 // RetrieveTenantExaminationInfoParams is parameters of retrieveTenantExaminationInfo operation.
 type RetrieveTenantExaminationInfoParams struct {
 	// 指定したテナントショップの本番環境申請情報を取得します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
-	ID string
+	ID Schema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップの本番環境申請情報を取得します。.
-	TenantShopID string
+	TenantShopID Schema
 }
 
 func unpackRetrieveTenantExaminationInfoParams(packed middleware.Parameters) (params RetrieveTenantExaminationInfoParams) {
@@ -5432,14 +6143,14 @@ func unpackRetrieveTenantExaminationInfoParams(packed middleware.Parameters) (pa
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(Schema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "Tenant-Shop-Id",
 			In:   "header",
 		}
-		params.TenantShopID = packed[key].(string)
+		params.TenantShopID = packed[key].(Schema)
 	}
 	return params
 }
@@ -5465,17 +6176,24 @@ func decodeRetrieveTenantExaminationInfoParams(args [1]string, argsEscaped bool,
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -5499,17 +6217,24 @@ func decodeRetrieveTenantExaminationInfoParams(args [1]string, argsEscaped bool,
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.TenantShopID = c
+				params.TenantShopID = Schema(paramsDotTenantShopIDVal)
 				return nil
 			}); err != nil {
 				return err
@@ -5531,12 +6256,12 @@ func decodeRetrieveTenantExaminationInfoParams(args [1]string, argsEscaped bool,
 // RetrieveTenantExaminationInfoV2Params is parameters of retrieveTenantExaminationInfoV2 operation.
 type RetrieveTenantExaminationInfoV2Params struct {
 	// 指定したテナントショップの本番環境申請情報を取得します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
-	ID string
+	ID Schema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップの本番環境申請情報を取得します。.
-	TenantShopID string
+	TenantShopID Schema
 }
 
 func unpackRetrieveTenantExaminationInfoV2Params(packed middleware.Parameters) (params RetrieveTenantExaminationInfoV2Params) {
@@ -5545,14 +6270,14 @@ func unpackRetrieveTenantExaminationInfoV2Params(packed middleware.Parameters) (
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(Schema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "Tenant-Shop-Id",
 			In:   "header",
 		}
-		params.TenantShopID = packed[key].(string)
+		params.TenantShopID = packed[key].(Schema)
 	}
 	return params
 }
@@ -5578,17 +6303,24 @@ func decodeRetrieveTenantExaminationInfoV2Params(args [1]string, argsEscaped boo
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -5612,17 +6344,24 @@ func decodeRetrieveTenantExaminationInfoV2Params(args [1]string, argsEscaped boo
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.TenantShopID = c
+				params.TenantShopID = Schema(paramsDotTenantShopIDVal)
 				return nil
 			}); err != nil {
 				return err
@@ -5644,7 +6383,7 @@ func decodeRetrieveTenantExaminationInfoV2Params(args [1]string, argsEscaped boo
 // RetrieveTenantShopParams is parameters of retrieveTenantShop operation.
 type RetrieveTenantShopParams struct {
 	// ショップID.
-	ID string
+	ID Schema
 }
 
 func unpackRetrieveTenantShopParams(packed middleware.Parameters) (params RetrieveTenantShopParams) {
@@ -5653,7 +6392,7 @@ func unpackRetrieveTenantShopParams(packed middleware.Parameters) (params Retrie
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(Schema)
 	}
 	return params
 }
@@ -5678,17 +6417,24 @@ func decodeRetrieveTenantShopParams(args [1]string, argsEscaped bool, r *http.Re
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -5780,12 +6526,12 @@ func decodeRetrieveTenantShopListParams(args [0]string, argsEscaped bool, r *htt
 // RetrieveWebhookSettingParams is parameters of retrieveWebhookSetting operation.
 type RetrieveWebhookSettingParams struct {
 	// Webhook設定のID.
-	ID string
+	ID WebhookSettingIdSchema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づくWebhook設定のうち、指定したIDのWebhook設定を取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackRetrieveWebhookSettingParams(packed middleware.Parameters) (params RetrieveWebhookSettingParams) {
@@ -5794,7 +6540,7 @@ func unpackRetrieveWebhookSettingParams(packed middleware.Parameters) (params Re
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(WebhookSettingIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -5802,7 +6548,7 @@ func unpackRetrieveWebhookSettingParams(packed middleware.Parameters) (params Re
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -5829,17 +6575,24 @@ func decodeRetrieveWebhookSettingParams(args [1]string, argsEscaped bool, r *htt
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = WebhookSettingIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -5863,19 +6616,26 @@ func decodeRetrieveWebhookSettingParams(args [1]string, argsEscaped bool, r *htt
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -5900,12 +6660,12 @@ func decodeRetrieveWebhookSettingParams(args [1]string, argsEscaped bool, r *htt
 // RetrieveWebhookSettingListParams is parameters of retrieveWebhookSettingList operation.
 type RetrieveWebhookSettingListParams struct {
 	// Webhook設定の一覧取得において検索条件となるクエリパラメータ.
-	Query OptRetrieveWebhookSettingListQuery
+	Query OptPaginationQueryParams
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づくWebhook設定から一覧で取得します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackRetrieveWebhookSettingListParams(packed middleware.Parameters) (params RetrieveWebhookSettingListParams) {
@@ -5915,7 +6675,7 @@ func unpackRetrieveWebhookSettingListParams(packed middleware.Parameters) (param
 			In:   "query",
 		}
 		if v, ok := packed[key]; ok {
-			params.Query = v.(OptRetrieveWebhookSettingListQuery)
+			params.Query = v.(OptPaginationQueryParams)
 		}
 	}
 	{
@@ -5924,7 +6684,7 @@ func unpackRetrieveWebhookSettingListParams(packed middleware.Parameters) (param
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -5944,7 +6704,7 @@ func decodeRetrieveWebhookSettingListParams(args [0]string, argsEscaped bool, r 
 
 		if err := q.HasParam(cfg); err == nil {
 			if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotQueryVal RetrieveWebhookSettingListQuery
+				var paramsDotQueryVal PaginationQueryParams
 				if err := func() error {
 					return paramsDotQueryVal.DecodeURI(d)
 				}(); err != nil {
@@ -5987,19 +6747,26 @@ func decodeRetrieveWebhookSettingListParams(args [0]string, argsEscaped bool, r 
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -6024,12 +6791,12 @@ func decodeRetrieveWebhookSettingListParams(args [0]string, argsEscaped bool, r 
 // UpdateCustomerParams is parameters of updateCustomer operation.
 type UpdateCustomerParams struct {
 	// 顧客ID.
-	ID string
+	ID CustomerIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客情報を更新します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackUpdateCustomerParams(packed middleware.Parameters) (params UpdateCustomerParams) {
@@ -6038,7 +6805,7 @@ func unpackUpdateCustomerParams(packed middleware.Parameters) (params UpdateCust
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -6046,7 +6813,7 @@ func unpackUpdateCustomerParams(packed middleware.Parameters) (params UpdateCust
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -6073,17 +6840,24 @@ func decodeUpdateCustomerParams(args [1]string, argsEscaped bool, r *http.Reques
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = CustomerIdSchema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -6107,19 +6881,26 @@ func decodeUpdateCustomerParams(args [1]string, argsEscaped bool, r *http.Reques
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				var paramsDotTenantShopIDVal string
+				var paramsDotTenantShopIDVal Schema
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					paramsDotTenantShopIDVal = c
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -6144,14 +6925,14 @@ func decodeUpdateCustomerParams(args [1]string, argsEscaped bool, r *http.Reques
 // UpdateCustomerCardParams is parameters of updateCustomerCard operation.
 type UpdateCustomerCardParams struct {
 	// このカードが紐づく顧客のID.
-	CustomerID string
+	CustomerID CustomerIdSchema
 	// 更新するカードのID.
-	ID string
+	ID CardIdSchema
 	// <span class="smallText color--red-400">※
 	// 顧客情報を共有しないプラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づく顧客のうち、指定したIDの顧客に対して登録されたカードの情報を更新します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackUpdateCustomerCardParams(packed middleware.Parameters) (params UpdateCustomerCardParams) {
@@ -6160,14 +6941,14 @@ func unpackUpdateCustomerCardParams(packed middleware.Parameters) (params Update
 			Name: "customer_id",
 			In:   "path",
 		}
-		params.CustomerID = packed[key].(string)
+		params.CustomerID = packed[key].(CustomerIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(CardIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -6175,7 +6956,7 @@ func unpackUpdateCustomerCardParams(packed middleware.Parameters) (params Update
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -6202,17 +6983,24 @@ func decodeUpdateCustomerCardParams(args [2]string, argsEscaped bool, r *http.Re
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotCustomerIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotCustomerIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.CustomerID = c
+				params.CustomerID = CustomerIdSchema(paramsDotCustomerIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -6247,17 +7035,375 @@ func decodeUpdateCustomerCardParams(args [2]string, argsEscaped bool, r *http.Re
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
+				params.ID = CardIdSchema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal Schema
+				if err := func() error {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
 
-				c, err := conv.ToString(val)
-				if err != nil {
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
+						return err
+					}
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
+					return nil
+				}(); err != nil {
 					return err
 				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
 
-				params.ID = c
+// UpdatePlanParams is parameters of updatePlan operation.
+type UpdatePlanParams struct {
+	// プランID.
+	ID PlanIdSchema
+}
+
+func unpackUpdatePlanParams(packed middleware.Parameters) (params UpdatePlanParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(PlanIdSchema)
+	}
+	return params
+}
+
+func decodeUpdatePlanParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdatePlanParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = PlanIdSchema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdatePlatformShopParams is parameters of updatePlatformShop operation.
+type UpdatePlatformShopParams struct {
+	// ショップID.
+	ID Schema
+}
+
+func unpackUpdatePlatformShopParams(packed middleware.Parameters) (params UpdatePlatformShopParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(Schema)
+	}
+	return params
+}
+
+func decodeUpdatePlatformShopParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdatePlatformShopParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = Schema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateSubscriptionParams is parameters of updateSubscription operation.
+type UpdateSubscriptionParams struct {
+	// サブスクリプションID.
+	ID SubscriptionIdSchema
+}
+
+func unpackUpdateSubscriptionParams(packed middleware.Parameters) (params UpdateSubscriptionParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(SubscriptionIdSchema)
+	}
+	return params
+}
+
+func decodeUpdateSubscriptionParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateSubscriptionParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = SubscriptionIdSchema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
+// UpdateTenantExaminationInfoParams is parameters of updateTenantExaminationInfo operation.
+type UpdateTenantExaminationInfoParams struct {
+	// 指定したテナントショップの本番環境申請情報を更新します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
+	ID Schema
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップの本番環境申請情報を更新します。.
+	TenantShopID Schema
+}
+
+func unpackUpdateTenantExaminationInfoParams(packed middleware.Parameters) (params UpdateTenantExaminationInfoParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(Schema)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(Schema)
+	}
+	return params
+}
+
+func decodeUpdateTenantExaminationInfoParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateTenantExaminationInfoParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -6298,316 +7444,7 @@ func decodeUpdateCustomerCardParams(args [2]string, argsEscaped bool, r *http.Re
 				}(); err != nil {
 					return err
 				}
-				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "Tenant-Shop-Id",
-			In:   "header",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// UpdatePlanParams is parameters of updatePlan operation.
-type UpdatePlanParams struct {
-	// プランID.
-	ID string
-}
-
-func unpackUpdatePlanParams(packed middleware.Parameters) (params UpdatePlanParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "id",
-			In:   "path",
-		}
-		params.ID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeUpdatePlanParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdatePlanParams, _ error) {
-	// Decode path: id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// UpdatePlatformShopParams is parameters of updatePlatformShop operation.
-type UpdatePlatformShopParams struct {
-	// ショップID.
-	ID string
-}
-
-func unpackUpdatePlatformShopParams(packed middleware.Parameters) (params UpdatePlatformShopParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "id",
-			In:   "path",
-		}
-		params.ID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeUpdatePlatformShopParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdatePlatformShopParams, _ error) {
-	// Decode path: id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// UpdateSubscriptionParams is parameters of updateSubscription operation.
-type UpdateSubscriptionParams struct {
-	// サブスクリプションID.
-	ID string
-}
-
-func unpackUpdateSubscriptionParams(packed middleware.Parameters) (params UpdateSubscriptionParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "id",
-			In:   "path",
-		}
-		params.ID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeUpdateSubscriptionParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateSubscriptionParams, _ error) {
-	// Decode path: id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// UpdateTenantExaminationInfoParams is parameters of updateTenantExaminationInfo operation.
-type UpdateTenantExaminationInfoParams struct {
-	// 指定したテナントショップの本番環境申請情報を更新します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
-	ID string
-	// <span class="smallText color--red-400">※
-	// プラットフォームのメインショップのみ指定可</span>\
-	// テナントショップID。\
-	// 指定したテナントショップの本番環境申請情報を更新します。.
-	TenantShopID string
-}
-
-func unpackUpdateTenantExaminationInfoParams(packed middleware.Parameters) (params UpdateTenantExaminationInfoParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "id",
-			In:   "path",
-		}
-		params.ID = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "Tenant-Shop-Id",
-			In:   "header",
-		}
-		params.TenantShopID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeUpdateTenantExaminationInfoParams(args [1]string, argsEscaped bool, r *http.Request) (params UpdateTenantExaminationInfoParams, _ error) {
-	h := uri.NewHeaderDecoder(r.Header)
-	// Decode path: id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	// Decode header: Tenant-Shop-Id.
-	if err := func() error {
-		cfg := uri.HeaderParameterDecodingConfig{
-			Name:    "Tenant-Shop-Id",
-			Explode: false,
-		}
-		if err := h.HasParam(cfg); err == nil {
-			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.TenantShopID = c
+				params.TenantShopID = Schema(paramsDotTenantShopIDVal)
 				return nil
 			}); err != nil {
 				return err
@@ -6629,12 +7466,12 @@ func decodeUpdateTenantExaminationInfoParams(args [1]string, argsEscaped bool, r
 // UpdateTenantExaminationInfoV2Params is parameters of updateTenantExaminationInfoV2 operation.
 type UpdateTenantExaminationInfoV2Params struct {
 	// 指定したテナントショップの本番環境申請情報を更新します。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
-	ID string
+	ID Schema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// 指定したテナントショップの本番環境申請情報を更新します。.
-	TenantShopID string
+	TenantShopID Schema
 }
 
 func unpackUpdateTenantExaminationInfoV2Params(packed middleware.Parameters) (params UpdateTenantExaminationInfoV2Params) {
@@ -6643,14 +7480,14 @@ func unpackUpdateTenantExaminationInfoV2Params(packed middleware.Parameters) (pa
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(Schema)
 	}
 	{
 		key := middleware.ParameterKey{
 			Name: "Tenant-Shop-Id",
 			In:   "header",
 		}
-		params.TenantShopID = packed[key].(string)
+		params.TenantShopID = packed[key].(Schema)
 	}
 	return params
 }
@@ -6676,17 +7513,24 @@ func decodeUpdateTenantExaminationInfoV2Params(args [1]string, argsEscaped bool,
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -6710,17 +7554,24 @@ func decodeUpdateTenantExaminationInfoV2Params(args [1]string, argsEscaped bool,
 		}
 		if err := h.HasParam(cfg); err == nil {
 			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotTenantShopIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotTenantShopIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.TenantShopID = c
+				params.TenantShopID = Schema(paramsDotTenantShopIDVal)
 				return nil
 			}); err != nil {
 				return err
@@ -6742,7 +7593,7 @@ func decodeUpdateTenantExaminationInfoV2Params(args [1]string, argsEscaped bool,
 // UpdateTenantShopParams is parameters of updateTenantShop operation.
 type UpdateTenantShopParams struct {
 	// ショップID.
-	ID string
+	ID Schema
 }
 
 func unpackUpdateTenantShopParams(packed middleware.Parameters) (params UpdateTenantShopParams) {
@@ -6751,7 +7602,7 @@ func unpackUpdateTenantShopParams(packed middleware.Parameters) (params UpdateTe
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(Schema)
 	}
 	return params
 }
@@ -6776,17 +7627,24 @@ func decodeUpdateTenantShopParams(args [1]string, argsEscaped bool, r *http.Requ
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -6808,12 +7666,12 @@ func decodeUpdateTenantShopParams(args [1]string, argsEscaped bool, r *http.Requ
 // UpdateWebhookSettingParams is parameters of updateWebhookSetting operation.
 type UpdateWebhookSettingParams struct {
 	// Webhook設定のID.
-	ID string
+	ID WebhookSettingIdSchema
 	// <span class="smallText color--red-400">※
 	// プラットフォームのメインショップのみ指定可</span>\
 	// テナントショップID。\
 	// このテナントショップに紐づくWebhook設定のうち、指定したIDのWebhook設定を更新します。.
-	TenantShopID OptString
+	TenantShopID OptSchema
 }
 
 func unpackUpdateWebhookSettingParams(packed middleware.Parameters) (params UpdateWebhookSettingParams) {
@@ -6822,7 +7680,7 @@ func unpackUpdateWebhookSettingParams(packed middleware.Parameters) (params Upda
 			Name: "id",
 			In:   "path",
 		}
-		params.ID = packed[key].(string)
+		params.ID = packed[key].(WebhookSettingIdSchema)
 	}
 	{
 		key := middleware.ParameterKey{
@@ -6830,7 +7688,7 @@ func unpackUpdateWebhookSettingParams(packed middleware.Parameters) (params Upda
 			In:   "header",
 		}
 		if v, ok := packed[key]; ok {
-			params.TenantShopID = v.(OptString)
+			params.TenantShopID = v.(OptSchema)
 		}
 	}
 	return params
@@ -6857,17 +7715,156 @@ func decodeUpdateWebhookSettingParams(args [1]string, argsEscaped bool, r *http.
 			})
 
 			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
 					return err
 				}
+				params.ID = WebhookSettingIdSchema(paramsDotIDVal)
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	// Decode header: Tenant-Shop-Id.
+	if err := func() error {
+		cfg := uri.HeaderParameterDecodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.HasParam(cfg); err == nil {
+			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
+				var paramsDotTenantShopIDVal Schema
+				if err := func() error {
+					var paramsDotTenantShopIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
 
-				c, err := conv.ToString(val)
-				if err != nil {
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						paramsDotTenantShopIDValVal = c
+						return nil
+					}(); err != nil {
+						return err
+					}
+					paramsDotTenantShopIDVal = Schema(paramsDotTenantShopIDValVal)
+					return nil
+				}(); err != nil {
 					return err
 				}
+				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
+				return nil
+			}); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
 
-				params.ID = c
+// UploadExaminationFileParams is parameters of uploadExaminationFile operation.
+type UploadExaminationFileParams struct {
+	// 指定したテナントショップのものとしてファイルをアップロードします。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
+	ID Schema
+	// <span class="smallText color--red-400">※
+	// プラットフォームのメインショップのみ指定可</span>\
+	// テナントショップID。\
+	// 指定したテナントショップのものとしてファイルをアップロードします。.
+	TenantShopID Schema
+}
+
+func unpackUploadExaminationFileParams(packed middleware.Parameters) (params UploadExaminationFileParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(Schema)
+	}
+	{
+		key := middleware.ParameterKey{
+			Name: "Tenant-Shop-Id",
+			In:   "header",
+		}
+		params.TenantShopID = packed[key].(Schema)
+	}
+	return params
+}
+
+func decodeUploadExaminationFileParams(args [1]string, argsEscaped bool, r *http.Request) (params UploadExaminationFileParams, _ error) {
+	h := uri.NewHeaderDecoder(r.Header)
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				var paramsDotIDVal string
+				if err := func() error {
+					val, err := d.DecodeValue()
+					if err != nil {
+						return err
+					}
+
+					c, err := conv.ToString(val)
+					if err != nil {
+						return err
+					}
+
+					paramsDotIDVal = c
+					return nil
+				}(); err != nil {
+					return err
+				}
+				params.ID = Schema(paramsDotIDVal)
 				return nil
 			}(); err != nil {
 				return err
@@ -6908,118 +7905,7 @@ func decodeUpdateWebhookSettingParams(args [1]string, argsEscaped bool, r *http.
 				}(); err != nil {
 					return err
 				}
-				params.TenantShopID.SetTo(paramsDotTenantShopIDVal)
-				return nil
-			}); err != nil {
-				return err
-			}
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "Tenant-Shop-Id",
-			In:   "header",
-			Err:  err,
-		}
-	}
-	return params, nil
-}
-
-// UploadExaminationFileParams is parameters of uploadExaminationFile operation.
-type UploadExaminationFileParams struct {
-	// 指定したテナントショップのものとしてファイルをアップロードします。`Tenant-Shop-Id`ヘッダーも併せて指定してください。.
-	ID string
-	// <span class="smallText color--red-400">※
-	// プラットフォームのメインショップのみ指定可</span>\
-	// テナントショップID。\
-	// 指定したテナントショップのものとしてファイルをアップロードします。.
-	TenantShopID string
-}
-
-func unpackUploadExaminationFileParams(packed middleware.Parameters) (params UploadExaminationFileParams) {
-	{
-		key := middleware.ParameterKey{
-			Name: "id",
-			In:   "path",
-		}
-		params.ID = packed[key].(string)
-	}
-	{
-		key := middleware.ParameterKey{
-			Name: "Tenant-Shop-Id",
-			In:   "header",
-		}
-		params.TenantShopID = packed[key].(string)
-	}
-	return params
-}
-
-func decodeUploadExaminationFileParams(args [1]string, argsEscaped bool, r *http.Request) (params UploadExaminationFileParams, _ error) {
-	h := uri.NewHeaderDecoder(r.Header)
-	// Decode path: id.
-	if err := func() error {
-		param := args[0]
-		if argsEscaped {
-			unescaped, err := url.PathUnescape(args[0])
-			if err != nil {
-				return errors.Wrap(err, "unescape path")
-			}
-			param = unescaped
-		}
-		if len(param) > 0 {
-			d := uri.NewPathDecoder(uri.PathDecoderConfig{
-				Param:   "id",
-				Value:   param,
-				Style:   uri.PathStyleSimple,
-				Explode: false,
-			})
-
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.ID = c
-				return nil
-			}(); err != nil {
-				return err
-			}
-		} else {
-			return validate.ErrFieldRequired
-		}
-		return nil
-	}(); err != nil {
-		return params, &ogenerrors.DecodeParamError{
-			Name: "id",
-			In:   "path",
-			Err:  err,
-		}
-	}
-	// Decode header: Tenant-Shop-Id.
-	if err := func() error {
-		cfg := uri.HeaderParameterDecodingConfig{
-			Name:    "Tenant-Shop-Id",
-			Explode: false,
-		}
-		if err := h.HasParam(cfg); err == nil {
-			if err := h.DecodeParam(cfg, func(d uri.Decoder) error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				params.TenantShopID = c
+				params.TenantShopID = Schema(paramsDotTenantShopIDVal)
 				return nil
 			}); err != nil {
 				return err

@@ -3,7 +3,27 @@
 package api
 
 // setDefaults set default value of fields.
-func (s *CreatePaymentOK2) setDefaults() {
+func (s *ExaminationInfoUpdatingRequest) setDefaults() {
+	{
+		val := UpdateContractDetail(false)
+		s.UpdateContractDetail.SetTo(val)
+	}
+	{
+		val := UpdateShop(false)
+		s.UpdateShop.SetTo(val)
+	}
+	{
+		val := UpdateBankAccount(false)
+		s.UpdateBankAccount.SetTo(val)
+	}
+	{
+		val := UpdateDepositCycle(false)
+		s.UpdateDepositCycle.SetTo(val)
+	}
+}
+
+// setDefaults set default value of fields.
+func (s *PaymentKonbiniCancelingResponse) setDefaults() {
 	{
 		val := string("2")
 		s.PaymentTermDay.SetTo(val)
@@ -11,7 +31,7 @@ func (s *CreatePaymentOK2) setDefaults() {
 }
 
 // setDefaults set default value of fields.
-func (s *ExecutePaymentOK2) setDefaults() {
+func (s *PaymentKonbiniCreatingResponse) setDefaults() {
 	{
 		val := string("2")
 		s.PaymentTermDay.SetTo(val)
@@ -19,10 +39,58 @@ func (s *ExecutePaymentOK2) setDefaults() {
 }
 
 // setDefaults set default value of fields.
-func (s *GenerateBarcodeOfPaymentOK) setDefaults() {
+func (s *PaymentKonbiniExecutingRequest) setDefaults() {
+	{
+		val := PaymentTermDay("2")
+		s.PaymentTermDay.SetTo(val)
+	}
+}
+
+// setDefaults set default value of fields.
+func (s *PaymentKonbiniExecutingResponse) setDefaults() {
 	{
 		val := string("2")
 		s.PaymentTermDay.SetTo(val)
+	}
+}
+
+// setDefaults set default value of fields.
+func (s *PaymentKonbiniGeneratingBarcodeResponse) setDefaults() {
+	{
+		val := string("2")
+		s.PaymentTermDay.SetTo(val)
+	}
+}
+
+// setDefaults set default value of fields.
+func (s *PaymentKonbiniListRetrievingResponseListItem) setDefaults() {
+	{
+		val := string("2")
+		s.PaymentTermDay.SetTo(val)
+	}
+}
+
+// setDefaults set default value of fields.
+func (s *PaymentKonbiniRetrievingResponse) setDefaults() {
+	{
+		val := string("2")
+		s.PaymentTermDay.SetTo(val)
+	}
+}
+
+// setDefaults set default value of fields.
+func (s *PaymentSessionCard) setDefaults() {
+	{
+		val := CardPaymentSessionJobCode("AUTH")
+		s.JobCode.SetTo(val)
+	}
+}
+
+// setDefaults set default value of fields.
+func (s *PaymentSessionCreatingRequestCard) setDefaults() {
+	{
+		val := CardPaymentSessionJobCode("AUTH")
+		s.JobCode = val
 	}
 }
 
@@ -34,18 +102,18 @@ func (s *PaymentSessionCreatingRequestTransaction) setDefaults() {
 }
 
 // setDefaults set default value of fields.
-func (s *PaymentSessionCreatingResponseCard) setDefaults() {
+func (s *PlanCreatingRequest) setDefaults() {
 	{
-		val := CardPaymentSessionJobCode("AUTH")
-		s.JobCode.SetTo(val)
+		val := IntervalCount("1")
+		s.IntervalCount.SetTo(val)
 	}
 }
 
 // setDefaults set default value of fields.
-func (s *RetrievePaymentOK2) setDefaults() {
+func (s *PlanUpdatingRequest) setDefaults() {
 	{
-		val := string("2")
-		s.PaymentTermDay.SetTo(val)
+		val := IntervalCount("1")
+		s.IntervalCount.SetTo(val)
 	}
 }
 

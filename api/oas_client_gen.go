@@ -31,7 +31,16 @@ type Invoker interface {
 	// `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
 	//
 	// PUT /v1/payments/{id}/auth
-	AuthorizePayment(ctx context.Context, request *AuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error)
+	AuthorizePayment(ctx context.Context, request *PaymentCardReauthorizingRequest, params AuthorizePaymentParams) (AuthorizePaymentRes, error)
+	// CancelPayment invokes cancelPayment operation.
+	//
+	// 決済をキャンセルします。キャンセルに成功すると`status`はキャンセル済み（`CANCELED`）に遷移します。\
+	// \
+	// ユーザーへの返金の行われ方などは決済手段によって異なります。\
+	// 詳細は[Docs > 決済](https://docs.fincode.jp/payment)から参照できます。.
+	//
+	// PUT /v1/payments/{id}/cancel
+	CancelPayment(ctx context.Context, request CancelPaymentReq, params CancelPaymentParams) (CancelPaymentRes, error)
 	// CapturePayment invokes capturePayment operation.
 	//
 	// `status`が仮売上（`AUTHORIZED`）またはキャンセル（`CANCELED`）である決済に対して売上確定を行います。\
@@ -193,13 +202,13 @@ type Invoker interface {
 	// 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
 	//
 	// PUT /v1/payments/{id}/secure
-	ExecutePaymentAfter3DSecure(ctx context.Context, request *ExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error)
+	ExecutePaymentAfter3DSecure(ctx context.Context, request *PaymentCardExecutingAfter3DSRequest, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error)
 	// GenerateBarcodeOfPayment invokes generateBarcodeOfPayment operation.
 	//
 	// リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
 	//
 	// PUT /v1/payments/{id}/barcode
-	GenerateBarcodeOfPayment(ctx context.Context, request *GenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error)
+	GenerateBarcodeOfPayment(ctx context.Context, request *PaymentKonbiniGeneratingBarcodeRequest, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error)
 	// ReceiveWebhookOfApplePayPayment invokes receiveWebhookOfApplePayPayment operation.
 	//
 	// Apple Payによる決済に関するイベント（`payments.applepay.
@@ -387,6 +396,12 @@ type Invoker interface {
 	//
 	// GET /v1/payments/bulk
 	RetrievePaymentBulkList(ctx context.Context, params RetrievePaymentBulkListParams) (RetrievePaymentBulkListRes, error)
+	// RetrievePaymentList invokes retrievePaymentList operation.
+	//
+	// 決済情報の一覧を取得します。.
+	//
+	// GET /v1/payments
+	RetrievePaymentList(ctx context.Context, params RetrievePaymentListParams) (RetrievePaymentListRes, error)
 	// RetrievePlan invokes retrievePlan operation.
 	//
 	// IDで指定したプラン情報を取得します。.
@@ -628,12 +643,12 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 // `pay_type`が`Card`かつ`status`が`CANCELED`の決済（キャンセル済みのカード決済）に対して実行ができ、初回決済時の情報を引き継いで再オーソリを行います。.
 //
 // PUT /v1/payments/{id}/auth
-func (c *Client) AuthorizePayment(ctx context.Context, request *AuthorizePaymentReq, params AuthorizePaymentParams) (AuthorizePaymentRes, error) {
+func (c *Client) AuthorizePayment(ctx context.Context, request *PaymentCardReauthorizingRequest, params AuthorizePaymentParams) (AuthorizePaymentRes, error) {
 	res, err := c.sendAuthorizePayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendAuthorizePayment(ctx context.Context, request *AuthorizePaymentReq, params AuthorizePaymentParams) (res AuthorizePaymentRes, err error) {
+func (c *Client) sendAuthorizePayment(ctx context.Context, request *PaymentCardReauthorizingRequest, params AuthorizePaymentParams) (res AuthorizePaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("authorizePayment"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -679,7 +694,10 @@ func (c *Client) sendAuthorizePayment(ctx context.Context, request *AuthorizePay
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -710,7 +728,10 @@ func (c *Client) sendAuthorizePayment(ctx context.Context, request *AuthorizePay
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -779,6 +800,171 @@ func (c *Client) sendAuthorizePayment(ctx context.Context, request *AuthorizePay
 	return result, nil
 }
 
+// CancelPayment invokes cancelPayment operation.
+//
+// 決済をキャンセルします。キャンセルに成功すると`status`はキャンセル済み（`CANCELED`）に遷移します。\
+// \
+// ユーザーへの返金の行われ方などは決済手段によって異なります。\
+// 詳細は[Docs > 決済](https://docs.fincode.jp/payment)から参照できます。.
+//
+// PUT /v1/payments/{id}/cancel
+func (c *Client) CancelPayment(ctx context.Context, request CancelPaymentReq, params CancelPaymentParams) (CancelPaymentRes, error) {
+	res, err := c.sendCancelPayment(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCancelPayment(ctx context.Context, request CancelPaymentReq, params CancelPaymentParams) (res CancelPaymentRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("cancelPayment"),
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/v1/payments/{id}/cancel"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "CancelPayment",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/v1/payments/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/cancel"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCancelPaymentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "CancelPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "CancelPayment", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeCancelPaymentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // CapturePayment invokes capturePayment operation.
 //
 // `status`が仮売上（`AUTHORIZED`）またはキャンセル（`CANCELED`）である決済に対して売上確定を行います。\
@@ -836,7 +1022,10 @@ func (c *Client) sendCapturePayment(ctx context.Context, request CapturePaymentR
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -867,7 +1056,10 @@ func (c *Client) sendCapturePayment(ctx context.Context, request CapturePaymentR
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -993,7 +1185,10 @@ func (c *Client) sendChangeAmountOfPayment(ctx context.Context, request ChangeAm
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -1024,7 +1219,10 @@ func (c *Client) sendChangeAmountOfPayment(ctx context.Context, request ChangeAm
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -1151,7 +1349,10 @@ func (c *Client) sendConfirm3DSecureAuthentication(ctx context.Context, params C
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.AccessID))
+			if unwrapped := string(params.AccessID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -1178,7 +1379,10 @@ func (c *Client) sendConfirm3DSecureAuthentication(ctx context.Context, params C
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -1327,7 +1531,10 @@ func (c *Client) sendCreateCardRegistrationSession(ctx context.Context, request 
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -1464,7 +1671,10 @@ func (c *Client) sendCreateCustomer(ctx context.Context, request *CustomerCreati
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -1589,7 +1799,10 @@ func (c *Client) sendCreateCustomerCard(ctx context.Context, request *CustomerCa
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -1620,7 +1833,10 @@ func (c *Client) sendCreateCustomerCard(ctx context.Context, request *CustomerCa
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -1745,7 +1961,10 @@ func (c *Client) sendCreateCustomerPaymentMethod(ctx context.Context, request *C
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -1776,7 +1995,10 @@ func (c *Client) sendCreateCustomerPaymentMethod(ctx context.Context, request *C
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -1925,7 +2147,10 @@ func (c *Client) sendCreatePayment(ctx context.Context, request CreatePaymentReq
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -2069,7 +2294,10 @@ func (c *Client) sendCreatePaymentBulk(ctx context.Context, request *PaymentBulk
 		}
 
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.ProcessPlanDate))
+			if unwrapped := string(params.ProcessPlanDate); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode query")
 		}
@@ -2094,7 +2322,10 @@ func (c *Client) sendCreatePaymentBulk(ctx context.Context, request *PaymentBulk
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -2231,7 +2462,10 @@ func (c *Client) sendCreatePaymentSession(ctx context.Context, request *PaymentS
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -2851,7 +3085,10 @@ func (c *Client) sendCreateWebhookSetting(ctx context.Context, request *WebhookS
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -2976,7 +3213,10 @@ func (c *Client) sendDeleteCustomer(ctx context.Context, params DeleteCustomerPa
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -3003,7 +3243,10 @@ func (c *Client) sendDeleteCustomer(ctx context.Context, params DeleteCustomerPa
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -3128,7 +3371,10 @@ func (c *Client) sendDeleteCustomerCard(ctx context.Context, params DeleteCustom
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -3147,7 +3393,10 @@ func (c *Client) sendDeleteCustomerCard(ctx context.Context, params DeleteCustom
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -3174,7 +3423,10 @@ func (c *Client) sendDeleteCustomerCard(ctx context.Context, params DeleteCustom
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -3254,7 +3506,10 @@ func (c *Client) sendDeleteCustomerPaymentMethod(ctx context.Context, params Del
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -3273,7 +3528,10 @@ func (c *Client) sendDeleteCustomerPaymentMethod(ctx context.Context, params Del
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -3300,7 +3558,10 @@ func (c *Client) sendDeleteCustomerPaymentMethod(ctx context.Context, params Del
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -3468,7 +3729,10 @@ func (c *Client) sendDeletePaymentBulk(ctx context.Context, params DeletePayment
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -3593,7 +3857,10 @@ func (c *Client) sendDeletePlan(ctx context.Context, params DeletePlanParams) (r
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -3728,7 +3995,10 @@ func (c *Client) sendDeleteSubscription(ctx context.Context, params DeleteSubscr
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -3863,7 +4133,10 @@ func (c *Client) sendDeleteWebhookSetting(ctx context.Context, params DeleteWebh
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -3890,7 +4163,10 @@ func (c *Client) sendDeleteWebhookSetting(ctx context.Context, params DeleteWebh
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -4017,7 +4293,10 @@ func (c *Client) sendExecute3DSecureAuthentication(ctx context.Context, request 
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.AccessID))
+			if unwrapped := string(params.AccessID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -4047,7 +4326,10 @@ func (c *Client) sendExecute3DSecureAuthentication(ctx context.Context, request 
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -4184,7 +4466,10 @@ func (c *Client) sendExecutePayment(ctx context.Context, request ExecutePaymentR
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -4214,7 +4499,10 @@ func (c *Client) sendExecutePayment(ctx context.Context, request ExecutePaymentR
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -4302,12 +4590,12 @@ func (c *Client) sendExecutePayment(ctx context.Context, request ExecutePaymentR
 // 3Dセキュア認証APIもしくは認証結果確定APIのレスポンスの3Dセキュア認証結果（`tds2_trans_result`）が`Y`または`A`のとき、このAPIを実行して3Dセキュア認証後の決済を実行します。.
 //
 // PUT /v1/payments/{id}/secure
-func (c *Client) ExecutePaymentAfter3DSecure(ctx context.Context, request *ExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error) {
+func (c *Client) ExecutePaymentAfter3DSecure(ctx context.Context, request *PaymentCardExecutingAfter3DSRequest, params ExecutePaymentAfter3DSecureParams) (ExecutePaymentAfter3DSecureRes, error) {
 	res, err := c.sendExecutePaymentAfter3DSecure(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request *ExecutePaymentAfter3DSecureReq, params ExecutePaymentAfter3DSecureParams) (res ExecutePaymentAfter3DSecureRes, err error) {
+func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request *PaymentCardExecutingAfter3DSRequest, params ExecutePaymentAfter3DSecureParams) (res ExecutePaymentAfter3DSecureRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("executePaymentAfter3DSecure"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -4353,7 +4641,10 @@ func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request *E
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -4384,7 +4675,10 @@ func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request *E
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -4470,12 +4764,12 @@ func (c *Client) sendExecutePaymentAfter3DSecure(ctx context.Context, request *E
 // リクエストしたデバイスの情報に合わせてコンビニ決済のバーコードを再度発行します。.
 //
 // PUT /v1/payments/{id}/barcode
-func (c *Client) GenerateBarcodeOfPayment(ctx context.Context, request *GenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error) {
+func (c *Client) GenerateBarcodeOfPayment(ctx context.Context, request *PaymentKonbiniGeneratingBarcodeRequest, params GenerateBarcodeOfPaymentParams) (GenerateBarcodeOfPaymentRes, error) {
 	res, err := c.sendGenerateBarcodeOfPayment(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendGenerateBarcodeOfPayment(ctx context.Context, request *GenerateBarcodeOfPaymentReq, params GenerateBarcodeOfPaymentParams) (res GenerateBarcodeOfPaymentRes, err error) {
+func (c *Client) sendGenerateBarcodeOfPayment(ctx context.Context, request *PaymentKonbiniGeneratingBarcodeRequest, params GenerateBarcodeOfPaymentParams) (res GenerateBarcodeOfPaymentRes, err error) {
 	otelAttrs := []attribute.KeyValue{
 		otelogen.OperationID("generateBarcodeOfPayment"),
 		semconv.HTTPMethodKey.String("PUT"),
@@ -4521,7 +4815,10 @@ func (c *Client) sendGenerateBarcodeOfPayment(ctx context.Context, request *Gene
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -4552,7 +4849,10 @@ func (c *Client) sendGenerateBarcodeOfPayment(ctx context.Context, request *Gene
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -6382,7 +6682,10 @@ func (c *Client) sendRequestProductionEnvironment(ctx context.Context, request *
 			Explode: false,
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+			if unwrapped := string(params.TenantShopID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode header")
 		}
@@ -6505,7 +6808,10 @@ func (c *Client) sendReserveProvider(ctx context.Context, request *POSTProviderR
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -6535,7 +6841,10 @@ func (c *Client) sendReserveProvider(ctx context.Context, request *POSTProviderR
 			Explode: false,
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+			if unwrapped := string(params.TenantShopID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode header")
 		}
@@ -6662,7 +6971,10 @@ func (c *Client) sendRetrieveAccount(ctx context.Context, params RetrieveAccount
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -6689,7 +7001,10 @@ func (c *Client) sendRetrieveAccount(ctx context.Context, params RetrieveAccount
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -6867,7 +7182,10 @@ func (c *Client) sendRetrieveAccountDetailList(ctx context.Context, params Retri
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -7022,7 +7340,10 @@ func (c *Client) sendRetrieveAccountList(ctx context.Context, params RetrieveAcc
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -7147,7 +7468,10 @@ func (c *Client) sendRetrieveCustomer(ctx context.Context, params RetrieveCustom
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -7174,7 +7498,10 @@ func (c *Client) sendRetrieveCustomer(ctx context.Context, params RetrieveCustom
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -7311,7 +7638,10 @@ func (c *Client) sendRetrieveCustomerCard(ctx context.Context, params RetrieveCu
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -7330,7 +7660,10 @@ func (c *Client) sendRetrieveCustomerCard(ctx context.Context, params RetrieveCu
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -7357,7 +7690,10 @@ func (c *Client) sendRetrieveCustomerCard(ctx context.Context, params RetrieveCu
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -7494,7 +7830,10 @@ func (c *Client) sendRetrieveCustomerCardList(ctx context.Context, params Retrie
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -7522,7 +7861,10 @@ func (c *Client) sendRetrieveCustomerCardList(ctx context.Context, params Retrie
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -7689,7 +8031,10 @@ func (c *Client) sendRetrieveCustomerList(ctx context.Context, params RetrieveCu
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -7814,7 +8159,10 @@ func (c *Client) sendRetrieveCustomerPaymentMethod(ctx context.Context, params R
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -7833,7 +8181,10 @@ func (c *Client) sendRetrieveCustomerPaymentMethod(ctx context.Context, params R
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -7878,7 +8229,10 @@ func (c *Client) sendRetrieveCustomerPaymentMethod(ctx context.Context, params R
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -8015,7 +8369,10 @@ func (c *Client) sendRetrieveCustomerPaymentMethodList(ctx context.Context, para
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -8061,7 +8418,10 @@ func (c *Client) sendRetrieveCustomerPaymentMethodList(ctx context.Context, para
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -8198,7 +8558,10 @@ func (c *Client) sendRetrievePayment(ctx context.Context, params RetrievePayment
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -8243,7 +8606,10 @@ func (c *Client) sendRetrievePayment(ctx context.Context, params RetrievePayment
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -8416,7 +8782,10 @@ func (c *Client) sendRetrievePaymentBulkDetailList(ctx context.Context, params R
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -8571,7 +8940,10 @@ func (c *Client) sendRetrievePaymentBulkList(ctx context.Context, params Retriev
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -8640,6 +9012,143 @@ func (c *Client) sendRetrievePaymentBulkList(ctx context.Context, params Retriev
 	return result, nil
 }
 
+// RetrievePaymentList invokes retrievePaymentList operation.
+//
+// 決済情報の一覧を取得します。.
+//
+// GET /v1/payments
+func (c *Client) RetrievePaymentList(ctx context.Context, params RetrievePaymentListParams) (RetrievePaymentListRes, error) {
+	res, err := c.sendRetrievePaymentList(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendRetrievePaymentList(ctx context.Context, params RetrievePaymentListParams) (res RetrievePaymentListRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		otelogen.OperationID("retrievePaymentList"),
+		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRouteKey.String("/v1/payments"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "RetrievePaymentList",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/v1/payments"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	stage = "EncodeHeaderParams"
+	h := uri.NewHeaderEncoder(r.Header)
+	{
+		cfg := uri.HeaderParameterEncodingConfig{
+			Name:    "Tenant-Shop-Id",
+			Explode: false,
+		}
+		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.TenantShopID.Get(); ok {
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode header")
+		}
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:SecretBearerAuth"
+			switch err := c.securitySecretBearerAuth(ctx, "RetrievePaymentList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBearerAuth\"")
+			}
+		}
+		{
+			stage = "Security:SecretBasicAuth"
+			switch err := c.securitySecretBasicAuth(ctx, "RetrievePaymentList", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 1
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"SecretBasicAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+				{0b00000010},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodeRetrievePaymentListResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // RetrievePlan invokes retrievePlan operation.
 //
 // IDで指定したプラン情報を取得します。.
@@ -8696,7 +9205,10 @@ func (c *Client) sendRetrievePlan(ctx context.Context, params RetrievePlanParams
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -8974,7 +9486,10 @@ func (c *Client) sendRetrievePlatformAccount(ctx context.Context, params Retriev
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -9248,7 +9763,10 @@ func (c *Client) sendRetrievePlatformAccountSummaryList(ctx context.Context, par
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -9405,7 +9923,10 @@ func (c *Client) sendRetrievePlatformShop(ctx context.Context, params RetrievePl
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -9634,7 +10155,10 @@ func (c *Client) sendRetrieveSubscription(ctx context.Context, params RetrieveSu
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -9904,7 +10428,10 @@ func (c *Client) sendRetrieveSubscriptionResultList(ctx context.Context, params 
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -10058,7 +10585,10 @@ func (c *Client) sendRetrieveTenantContract(ctx context.Context, params Retrieve
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -10084,7 +10614,10 @@ func (c *Client) sendRetrieveTenantContract(ctx context.Context, params Retrieve
 			Explode: false,
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+			if unwrapped := string(params.TenantShopID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode header")
 		}
@@ -10211,7 +10744,10 @@ func (c *Client) sendRetrieveTenantExaminationInfo(ctx context.Context, params R
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -10237,7 +10773,10 @@ func (c *Client) sendRetrieveTenantExaminationInfo(ctx context.Context, params R
 			Explode: false,
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+			if unwrapped := string(params.TenantShopID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode header")
 		}
@@ -10360,7 +10899,10 @@ func (c *Client) sendRetrieveTenantExaminationInfoV2(ctx context.Context, params
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -10386,7 +10928,10 @@ func (c *Client) sendRetrieveTenantExaminationInfoV2(ctx context.Context, params
 			Explode: false,
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+			if unwrapped := string(params.TenantShopID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode header")
 		}
@@ -10509,7 +11054,10 @@ func (c *Client) sendRetrieveTenantShop(ctx context.Context, params RetrieveTena
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -10693,7 +11241,10 @@ func (c *Client) sendRetrieveWebhookSetting(ctx context.Context, params Retrieve
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -10720,7 +11271,10 @@ func (c *Client) sendRetrieveWebhookSetting(ctx context.Context, params Retrieve
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -10875,7 +11429,10 @@ func (c *Client) sendRetrieveWebhookSettingList(ctx context.Context, params Retr
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -11000,7 +11557,10 @@ func (c *Client) sendUpdateCustomer(ctx context.Context, request *CustomerUpdati
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -11030,7 +11590,10 @@ func (c *Client) sendUpdateCustomer(ctx context.Context, request *CustomerUpdati
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -11155,7 +11718,10 @@ func (c *Client) sendUpdateCustomerCard(ctx context.Context, request *CustomerCa
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.CustomerID))
+			if unwrapped := string(params.CustomerID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -11174,7 +11740,10 @@ func (c *Client) sendUpdateCustomerCard(ctx context.Context, request *CustomerCa
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -11204,7 +11773,10 @@ func (c *Client) sendUpdateCustomerCard(ctx context.Context, request *CustomerCa
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -11331,7 +11903,10 @@ func (c *Client) sendUpdatePlan(ctx context.Context, request *PlanUpdatingReques
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -11469,7 +12044,10 @@ func (c *Client) sendUpdatePlatformShop(ctx context.Context, request *PlatformSh
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -11609,7 +12187,10 @@ func (c *Client) sendUpdateSubscription(ctx context.Context, request *Subscripti
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -11751,7 +12332,10 @@ func (c *Client) sendUpdateTenantExaminationInfo(ctx context.Context, request *E
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -11780,7 +12364,10 @@ func (c *Client) sendUpdateTenantExaminationInfo(ctx context.Context, request *E
 			Explode: false,
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+			if unwrapped := string(params.TenantShopID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode header")
 		}
@@ -11903,7 +12490,10 @@ func (c *Client) sendUpdateTenantExaminationInfoV2(ctx context.Context, request 
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -11932,7 +12522,10 @@ func (c *Client) sendUpdateTenantExaminationInfoV2(ctx context.Context, request 
 			Explode: false,
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+			if unwrapped := string(params.TenantShopID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode header")
 		}
@@ -12055,7 +12648,10 @@ func (c *Client) sendUpdateTenantShop(ctx context.Context, request *TenantShopUp
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -12193,7 +12789,10 @@ func (c *Client) sendUpdateWebhookSetting(ctx context.Context, request *WebhookS
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -12223,7 +12822,10 @@ func (c *Client) sendUpdateWebhookSetting(ctx context.Context, request *WebhookS
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.TenantShopID.Get(); ok {
-				return e.EncodeValue(conv.StringToString(val))
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
+				}
+				return nil
 			}
 			return nil
 		}); err != nil {
@@ -12348,7 +12950,10 @@ func (c *Client) sendUploadExaminationFile(ctx context.Context, request *Examina
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.StringToString(params.ID))
+			if unwrapped := string(params.ID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -12378,7 +12983,10 @@ func (c *Client) sendUploadExaminationFile(ctx context.Context, request *Examina
 			Explode: false,
 		}
 		if err := h.EncodeParam(cfg, func(e uri.Encoder) error {
-			return e.EncodeValue(conv.StringToString(params.TenantShopID))
+			if unwrapped := string(params.TenantShopID); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}); err != nil {
 			return res, errors.Wrap(err, "encode header")
 		}

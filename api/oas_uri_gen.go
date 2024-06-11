@@ -14,8 +14,176 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
-// EncodeURI encodes RetrieveAccountDetailListQuery as URI form.
-func (s *RetrieveAccountDetailListQuery) EncodeURI(e uri.Encoder) error {
+// EncodeURI encodes CustomerPaymentMethodListRetrievingQueryParams as URI form.
+func (s *CustomerPaymentMethodListRetrievingQueryParams) EncodeURI(e uri.Encoder) error {
+	if err := e.EncodeField("pay_type", func(e uri.Encoder) error {
+		return e.EncodeValue(conv.StringToString(string(s.PayType)))
+	}); err != nil {
+		return errors.Wrap(err, "encode field \"pay_type\"")
+	}
+	return nil
+}
+
+var uriFieldsNameOfCustomerPaymentMethodListRetrievingQueryParams = [1]string{
+	0: "pay_type",
+}
+
+// DecodeURI decodes CustomerPaymentMethodListRetrievingQueryParams from URI form.
+func (s *CustomerPaymentMethodListRetrievingQueryParams) DecodeURI(d uri.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CustomerPaymentMethodListRetrievingQueryParams to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.DecodeFields(func(k string, d uri.Decoder) error {
+		switch k {
+		case "pay_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				s.PayType = PaymentMethodPayType(c)
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		default:
+			return nil
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode CustomerPaymentMethodListRetrievingQueryParams")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(uriFieldsNameOfCustomerPaymentMethodListRetrievingQueryParams) {
+					name = uriFieldsNameOfCustomerPaymentMethodListRetrievingQueryParams[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// EncodeURI encodes CustomerPaymentMethodRetrievingQueryParams as URI form.
+func (s *CustomerPaymentMethodRetrievingQueryParams) EncodeURI(e uri.Encoder) error {
+	if err := e.EncodeField("pay_type", func(e uri.Encoder) error {
+		return e.EncodeValue(conv.StringToString(string(s.PayType)))
+	}); err != nil {
+		return errors.Wrap(err, "encode field \"pay_type\"")
+	}
+	return nil
+}
+
+var uriFieldsNameOfCustomerPaymentMethodRetrievingQueryParams = [1]string{
+	0: "pay_type",
+}
+
+// DecodeURI decodes CustomerPaymentMethodRetrievingQueryParams from URI form.
+func (s *CustomerPaymentMethodRetrievingQueryParams) DecodeURI(d uri.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CustomerPaymentMethodRetrievingQueryParams to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.DecodeFields(func(k string, d uri.Decoder) error {
+		switch k {
+		case "pay_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				s.PayType = PaymentMethodPayType(c)
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		default:
+			return nil
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode CustomerPaymentMethodRetrievingQueryParams")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(uriFieldsNameOfCustomerPaymentMethodRetrievingQueryParams) {
+					name = uriFieldsNameOfCustomerPaymentMethodRetrievingQueryParams[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// EncodeURI encodes PaginationQueryParams as URI form.
+func (s *PaginationQueryParams) EncodeURI(e uri.Encoder) error {
 	if err := e.EncodeField("page", func(e uri.Encoder) error {
 		if val, ok := s.Page.Get(); ok {
 			return e.EncodeValue(conv.IntToString(val))
@@ -43,16 +211,16 @@ func (s *RetrieveAccountDetailListQuery) EncodeURI(e uri.Encoder) error {
 	return nil
 }
 
-var uriFieldsNameOfRetrieveAccountDetailListQuery = [3]string{
+var uriFieldsNameOfPaginationQueryParams = [3]string{
 	0: "page",
 	1: "limit",
 	2: "count_only",
 }
 
-// DecodeURI decodes RetrieveAccountDetailListQuery from URI form.
-func (s *RetrieveAccountDetailListQuery) DecodeURI(d uri.Decoder) error {
+// DecodeURI decodes PaginationQueryParams from URI form.
+func (s *PaginationQueryParams) DecodeURI(d uri.Decoder) error {
 	if s == nil {
-		return errors.New("invalid: unable to decode RetrieveAccountDetailListQuery to nil")
+		return errors.New("invalid: unable to decode PaginationQueryParams to nil")
 	}
 
 	if err := d.DecodeFields(func(k string, d uri.Decoder) error {
@@ -134,7 +302,91 @@ func (s *RetrieveAccountDetailListQuery) DecodeURI(d uri.Decoder) error {
 		}
 		return nil
 	}); err != nil {
-		return errors.Wrap(err, "decode RetrieveAccountDetailListQuery")
+		return errors.Wrap(err, "decode PaginationQueryParams")
+	}
+
+	return nil
+}
+
+// EncodeURI encodes PaymentRetrievingQueryParams as URI form.
+func (s *PaymentRetrievingQueryParams) EncodeURI(e uri.Encoder) error {
+	if err := e.EncodeField("pay_type", func(e uri.Encoder) error {
+		return e.EncodeValue(conv.StringToString(string(s.PayType)))
+	}); err != nil {
+		return errors.Wrap(err, "encode field \"pay_type\"")
+	}
+	return nil
+}
+
+var uriFieldsNameOfPaymentRetrievingQueryParams = [1]string{
+	0: "pay_type",
+}
+
+// DecodeURI decodes PaymentRetrievingQueryParams from URI form.
+func (s *PaymentRetrievingQueryParams) DecodeURI(d uri.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentRetrievingQueryParams to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.DecodeFields(func(k string, d uri.Decoder) error {
+		switch k {
+		case "pay_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				s.PayType = PayType(c)
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		default:
+			return nil
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentRetrievingQueryParams")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(uriFieldsNameOfPaymentRetrievingQueryParams) {
+					name = uriFieldsNameOfPaymentRetrievingQueryParams[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -466,7 +718,10 @@ func (s *RetrieveCustomerListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("sort", func(e uri.Encoder) error {
 		if val, ok := s.Sort.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -689,19 +944,26 @@ func (s *RetrieveCustomerListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "sort":
 			if err := func() error {
-				var sDotSortVal string
+				var sDotSortVal Sort
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotSortValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotSortValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotSortVal = c
+					sDotSortVal = Sort(sDotSortValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -717,174 +979,6 @@ func (s *RetrieveCustomerListQuery) DecodeURI(d uri.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode RetrieveCustomerListQuery")
-	}
-
-	return nil
-}
-
-// EncodeURI encodes RetrieveCustomerPaymentMethodListQuery as URI form.
-func (s *RetrieveCustomerPaymentMethodListQuery) EncodeURI(e uri.Encoder) error {
-	if err := e.EncodeField("pay_type", func(e uri.Encoder) error {
-		return e.EncodeValue(conv.StringToString(string(s.PayType)))
-	}); err != nil {
-		return errors.Wrap(err, "encode field \"pay_type\"")
-	}
-	return nil
-}
-
-var uriFieldsNameOfRetrieveCustomerPaymentMethodListQuery = [1]string{
-	0: "pay_type",
-}
-
-// DecodeURI decodes RetrieveCustomerPaymentMethodListQuery from URI form.
-func (s *RetrieveCustomerPaymentMethodListQuery) DecodeURI(d uri.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode RetrieveCustomerPaymentMethodListQuery to nil")
-	}
-	var requiredBitSet [1]uint8
-
-	if err := d.DecodeFields(func(k string, d uri.Decoder) error {
-		switch k {
-		case "pay_type":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				s.PayType = RetrieveCustomerPaymentMethodListQueryPayType(c)
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"pay_type\"")
-			}
-		default:
-			return nil
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode RetrieveCustomerPaymentMethodListQuery")
-	}
-	// Validate required fields.
-	var failures []validate.FieldError
-	for i, mask := range [1]uint8{
-		0b00000001,
-	} {
-		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
-			// Mask only required fields and check equality to mask using XOR.
-			//
-			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
-			// Bits of fields which would be set are actually bits of missed fields.
-			missed := bits.OnesCount8(result)
-			for bitN := 0; bitN < missed; bitN++ {
-				bitIdx := bits.TrailingZeros8(result)
-				fieldIdx := i*8 + bitIdx
-				var name string
-				if fieldIdx < len(uriFieldsNameOfRetrieveCustomerPaymentMethodListQuery) {
-					name = uriFieldsNameOfRetrieveCustomerPaymentMethodListQuery[fieldIdx]
-				} else {
-					name = strconv.Itoa(fieldIdx)
-				}
-				failures = append(failures, validate.FieldError{
-					Name:  name,
-					Error: validate.ErrFieldRequired,
-				})
-				// Reset bit.
-				result &^= 1 << bitIdx
-			}
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-
-	return nil
-}
-
-// EncodeURI encodes RetrieveCustomerPaymentMethodQuery as URI form.
-func (s *RetrieveCustomerPaymentMethodQuery) EncodeURI(e uri.Encoder) error {
-	if err := e.EncodeField("pay_type", func(e uri.Encoder) error {
-		return e.EncodeValue(conv.StringToString(string(s.PayType)))
-	}); err != nil {
-		return errors.Wrap(err, "encode field \"pay_type\"")
-	}
-	return nil
-}
-
-var uriFieldsNameOfRetrieveCustomerPaymentMethodQuery = [1]string{
-	0: "pay_type",
-}
-
-// DecodeURI decodes RetrieveCustomerPaymentMethodQuery from URI form.
-func (s *RetrieveCustomerPaymentMethodQuery) DecodeURI(d uri.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode RetrieveCustomerPaymentMethodQuery to nil")
-	}
-	var requiredBitSet [1]uint8
-
-	if err := d.DecodeFields(func(k string, d uri.Decoder) error {
-		switch k {
-		case "pay_type":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				s.PayType = RetrieveCustomerPaymentMethodQueryPayType(c)
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"pay_type\"")
-			}
-		default:
-			return nil
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode RetrieveCustomerPaymentMethodQuery")
-	}
-	// Validate required fields.
-	var failures []validate.FieldError
-	for i, mask := range [1]uint8{
-		0b00000001,
-	} {
-		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
-			// Mask only required fields and check equality to mask using XOR.
-			//
-			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
-			// Bits of fields which would be set are actually bits of missed fields.
-			missed := bits.OnesCount8(result)
-			for bitN := 0; bitN < missed; bitN++ {
-				bitIdx := bits.TrailingZeros8(result)
-				fieldIdx := i*8 + bitIdx
-				var name string
-				if fieldIdx < len(uriFieldsNameOfRetrieveCustomerPaymentMethodQuery) {
-					name = uriFieldsNameOfRetrieveCustomerPaymentMethodQuery[fieldIdx]
-				} else {
-					name = strconv.Itoa(fieldIdx)
-				}
-				failures = append(failures, validate.FieldError{
-					Name:  name,
-					Error: validate.ErrFieldRequired,
-				})
-				// Reset bit.
-				result &^= 1 << bitIdx
-			}
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -923,7 +1017,10 @@ func (s *RetrievePaymentBulkDetailListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("order_id", func(e uri.Encoder) error {
 		if val, ok := s.OrderID.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -1043,26 +1140,33 @@ func (s *RetrievePaymentBulkDetailListQuery) DecodeURI(d uri.Decoder) error {
 					return err
 				}
 
-				s.PayType = RetrievePaymentBulkDetailListQueryPayType(c)
+				s.PayType = PaymentBulkPayType(c)
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pay_type\"")
 			}
 		case "order_id":
 			if err := func() error {
-				var sDotOrderIDVal string
+				var sDotOrderIDVal PaymentPropertiesID
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotOrderIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotOrderIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotOrderIDVal = c
+					sDotOrderIDVal = PaymentPropertiesID(sDotOrderIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1074,7 +1178,7 @@ func (s *RetrievePaymentBulkDetailListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "status":
 			if err := func() error {
-				var sDotStatusVal RetrievePaymentBulkDetailListQueryStatus
+				var sDotStatusVal PaymentBulkDetailStatus
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
@@ -1086,7 +1190,7 @@ func (s *RetrievePaymentBulkDetailListQuery) DecodeURI(d uri.Decoder) error {
 						return err
 					}
 
-					sDotStatusVal = RetrievePaymentBulkDetailListQueryStatus(c)
+					sDotStatusVal = PaymentBulkDetailStatus(c)
 					return nil
 				}(); err != nil {
 					return err
@@ -1199,7 +1303,10 @@ func (s *RetrievePaymentBulkListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("file_name", func(e uri.Encoder) error {
 		if val, ok := s.FileName.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -1231,7 +1338,10 @@ func (s *RetrievePaymentBulkListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("sort", func(e uri.Encoder) error {
 		if val, ok := s.Sort.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -1385,7 +1495,7 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "status":
 			if err := func() error {
-				var sDotStatusVal RetrievePaymentBulkListQueryStatus
+				var sDotStatusVal PaymentBulkStatus
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
@@ -1397,7 +1507,7 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 						return err
 					}
 
-					sDotStatusVal = RetrievePaymentBulkListQueryStatus(c)
+					sDotStatusVal = PaymentBulkStatus(c)
 					return nil
 				}(); err != nil {
 					return err
@@ -1409,7 +1519,7 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "pay_type":
 			if err := func() error {
-				var sDotPayTypeVal RetrievePaymentBulkListQueryPayType
+				var sDotPayTypeVal PaymentBulkPayType
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
@@ -1421,7 +1531,7 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 						return err
 					}
 
-					sDotPayTypeVal = RetrievePaymentBulkListQueryPayType(c)
+					sDotPayTypeVal = PaymentBulkPayType(c)
 					return nil
 				}(); err != nil {
 					return err
@@ -1433,19 +1543,26 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "file_name":
 			if err := func() error {
-				var sDotFileNameVal string
+				var sDotFileNameVal FileName
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotFileNameValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotFileNameValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotFileNameVal = c
+					sDotFileNameVal = FileName(sDotFileNameValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1457,7 +1574,7 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "delete_flag":
 			if err := func() error {
-				var sDotDeleteFlagVal RetrievePaymentBulkListQueryDeleteFlag
+				var sDotDeleteFlagVal DeleteFlag
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
@@ -1469,7 +1586,7 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 						return err
 					}
 
-					sDotDeleteFlagVal = RetrievePaymentBulkListQueryDeleteFlag(c)
+					sDotDeleteFlagVal = DeleteFlag(c)
 					return nil
 				}(); err != nil {
 					return err
@@ -1529,19 +1646,26 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "sort":
 			if err := func() error {
-				var sDotSortVal string
+				var sDotSortVal Sort
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotSortValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotSortValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotSortVal = c
+					sDotSortVal = Sort(sDotSortValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -1557,90 +1681,6 @@ func (s *RetrievePaymentBulkListQuery) DecodeURI(d uri.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode RetrievePaymentBulkListQuery")
-	}
-
-	return nil
-}
-
-// EncodeURI encodes RetrievePaymentQuery as URI form.
-func (s *RetrievePaymentQuery) EncodeURI(e uri.Encoder) error {
-	if err := e.EncodeField("pay_type", func(e uri.Encoder) error {
-		return e.EncodeValue(conv.StringToString(string(s.PayType)))
-	}); err != nil {
-		return errors.Wrap(err, "encode field \"pay_type\"")
-	}
-	return nil
-}
-
-var uriFieldsNameOfRetrievePaymentQuery = [1]string{
-	0: "pay_type",
-}
-
-// DecodeURI decodes RetrievePaymentQuery from URI form.
-func (s *RetrievePaymentQuery) DecodeURI(d uri.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode RetrievePaymentQuery to nil")
-	}
-	var requiredBitSet [1]uint8
-
-	if err := d.DecodeFields(func(k string, d uri.Decoder) error {
-		switch k {
-		case "pay_type":
-			requiredBitSet[0] |= 1 << 0
-			if err := func() error {
-				val, err := d.DecodeValue()
-				if err != nil {
-					return err
-				}
-
-				c, err := conv.ToString(val)
-				if err != nil {
-					return err
-				}
-
-				s.PayType = RetrievePaymentQueryPayType(c)
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"pay_type\"")
-			}
-		default:
-			return nil
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode RetrievePaymentQuery")
-	}
-	// Validate required fields.
-	var failures []validate.FieldError
-	for i, mask := range [1]uint8{
-		0b00000001,
-	} {
-		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
-			// Mask only required fields and check equality to mask using XOR.
-			//
-			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
-			// Bits of fields which would be set are actually bits of missed fields.
-			missed := bits.OnesCount8(result)
-			for bitN := 0; bitN < missed; bitN++ {
-				bitIdx := bits.TrailingZeros8(result)
-				fieldIdx := i*8 + bitIdx
-				var name string
-				if fieldIdx < len(uriFieldsNameOfRetrievePaymentQuery) {
-					name = uriFieldsNameOfRetrievePaymentQuery[fieldIdx]
-				} else {
-					name = strconv.Itoa(fieldIdx)
-				}
-				failures = append(failures, validate.FieldError{
-					Name:  name,
-					Error: validate.ErrFieldRequired,
-				})
-				// Reset bit.
-				result &^= 1 << bitIdx
-			}
-		}
-	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -1730,7 +1770,10 @@ func (s *RetrievePlanListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("sort", func(e uri.Encoder) error {
 		if val, ok := s.Sort.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -2003,19 +2046,26 @@ func (s *RetrievePlanListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "sort":
 			if err := func() error {
-				var sDotSortVal string
+				var sDotSortVal Sort
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotSortValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotSortValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotSortVal = c
+					sDotSortVal = Sort(sDotSortValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2554,7 +2604,10 @@ func (s *RetrievePlatformShopListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("sort", func(e uri.Encoder) error {
 		if val, ok := s.Sort.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -2778,19 +2831,26 @@ func (s *RetrievePlatformShopListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "sort":
 			if err := func() error {
-				var sDotSortVal string
+				var sDotSortVal Sort
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotSortValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotSortValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotSortVal = c
+					sDotSortVal = Sort(sDotSortValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -2844,7 +2904,10 @@ func (s *RetrieveSubscriptionListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("id", func(e uri.Encoder) error {
 		if val, ok := s.ID.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -2852,7 +2915,10 @@ func (s *RetrieveSubscriptionListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("customer_id", func(e uri.Encoder) error {
 		if val, ok := s.CustomerID.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -2860,7 +2926,10 @@ func (s *RetrieveSubscriptionListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("plan_id", func(e uri.Encoder) error {
 		if val, ok := s.PlanID.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -2876,7 +2945,10 @@ func (s *RetrieveSubscriptionListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("total_amount_min", func(e uri.Encoder) error {
 		if val, ok := s.TotalAmountMin.Get(); ok {
-			return e.EncodeValue(conv.Int64ToString(val))
+			if unwrapped := int64(val); true {
+				return e.EncodeValue(conv.Int64ToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -2884,7 +2956,10 @@ func (s *RetrieveSubscriptionListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("total_amount_max", func(e uri.Encoder) error {
 		if val, ok := s.TotalAmountMax.Get(); ok {
-			return e.EncodeValue(conv.Int64ToString(val))
+			if unwrapped := int64(val); true {
+				return e.EncodeValue(conv.Int64ToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -2964,7 +3039,10 @@ func (s *RetrieveSubscriptionListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("sort", func(e uri.Encoder) error {
 		if val, ok := s.Sort.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -3090,26 +3168,33 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 					return err
 				}
 
-				s.PayType = RetrieveSubscriptionListQueryPayType(c)
+				s.PayType = SubscriptionPayType(c)
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pay_type\"")
 			}
 		case "id":
 			if err := func() error {
-				var sDotIDVal string
+				var sDotIDVal SubscriptionPropertiesID
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotIDVal = c
+					sDotIDVal = SubscriptionPropertiesID(sDotIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3121,19 +3206,26 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "customer_id":
 			if err := func() error {
-				var sDotCustomerIDVal string
+				var sDotCustomerIDVal ID
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotCustomerIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotCustomerIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotCustomerIDVal = c
+					sDotCustomerIDVal = ID(sDotCustomerIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3145,19 +3237,26 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "plan_id":
 			if err := func() error {
-				var sDotPlanIDVal string
+				var sDotPlanIDVal PlanPropertiesID
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotPlanIDValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotPlanIDValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotPlanIDVal = c
+					sDotPlanIDVal = PlanPropertiesID(sDotPlanIDValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3169,7 +3268,7 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "status":
 			if err := func() error {
-				var sDotStatusVal RetrieveSubscriptionListQueryStatus
+				var sDotStatusVal SubscriptionStatus
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
@@ -3181,7 +3280,7 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 						return err
 					}
 
-					sDotStatusVal = RetrieveSubscriptionListQueryStatus(c)
+					sDotStatusVal = SubscriptionStatus(c)
 					return nil
 				}(); err != nil {
 					return err
@@ -3193,19 +3292,26 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "total_amount_min":
 			if err := func() error {
-				var sDotTotalAmountMinVal int64
+				var sDotTotalAmountMinVal TotalAmount
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotTotalAmountMinValVal int64
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToInt64(val)
+						if err != nil {
+							return err
+						}
+
+						sDotTotalAmountMinValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToInt64(val)
-					if err != nil {
-						return err
-					}
-
-					sDotTotalAmountMinVal = c
+					sDotTotalAmountMinVal = TotalAmount(sDotTotalAmountMinValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3217,19 +3323,26 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "total_amount_max":
 			if err := func() error {
-				var sDotTotalAmountMaxVal int64
+				var sDotTotalAmountMaxVal TotalAmount
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotTotalAmountMaxValVal int64
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToInt64(val)
+						if err != nil {
+							return err
+						}
+
+						sDotTotalAmountMaxValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToInt64(val)
-					if err != nil {
-						return err
-					}
-
-					sDotTotalAmountMaxVal = c
+					sDotTotalAmountMaxVal = TotalAmount(sDotTotalAmountMaxValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3241,7 +3354,7 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "interval_pattern":
 			if err := func() error {
-				var sDotIntervalPatternVal RetrieveSubscriptionListQueryIntervalPattern
+				var sDotIntervalPatternVal PropertiesIntervalPattern
 				if err := func() error {
 					val, err := d.DecodeValue()
 					if err != nil {
@@ -3253,7 +3366,7 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 						return err
 					}
 
-					sDotIntervalPatternVal = RetrieveSubscriptionListQueryIntervalPattern(c)
+					sDotIntervalPatternVal = PropertiesIntervalPattern(c)
 					return nil
 				}(); err != nil {
 					return err
@@ -3457,19 +3570,26 @@ func (s *RetrieveSubscriptionListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "sort":
 			if err := func() error {
-				var sDotSortVal string
+				var sDotSortVal Sort
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotSortValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotSortValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotSortVal = c
+					sDotSortVal = Sort(sDotSortValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3557,7 +3677,10 @@ func (s *RetrieveSubscriptionResultListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("sort", func(e uri.Encoder) error {
 		if val, ok := s.Sort.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -3668,26 +3791,33 @@ func (s *RetrieveSubscriptionResultListQuery) DecodeURI(d uri.Decoder) error {
 					return err
 				}
 
-				s.PayType = RetrieveSubscriptionResultListQueryPayType(c)
+				s.PayType = SubscriptionPayType(c)
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"pay_type\"")
 			}
 		case "sort":
 			if err := func() error {
-				var sDotSortVal string
+				var sDotSortVal Sort
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotSortValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotSortValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotSortVal = c
+					sDotSortVal = Sort(sDotSortValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -3808,7 +3938,10 @@ func (s *RetrieveTenantShopListQuery) EncodeURI(e uri.Encoder) error {
 	}
 	if err := e.EncodeField("sort", func(e uri.Encoder) error {
 		if val, ok := s.Sort.Get(); ok {
-			return e.EncodeValue(conv.StringToString(val))
+			if unwrapped := string(val); true {
+				return e.EncodeValue(conv.StringToString(unwrapped))
+			}
+			return nil
 		}
 		return nil
 	}); err != nil {
@@ -4032,19 +4165,26 @@ func (s *RetrieveTenantShopListQuery) DecodeURI(d uri.Decoder) error {
 			}
 		case "sort":
 			if err := func() error {
-				var sDotSortVal string
+				var sDotSortVal Sort
 				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
+					var sDotSortValVal string
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
+							return err
+						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						sDotSortValVal = c
+						return nil
+					}(); err != nil {
 						return err
 					}
-
-					c, err := conv.ToString(val)
-					if err != nil {
-						return err
-					}
-
-					sDotSortVal = c
+					sDotSortVal = Sort(sDotSortValVal)
 					return nil
 				}(); err != nil {
 					return err
@@ -4060,132 +4200,6 @@ func (s *RetrieveTenantShopListQuery) DecodeURI(d uri.Decoder) error {
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode RetrieveTenantShopListQuery")
-	}
-
-	return nil
-}
-
-// EncodeURI encodes RetrieveWebhookSettingListQuery as URI form.
-func (s *RetrieveWebhookSettingListQuery) EncodeURI(e uri.Encoder) error {
-	if err := e.EncodeField("page", func(e uri.Encoder) error {
-		if val, ok := s.Page.Get(); ok {
-			return e.EncodeValue(conv.IntToString(val))
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "encode field \"page\"")
-	}
-	if err := e.EncodeField("limit", func(e uri.Encoder) error {
-		if val, ok := s.Limit.Get(); ok {
-			return e.EncodeValue(conv.IntToString(val))
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "encode field \"limit\"")
-	}
-	if err := e.EncodeField("count_only", func(e uri.Encoder) error {
-		if val, ok := s.CountOnly.Get(); ok {
-			return e.EncodeValue(conv.BoolToString(val))
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "encode field \"count_only\"")
-	}
-	return nil
-}
-
-var uriFieldsNameOfRetrieveWebhookSettingListQuery = [3]string{
-	0: "page",
-	1: "limit",
-	2: "count_only",
-}
-
-// DecodeURI decodes RetrieveWebhookSettingListQuery from URI form.
-func (s *RetrieveWebhookSettingListQuery) DecodeURI(d uri.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode RetrieveWebhookSettingListQuery to nil")
-	}
-
-	if err := d.DecodeFields(func(k string, d uri.Decoder) error {
-		switch k {
-		case "page":
-			if err := func() error {
-				var sDotPageVal int
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToInt(val)
-					if err != nil {
-						return err
-					}
-
-					sDotPageVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				s.Page.SetTo(sDotPageVal)
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"page\"")
-			}
-		case "limit":
-			if err := func() error {
-				var sDotLimitVal int
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToInt(val)
-					if err != nil {
-						return err
-					}
-
-					sDotLimitVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				s.Limit.SetTo(sDotLimitVal)
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"limit\"")
-			}
-		case "count_only":
-			if err := func() error {
-				var sDotCountOnlyVal bool
-				if err := func() error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-
-					c, err := conv.ToBool(val)
-					if err != nil {
-						return err
-					}
-
-					sDotCountOnlyVal = c
-					return nil
-				}(); err != nil {
-					return err
-				}
-				s.CountOnly.SetTo(sDotCountOnlyVal)
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"count_only\"")
-			}
-		default:
-			return nil
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode RetrieveWebhookSettingListQuery")
 	}
 
 	return nil

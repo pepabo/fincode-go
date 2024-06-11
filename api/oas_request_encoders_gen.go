@@ -11,12 +11,27 @@ import (
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
 
+	"github.com/ogen-go/ogen/conv"
 	ht "github.com/ogen-go/ogen/http"
 	"github.com/ogen-go/ogen/uri"
 )
 
 func encodeAuthorizePaymentRequest(
-	req *AuthorizePaymentReq,
+	req *PaymentCardReauthorizingRequest,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeCancelPaymentRequest(
+	req CancelPaymentReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -134,9 +149,7 @@ func encodeCreatePaymentBulkRequest(
 	const contentType = "multipart/form-data"
 	request := req
 
-	q := uri.NewFormEncoder(map[string]string{
-		"file": "application/json; charset=utf-8",
-	})
+	q := uri.NewFormEncoder(map[string]string{})
 	{
 		// Encode "file" form field.
 		cfg := uri.QueryParameterEncodingConfig{
@@ -145,13 +158,13 @@ func encodeCreatePaymentBulkRequest(
 			Explode: true,
 		}
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			var enc jx.Encoder
-			func(e *jx.Encoder) {
-				if request.File.Set {
-					request.File.Encode(e)
+			if val, ok := request.File.Get(); ok {
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
 				}
-			}(&enc)
-			return e.EncodeValue(string(enc.Bytes()))
+				return nil
+			}
+			return nil
 		}); err != nil {
 			return errors.Wrap(err, "encode query")
 		}
@@ -279,7 +292,7 @@ func encodeExecutePaymentRequest(
 }
 
 func encodeExecutePaymentAfter3DSecureRequest(
-	req *ExecutePaymentAfter3DSecureReq,
+	req *PaymentCardExecutingAfter3DSRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -293,7 +306,7 @@ func encodeExecutePaymentAfter3DSecureRequest(
 }
 
 func encodeGenerateBarcodeOfPaymentRequest(
-	req *GenerateBarcodeOfPaymentReq,
+	req *PaymentKonbiniGeneratingBarcodeRequest,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -509,10 +522,7 @@ func encodeRequestProductionEnvironmentRequest(
 	const contentType = "multipart/form-data"
 	request := req
 
-	q := uri.NewFormEncoder(map[string]string{
-		"shop_id":              "application/json; charset=utf-8",
-		"enable_immediate_use": "application/json; charset=utf-8",
-	})
+	q := uri.NewFormEncoder(map[string]string{})
 	{
 		// Encode "shop_id" form field.
 		cfg := uri.QueryParameterEncodingConfig{
@@ -521,13 +531,13 @@ func encodeRequestProductionEnvironmentRequest(
 			Explode: true,
 		}
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			var enc jx.Encoder
-			func(e *jx.Encoder) {
-				if request.ShopID.Set {
-					request.ShopID.Encode(e)
+			if val, ok := request.ShopID.Get(); ok {
+				if unwrapped := string(val); true {
+					return e.EncodeValue(conv.StringToString(unwrapped))
 				}
-			}(&enc)
-			return e.EncodeValue(string(enc.Bytes()))
+				return nil
+			}
+			return nil
 		}); err != nil {
 			return errors.Wrap(err, "encode query")
 		}
@@ -540,13 +550,10 @@ func encodeRequestProductionEnvironmentRequest(
 			Explode: true,
 		}
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			var enc jx.Encoder
-			func(e *jx.Encoder) {
-				if request.EnableImmediateUse.Set {
-					request.EnableImmediateUse.Encode(e)
-				}
-			}(&enc)
-			return e.EncodeValue(string(enc.Bytes()))
+			if val, ok := request.EnableImmediateUse.Get(); ok {
+				return e.EncodeValue(conv.Float64ToString(float64(val)))
+			}
+			return nil
 		}); err != nil {
 			return errors.Wrap(err, "encode query")
 		}
@@ -568,9 +575,7 @@ func encodeReserveProviderRequest(
 	const contentType = "multipart/form-data"
 	request := req
 
-	q := uri.NewFormEncoder(map[string]string{
-		"provider": "application/json; charset=utf-8",
-	})
+	q := uri.NewFormEncoder(map[string]string{})
 	{
 		// Encode "provider" form field.
 		cfg := uri.QueryParameterEncodingConfig{
@@ -579,15 +584,19 @@ func encodeReserveProviderRequest(
 			Explode: true,
 		}
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			var enc jx.Encoder
-			func(e *jx.Encoder) {
-				e.ArrStart()
-				for _, elem := range request.Provider {
-					elem.Encode(e)
-				}
-				e.ArrEnd()
-			}(&enc)
-			return e.EncodeValue(string(enc.Bytes()))
+			if unwrapped := []PaymentProvider(request.Provider); true {
+				return e.EncodeArray(func(e uri.Encoder) error {
+					for i, item := range unwrapped {
+						if err := func() error {
+							return e.EncodeValue(conv.StringToString(string(item)))
+						}(); err != nil {
+							return errors.Wrapf(err, "[%d]", i)
+						}
+					}
+					return nil
+				})
+			}
+			return nil
 		}); err != nil {
 			return errors.Wrap(err, "encode query")
 		}
@@ -736,7 +745,6 @@ func encodeUploadExaminationFileRequest(
 	request := req
 
 	q := uri.NewFormEncoder(map[string]string{
-		"type": "application/json; charset=utf-8",
 		"data": "application/json; charset=utf-8",
 	})
 	{
@@ -747,13 +755,10 @@ func encodeUploadExaminationFileRequest(
 			Explode: true,
 		}
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			var enc jx.Encoder
-			func(e *jx.Encoder) {
-				if request.Type.Set {
-					request.Type.Encode(e)
-				}
-			}(&enc)
-			return e.EncodeValue(string(enc.Bytes()))
+			if val, ok := request.Type.Get(); ok {
+				return e.EncodeValue(conv.StringToString(string(val)))
+			}
+			return nil
 		}); err != nil {
 			return errors.Wrap(err, "encode query")
 		}
@@ -768,9 +773,7 @@ func encodeUploadExaminationFileRequest(
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
 			var enc jx.Encoder
 			func(e *jx.Encoder) {
-				if len(request.Data) != 0 {
-					e.Raw(request.Data)
-				}
+				request.Data.Encode(e)
 			}(&enc)
 			return e.EncodeValue(string(enc.Bytes()))
 		}); err != nil {

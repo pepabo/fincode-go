@@ -3,7 +3,6 @@
 package api
 
 import (
-	"fmt"
 	"io"
 	"mime"
 	"net/http"
@@ -13,13 +12,14 @@ import (
 	"github.com/go-faster/jx"
 	"go.uber.org/multierr"
 
+	"github.com/ogen-go/ogen/conv"
 	"github.com/ogen-go/ogen/ogenerrors"
 	"github.com/ogen-go/ogen/uri"
 	"github.com/ogen-go/ogen/validate"
 )
 
 func (s *Server) decodeAuthorizePaymentRequest(r *http.Request) (
-	req *AuthorizePaymentReq,
+	req *PaymentCardReauthorizingRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -58,7 +58,7 @@ func (s *Server) decodeAuthorizePaymentRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request AuthorizePaymentReq
+		var request PaymentCardReauthorizingRequest
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err
@@ -84,6 +84,77 @@ func (s *Server) decodeAuthorizePaymentRequest(r *http.Request) (
 			return req, close, errors.Wrap(err, "validate")
 		}
 		return &request, close, nil
+	default:
+		return req, close, validate.InvalidContentType(ct)
+	}
+}
+
+func (s *Server) decodeCancelPaymentRequest(r *http.Request) (
+	req CancelPaymentReq,
+	close func() error,
+	rerr error,
+) {
+	var closers []func() error
+	close = func() error {
+		var merr error
+		// Close in reverse order, to match defer behavior.
+		for i := len(closers) - 1; i >= 0; i-- {
+			c := closers[i]
+			merr = multierr.Append(merr, c())
+		}
+		return merr
+	}
+	defer func() {
+		if rerr != nil {
+			rerr = multierr.Append(rerr, close())
+		}
+	}()
+	ct, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
+	if err != nil {
+		return req, close, errors.Wrap(err, "parse media type")
+	}
+	switch {
+	case ct == "application/json":
+		if r.ContentLength == 0 {
+			return req, close, validate.ErrBodyRequired
+		}
+		buf, err := io.ReadAll(r.Body)
+		if err != nil {
+			return req, close, err
+		}
+
+		if len(buf) == 0 {
+			return req, close, validate.ErrBodyRequired
+		}
+
+		d := jx.DecodeBytes(buf)
+
+		var request CancelPaymentReq
+		if err := func() error {
+			if err := request.Decode(d); err != nil {
+				return err
+			}
+			if err := d.Skip(); err != io.EOF {
+				return errors.New("unexpected trailing data")
+			}
+			return nil
+		}(); err != nil {
+			err = &ogenerrors.DecodeBodyError{
+				ContentType: ct,
+				Body:        buf,
+				Err:         err,
+			}
+			return req, close, err
+		}
+		if err := func() error {
+			if err := request.Validate(); err != nil {
+				return err
+			}
+			return nil
+		}(); err != nil {
+			return req, close, errors.Wrap(err, "validate")
+		}
+		return request, close, nil
 	default:
 		return req, close, validate.InvalidContentType(ct)
 	}
@@ -637,19 +708,31 @@ func (s *Server) decodeCreatePaymentBulkRequest(r *http.Request) (
 			}
 			if err := q.HasParam(cfg); err == nil {
 				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-					if err := func(d *jx.Decoder) error {
-						request.File.Reset()
-						if err := request.File.Decode(d); err != nil {
+					var requestDotFileVal File
+					if err := func() error {
+						var requestDotFileValVal string
+						if err := func() error {
+							val, err := d.DecodeValue()
+							if err != nil {
+								return err
+							}
+
+							c, err := conv.ToString(val)
+							if err != nil {
+								return err
+							}
+
+							requestDotFileValVal = c
+							return nil
+						}(); err != nil {
 							return err
 						}
+						requestDotFileVal = File(requestDotFileValVal)
 						return nil
-					}(jx.DecodeStr(val)); err != nil {
+					}(); err != nil {
 						return err
 					}
+					request.File.SetTo(requestDotFileVal)
 					return nil
 				}); err != nil {
 					return req, close, errors.Wrap(err, "decode \"file\"")
@@ -1231,7 +1314,7 @@ func (s *Server) decodeExecutePaymentRequest(r *http.Request) (
 }
 
 func (s *Server) decodeExecutePaymentAfter3DSecureRequest(r *http.Request) (
-	req *ExecutePaymentAfter3DSecureReq,
+	req *PaymentCardExecutingAfter3DSRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -1270,7 +1353,7 @@ func (s *Server) decodeExecutePaymentAfter3DSecureRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request ExecutePaymentAfter3DSecureReq
+		var request PaymentCardExecutingAfter3DSRequest
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err
@@ -1302,7 +1385,7 @@ func (s *Server) decodeExecutePaymentAfter3DSecureRequest(r *http.Request) (
 }
 
 func (s *Server) decodeGenerateBarcodeOfPaymentRequest(r *http.Request) (
-	req *GenerateBarcodeOfPaymentReq,
+	req *PaymentKonbiniGeneratingBarcodeRequest,
 	close func() error,
 	rerr error,
 ) {
@@ -1341,7 +1424,7 @@ func (s *Server) decodeGenerateBarcodeOfPaymentRequest(r *http.Request) (
 
 		d := jx.DecodeBytes(buf)
 
-		var request GenerateBarcodeOfPaymentReq
+		var request PaymentKonbiniGeneratingBarcodeRequest
 		if err := func() error {
 			if err := request.Decode(d); err != nil {
 				return err
@@ -2417,19 +2500,31 @@ func (s *Server) decodeRequestProductionEnvironmentRequest(r *http.Request) (
 			}
 			if err := q.HasParam(cfg); err == nil {
 				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-					if err := func(d *jx.Decoder) error {
-						request.ShopID.Reset()
-						if err := request.ShopID.Decode(d); err != nil {
+					var requestDotShopIDVal ShopPropertiesID
+					if err := func() error {
+						var requestDotShopIDValVal string
+						if err := func() error {
+							val, err := d.DecodeValue()
+							if err != nil {
+								return err
+							}
+
+							c, err := conv.ToString(val)
+							if err != nil {
+								return err
+							}
+
+							requestDotShopIDValVal = c
+							return nil
+						}(); err != nil {
 							return err
 						}
+						requestDotShopIDVal = ShopPropertiesID(requestDotShopIDValVal)
 						return nil
-					}(jx.DecodeStr(val)); err != nil {
+					}(); err != nil {
 						return err
 					}
+					request.ShopID.SetTo(requestDotShopIDVal)
 					return nil
 				}); err != nil {
 					return req, close, errors.Wrap(err, "decode \"shop_id\"")
@@ -2437,16 +2532,8 @@ func (s *Server) decodeRequestProductionEnvironmentRequest(r *http.Request) (
 				if err := func() error {
 					if value, ok := request.ShopID.Get(); ok {
 						if err := func() error {
-							if err := (validate.String{
-								MinLength:    13,
-								MinLengthSet: true,
-								MaxLength:    13,
-								MaxLengthSet: true,
-								Email:        false,
-								Hostname:     false,
-								Regex:        nil,
-							}).Validate(string(value)); err != nil {
-								return errors.Wrap(err, "string")
+							if err := value.Validate(); err != nil {
+								return err
 							}
 							return nil
 						}(); err != nil {
@@ -2467,19 +2554,24 @@ func (s *Server) decodeRequestProductionEnvironmentRequest(r *http.Request) (
 			}
 			if err := q.HasParam(cfg); err == nil {
 				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-					if err := func(d *jx.Decoder) error {
-						request.EnableImmediateUse.Reset()
-						if err := request.EnableImmediateUse.Decode(d); err != nil {
+					var requestDotEnableImmediateUseVal EnableImmediateUse
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
 							return err
 						}
+
+						c, err := conv.ToFloat64(val)
+						if err != nil {
+							return err
+						}
+
+						requestDotEnableImmediateUseVal = EnableImmediateUse(c)
 						return nil
-					}(jx.DecodeStr(val)); err != nil {
+					}(); err != nil {
 						return err
 					}
+					request.EnableImmediateUse.SetTo(requestDotEnableImmediateUseVal)
 					return nil
 				}); err != nil {
 					return req, close, errors.Wrap(err, "decode \"enable_immediate_use\"")
@@ -2558,50 +2650,40 @@ func (s *Server) decodeReserveProviderRequest(r *http.Request) (
 			}
 			if err := q.HasParam(cfg); err == nil {
 				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-					if err := func(d *jx.Decoder) error {
-						request.Provider = make([]POSTProviderReserveRequestMultipartProviderItem, 0)
-						if err := d.Arr(func(d *jx.Decoder) error {
-							var elem POSTProviderReserveRequestMultipartProviderItem
-							if err := elem.Decode(d); err != nil {
+					var requestDotProviderVal []PaymentProvider
+					if err := func() error {
+						return d.DecodeArray(func(d uri.Decoder) error {
+							var requestDotProviderValVal PaymentProvider
+							if err := func() error {
+								val, err := d.DecodeValue()
+								if err != nil {
+									return err
+								}
+
+								c, err := conv.ToString(val)
+								if err != nil {
+									return err
+								}
+
+								requestDotProviderValVal = PaymentProvider(c)
+								return nil
+							}(); err != nil {
 								return err
 							}
-							request.Provider = append(request.Provider, elem)
+							requestDotProviderVal = append(requestDotProviderVal, requestDotProviderValVal)
 							return nil
-						}); err != nil {
-							return err
-						}
-						return nil
-					}(jx.DecodeStr(val)); err != nil {
+						})
+					}(); err != nil {
 						return err
 					}
+					request.Provider = Provider(requestDotProviderVal)
 					return nil
 				}); err != nil {
 					return req, close, errors.Wrap(err, "decode \"provider\"")
 				}
 				if err := func() error {
-					if request.Provider == nil {
-						return errors.New("nil is invalid value")
-					}
-					var failures []validate.FieldError
-					for i, elem := range request.Provider {
-						if err := func() error {
-							if err := elem.Validate(); err != nil {
-								return err
-							}
-							return nil
-						}(); err != nil {
-							failures = append(failures, validate.FieldError{
-								Name:  fmt.Sprintf("[%d]", i),
-								Error: err,
-							})
-						}
-					}
-					if len(failures) > 0 {
-						return &validate.Error{Fields: failures}
+					if err := request.Provider.Validate(); err != nil {
+						return err
 					}
 					return nil
 				}(); err != nil {
@@ -3307,19 +3389,24 @@ func (s *Server) decodeUploadExaminationFileRequest(r *http.Request) (
 			}
 			if err := q.HasParam(cfg); err == nil {
 				if err := q.DecodeParam(cfg, func(d uri.Decoder) error {
-					val, err := d.DecodeValue()
-					if err != nil {
-						return err
-					}
-					if err := func(d *jx.Decoder) error {
-						request.Type.Reset()
-						if err := request.Type.Decode(d); err != nil {
+					var requestDotTypeVal ExaminationFileType
+					if err := func() error {
+						val, err := d.DecodeValue()
+						if err != nil {
 							return err
 						}
+
+						c, err := conv.ToString(val)
+						if err != nil {
+							return err
+						}
+
+						requestDotTypeVal = ExaminationFileType(c)
 						return nil
-					}(jx.DecodeStr(val)); err != nil {
+					}(); err != nil {
 						return err
 					}
+					request.Type.SetTo(requestDotTypeVal)
 					return nil
 				}); err != nil {
 					return req, close, errors.Wrap(err, "decode \"type\"")
@@ -3354,9 +3441,7 @@ func (s *Server) decodeUploadExaminationFileRequest(r *http.Request) (
 						return err
 					}
 					if err := func(d *jx.Decoder) error {
-						v, err := d.RawAppend(nil)
-						request.Data = jx.Raw(v)
-						if err != nil {
+						if err := request.Data.Decode(d); err != nil {
 							return err
 						}
 						return nil
