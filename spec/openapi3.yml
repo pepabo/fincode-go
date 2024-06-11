@@ -365,6 +365,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /payments/{id}/cancel:
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/paymentCancelCard'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/paymentCancelCardResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /customers:
     post:
       requestBody:
@@ -2033,6 +2062,159 @@ components:
         acs_url:
           type: string
           nullable: true
+    paymentCancelCard:
+      type: object
+      required:
+        - pay_type
+        - access_id
+      properties:
+        pay_type:
+          type: string
+          enum:
+            - Card
+        access_id:
+          type: string
+    paymentCancelCardResponse:
+      type: object
+      properties:
+        shop_id:
+          type: string
+        id:
+          type: string
+        pay_type:
+          type: string
+          enum:
+            - Card
+        status:
+          type: string
+          enum:
+            - UNPROCESSED
+            - CHECKED
+            - AUTHORIZED
+            - CAPTURED
+            - CANCELLED
+            - AUTHENTICATED
+        access_id:
+          type: string
+        process_date:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        job_code:
+          type: string
+          enum:
+            - CHECK
+            - AUTH
+            - CAPTURE
+            - SALES
+            - CANCEL
+        item_code:
+          type: string
+        amount:
+          type: integer
+        tax:
+          type: integer
+        total_amount:
+          type: integer
+        customer_group_id:
+          type: string
+          nullable: true
+        customer_id:
+          type: string
+          nullable: true
+        card_no:
+          type: string
+          nullable: true
+        card_id:
+          type: string
+          nullable: true
+        expire:
+          type: string
+          pattern: '^(\d{4})$'
+          nullable: true
+        holder_name:
+          type: string
+          nullable: true
+        card_no_hash:
+          type: string
+          nullable: true
+        method:
+          type: string
+          nullable: true
+          enum:
+            - '1'
+            - '2'
+            - '5'
+        pay_times:
+          type: string
+          nullable: true
+        forward:
+          type: string
+          nullable: true
+        issuer:
+          type: string
+          nullable: true
+        transaction_id:
+          type: string
+          nullable: true
+        approve:
+          type: string
+          nullable: true
+        auth_max_date:
+          type: string
+          nullable: true
+        client_field_1:
+          type: string
+          nullable: true
+        client_field_2:
+          type: string
+          nullable: true
+        client_field_3:
+          type: string
+          nullable: true
+        tds_type:
+          type: string
+          nullable: true
+          enum:
+            - '0'
+            - '2'
+        tds2_type:
+          type: string
+          nullable: true
+          enum:
+            - '2'
+            - '3'
+        tds2_ret_url:
+          type: string
+          nullable: true
+        tds2_status:
+          type: string
+          nullable: true
+          enum:
+            - AUTHENTICATING
+            - CHALLENGE
+            - AUTHENTICATED
+        merchant_name:
+          type: string
+          nullable: true
+        send_url:
+          type: string
+          nullable: true
+        subscription_id:
+          type: string
+          nullable: true
+        brand:
+          type: string
+        error_code:
+          type: string
+          nullable: true
+        created:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        updated:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
   securitySchemes:
     BearerAuth:
       type: http
