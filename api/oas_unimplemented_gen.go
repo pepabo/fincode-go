@@ -76,6 +76,13 @@ func (UnimplementedHandler) PaymentsGet(ctx context.Context, params PaymentsGetP
 	return r, ht.ErrNotImplemented
 }
 
+// PaymentsIDCancelPut implements PUT /payments/{id}/cancel operation.
+//
+// PUT /payments/{id}/cancel
+func (UnimplementedHandler) PaymentsIDCancelPut(ctx context.Context, req PaymentsIDCancelPutReq, params PaymentsIDCancelPutParams) (r PaymentsIDCancelPutRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // PaymentsIDGet implements GET /payments/{id} operation.
 //
 // GET /payments/{id}

@@ -59,6 +59,10 @@ type Invoker interface {
 	//
 	// GET /payments
 	PaymentsGet(ctx context.Context, params PaymentsGetParams) (PaymentsGetRes, error)
+	// PaymentsIDCancelPut invokes PUT /payments/{id}/cancel operation.
+	//
+	// PUT /payments/{id}/cancel
+	PaymentsIDCancelPut(ctx context.Context, request PaymentsIDCancelPutReq, params PaymentsIDCancelPutParams) (PaymentsIDCancelPutRes, error)
 	// PaymentsIDGet invokes GET /payments/{id} operation.
 	//
 	// GET /payments/{id}
@@ -1550,6 +1554,130 @@ func (c *Client) sendPaymentsGet(ctx context.Context, params PaymentsGetParams) 
 
 	stage = "DecodeResponse"
 	result, err := decodePaymentsGetResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// PaymentsIDCancelPut invokes PUT /payments/{id}/cancel operation.
+//
+// PUT /payments/{id}/cancel
+func (c *Client) PaymentsIDCancelPut(ctx context.Context, request PaymentsIDCancelPutReq, params PaymentsIDCancelPutParams) (PaymentsIDCancelPutRes, error) {
+	res, err := c.sendPaymentsIDCancelPut(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendPaymentsIDCancelPut(ctx context.Context, request PaymentsIDCancelPutReq, params PaymentsIDCancelPutParams) (res PaymentsIDCancelPutRes, err error) {
+	otelAttrs := []attribute.KeyValue{
+		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRouteKey.String("/payments/{id}/cancel"),
+	}
+
+	// Run stopwatch.
+	startTime := time.Now()
+	defer func() {
+		// Use floating point division here for higher precision (instead of Millisecond method).
+		elapsedDuration := time.Since(startTime)
+		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+	}()
+
+	// Increment request counter.
+	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+
+	// Start a span for this request.
+	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsIDCancelPut",
+		trace.WithAttributes(otelAttrs...),
+		clientSpanKind,
+	)
+	// Track stage for error reporting.
+	var stage string
+	defer func() {
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, stage)
+			c.errors.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
+		}
+		span.End()
+	}()
+
+	stage = "BuildURL"
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/payments/"
+	{
+		// Encode "id" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "id",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.ID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/cancel"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	stage = "EncodeRequest"
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodePaymentsIDCancelPutRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+			stage = "Security:BearerAuth"
+			switch err := c.securityBearerAuth(ctx, "PaymentsIDCancelPut", r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	stage = "SendRequest"
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	stage = "DecodeResponse"
+	result, err := decodePaymentsIDCancelPutResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
