@@ -103,7 +103,7 @@ func TestPayments(t *testing.T) {
 
 	t.Run("Get a Payment", func(t *testing.T) {
 		res, err := c.PaymentsIDGet(ctx, api.PaymentsIDGetParams{
-			ID: orderID,
+			ID:      orderID,
 			PayType: "Card",
 		})
 		if err != nil {
@@ -125,10 +125,10 @@ func TestPayments(t *testing.T) {
 	t.Run("List Payments", func(t *testing.T) {
 		today := time.Now().Format("2006/01/02")
 		res, err := c.PaymentsGet(ctx, api.PaymentsGetParams{
-			PayType: "Card",
+			PayType:         "Card",
 			ProcessDataFrom: api.NewOptString(today),
-			Limit: api.NewOptInt(100),
-			CustomerID: api.NewOptString(customerID),
+			Limit:           api.NewOptInt(100),
+			CustomerID:      api.NewOptString(customerID),
 		})
 		if err != nil {
 			t.Fatal(err)
@@ -138,11 +138,40 @@ func TestPayments(t *testing.T) {
 			t.Fatalf("unexpected response: %T, %#v", res, res)
 		}
 		for _, p := range v.List {
-			if p.AccessID.Value ==  accessID {
+			if p.AccessID.Value == accessID {
 				return
 			}
 		}
 		t.Errorf("payment not found: %s", accessID)
+	})
+
+	t.Run("Cancel Payment", func(t *testing.T) {
+		res, err := c.PaymentsIDCancelPut(ctx, api.PaymentsIDCancelPutReq{
+			Type: api.PaymentCancelCardPaymentsIDCancelPutReq,
+			PaymentCancelCard: api.PaymentCancelCard{
+				PayType:  "Card",
+				AccessID: accessID,
+			},
+		},
+			api.PaymentsIDCancelPutParams{
+				ID: orderID,
+			})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.PaymentsIDCancelPutOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		if want := orderID; v.PaymentCancelCardResponse.ID.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCancelCardResponse.ID.Value)
+		}
+		if want := api.PaymentCancelCardResponseStatusCANCELLED; v.PaymentCancelCardResponse.Status.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCancelCardResponse.Status.Value)
+		}
+		if want := api.PaymentCancelCardResponseJobCodeCANCEL; v.PaymentCancelCardResponse.JobCode.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCancelCardResponse.JobCode.Value)
+		}
 	})
 
 	t.Run("Get Card", func(t *testing.T) {
