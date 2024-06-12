@@ -259,7 +259,7 @@ func TestPayments(t *testing.T) {
 		if want := orderID; v.PaymentCaptureCardResponse.ID.Value != want {
 			t.Errorf("want %s, got %s", want, v.PaymentCaptureCardResponse.ID.Value)
 		}
-		if want := api.PaymentCaptureCardResponseJobCodeCAPTURE; v.PaymentCaptureCardResponse.JobCode.Value != want {
+		if want := api.PaymentCaptureCardResponseJobCodeSALES; v.PaymentCaptureCardResponse.JobCode.Value != want {
 			t.Errorf("want %s, got %s", want, v.PaymentCaptureCardResponse.JobCode.Value)
 		}
 		if want := api.PaymentCaptureCardResponseStatusCAPTURED; v.PaymentCaptureCardResponse.Status.Value != want {
