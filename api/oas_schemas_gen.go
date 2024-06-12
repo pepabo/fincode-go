@@ -1076,6 +1076,7 @@ func (*ErrorResponse) customersIDGetRes()                                       
 func (*ErrorResponse) customersPostRes()                                          {}
 func (*ErrorResponse) paymentsIDAuthPutRes()                                      {}
 func (*ErrorResponse) paymentsIDCancelPutRes()                                    {}
+func (*ErrorResponse) paymentsIDCapturePutRes()                                   {}
 func (*ErrorResponse) paymentsIDGetRes()                                          {}
 func (*ErrorResponse) paymentsIDPutRes()                                          {}
 func (*ErrorResponse) paymentsPostRes()                                           {}
@@ -1695,6 +1696,258 @@ func (o OptNilPaymentCancelCardResponseTdsType) Get() (v PaymentCancelCardRespon
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilPaymentCancelCardResponseTdsType) Or(d PaymentCancelCardResponseTdsType) PaymentCancelCardResponseTdsType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentCaptureCardResponseMethod returns new OptNilPaymentCaptureCardResponseMethod with value set to v.
+func NewOptNilPaymentCaptureCardResponseMethod(v PaymentCaptureCardResponseMethod) OptNilPaymentCaptureCardResponseMethod {
+	return OptNilPaymentCaptureCardResponseMethod{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentCaptureCardResponseMethod is optional nullable PaymentCaptureCardResponseMethod.
+type OptNilPaymentCaptureCardResponseMethod struct {
+	Value PaymentCaptureCardResponseMethod
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentCaptureCardResponseMethod was set.
+func (o OptNilPaymentCaptureCardResponseMethod) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentCaptureCardResponseMethod) Reset() {
+	var v PaymentCaptureCardResponseMethod
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentCaptureCardResponseMethod) SetTo(v PaymentCaptureCardResponseMethod) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentCaptureCardResponseMethod) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentCaptureCardResponseMethod) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentCaptureCardResponseMethod
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentCaptureCardResponseMethod) Get() (v PaymentCaptureCardResponseMethod, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentCaptureCardResponseMethod) Or(d PaymentCaptureCardResponseMethod) PaymentCaptureCardResponseMethod {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentCaptureCardResponseTds2Status returns new OptNilPaymentCaptureCardResponseTds2Status with value set to v.
+func NewOptNilPaymentCaptureCardResponseTds2Status(v PaymentCaptureCardResponseTds2Status) OptNilPaymentCaptureCardResponseTds2Status {
+	return OptNilPaymentCaptureCardResponseTds2Status{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentCaptureCardResponseTds2Status is optional nullable PaymentCaptureCardResponseTds2Status.
+type OptNilPaymentCaptureCardResponseTds2Status struct {
+	Value PaymentCaptureCardResponseTds2Status
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentCaptureCardResponseTds2Status was set.
+func (o OptNilPaymentCaptureCardResponseTds2Status) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentCaptureCardResponseTds2Status) Reset() {
+	var v PaymentCaptureCardResponseTds2Status
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentCaptureCardResponseTds2Status) SetTo(v PaymentCaptureCardResponseTds2Status) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentCaptureCardResponseTds2Status) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentCaptureCardResponseTds2Status) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentCaptureCardResponseTds2Status
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentCaptureCardResponseTds2Status) Get() (v PaymentCaptureCardResponseTds2Status, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentCaptureCardResponseTds2Status) Or(d PaymentCaptureCardResponseTds2Status) PaymentCaptureCardResponseTds2Status {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentCaptureCardResponseTds2Type returns new OptNilPaymentCaptureCardResponseTds2Type with value set to v.
+func NewOptNilPaymentCaptureCardResponseTds2Type(v PaymentCaptureCardResponseTds2Type) OptNilPaymentCaptureCardResponseTds2Type {
+	return OptNilPaymentCaptureCardResponseTds2Type{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentCaptureCardResponseTds2Type is optional nullable PaymentCaptureCardResponseTds2Type.
+type OptNilPaymentCaptureCardResponseTds2Type struct {
+	Value PaymentCaptureCardResponseTds2Type
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentCaptureCardResponseTds2Type was set.
+func (o OptNilPaymentCaptureCardResponseTds2Type) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentCaptureCardResponseTds2Type) Reset() {
+	var v PaymentCaptureCardResponseTds2Type
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentCaptureCardResponseTds2Type) SetTo(v PaymentCaptureCardResponseTds2Type) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentCaptureCardResponseTds2Type) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentCaptureCardResponseTds2Type) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentCaptureCardResponseTds2Type
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentCaptureCardResponseTds2Type) Get() (v PaymentCaptureCardResponseTds2Type, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentCaptureCardResponseTds2Type) Or(d PaymentCaptureCardResponseTds2Type) PaymentCaptureCardResponseTds2Type {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentCaptureCardResponseTdsType returns new OptNilPaymentCaptureCardResponseTdsType with value set to v.
+func NewOptNilPaymentCaptureCardResponseTdsType(v PaymentCaptureCardResponseTdsType) OptNilPaymentCaptureCardResponseTdsType {
+	return OptNilPaymentCaptureCardResponseTdsType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentCaptureCardResponseTdsType is optional nullable PaymentCaptureCardResponseTdsType.
+type OptNilPaymentCaptureCardResponseTdsType struct {
+	Value PaymentCaptureCardResponseTdsType
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentCaptureCardResponseTdsType was set.
+func (o OptNilPaymentCaptureCardResponseTdsType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentCaptureCardResponseTdsType) Reset() {
+	var v PaymentCaptureCardResponseTdsType
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentCaptureCardResponseTdsType) SetTo(v PaymentCaptureCardResponseTdsType) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsSet returns true if value is Null.
+func (o OptNilPaymentCaptureCardResponseTdsType) IsNull() bool { return o.Null }
+
+// SetNull sets value to null.
+func (o *OptNilPaymentCaptureCardResponseTdsType) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentCaptureCardResponseTdsType
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentCaptureCardResponseTdsType) Get() (v PaymentCaptureCardResponseTdsType, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentCaptureCardResponseTdsType) Or(d PaymentCaptureCardResponseTdsType) PaymentCaptureCardResponseTdsType {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -4035,6 +4288,236 @@ func (o OptPaymentCancelCardResponseStatus) Get() (v PaymentCancelCardResponseSt
 
 // Or returns value if set, or given parameter if does not.
 func (o OptPaymentCancelCardResponseStatus) Or(d PaymentCancelCardResponseStatus) PaymentCancelCardResponseStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentCaptureCardMethod returns new OptPaymentCaptureCardMethod with value set to v.
+func NewOptPaymentCaptureCardMethod(v PaymentCaptureCardMethod) OptPaymentCaptureCardMethod {
+	return OptPaymentCaptureCardMethod{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentCaptureCardMethod is optional PaymentCaptureCardMethod.
+type OptPaymentCaptureCardMethod struct {
+	Value PaymentCaptureCardMethod
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentCaptureCardMethod was set.
+func (o OptPaymentCaptureCardMethod) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentCaptureCardMethod) Reset() {
+	var v PaymentCaptureCardMethod
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentCaptureCardMethod) SetTo(v PaymentCaptureCardMethod) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentCaptureCardMethod) Get() (v PaymentCaptureCardMethod, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentCaptureCardMethod) Or(d PaymentCaptureCardMethod) PaymentCaptureCardMethod {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentCaptureCardPayTimes returns new OptPaymentCaptureCardPayTimes with value set to v.
+func NewOptPaymentCaptureCardPayTimes(v PaymentCaptureCardPayTimes) OptPaymentCaptureCardPayTimes {
+	return OptPaymentCaptureCardPayTimes{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentCaptureCardPayTimes is optional PaymentCaptureCardPayTimes.
+type OptPaymentCaptureCardPayTimes struct {
+	Value PaymentCaptureCardPayTimes
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentCaptureCardPayTimes was set.
+func (o OptPaymentCaptureCardPayTimes) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentCaptureCardPayTimes) Reset() {
+	var v PaymentCaptureCardPayTimes
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentCaptureCardPayTimes) SetTo(v PaymentCaptureCardPayTimes) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentCaptureCardPayTimes) Get() (v PaymentCaptureCardPayTimes, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentCaptureCardPayTimes) Or(d PaymentCaptureCardPayTimes) PaymentCaptureCardPayTimes {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentCaptureCardResponseJobCode returns new OptPaymentCaptureCardResponseJobCode with value set to v.
+func NewOptPaymentCaptureCardResponseJobCode(v PaymentCaptureCardResponseJobCode) OptPaymentCaptureCardResponseJobCode {
+	return OptPaymentCaptureCardResponseJobCode{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentCaptureCardResponseJobCode is optional PaymentCaptureCardResponseJobCode.
+type OptPaymentCaptureCardResponseJobCode struct {
+	Value PaymentCaptureCardResponseJobCode
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentCaptureCardResponseJobCode was set.
+func (o OptPaymentCaptureCardResponseJobCode) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentCaptureCardResponseJobCode) Reset() {
+	var v PaymentCaptureCardResponseJobCode
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentCaptureCardResponseJobCode) SetTo(v PaymentCaptureCardResponseJobCode) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentCaptureCardResponseJobCode) Get() (v PaymentCaptureCardResponseJobCode, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentCaptureCardResponseJobCode) Or(d PaymentCaptureCardResponseJobCode) PaymentCaptureCardResponseJobCode {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentCaptureCardResponsePayType returns new OptPaymentCaptureCardResponsePayType with value set to v.
+func NewOptPaymentCaptureCardResponsePayType(v PaymentCaptureCardResponsePayType) OptPaymentCaptureCardResponsePayType {
+	return OptPaymentCaptureCardResponsePayType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentCaptureCardResponsePayType is optional PaymentCaptureCardResponsePayType.
+type OptPaymentCaptureCardResponsePayType struct {
+	Value PaymentCaptureCardResponsePayType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentCaptureCardResponsePayType was set.
+func (o OptPaymentCaptureCardResponsePayType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentCaptureCardResponsePayType) Reset() {
+	var v PaymentCaptureCardResponsePayType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentCaptureCardResponsePayType) SetTo(v PaymentCaptureCardResponsePayType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentCaptureCardResponsePayType) Get() (v PaymentCaptureCardResponsePayType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentCaptureCardResponsePayType) Or(d PaymentCaptureCardResponsePayType) PaymentCaptureCardResponsePayType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentCaptureCardResponseStatus returns new OptPaymentCaptureCardResponseStatus with value set to v.
+func NewOptPaymentCaptureCardResponseStatus(v PaymentCaptureCardResponseStatus) OptPaymentCaptureCardResponseStatus {
+	return OptPaymentCaptureCardResponseStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentCaptureCardResponseStatus is optional PaymentCaptureCardResponseStatus.
+type OptPaymentCaptureCardResponseStatus struct {
+	Value PaymentCaptureCardResponseStatus
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentCaptureCardResponseStatus was set.
+func (o OptPaymentCaptureCardResponseStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentCaptureCardResponseStatus) Reset() {
+	var v PaymentCaptureCardResponseStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentCaptureCardResponseStatus) SetTo(v PaymentCaptureCardResponseStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentCaptureCardResponseStatus) Get() (v PaymentCaptureCardResponseStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentCaptureCardResponseStatus) Or(d PaymentCaptureCardResponseStatus) PaymentCaptureCardResponseStatus {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -7063,6 +7546,1002 @@ func (s *PaymentCancelCardResponseTdsType) UnmarshalText(data []byte) error {
 		return nil
 	case PaymentCancelCardResponseTdsType2:
 		*s = PaymentCancelCardResponseTdsType2
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentCaptureCard
+type PaymentCaptureCard struct {
+	PayType  PaymentCaptureCardPayType     `json:"pay_type"`
+	AccessID string                        `json:"access_id"`
+	Method   OptPaymentCaptureCardMethod   `json:"method"`
+	PayTimes OptPaymentCaptureCardPayTimes `json:"pay_times"`
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentCaptureCard) GetPayType() PaymentCaptureCardPayType {
+	return s.PayType
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentCaptureCard) GetAccessID() string {
+	return s.AccessID
+}
+
+// GetMethod returns the value of Method.
+func (s *PaymentCaptureCard) GetMethod() OptPaymentCaptureCardMethod {
+	return s.Method
+}
+
+// GetPayTimes returns the value of PayTimes.
+func (s *PaymentCaptureCard) GetPayTimes() OptPaymentCaptureCardPayTimes {
+	return s.PayTimes
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentCaptureCard) SetPayType(val PaymentCaptureCardPayType) {
+	s.PayType = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentCaptureCard) SetAccessID(val string) {
+	s.AccessID = val
+}
+
+// SetMethod sets the value of Method.
+func (s *PaymentCaptureCard) SetMethod(val OptPaymentCaptureCardMethod) {
+	s.Method = val
+}
+
+// SetPayTimes sets the value of PayTimes.
+func (s *PaymentCaptureCard) SetPayTimes(val OptPaymentCaptureCardPayTimes) {
+	s.PayTimes = val
+}
+
+type PaymentCaptureCardMethod string
+
+const (
+	PaymentCaptureCardMethod1 PaymentCaptureCardMethod = "1"
+	PaymentCaptureCardMethod2 PaymentCaptureCardMethod = "2"
+	PaymentCaptureCardMethod5 PaymentCaptureCardMethod = "5"
+)
+
+// AllValues returns all PaymentCaptureCardMethod values.
+func (PaymentCaptureCardMethod) AllValues() []PaymentCaptureCardMethod {
+	return []PaymentCaptureCardMethod{
+		PaymentCaptureCardMethod1,
+		PaymentCaptureCardMethod2,
+		PaymentCaptureCardMethod5,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardMethod) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardMethod1:
+		return []byte(s), nil
+	case PaymentCaptureCardMethod2:
+		return []byte(s), nil
+	case PaymentCaptureCardMethod5:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardMethod) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardMethod(data) {
+	case PaymentCaptureCardMethod1:
+		*s = PaymentCaptureCardMethod1
+		return nil
+	case PaymentCaptureCardMethod2:
+		*s = PaymentCaptureCardMethod2
+		return nil
+	case PaymentCaptureCardMethod5:
+		*s = PaymentCaptureCardMethod5
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCaptureCardPayTimes string
+
+const (
+	PaymentCaptureCardPayTimes3  PaymentCaptureCardPayTimes = "3"
+	PaymentCaptureCardPayTimes5  PaymentCaptureCardPayTimes = "5"
+	PaymentCaptureCardPayTimes6  PaymentCaptureCardPayTimes = "6"
+	PaymentCaptureCardPayTimes10 PaymentCaptureCardPayTimes = "10"
+	PaymentCaptureCardPayTimes12 PaymentCaptureCardPayTimes = "12"
+	PaymentCaptureCardPayTimes15 PaymentCaptureCardPayTimes = "15"
+	PaymentCaptureCardPayTimes18 PaymentCaptureCardPayTimes = "18"
+	PaymentCaptureCardPayTimes20 PaymentCaptureCardPayTimes = "20"
+	PaymentCaptureCardPayTimes24 PaymentCaptureCardPayTimes = "24"
+)
+
+// AllValues returns all PaymentCaptureCardPayTimes values.
+func (PaymentCaptureCardPayTimes) AllValues() []PaymentCaptureCardPayTimes {
+	return []PaymentCaptureCardPayTimes{
+		PaymentCaptureCardPayTimes3,
+		PaymentCaptureCardPayTimes5,
+		PaymentCaptureCardPayTimes6,
+		PaymentCaptureCardPayTimes10,
+		PaymentCaptureCardPayTimes12,
+		PaymentCaptureCardPayTimes15,
+		PaymentCaptureCardPayTimes18,
+		PaymentCaptureCardPayTimes20,
+		PaymentCaptureCardPayTimes24,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardPayTimes) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardPayTimes3:
+		return []byte(s), nil
+	case PaymentCaptureCardPayTimes5:
+		return []byte(s), nil
+	case PaymentCaptureCardPayTimes6:
+		return []byte(s), nil
+	case PaymentCaptureCardPayTimes10:
+		return []byte(s), nil
+	case PaymentCaptureCardPayTimes12:
+		return []byte(s), nil
+	case PaymentCaptureCardPayTimes15:
+		return []byte(s), nil
+	case PaymentCaptureCardPayTimes18:
+		return []byte(s), nil
+	case PaymentCaptureCardPayTimes20:
+		return []byte(s), nil
+	case PaymentCaptureCardPayTimes24:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardPayTimes) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardPayTimes(data) {
+	case PaymentCaptureCardPayTimes3:
+		*s = PaymentCaptureCardPayTimes3
+		return nil
+	case PaymentCaptureCardPayTimes5:
+		*s = PaymentCaptureCardPayTimes5
+		return nil
+	case PaymentCaptureCardPayTimes6:
+		*s = PaymentCaptureCardPayTimes6
+		return nil
+	case PaymentCaptureCardPayTimes10:
+		*s = PaymentCaptureCardPayTimes10
+		return nil
+	case PaymentCaptureCardPayTimes12:
+		*s = PaymentCaptureCardPayTimes12
+		return nil
+	case PaymentCaptureCardPayTimes15:
+		*s = PaymentCaptureCardPayTimes15
+		return nil
+	case PaymentCaptureCardPayTimes18:
+		*s = PaymentCaptureCardPayTimes18
+		return nil
+	case PaymentCaptureCardPayTimes20:
+		*s = PaymentCaptureCardPayTimes20
+		return nil
+	case PaymentCaptureCardPayTimes24:
+		*s = PaymentCaptureCardPayTimes24
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCaptureCardPayType string
+
+const (
+	PaymentCaptureCardPayTypeCard PaymentCaptureCardPayType = "Card"
+)
+
+// AllValues returns all PaymentCaptureCardPayType values.
+func (PaymentCaptureCardPayType) AllValues() []PaymentCaptureCardPayType {
+	return []PaymentCaptureCardPayType{
+		PaymentCaptureCardPayTypeCard,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardPayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardPayTypeCard:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardPayType) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardPayType(data) {
+	case PaymentCaptureCardPayTypeCard:
+		*s = PaymentCaptureCardPayTypeCard
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentCaptureCardResponse
+type PaymentCaptureCardResponse struct {
+	ShopID          OptString                                  `json:"shop_id"`
+	ID              OptString                                  `json:"id"`
+	PayType         OptPaymentCaptureCardResponsePayType       `json:"pay_type"`
+	Status          OptPaymentCaptureCardResponseStatus        `json:"status"`
+	AccessID        OptString                                  `json:"access_id"`
+	ProcessDate     OptString                                  `json:"process_date"`
+	JobCode         OptPaymentCaptureCardResponseJobCode       `json:"job_code"`
+	ItemCode        OptString                                  `json:"item_code"`
+	Amount          OptInt                                     `json:"amount"`
+	Tax             OptInt                                     `json:"tax"`
+	TotalAmount     OptInt                                     `json:"total_amount"`
+	CustomerGroupID OptNilString                               `json:"customer_group_id"`
+	CustomerID      OptNilString                               `json:"customer_id"`
+	CardNo          OptNilString                               `json:"card_no"`
+	CardID          OptNilString                               `json:"card_id"`
+	Expire          OptNilString                               `json:"expire"`
+	HolderName      OptNilString                               `json:"holder_name"`
+	CardNoHash      OptNilString                               `json:"card_no_hash"`
+	Method          OptNilPaymentCaptureCardResponseMethod     `json:"method"`
+	PayTimes        OptNilString                               `json:"pay_times"`
+	Forward         OptNilString                               `json:"forward"`
+	Issuer          OptNilString                               `json:"issuer"`
+	TransactionID   OptNilString                               `json:"transaction_id"`
+	Approve         OptNilString                               `json:"approve"`
+	AuthMaxDate     OptNilString                               `json:"auth_max_date"`
+	ClientField1    OptNilString                               `json:"client_field_1"`
+	ClientField2    OptNilString                               `json:"client_field_2"`
+	ClientField3    OptNilString                               `json:"client_field_3"`
+	TdsType         OptNilPaymentCaptureCardResponseTdsType    `json:"tds_type"`
+	Tds2Type        OptNilPaymentCaptureCardResponseTds2Type   `json:"tds2_type"`
+	Tds2RetURL      OptNilString                               `json:"tds2_ret_url"`
+	Tds2Status      OptNilPaymentCaptureCardResponseTds2Status `json:"tds2_status"`
+	MerchantName    OptNilString                               `json:"merchant_name"`
+	SendURL         OptNilString                               `json:"send_url"`
+	SubscriptionID  OptNilString                               `json:"subscription_id"`
+	Brand           OptString                                  `json:"brand"`
+	ErrorCode       OptNilString                               `json:"error_code"`
+	Created         OptNilString                               `json:"created"`
+	Updated         OptNilString                               `json:"updated"`
+}
+
+// GetShopID returns the value of ShopID.
+func (s *PaymentCaptureCardResponse) GetShopID() OptString {
+	return s.ShopID
+}
+
+// GetID returns the value of ID.
+func (s *PaymentCaptureCardResponse) GetID() OptString {
+	return s.ID
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentCaptureCardResponse) GetPayType() OptPaymentCaptureCardResponsePayType {
+	return s.PayType
+}
+
+// GetStatus returns the value of Status.
+func (s *PaymentCaptureCardResponse) GetStatus() OptPaymentCaptureCardResponseStatus {
+	return s.Status
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentCaptureCardResponse) GetAccessID() OptString {
+	return s.AccessID
+}
+
+// GetProcessDate returns the value of ProcessDate.
+func (s *PaymentCaptureCardResponse) GetProcessDate() OptString {
+	return s.ProcessDate
+}
+
+// GetJobCode returns the value of JobCode.
+func (s *PaymentCaptureCardResponse) GetJobCode() OptPaymentCaptureCardResponseJobCode {
+	return s.JobCode
+}
+
+// GetItemCode returns the value of ItemCode.
+func (s *PaymentCaptureCardResponse) GetItemCode() OptString {
+	return s.ItemCode
+}
+
+// GetAmount returns the value of Amount.
+func (s *PaymentCaptureCardResponse) GetAmount() OptInt {
+	return s.Amount
+}
+
+// GetTax returns the value of Tax.
+func (s *PaymentCaptureCardResponse) GetTax() OptInt {
+	return s.Tax
+}
+
+// GetTotalAmount returns the value of TotalAmount.
+func (s *PaymentCaptureCardResponse) GetTotalAmount() OptInt {
+	return s.TotalAmount
+}
+
+// GetCustomerGroupID returns the value of CustomerGroupID.
+func (s *PaymentCaptureCardResponse) GetCustomerGroupID() OptNilString {
+	return s.CustomerGroupID
+}
+
+// GetCustomerID returns the value of CustomerID.
+func (s *PaymentCaptureCardResponse) GetCustomerID() OptNilString {
+	return s.CustomerID
+}
+
+// GetCardNo returns the value of CardNo.
+func (s *PaymentCaptureCardResponse) GetCardNo() OptNilString {
+	return s.CardNo
+}
+
+// GetCardID returns the value of CardID.
+func (s *PaymentCaptureCardResponse) GetCardID() OptNilString {
+	return s.CardID
+}
+
+// GetExpire returns the value of Expire.
+func (s *PaymentCaptureCardResponse) GetExpire() OptNilString {
+	return s.Expire
+}
+
+// GetHolderName returns the value of HolderName.
+func (s *PaymentCaptureCardResponse) GetHolderName() OptNilString {
+	return s.HolderName
+}
+
+// GetCardNoHash returns the value of CardNoHash.
+func (s *PaymentCaptureCardResponse) GetCardNoHash() OptNilString {
+	return s.CardNoHash
+}
+
+// GetMethod returns the value of Method.
+func (s *PaymentCaptureCardResponse) GetMethod() OptNilPaymentCaptureCardResponseMethod {
+	return s.Method
+}
+
+// GetPayTimes returns the value of PayTimes.
+func (s *PaymentCaptureCardResponse) GetPayTimes() OptNilString {
+	return s.PayTimes
+}
+
+// GetForward returns the value of Forward.
+func (s *PaymentCaptureCardResponse) GetForward() OptNilString {
+	return s.Forward
+}
+
+// GetIssuer returns the value of Issuer.
+func (s *PaymentCaptureCardResponse) GetIssuer() OptNilString {
+	return s.Issuer
+}
+
+// GetTransactionID returns the value of TransactionID.
+func (s *PaymentCaptureCardResponse) GetTransactionID() OptNilString {
+	return s.TransactionID
+}
+
+// GetApprove returns the value of Approve.
+func (s *PaymentCaptureCardResponse) GetApprove() OptNilString {
+	return s.Approve
+}
+
+// GetAuthMaxDate returns the value of AuthMaxDate.
+func (s *PaymentCaptureCardResponse) GetAuthMaxDate() OptNilString {
+	return s.AuthMaxDate
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentCaptureCardResponse) GetClientField1() OptNilString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentCaptureCardResponse) GetClientField2() OptNilString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentCaptureCardResponse) GetClientField3() OptNilString {
+	return s.ClientField3
+}
+
+// GetTdsType returns the value of TdsType.
+func (s *PaymentCaptureCardResponse) GetTdsType() OptNilPaymentCaptureCardResponseTdsType {
+	return s.TdsType
+}
+
+// GetTds2Type returns the value of Tds2Type.
+func (s *PaymentCaptureCardResponse) GetTds2Type() OptNilPaymentCaptureCardResponseTds2Type {
+	return s.Tds2Type
+}
+
+// GetTds2RetURL returns the value of Tds2RetURL.
+func (s *PaymentCaptureCardResponse) GetTds2RetURL() OptNilString {
+	return s.Tds2RetURL
+}
+
+// GetTds2Status returns the value of Tds2Status.
+func (s *PaymentCaptureCardResponse) GetTds2Status() OptNilPaymentCaptureCardResponseTds2Status {
+	return s.Tds2Status
+}
+
+// GetMerchantName returns the value of MerchantName.
+func (s *PaymentCaptureCardResponse) GetMerchantName() OptNilString {
+	return s.MerchantName
+}
+
+// GetSendURL returns the value of SendURL.
+func (s *PaymentCaptureCardResponse) GetSendURL() OptNilString {
+	return s.SendURL
+}
+
+// GetSubscriptionID returns the value of SubscriptionID.
+func (s *PaymentCaptureCardResponse) GetSubscriptionID() OptNilString {
+	return s.SubscriptionID
+}
+
+// GetBrand returns the value of Brand.
+func (s *PaymentCaptureCardResponse) GetBrand() OptString {
+	return s.Brand
+}
+
+// GetErrorCode returns the value of ErrorCode.
+func (s *PaymentCaptureCardResponse) GetErrorCode() OptNilString {
+	return s.ErrorCode
+}
+
+// GetCreated returns the value of Created.
+func (s *PaymentCaptureCardResponse) GetCreated() OptNilString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *PaymentCaptureCardResponse) GetUpdated() OptNilString {
+	return s.Updated
+}
+
+// SetShopID sets the value of ShopID.
+func (s *PaymentCaptureCardResponse) SetShopID(val OptString) {
+	s.ShopID = val
+}
+
+// SetID sets the value of ID.
+func (s *PaymentCaptureCardResponse) SetID(val OptString) {
+	s.ID = val
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentCaptureCardResponse) SetPayType(val OptPaymentCaptureCardResponsePayType) {
+	s.PayType = val
+}
+
+// SetStatus sets the value of Status.
+func (s *PaymentCaptureCardResponse) SetStatus(val OptPaymentCaptureCardResponseStatus) {
+	s.Status = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentCaptureCardResponse) SetAccessID(val OptString) {
+	s.AccessID = val
+}
+
+// SetProcessDate sets the value of ProcessDate.
+func (s *PaymentCaptureCardResponse) SetProcessDate(val OptString) {
+	s.ProcessDate = val
+}
+
+// SetJobCode sets the value of JobCode.
+func (s *PaymentCaptureCardResponse) SetJobCode(val OptPaymentCaptureCardResponseJobCode) {
+	s.JobCode = val
+}
+
+// SetItemCode sets the value of ItemCode.
+func (s *PaymentCaptureCardResponse) SetItemCode(val OptString) {
+	s.ItemCode = val
+}
+
+// SetAmount sets the value of Amount.
+func (s *PaymentCaptureCardResponse) SetAmount(val OptInt) {
+	s.Amount = val
+}
+
+// SetTax sets the value of Tax.
+func (s *PaymentCaptureCardResponse) SetTax(val OptInt) {
+	s.Tax = val
+}
+
+// SetTotalAmount sets the value of TotalAmount.
+func (s *PaymentCaptureCardResponse) SetTotalAmount(val OptInt) {
+	s.TotalAmount = val
+}
+
+// SetCustomerGroupID sets the value of CustomerGroupID.
+func (s *PaymentCaptureCardResponse) SetCustomerGroupID(val OptNilString) {
+	s.CustomerGroupID = val
+}
+
+// SetCustomerID sets the value of CustomerID.
+func (s *PaymentCaptureCardResponse) SetCustomerID(val OptNilString) {
+	s.CustomerID = val
+}
+
+// SetCardNo sets the value of CardNo.
+func (s *PaymentCaptureCardResponse) SetCardNo(val OptNilString) {
+	s.CardNo = val
+}
+
+// SetCardID sets the value of CardID.
+func (s *PaymentCaptureCardResponse) SetCardID(val OptNilString) {
+	s.CardID = val
+}
+
+// SetExpire sets the value of Expire.
+func (s *PaymentCaptureCardResponse) SetExpire(val OptNilString) {
+	s.Expire = val
+}
+
+// SetHolderName sets the value of HolderName.
+func (s *PaymentCaptureCardResponse) SetHolderName(val OptNilString) {
+	s.HolderName = val
+}
+
+// SetCardNoHash sets the value of CardNoHash.
+func (s *PaymentCaptureCardResponse) SetCardNoHash(val OptNilString) {
+	s.CardNoHash = val
+}
+
+// SetMethod sets the value of Method.
+func (s *PaymentCaptureCardResponse) SetMethod(val OptNilPaymentCaptureCardResponseMethod) {
+	s.Method = val
+}
+
+// SetPayTimes sets the value of PayTimes.
+func (s *PaymentCaptureCardResponse) SetPayTimes(val OptNilString) {
+	s.PayTimes = val
+}
+
+// SetForward sets the value of Forward.
+func (s *PaymentCaptureCardResponse) SetForward(val OptNilString) {
+	s.Forward = val
+}
+
+// SetIssuer sets the value of Issuer.
+func (s *PaymentCaptureCardResponse) SetIssuer(val OptNilString) {
+	s.Issuer = val
+}
+
+// SetTransactionID sets the value of TransactionID.
+func (s *PaymentCaptureCardResponse) SetTransactionID(val OptNilString) {
+	s.TransactionID = val
+}
+
+// SetApprove sets the value of Approve.
+func (s *PaymentCaptureCardResponse) SetApprove(val OptNilString) {
+	s.Approve = val
+}
+
+// SetAuthMaxDate sets the value of AuthMaxDate.
+func (s *PaymentCaptureCardResponse) SetAuthMaxDate(val OptNilString) {
+	s.AuthMaxDate = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentCaptureCardResponse) SetClientField1(val OptNilString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentCaptureCardResponse) SetClientField2(val OptNilString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentCaptureCardResponse) SetClientField3(val OptNilString) {
+	s.ClientField3 = val
+}
+
+// SetTdsType sets the value of TdsType.
+func (s *PaymentCaptureCardResponse) SetTdsType(val OptNilPaymentCaptureCardResponseTdsType) {
+	s.TdsType = val
+}
+
+// SetTds2Type sets the value of Tds2Type.
+func (s *PaymentCaptureCardResponse) SetTds2Type(val OptNilPaymentCaptureCardResponseTds2Type) {
+	s.Tds2Type = val
+}
+
+// SetTds2RetURL sets the value of Tds2RetURL.
+func (s *PaymentCaptureCardResponse) SetTds2RetURL(val OptNilString) {
+	s.Tds2RetURL = val
+}
+
+// SetTds2Status sets the value of Tds2Status.
+func (s *PaymentCaptureCardResponse) SetTds2Status(val OptNilPaymentCaptureCardResponseTds2Status) {
+	s.Tds2Status = val
+}
+
+// SetMerchantName sets the value of MerchantName.
+func (s *PaymentCaptureCardResponse) SetMerchantName(val OptNilString) {
+	s.MerchantName = val
+}
+
+// SetSendURL sets the value of SendURL.
+func (s *PaymentCaptureCardResponse) SetSendURL(val OptNilString) {
+	s.SendURL = val
+}
+
+// SetSubscriptionID sets the value of SubscriptionID.
+func (s *PaymentCaptureCardResponse) SetSubscriptionID(val OptNilString) {
+	s.SubscriptionID = val
+}
+
+// SetBrand sets the value of Brand.
+func (s *PaymentCaptureCardResponse) SetBrand(val OptString) {
+	s.Brand = val
+}
+
+// SetErrorCode sets the value of ErrorCode.
+func (s *PaymentCaptureCardResponse) SetErrorCode(val OptNilString) {
+	s.ErrorCode = val
+}
+
+// SetCreated sets the value of Created.
+func (s *PaymentCaptureCardResponse) SetCreated(val OptNilString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *PaymentCaptureCardResponse) SetUpdated(val OptNilString) {
+	s.Updated = val
+}
+
+type PaymentCaptureCardResponseJobCode string
+
+const (
+	PaymentCaptureCardResponseJobCodeCHECK   PaymentCaptureCardResponseJobCode = "CHECK"
+	PaymentCaptureCardResponseJobCodeAUTH    PaymentCaptureCardResponseJobCode = "AUTH"
+	PaymentCaptureCardResponseJobCodeCAPTURE PaymentCaptureCardResponseJobCode = "CAPTURE"
+	PaymentCaptureCardResponseJobCodeSALES   PaymentCaptureCardResponseJobCode = "SALES"
+	PaymentCaptureCardResponseJobCodeCANCEL  PaymentCaptureCardResponseJobCode = "CANCEL"
+)
+
+// AllValues returns all PaymentCaptureCardResponseJobCode values.
+func (PaymentCaptureCardResponseJobCode) AllValues() []PaymentCaptureCardResponseJobCode {
+	return []PaymentCaptureCardResponseJobCode{
+		PaymentCaptureCardResponseJobCodeCHECK,
+		PaymentCaptureCardResponseJobCodeAUTH,
+		PaymentCaptureCardResponseJobCodeCAPTURE,
+		PaymentCaptureCardResponseJobCodeSALES,
+		PaymentCaptureCardResponseJobCodeCANCEL,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardResponseJobCode) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardResponseJobCodeCHECK:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseJobCodeAUTH:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseJobCodeCAPTURE:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseJobCodeSALES:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseJobCodeCANCEL:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardResponseJobCode) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardResponseJobCode(data) {
+	case PaymentCaptureCardResponseJobCodeCHECK:
+		*s = PaymentCaptureCardResponseJobCodeCHECK
+		return nil
+	case PaymentCaptureCardResponseJobCodeAUTH:
+		*s = PaymentCaptureCardResponseJobCodeAUTH
+		return nil
+	case PaymentCaptureCardResponseJobCodeCAPTURE:
+		*s = PaymentCaptureCardResponseJobCodeCAPTURE
+		return nil
+	case PaymentCaptureCardResponseJobCodeSALES:
+		*s = PaymentCaptureCardResponseJobCodeSALES
+		return nil
+	case PaymentCaptureCardResponseJobCodeCANCEL:
+		*s = PaymentCaptureCardResponseJobCodeCANCEL
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCaptureCardResponseMethod string
+
+const (
+	PaymentCaptureCardResponseMethod1 PaymentCaptureCardResponseMethod = "1"
+	PaymentCaptureCardResponseMethod2 PaymentCaptureCardResponseMethod = "2"
+	PaymentCaptureCardResponseMethod5 PaymentCaptureCardResponseMethod = "5"
+)
+
+// AllValues returns all PaymentCaptureCardResponseMethod values.
+func (PaymentCaptureCardResponseMethod) AllValues() []PaymentCaptureCardResponseMethod {
+	return []PaymentCaptureCardResponseMethod{
+		PaymentCaptureCardResponseMethod1,
+		PaymentCaptureCardResponseMethod2,
+		PaymentCaptureCardResponseMethod5,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardResponseMethod) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardResponseMethod1:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseMethod2:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseMethod5:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardResponseMethod) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardResponseMethod(data) {
+	case PaymentCaptureCardResponseMethod1:
+		*s = PaymentCaptureCardResponseMethod1
+		return nil
+	case PaymentCaptureCardResponseMethod2:
+		*s = PaymentCaptureCardResponseMethod2
+		return nil
+	case PaymentCaptureCardResponseMethod5:
+		*s = PaymentCaptureCardResponseMethod5
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCaptureCardResponsePayType string
+
+const (
+	PaymentCaptureCardResponsePayTypeCard PaymentCaptureCardResponsePayType = "Card"
+)
+
+// AllValues returns all PaymentCaptureCardResponsePayType values.
+func (PaymentCaptureCardResponsePayType) AllValues() []PaymentCaptureCardResponsePayType {
+	return []PaymentCaptureCardResponsePayType{
+		PaymentCaptureCardResponsePayTypeCard,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardResponsePayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardResponsePayTypeCard:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardResponsePayType) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardResponsePayType(data) {
+	case PaymentCaptureCardResponsePayTypeCard:
+		*s = PaymentCaptureCardResponsePayTypeCard
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCaptureCardResponseStatus string
+
+const (
+	PaymentCaptureCardResponseStatusUNPROCESSED   PaymentCaptureCardResponseStatus = "UNPROCESSED"
+	PaymentCaptureCardResponseStatusCHECKED       PaymentCaptureCardResponseStatus = "CHECKED"
+	PaymentCaptureCardResponseStatusAUTHORIZED    PaymentCaptureCardResponseStatus = "AUTHORIZED"
+	PaymentCaptureCardResponseStatusCAPTURED      PaymentCaptureCardResponseStatus = "CAPTURED"
+	PaymentCaptureCardResponseStatusCANCELED      PaymentCaptureCardResponseStatus = "CANCELED"
+	PaymentCaptureCardResponseStatusAUTHENTICATED PaymentCaptureCardResponseStatus = "AUTHENTICATED"
+)
+
+// AllValues returns all PaymentCaptureCardResponseStatus values.
+func (PaymentCaptureCardResponseStatus) AllValues() []PaymentCaptureCardResponseStatus {
+	return []PaymentCaptureCardResponseStatus{
+		PaymentCaptureCardResponseStatusUNPROCESSED,
+		PaymentCaptureCardResponseStatusCHECKED,
+		PaymentCaptureCardResponseStatusAUTHORIZED,
+		PaymentCaptureCardResponseStatusCAPTURED,
+		PaymentCaptureCardResponseStatusCANCELED,
+		PaymentCaptureCardResponseStatusAUTHENTICATED,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardResponseStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardResponseStatusUNPROCESSED:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseStatusCHECKED:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseStatusAUTHORIZED:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseStatusCAPTURED:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseStatusCANCELED:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseStatusAUTHENTICATED:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardResponseStatus) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardResponseStatus(data) {
+	case PaymentCaptureCardResponseStatusUNPROCESSED:
+		*s = PaymentCaptureCardResponseStatusUNPROCESSED
+		return nil
+	case PaymentCaptureCardResponseStatusCHECKED:
+		*s = PaymentCaptureCardResponseStatusCHECKED
+		return nil
+	case PaymentCaptureCardResponseStatusAUTHORIZED:
+		*s = PaymentCaptureCardResponseStatusAUTHORIZED
+		return nil
+	case PaymentCaptureCardResponseStatusCAPTURED:
+		*s = PaymentCaptureCardResponseStatusCAPTURED
+		return nil
+	case PaymentCaptureCardResponseStatusCANCELED:
+		*s = PaymentCaptureCardResponseStatusCANCELED
+		return nil
+	case PaymentCaptureCardResponseStatusAUTHENTICATED:
+		*s = PaymentCaptureCardResponseStatusAUTHENTICATED
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCaptureCardResponseTds2Status string
+
+const (
+	PaymentCaptureCardResponseTds2StatusAUTHENTICATING PaymentCaptureCardResponseTds2Status = "AUTHENTICATING"
+	PaymentCaptureCardResponseTds2StatusCHALLENGE      PaymentCaptureCardResponseTds2Status = "CHALLENGE"
+	PaymentCaptureCardResponseTds2StatusAUTHENTICATED  PaymentCaptureCardResponseTds2Status = "AUTHENTICATED"
+)
+
+// AllValues returns all PaymentCaptureCardResponseTds2Status values.
+func (PaymentCaptureCardResponseTds2Status) AllValues() []PaymentCaptureCardResponseTds2Status {
+	return []PaymentCaptureCardResponseTds2Status{
+		PaymentCaptureCardResponseTds2StatusAUTHENTICATING,
+		PaymentCaptureCardResponseTds2StatusCHALLENGE,
+		PaymentCaptureCardResponseTds2StatusAUTHENTICATED,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardResponseTds2Status) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardResponseTds2StatusAUTHENTICATING:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseTds2StatusCHALLENGE:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseTds2StatusAUTHENTICATED:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardResponseTds2Status) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardResponseTds2Status(data) {
+	case PaymentCaptureCardResponseTds2StatusAUTHENTICATING:
+		*s = PaymentCaptureCardResponseTds2StatusAUTHENTICATING
+		return nil
+	case PaymentCaptureCardResponseTds2StatusCHALLENGE:
+		*s = PaymentCaptureCardResponseTds2StatusCHALLENGE
+		return nil
+	case PaymentCaptureCardResponseTds2StatusAUTHENTICATED:
+		*s = PaymentCaptureCardResponseTds2StatusAUTHENTICATED
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCaptureCardResponseTds2Type string
+
+const (
+	PaymentCaptureCardResponseTds2Type2 PaymentCaptureCardResponseTds2Type = "2"
+	PaymentCaptureCardResponseTds2Type3 PaymentCaptureCardResponseTds2Type = "3"
+)
+
+// AllValues returns all PaymentCaptureCardResponseTds2Type values.
+func (PaymentCaptureCardResponseTds2Type) AllValues() []PaymentCaptureCardResponseTds2Type {
+	return []PaymentCaptureCardResponseTds2Type{
+		PaymentCaptureCardResponseTds2Type2,
+		PaymentCaptureCardResponseTds2Type3,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardResponseTds2Type) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardResponseTds2Type2:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseTds2Type3:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardResponseTds2Type) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardResponseTds2Type(data) {
+	case PaymentCaptureCardResponseTds2Type2:
+		*s = PaymentCaptureCardResponseTds2Type2
+		return nil
+	case PaymentCaptureCardResponseTds2Type3:
+		*s = PaymentCaptureCardResponseTds2Type3
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCaptureCardResponseTdsType string
+
+const (
+	PaymentCaptureCardResponseTdsType0 PaymentCaptureCardResponseTdsType = "0"
+	PaymentCaptureCardResponseTdsType2 PaymentCaptureCardResponseTdsType = "2"
+)
+
+// AllValues returns all PaymentCaptureCardResponseTdsType values.
+func (PaymentCaptureCardResponseTdsType) AllValues() []PaymentCaptureCardResponseTdsType {
+	return []PaymentCaptureCardResponseTdsType{
+		PaymentCaptureCardResponseTdsType0,
+		PaymentCaptureCardResponseTdsType2,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCaptureCardResponseTdsType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCaptureCardResponseTdsType0:
+		return []byte(s), nil
+	case PaymentCaptureCardResponseTdsType2:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCaptureCardResponseTdsType) UnmarshalText(data []byte) error {
+	switch PaymentCaptureCardResponseTdsType(data) {
+	case PaymentCaptureCardResponseTdsType0:
+		*s = PaymentCaptureCardResponseTdsType0
+		return nil
+	case PaymentCaptureCardResponseTdsType2:
+		*s = PaymentCaptureCardResponseTdsType2
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
@@ -14707,6 +16186,88 @@ func (s PaymentsIDCancelPutReq) GetPaymentCancelCard() (v PaymentCancelCard, ok 
 func NewPaymentCancelCardPaymentsIDCancelPutReq(v PaymentCancelCard) PaymentsIDCancelPutReq {
 	var s PaymentsIDCancelPutReq
 	s.SetPaymentCancelCard(v)
+	return s
+}
+
+// PaymentsIDCapturePutOK represents sum type.
+type PaymentsIDCapturePutOK struct {
+	Type                       PaymentsIDCapturePutOKType // switch on this field
+	PaymentCaptureCardResponse PaymentCaptureCardResponse
+}
+
+// PaymentsIDCapturePutOKType is oneOf type of PaymentsIDCapturePutOK.
+type PaymentsIDCapturePutOKType string
+
+// Possible values for PaymentsIDCapturePutOKType.
+const (
+	PaymentCaptureCardResponsePaymentsIDCapturePutOK PaymentsIDCapturePutOKType = "PaymentCaptureCardResponse"
+)
+
+// IsPaymentCaptureCardResponse reports whether PaymentsIDCapturePutOK is PaymentCaptureCardResponse.
+func (s PaymentsIDCapturePutOK) IsPaymentCaptureCardResponse() bool {
+	return s.Type == PaymentCaptureCardResponsePaymentsIDCapturePutOK
+}
+
+// SetPaymentCaptureCardResponse sets PaymentsIDCapturePutOK to PaymentCaptureCardResponse.
+func (s *PaymentsIDCapturePutOK) SetPaymentCaptureCardResponse(v PaymentCaptureCardResponse) {
+	s.Type = PaymentCaptureCardResponsePaymentsIDCapturePutOK
+	s.PaymentCaptureCardResponse = v
+}
+
+// GetPaymentCaptureCardResponse returns PaymentCaptureCardResponse and true boolean if PaymentsIDCapturePutOK is PaymentCaptureCardResponse.
+func (s PaymentsIDCapturePutOK) GetPaymentCaptureCardResponse() (v PaymentCaptureCardResponse, ok bool) {
+	if !s.IsPaymentCaptureCardResponse() {
+		return v, false
+	}
+	return s.PaymentCaptureCardResponse, true
+}
+
+// NewPaymentCaptureCardResponsePaymentsIDCapturePutOK returns new PaymentsIDCapturePutOK from PaymentCaptureCardResponse.
+func NewPaymentCaptureCardResponsePaymentsIDCapturePutOK(v PaymentCaptureCardResponse) PaymentsIDCapturePutOK {
+	var s PaymentsIDCapturePutOK
+	s.SetPaymentCaptureCardResponse(v)
+	return s
+}
+
+func (*PaymentsIDCapturePutOK) paymentsIDCapturePutRes() {}
+
+// PaymentsIDCapturePutReq represents sum type.
+type PaymentsIDCapturePutReq struct {
+	Type               PaymentsIDCapturePutReqType // switch on this field
+	PaymentCaptureCard PaymentCaptureCard
+}
+
+// PaymentsIDCapturePutReqType is oneOf type of PaymentsIDCapturePutReq.
+type PaymentsIDCapturePutReqType string
+
+// Possible values for PaymentsIDCapturePutReqType.
+const (
+	PaymentCaptureCardPaymentsIDCapturePutReq PaymentsIDCapturePutReqType = "PaymentCaptureCard"
+)
+
+// IsPaymentCaptureCard reports whether PaymentsIDCapturePutReq is PaymentCaptureCard.
+func (s PaymentsIDCapturePutReq) IsPaymentCaptureCard() bool {
+	return s.Type == PaymentCaptureCardPaymentsIDCapturePutReq
+}
+
+// SetPaymentCaptureCard sets PaymentsIDCapturePutReq to PaymentCaptureCard.
+func (s *PaymentsIDCapturePutReq) SetPaymentCaptureCard(v PaymentCaptureCard) {
+	s.Type = PaymentCaptureCardPaymentsIDCapturePutReq
+	s.PaymentCaptureCard = v
+}
+
+// GetPaymentCaptureCard returns PaymentCaptureCard and true boolean if PaymentsIDCapturePutReq is PaymentCaptureCard.
+func (s PaymentsIDCapturePutReq) GetPaymentCaptureCard() (v PaymentCaptureCard, ok bool) {
+	if !s.IsPaymentCaptureCard() {
+		return v, false
+	}
+	return s.PaymentCaptureCard, true
+}
+
+// NewPaymentCaptureCardPaymentsIDCapturePutReq returns new PaymentsIDCapturePutReq from PaymentCaptureCard.
+func NewPaymentCaptureCardPaymentsIDCapturePutReq(v PaymentCaptureCard) PaymentsIDCapturePutReq {
+	var s PaymentsIDCapturePutReq
+	s.SetPaymentCaptureCard(v)
 	return s
 }
 
