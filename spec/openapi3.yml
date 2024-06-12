@@ -2092,7 +2092,7 @@ components:
             - CHECKED
             - AUTHORIZED
             - CAPTURED
-            - CANCELLED
+            - CANCELED
             - AUTHENTICATED
         access_id:
           type: string

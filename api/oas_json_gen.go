@@ -6089,8 +6089,8 @@ func (s *PaymentCancelCardResponseStatus) Decode(d *jx.Decoder) error {
 		*s = PaymentCancelCardResponseStatusAUTHORIZED
 	case PaymentCancelCardResponseStatusCAPTURED:
 		*s = PaymentCancelCardResponseStatusCAPTURED
-	case PaymentCancelCardResponseStatusCANCELLED:
-		*s = PaymentCancelCardResponseStatusCANCELLED
+	case PaymentCancelCardResponseStatusCANCELED:
+		*s = PaymentCancelCardResponseStatusCANCELED
 	case PaymentCancelCardResponseStatusAUTHENTICATED:
 		*s = PaymentCancelCardResponseStatusAUTHENTICATED
 	default:

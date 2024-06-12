@@ -649,7 +649,7 @@ func (s PaymentCancelCardResponseStatus) Validate() error {
 		return nil
 	case "CAPTURED":
 		return nil
-	case "CANCELLED":
+	case "CANCELED":
 		return nil
 	case "AUTHENTICATED":
 		return nil
