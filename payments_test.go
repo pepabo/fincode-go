@@ -166,11 +166,28 @@ func TestPayments(t *testing.T) {
 		if want := orderID; v.PaymentCancelCardResponse.ID.Value != want {
 			t.Errorf("want %s, got %s", want, v.PaymentCancelCardResponse.ID.Value)
 		}
-		if want := api.PaymentCancelCardResponseStatusCANCELLED; v.PaymentCancelCardResponse.Status.Value != want {
-			t.Errorf("want %s, got %s", want, v.PaymentCancelCardResponse.Status.Value)
-		}
 		if want := api.PaymentCancelCardResponseJobCodeCANCEL; v.PaymentCancelCardResponse.JobCode.Value != want {
 			t.Errorf("want %s, got %s", want, v.PaymentCancelCardResponse.JobCode.Value)
+		}
+		if want := api.PaymentCancelCardResponseStatusCANCELED; v.PaymentCancelCardResponse.Status.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCancelCardResponse.Status.Value)
+		}
+		paymentsIDGetRes, err := c.PaymentsIDGet(ctx, api.PaymentsIDGetParams{
+			ID:      orderID,
+			PayType: "Card",
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		val, ok := paymentsIDGetRes.(*api.PaymentsIDGetOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		if want := orderID; val.PaymentCardResponse.ID.Value != want {
+			t.Errorf("want %s, got %s", want, val.PaymentCardResponse.ID.Value)
+		}
+		if want := api.PaymentCardResponseStatusCANCELLED; val.PaymentCardResponse.Status.Value != want {
+			t.Errorf("want %s, got %s", want, val.PaymentCardResponse.Status.Value)
 		}
 	})
 
