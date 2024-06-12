@@ -1478,7 +1478,7 @@ components:
             - CHECKED
             - AUTHORIZED
             - CAPTURED
-            - CANCELLED
+            - CANCELED
             - AUTHENTICATED
         access_id:
           type: string
@@ -1619,7 +1619,7 @@ components:
             - UNPROCESSED
             - AWAITING_PAYMENT_APPROVAL
             - CAPTURED
-            - CANCELLED
+            - CANCELED
             - FAILED
         access_id:
           type: string
@@ -1933,7 +1933,7 @@ components:
             - CHECKED
             - AUTHORIZED
             - CAPTURED
-            - CANCELLED
+            - CANCELED
             - AUTHENTICATED
         access_id:
           type: string

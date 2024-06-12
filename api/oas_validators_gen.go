@@ -1080,7 +1080,7 @@ func (s PaymentCardResponseStatus) Validate() error {
 		return nil
 	case "CAPTURED":
 		return nil
-	case "CANCELLED":
+	case "CANCELED":
 		return nil
 	case "AUTHENTICATED":
 		return nil
@@ -1368,7 +1368,7 @@ func (s PaymentDirectdebitResponseStatus) Validate() error {
 		return nil
 	case "CAPTURED":
 		return nil
-	case "CANCELLED":
+	case "CANCELED":
 		return nil
 	case "FAILED":
 		return nil
@@ -1668,7 +1668,7 @@ func (s PaymentDoCardResponseStatus) Validate() error {
 		return nil
 	case "CAPTURED":
 		return nil
-	case "CANCELLED":
+	case "CANCELED":
 		return nil
 	case "AUTHENTICATED":
 		return nil

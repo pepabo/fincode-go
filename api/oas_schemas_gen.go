@@ -6452,7 +6452,7 @@ const (
 	PaymentCardResponseStatusCHECKED       PaymentCardResponseStatus = "CHECKED"
 	PaymentCardResponseStatusAUTHORIZED    PaymentCardResponseStatus = "AUTHORIZED"
 	PaymentCardResponseStatusCAPTURED      PaymentCardResponseStatus = "CAPTURED"
-	PaymentCardResponseStatusCANCELLED     PaymentCardResponseStatus = "CANCELLED"
+	PaymentCardResponseStatusCANCELED      PaymentCardResponseStatus = "CANCELED"
 	PaymentCardResponseStatusAUTHENTICATED PaymentCardResponseStatus = "AUTHENTICATED"
 )
 
@@ -6463,7 +6463,7 @@ func (PaymentCardResponseStatus) AllValues() []PaymentCardResponseStatus {
 		PaymentCardResponseStatusCHECKED,
 		PaymentCardResponseStatusAUTHORIZED,
 		PaymentCardResponseStatusCAPTURED,
-		PaymentCardResponseStatusCANCELLED,
+		PaymentCardResponseStatusCANCELED,
 		PaymentCardResponseStatusAUTHENTICATED,
 	}
 }
@@ -6479,7 +6479,7 @@ func (s PaymentCardResponseStatus) MarshalText() ([]byte, error) {
 		return []byte(s), nil
 	case PaymentCardResponseStatusCAPTURED:
 		return []byte(s), nil
-	case PaymentCardResponseStatusCANCELLED:
+	case PaymentCardResponseStatusCANCELED:
 		return []byte(s), nil
 	case PaymentCardResponseStatusAUTHENTICATED:
 		return []byte(s), nil
@@ -6503,8 +6503,8 @@ func (s *PaymentCardResponseStatus) UnmarshalText(data []byte) error {
 	case PaymentCardResponseStatusCAPTURED:
 		*s = PaymentCardResponseStatusCAPTURED
 		return nil
-	case PaymentCardResponseStatusCANCELLED:
-		*s = PaymentCardResponseStatusCANCELLED
+	case PaymentCardResponseStatusCANCELED:
+		*s = PaymentCardResponseStatusCANCELED
 		return nil
 	case PaymentCardResponseStatusAUTHENTICATED:
 		*s = PaymentCardResponseStatusAUTHENTICATED
@@ -7319,7 +7319,7 @@ const (
 	PaymentDirectdebitResponseStatusUNPROCESSED             PaymentDirectdebitResponseStatus = "UNPROCESSED"
 	PaymentDirectdebitResponseStatusAWAITINGPAYMENTAPPROVAL PaymentDirectdebitResponseStatus = "AWAITING_PAYMENT_APPROVAL"
 	PaymentDirectdebitResponseStatusCAPTURED                PaymentDirectdebitResponseStatus = "CAPTURED"
-	PaymentDirectdebitResponseStatusCANCELLED               PaymentDirectdebitResponseStatus = "CANCELLED"
+	PaymentDirectdebitResponseStatusCANCELED                PaymentDirectdebitResponseStatus = "CANCELED"
 	PaymentDirectdebitResponseStatusFAILED                  PaymentDirectdebitResponseStatus = "FAILED"
 )
 
@@ -7329,7 +7329,7 @@ func (PaymentDirectdebitResponseStatus) AllValues() []PaymentDirectdebitResponse
 		PaymentDirectdebitResponseStatusUNPROCESSED,
 		PaymentDirectdebitResponseStatusAWAITINGPAYMENTAPPROVAL,
 		PaymentDirectdebitResponseStatusCAPTURED,
-		PaymentDirectdebitResponseStatusCANCELLED,
+		PaymentDirectdebitResponseStatusCANCELED,
 		PaymentDirectdebitResponseStatusFAILED,
 	}
 }
@@ -7343,7 +7343,7 @@ func (s PaymentDirectdebitResponseStatus) MarshalText() ([]byte, error) {
 		return []byte(s), nil
 	case PaymentDirectdebitResponseStatusCAPTURED:
 		return []byte(s), nil
-	case PaymentDirectdebitResponseStatusCANCELLED:
+	case PaymentDirectdebitResponseStatusCANCELED:
 		return []byte(s), nil
 	case PaymentDirectdebitResponseStatusFAILED:
 		return []byte(s), nil
@@ -7364,8 +7364,8 @@ func (s *PaymentDirectdebitResponseStatus) UnmarshalText(data []byte) error {
 	case PaymentDirectdebitResponseStatusCAPTURED:
 		*s = PaymentDirectdebitResponseStatusCAPTURED
 		return nil
-	case PaymentDirectdebitResponseStatusCANCELLED:
-		*s = PaymentDirectdebitResponseStatusCANCELLED
+	case PaymentDirectdebitResponseStatusCANCELED:
+		*s = PaymentDirectdebitResponseStatusCANCELED
 		return nil
 	case PaymentDirectdebitResponseStatusFAILED:
 		*s = PaymentDirectdebitResponseStatusFAILED
@@ -7981,7 +7981,7 @@ const (
 	PaymentDoCardResponseStatusCHECKED       PaymentDoCardResponseStatus = "CHECKED"
 	PaymentDoCardResponseStatusAUTHORIZED    PaymentDoCardResponseStatus = "AUTHORIZED"
 	PaymentDoCardResponseStatusCAPTURED      PaymentDoCardResponseStatus = "CAPTURED"
-	PaymentDoCardResponseStatusCANCELLED     PaymentDoCardResponseStatus = "CANCELLED"
+	PaymentDoCardResponseStatusCANCELED      PaymentDoCardResponseStatus = "CANCELED"
 	PaymentDoCardResponseStatusAUTHENTICATED PaymentDoCardResponseStatus = "AUTHENTICATED"
 )
 
@@ -7992,7 +7992,7 @@ func (PaymentDoCardResponseStatus) AllValues() []PaymentDoCardResponseStatus {
 		PaymentDoCardResponseStatusCHECKED,
 		PaymentDoCardResponseStatusAUTHORIZED,
 		PaymentDoCardResponseStatusCAPTURED,
-		PaymentDoCardResponseStatusCANCELLED,
+		PaymentDoCardResponseStatusCANCELED,
 		PaymentDoCardResponseStatusAUTHENTICATED,
 	}
 }
@@ -8008,7 +8008,7 @@ func (s PaymentDoCardResponseStatus) MarshalText() ([]byte, error) {
 		return []byte(s), nil
 	case PaymentDoCardResponseStatusCAPTURED:
 		return []byte(s), nil
-	case PaymentDoCardResponseStatusCANCELLED:
+	case PaymentDoCardResponseStatusCANCELED:
 		return []byte(s), nil
 	case PaymentDoCardResponseStatusAUTHENTICATED:
 		return []byte(s), nil
@@ -8032,8 +8032,8 @@ func (s *PaymentDoCardResponseStatus) UnmarshalText(data []byte) error {
 	case PaymentDoCardResponseStatusCAPTURED:
 		*s = PaymentDoCardResponseStatusCAPTURED
 		return nil
-	case PaymentDoCardResponseStatusCANCELLED:
-		*s = PaymentDoCardResponseStatusCANCELLED
+	case PaymentDoCardResponseStatusCANCELED:
+		*s = PaymentDoCardResponseStatusCANCELED
 		return nil
 	case PaymentDoCardResponseStatusAUTHENTICATED:
 		*s = PaymentDoCardResponseStatusAUTHENTICATED

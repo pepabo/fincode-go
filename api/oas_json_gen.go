@@ -7458,8 +7458,8 @@ func (s *PaymentCardResponseStatus) Decode(d *jx.Decoder) error {
 		*s = PaymentCardResponseStatusAUTHORIZED
 	case PaymentCardResponseStatusCAPTURED:
 		*s = PaymentCardResponseStatusCAPTURED
-	case PaymentCardResponseStatusCANCELLED:
-		*s = PaymentCardResponseStatusCANCELLED
+	case PaymentCardResponseStatusCANCELED:
+		*s = PaymentCardResponseStatusCANCELED
 	case PaymentCardResponseStatusAUTHENTICATED:
 		*s = PaymentCardResponseStatusAUTHENTICATED
 	default:
@@ -8592,8 +8592,8 @@ func (s *PaymentDirectdebitResponseStatus) Decode(d *jx.Decoder) error {
 		*s = PaymentDirectdebitResponseStatusAWAITINGPAYMENTAPPROVAL
 	case PaymentDirectdebitResponseStatusCAPTURED:
 		*s = PaymentDirectdebitResponseStatusCAPTURED
-	case PaymentDirectdebitResponseStatusCANCELLED:
-		*s = PaymentDirectdebitResponseStatusCANCELLED
+	case PaymentDirectdebitResponseStatusCANCELED:
+		*s = PaymentDirectdebitResponseStatusCANCELED
 	case PaymentDirectdebitResponseStatusFAILED:
 		*s = PaymentDirectdebitResponseStatusFAILED
 	default:
@@ -9509,8 +9509,8 @@ func (s *PaymentDoCardResponseStatus) Decode(d *jx.Decoder) error {
 		*s = PaymentDoCardResponseStatusAUTHORIZED
 	case PaymentDoCardResponseStatusCAPTURED:
 		*s = PaymentDoCardResponseStatusCAPTURED
-	case PaymentDoCardResponseStatusCANCELLED:
-		*s = PaymentDoCardResponseStatusCANCELLED
+	case PaymentDoCardResponseStatusCANCELED:
+		*s = PaymentDoCardResponseStatusCANCELED
 	case PaymentDoCardResponseStatusAUTHENTICATED:
 		*s = PaymentDoCardResponseStatusAUTHENTICATED
 	default:
