@@ -238,6 +238,52 @@ func TestPayments(t *testing.T) {
 		}
 	})
 
+	t.Run("Capture Payment", func(t *testing.T) {
+		res, err := c.PaymentsIDCapturePut(ctx, api.PaymentsIDCapturePutReq{
+			Type: api.PaymentCaptureCardPaymentsIDCapturePutReq,
+			PaymentCaptureCard: api.PaymentCaptureCard{
+				PayType:  "Card",
+				AccessID: accessID,
+			},
+		},
+			api.PaymentsIDCapturePutParams{
+				ID: orderID,
+			})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.PaymentsIDCapturePutOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		if want := orderID; v.PaymentCaptureCardResponse.ID.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCaptureCardResponse.ID.Value)
+		}
+		if want := api.PaymentCaptureCardResponseJobCodeCAPTURE; v.PaymentCaptureCardResponse.JobCode.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCaptureCardResponse.JobCode.Value)
+		}
+		if want := api.PaymentCaptureCardResponseStatusCAPTURED; v.PaymentCaptureCardResponse.Status.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentCaptureCardResponse.Status.Value)
+		}
+		paymentsIDGetRes, err := c.PaymentsIDGet(ctx, api.PaymentsIDGetParams{
+			ID:      orderID,
+			PayType: "Card",
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		val, ok := paymentsIDGetRes.(*api.PaymentsIDGetOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		if want := orderID; val.PaymentCardResponse.ID.Value != want {
+			t.Errorf("want %s, got %s", want, val.PaymentCardResponse.ID.Value)
+		}
+		if want := api.PaymentCardResponseStatusCAPTURED; val.PaymentCardResponse.Status.Value != want {
+			t.Errorf("want %s, got %s", want, val.PaymentCardResponse.Status.Value)
+		}
+	})
+
 	t.Run("Get Card", func(t *testing.T) {
 		res, err := c.CustomersCustomerIDCardsIDGet(ctx, api.CustomersCustomerIDCardsIDGetParams{
 			CustomerID: customerID,
