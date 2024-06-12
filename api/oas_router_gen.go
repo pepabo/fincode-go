@@ -282,26 +282,64 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 						return
 					}
 					switch elem[0] {
-					case '/': // Prefix: "/cancel"
+					case '/': // Prefix: "/"
 						origElem := elem
-						if l := len("/cancel"); len(elem) >= l && elem[0:l] == "/cancel" {
+						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
 						if len(elem) == 0 {
-							// Leaf node.
-							switch r.Method {
-							case "PUT":
-								s.handlePaymentsIDCancelPutRequest([1]string{
-									args[0],
-								}, elemIsEscaped, w, r)
-							default:
-								s.notAllowed(w, r, "PUT")
+							break
+						}
+						switch elem[0] {
+						case 'a': // Prefix: "auth"
+							origElem := elem
+							if l := len("auth"); len(elem) >= l && elem[0:l] == "auth" {
+								elem = elem[l:]
+							} else {
+								break
 							}
 
-							return
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "PUT":
+									s.handlePaymentsIDAuthPutRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "PUT")
+								}
+
+								return
+							}
+
+							elem = origElem
+						case 'c': // Prefix: "cancel"
+							origElem := elem
+							if l := len("cancel"); len(elem) >= l && elem[0:l] == "cancel" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch r.Method {
+								case "PUT":
+									s.handlePaymentsIDCancelPutRequest([1]string{
+										args[0],
+									}, elemIsEscaped, w, r)
+								default:
+									s.notAllowed(w, r, "PUT")
+								}
+
+								return
+							}
+
+							elem = origElem
 						}
 
 						elem = origElem
@@ -663,28 +701,68 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 						}
 					}
 					switch elem[0] {
-					case '/': // Prefix: "/cancel"
+					case '/': // Prefix: "/"
 						origElem := elem
-						if l := len("/cancel"); len(elem) >= l && elem[0:l] == "/cancel" {
+						if l := len("/"); len(elem) >= l && elem[0:l] == "/" {
 							elem = elem[l:]
 						} else {
 							break
 						}
 
 						if len(elem) == 0 {
-							// Leaf node.
-							switch method {
-							case "PUT":
-								r.name = "PaymentsIDCancelPut"
-								r.summary = ""
-								r.operationID = ""
-								r.pathPattern = "/payments/{id}/cancel"
-								r.args = args
-								r.count = 1
-								return r, true
-							default:
-								return
+							break
+						}
+						switch elem[0] {
+						case 'a': // Prefix: "auth"
+							origElem := elem
+							if l := len("auth"); len(elem) >= l && elem[0:l] == "auth" {
+								elem = elem[l:]
+							} else {
+								break
 							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch method {
+								case "PUT":
+									r.name = "PaymentsIDAuthPut"
+									r.summary = ""
+									r.operationID = ""
+									r.pathPattern = "/payments/{id}/auth"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+
+							elem = origElem
+						case 'c': // Prefix: "cancel"
+							origElem := elem
+							if l := len("cancel"); len(elem) >= l && elem[0:l] == "cancel" {
+								elem = elem[l:]
+							} else {
+								break
+							}
+
+							if len(elem) == 0 {
+								// Leaf node.
+								switch method {
+								case "PUT":
+									r.name = "PaymentsIDCancelPut"
+									r.summary = ""
+									r.operationID = ""
+									r.pathPattern = "/payments/{id}/cancel"
+									r.args = args
+									r.count = 1
+									return r, true
+								default:
+									return
+								}
+							}
+
+							elem = origElem
 						}
 
 						elem = origElem

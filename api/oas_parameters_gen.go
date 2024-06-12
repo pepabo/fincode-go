@@ -1645,6 +1645,71 @@ func decodePaymentsGetParams(args [0]string, argsEscaped bool, r *http.Request) 
 	return params, nil
 }
 
+// PaymentsIDAuthPutParams is parameters of PUT /payments/{id}/auth operation.
+type PaymentsIDAuthPutParams struct {
+	ID string
+}
+
+func unpackPaymentsIDAuthPutParams(packed middleware.Parameters) (params PaymentsIDAuthPutParams) {
+	{
+		key := middleware.ParameterKey{
+			Name: "id",
+			In:   "path",
+		}
+		params.ID = packed[key].(string)
+	}
+	return params
+}
+
+func decodePaymentsIDAuthPutParams(args [1]string, argsEscaped bool, r *http.Request) (params PaymentsIDAuthPutParams, _ error) {
+	// Decode path: id.
+	if err := func() error {
+		param := args[0]
+		if argsEscaped {
+			unescaped, err := url.PathUnescape(args[0])
+			if err != nil {
+				return errors.Wrap(err, "unescape path")
+			}
+			param = unescaped
+		}
+		if len(param) > 0 {
+			d := uri.NewPathDecoder(uri.PathDecoderConfig{
+				Param:   "id",
+				Value:   param,
+				Style:   uri.PathStyleSimple,
+				Explode: false,
+			})
+
+			if err := func() error {
+				val, err := d.DecodeValue()
+				if err != nil {
+					return err
+				}
+
+				c, err := conv.ToString(val)
+				if err != nil {
+					return err
+				}
+
+				params.ID = c
+				return nil
+			}(); err != nil {
+				return err
+			}
+		} else {
+			return validate.ErrFieldRequired
+		}
+		return nil
+	}(); err != nil {
+		return params, &ogenerrors.DecodeParamError{
+			Name: "id",
+			In:   "path",
+			Err:  err,
+		}
+	}
+	return params, nil
+}
+
 // PaymentsIDCancelPutParams is parameters of PUT /payments/{id}/cancel operation.
 type PaymentsIDCancelPutParams struct {
 	ID string

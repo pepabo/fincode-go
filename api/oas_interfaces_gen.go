@@ -37,6 +37,10 @@ type PaymentsGetRes interface {
 	paymentsGetRes()
 }
 
+type PaymentsIDAuthPutRes interface {
+	paymentsIDAuthPutRes()
+}
+
 type PaymentsIDCancelPutRes interface {
 	paymentsIDCancelPutRes()
 }
