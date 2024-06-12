@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.7](https://github.com/pepabo/fincode-go/compare/v0.1.6...v0.1.7) - 2024-06-12
+### New Features 🎉
+- Add `PUT /payments/{id}/cancel` by @harakeishi in https://github.com/pepabo/fincode-go/pull/21
+
 ## [v0.1.6](https://github.com/pepabo/fincode-go/compare/v0.1.5...v0.1.6) - 2024-05-29
 ### Other Changes
 - Build the package by @naoyafurudono in https://github.com/pepabo/fincode-go/pull/19
