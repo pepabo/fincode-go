@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 
+	ht "github.com/ogen-go/ogen/http"
 	"github.com/pepabo/fincode-go/api"
 )
 
@@ -12,6 +13,7 @@ var _ api.SecuritySource = (*clientConfig)(nil)
 type clientConfig struct {
 	endpoint     string
 	apiSecretKey string
+	httpClient   ht.Client
 }
 
 // Option is a functional option for the fincode client.
@@ -33,6 +35,14 @@ func APISecretKey(k string) Option {
 	}
 }
 
+// WithHTTPClient specifies http client to use.
+func WithHTTPClient(client ht.Client) Option {
+	return func(c *clientConfig) error {
+		c.httpClient = client
+		return nil
+	}
+}
+
 func (c *clientConfig) BearerAuth(ctx context.Context, operationName string) (api.BearerAuth, error) {
 	return api.BearerAuth{Token: c.apiSecretKey}, nil
 }
@@ -48,5 +58,10 @@ func New(opts ...Option) (*api.Client, error) {
 			return nil, err
 		}
 	}
-	return api.NewClient(c.endpoint, c)
+	var copts []api.ClientOption
+	if c.httpClient != nil {
+		copts = append(copts, api.WithClient(c.httpClient))
+	}
+
+	return api.NewClient(c.endpoint, c, copts...)
 }

@@ -11,8 +11,9 @@ import (
 const testEndpoint = "https://api.test.fincode.jp/v1"
 
 func TestCustomers(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
-	c, err := New(Endpoint(testEndpoint))
+	c, err := New(Endpoint(testEndpoint), WithHTTPClient(retryableHTTPClient(t)))
 	if err != nil {
 		t.Fatal(err)
 	}
