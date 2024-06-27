@@ -12,17 +12,9 @@ import (
 )
 
 func TestWithHTTPClient(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
-	retryClient := retryablehttp.NewClient()
-	retryClient.RetryMax = 10
-	retryClient.Logger = nil
-	retryClient.CheckRetry = func(ctx context.Context, res *http.Response, err error) (bool, error) {
-		if res.StatusCode == 403 {
-			return true, nil
-		}
-		return false, nil
-	}
-	c, err := New(Endpoint(testEndpoint), WithHTTPClient(retryClient.StandardClient()))
+	c, err := New(Endpoint(testEndpoint), WithHTTPClient(retryableHTTPClient(t)))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -64,4 +56,18 @@ func TestWithHTTPClient(t *testing.T) {
 	if err := eg.Wait(); err != nil {
 		t.Error(err)
 	}
+}
+
+func retryableHTTPClient(t *testing.T) *http.Client {
+	t.Helper()
+	retryClient := retryablehttp.NewClient()
+	retryClient.RetryMax = 10
+	retryClient.Logger = nil
+	retryClient.CheckRetry = func(ctx context.Context, res *http.Response, err error) (bool, error) {
+		if res.StatusCode == 403 {
+			return true, nil
+		}
+		return false, nil
+	}
+	return retryClient.StandardClient()
 }

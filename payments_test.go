@@ -10,6 +10,7 @@ import (
 )
 
 func TestPayments(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	ts := NewPaymentServer(t)
 	opts := []runn.Option{
@@ -41,7 +42,7 @@ func TestPayments(t *testing.T) {
 	t.Logf("customer_id: %s", customerID)
 	t.Logf("card_id: %s", cardID)
 
-	c, err := New(Endpoint(testEndpoint))
+	c, err := New(Endpoint(testEndpoint), WithHTTPClient(retryableHTTPClient(t)))
 	if err != nil {
 		t.Fatal(err)
 	}

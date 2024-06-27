@@ -45,7 +45,7 @@ func NewPaymentServer(t *testing.T) *httptest.Server {
 	t.Helper()
 	ctx := context.Background()
 	faker := gofakeit.NewCrypto()
-	c, err := New(Endpoint(testEndpoint))
+	c, err := New(Endpoint(testEndpoint), WithHTTPClient(retryableHTTPClient(t)))
 	if err != nil {
 		t.Fatal(err)
 	}
