@@ -43,7 +43,7 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20240226204813-532e667d868f // indirect
 	github.com/chromedp/chromedp v0.9.5 // indirect
 	github.com/chromedp/sysutil v1.0.0 // indirect
-	github.com/cli/go-gh/v2 v2.6.0 // indirect
+	github.com/cli/go-gh/v2 v2.11.1 // indirect
 	github.com/cli/safeexec v1.0.1 // indirect
 	github.com/cncf/xds/go v0.0.0-20231128003011-0fa0005c9caa // indirect
 	github.com/dchest/bcrypt_pbkdf v0.0.0-20150205184540-83f37f9c154a // indirect
