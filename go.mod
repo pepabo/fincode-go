@@ -1,6 +1,8 @@
 module github.com/pepabo/fincode-go
 
-go 1.22.2
+go 1.23.0
+
+toolchain go1.24.3
 
 require (
 	github.com/brianvoe/gofakeit/v6 v6.28.0
@@ -10,10 +12,9 @@ require (
 	github.com/k1LoW/httpstub v0.15.1
 	github.com/k1LoW/runn v0.103.0
 	github.com/ogen-go/ogen v1.1.0
-	go.opentelemetry.io/otel v1.25.0
-	go.opentelemetry.io/otel/metric v1.25.0
-	go.opentelemetry.io/otel/trace v1.25.0
-	go.uber.org/multierr v1.11.0
+	go.opentelemetry.io/otel v1.37.0
+	go.opentelemetry.io/otel/metric v1.37.0
+	go.opentelemetry.io/otel/trace v1.37.0
 	golang.org/x/sync v0.7.0
 )
 
@@ -59,7 +60,7 @@ require (
 	github.com/fullstorydev/grpcurl v1.8.9 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-faster/yaml v0.4.6 // indirect
-	github.com/go-logr/logr v1.4.1 // indirect
+	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-sql-driver/mysql v1.8.1 // indirect
 	github.com/gobwas/httphead v0.1.0 // indirect
@@ -71,7 +72,7 @@ require (
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/google/go-cmp v0.7.0 // indirect
 	github.com/google/go-github/v58 v58.0.0 // indirect
 	github.com/google/go-github/v60 v60.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
@@ -135,8 +136,10 @@ require (
 	github.com/xlab/treeprint v1.2.0 // indirect
 	github.com/xo/dburl v0.23.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
+	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.49.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/ratelimit v0.3.1 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/crypto v0.22.0 // indirect

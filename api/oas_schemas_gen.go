@@ -8,6 +8,7 @@ import (
 
 type BearerAuth struct {
 	Token string
+	Roles []string
 }
 
 // GetToken returns the value of Token.
@@ -15,9 +16,19 @@ func (s *BearerAuth) GetToken() string {
 	return s.Token
 }
 
+// GetRoles returns the value of Roles.
+func (s *BearerAuth) GetRoles() []string {
+	return s.Roles
+}
+
 // SetToken sets the value of Token.
 func (s *BearerAuth) SetToken(val string) {
 	s.Token = val
+}
+
+// SetRoles sets the value of Roles.
+func (s *BearerAuth) SetRoles(val []string) {
+	s.Roles = val
 }
 
 type CustomersCustomerIDCardsIDDeleteOK struct {
@@ -1231,10 +1242,10 @@ func (o *OptNilPaymentAuthCardResponseMethod) SetTo(v PaymentAuthCardResponseMet
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentAuthCardResponseMethod) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentAuthCardResponseMethod) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1294,10 +1305,10 @@ func (o *OptNilPaymentAuthCardResponseTds2Status) SetTo(v PaymentAuthCardRespons
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentAuthCardResponseTds2Status) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentAuthCardResponseTds2Status) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1357,10 +1368,10 @@ func (o *OptNilPaymentAuthCardResponseTds2Type) SetTo(v PaymentAuthCardResponseT
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentAuthCardResponseTds2Type) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentAuthCardResponseTds2Type) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1420,10 +1431,10 @@ func (o *OptNilPaymentAuthCardResponseTdsType) SetTo(v PaymentAuthCardResponseTd
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentAuthCardResponseTdsType) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentAuthCardResponseTdsType) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1483,10 +1494,10 @@ func (o *OptNilPaymentCancelCardResponseMethod) SetTo(v PaymentCancelCardRespons
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCancelCardResponseMethod) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCancelCardResponseMethod) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1546,10 +1557,10 @@ func (o *OptNilPaymentCancelCardResponseTds2Status) SetTo(v PaymentCancelCardRes
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCancelCardResponseTds2Status) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCancelCardResponseTds2Status) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1609,10 +1620,10 @@ func (o *OptNilPaymentCancelCardResponseTds2Type) SetTo(v PaymentCancelCardRespo
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCancelCardResponseTds2Type) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCancelCardResponseTds2Type) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1672,10 +1683,10 @@ func (o *OptNilPaymentCancelCardResponseTdsType) SetTo(v PaymentCancelCardRespon
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCancelCardResponseTdsType) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCancelCardResponseTdsType) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1696,6 +1707,69 @@ func (o OptNilPaymentCancelCardResponseTdsType) Get() (v PaymentCancelCardRespon
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilPaymentCancelCardResponseTdsType) Or(d PaymentCancelCardResponseTdsType) PaymentCancelCardResponseTdsType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentCancelPaypayResponseRedirectType returns new OptNilPaymentCancelPaypayResponseRedirectType with value set to v.
+func NewOptNilPaymentCancelPaypayResponseRedirectType(v PaymentCancelPaypayResponseRedirectType) OptNilPaymentCancelPaypayResponseRedirectType {
+	return OptNilPaymentCancelPaypayResponseRedirectType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentCancelPaypayResponseRedirectType is optional nullable PaymentCancelPaypayResponseRedirectType.
+type OptNilPaymentCancelPaypayResponseRedirectType struct {
+	Value PaymentCancelPaypayResponseRedirectType
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentCancelPaypayResponseRedirectType was set.
+func (o OptNilPaymentCancelPaypayResponseRedirectType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentCancelPaypayResponseRedirectType) Reset() {
+	var v PaymentCancelPaypayResponseRedirectType
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentCancelPaypayResponseRedirectType) SetTo(v PaymentCancelPaypayResponseRedirectType) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilPaymentCancelPaypayResponseRedirectType) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilPaymentCancelPaypayResponseRedirectType) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentCancelPaypayResponseRedirectType
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentCancelPaypayResponseRedirectType) Get() (v PaymentCancelPaypayResponseRedirectType, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentCancelPaypayResponseRedirectType) Or(d PaymentCancelPaypayResponseRedirectType) PaymentCancelPaypayResponseRedirectType {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -1735,10 +1809,10 @@ func (o *OptNilPaymentCaptureCardResponseMethod) SetTo(v PaymentCaptureCardRespo
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCaptureCardResponseMethod) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCaptureCardResponseMethod) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1798,10 +1872,10 @@ func (o *OptNilPaymentCaptureCardResponseTds2Status) SetTo(v PaymentCaptureCardR
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCaptureCardResponseTds2Status) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCaptureCardResponseTds2Status) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1861,10 +1935,10 @@ func (o *OptNilPaymentCaptureCardResponseTds2Type) SetTo(v PaymentCaptureCardRes
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCaptureCardResponseTds2Type) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCaptureCardResponseTds2Type) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1924,10 +1998,10 @@ func (o *OptNilPaymentCaptureCardResponseTdsType) SetTo(v PaymentCaptureCardResp
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCaptureCardResponseTdsType) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCaptureCardResponseTdsType) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -1987,10 +2061,10 @@ func (o *OptNilPaymentCardResponseMethod) SetTo(v PaymentCardResponseMethod) {
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCardResponseMethod) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCardResponseMethod) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2050,10 +2124,10 @@ func (o *OptNilPaymentCardResponseTds2Status) SetTo(v PaymentCardResponseTds2Sta
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCardResponseTds2Status) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCardResponseTds2Status) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2113,10 +2187,10 @@ func (o *OptNilPaymentCardResponseTds2Type) SetTo(v PaymentCardResponseTds2Type)
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCardResponseTds2Type) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCardResponseTds2Type) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2176,10 +2250,10 @@ func (o *OptNilPaymentCardResponseTdsType) SetTo(v PaymentCardResponseTdsType) {
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCardResponseTdsType) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCardResponseTdsType) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2239,10 +2313,10 @@ func (o *OptNilPaymentCardTds2Type) SetTo(v PaymentCardTds2Type) {
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentCardTds2Type) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentCardTds2Type) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2302,10 +2376,10 @@ func (o *OptNilPaymentDoCardResponseMethod) SetTo(v PaymentDoCardResponseMethod)
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardResponseMethod) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardResponseMethod) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2365,10 +2439,10 @@ func (o *OptNilPaymentDoCardResponseTds2Status) SetTo(v PaymentDoCardResponseTds
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardResponseTds2Status) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardResponseTds2Status) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2428,10 +2502,10 @@ func (o *OptNilPaymentDoCardResponseTds2Type) SetTo(v PaymentDoCardResponseTds2T
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardResponseTds2Type) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardResponseTds2Type) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2491,10 +2565,10 @@ func (o *OptNilPaymentDoCardResponseTdsType) SetTo(v PaymentDoCardResponseTdsTyp
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardResponseTdsType) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardResponseTdsType) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2554,10 +2628,10 @@ func (o *OptNilPaymentDoCardWith3DSecurePayTimes) SetTo(v PaymentDoCardWith3DSec
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecurePayTimes) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecurePayTimes) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2617,10 +2691,10 @@ func (o *OptNilPaymentDoCardWith3DSecureTd2sThreeDsReqAuthMethod) SetTo(v Paymen
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecureTd2sThreeDsReqAuthMethod) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecureTd2sThreeDsReqAuthMethod) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2680,10 +2754,10 @@ func (o *OptNilPaymentDoCardWith3DSecureTds2AddrMatch) SetTo(v PaymentDoCardWith
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecureTds2AddrMatch) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecureTds2AddrMatch) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2743,10 +2817,10 @@ func (o *OptNilPaymentDoCardWith3DSecureTds2DeliveryTimeframe) SetTo(v PaymentDo
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecureTds2DeliveryTimeframe) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecureTds2DeliveryTimeframe) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2806,10 +2880,10 @@ func (o *OptNilPaymentDoCardWith3DSecureTds2PreOrderPurchaseInd) SetTo(v Payment
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecureTds2PreOrderPurchaseInd) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecureTds2PreOrderPurchaseInd) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2869,10 +2943,10 @@ func (o *OptNilPaymentDoCardWith3DSecureTds2ReorderItemsInd) SetTo(v PaymentDoCa
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecureTds2ReorderItemsInd) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecureTds2ReorderItemsInd) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2932,10 +3006,10 @@ func (o *OptNilPaymentDoCardWith3DSecureTds2ShipInd) SetTo(v PaymentDoCardWith3D
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecureTds2ShipInd) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecureTds2ShipInd) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -2995,10 +3069,10 @@ func (o *OptNilPaymentDoCardWith3DSecureTds2ShipNameInd) SetTo(v PaymentDoCardWi
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecureTds2ShipNameInd) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecureTds2ShipNameInd) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3058,10 +3132,10 @@ func (o *OptNilPaymentDoCardWith3DSecureTds2SuspiciousAccActivity) SetTo(v Payme
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWith3DSecureTds2SuspiciousAccActivity) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWith3DSecureTds2SuspiciousAccActivity) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3121,10 +3195,10 @@ func (o *OptNilPaymentDoCardWithout3DSecurePayTimes) SetTo(v PaymentDoCardWithou
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentDoCardWithout3DSecurePayTimes) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentDoCardWithout3DSecurePayTimes) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3145,6 +3219,69 @@ func (o OptNilPaymentDoCardWithout3DSecurePayTimes) Get() (v PaymentDoCardWithou
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilPaymentDoCardWithout3DSecurePayTimes) Or(d PaymentDoCardWithout3DSecurePayTimes) PaymentDoCardWithout3DSecurePayTimes {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentDoPaypayResponseRedirectType returns new OptNilPaymentDoPaypayResponseRedirectType with value set to v.
+func NewOptNilPaymentDoPaypayResponseRedirectType(v PaymentDoPaypayResponseRedirectType) OptNilPaymentDoPaypayResponseRedirectType {
+	return OptNilPaymentDoPaypayResponseRedirectType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentDoPaypayResponseRedirectType is optional nullable PaymentDoPaypayResponseRedirectType.
+type OptNilPaymentDoPaypayResponseRedirectType struct {
+	Value PaymentDoPaypayResponseRedirectType
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentDoPaypayResponseRedirectType was set.
+func (o OptNilPaymentDoPaypayResponseRedirectType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentDoPaypayResponseRedirectType) Reset() {
+	var v PaymentDoPaypayResponseRedirectType
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentDoPaypayResponseRedirectType) SetTo(v PaymentDoPaypayResponseRedirectType) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilPaymentDoPaypayResponseRedirectType) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilPaymentDoPaypayResponseRedirectType) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentDoPaypayResponseRedirectType
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentDoPaypayResponseRedirectType) Get() (v PaymentDoPaypayResponseRedirectType, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentDoPaypayResponseRedirectType) Or(d PaymentDoPaypayResponseRedirectType) PaymentDoPaypayResponseRedirectType {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -3184,10 +3321,10 @@ func (o *OptNilPaymentMethodCardResponseCardTds2Status) SetTo(v PaymentMethodCar
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardResponseCardTds2Status) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardResponseCardTds2Status) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3247,10 +3384,10 @@ func (o *OptNilPaymentMethodCardResponseCardTds2Type) SetTo(v PaymentMethodCardR
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardResponseCardTds2Type) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardResponseCardTds2Type) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3310,10 +3447,10 @@ func (o *OptNilPaymentMethodCardResponseCardTdsType) SetTo(v PaymentMethodCardRe
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardResponseCardTdsType) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardResponseCardTdsType) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3373,10 +3510,10 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) SetTo(v PaymentMe
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2AddrMatch) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3436,10 +3573,10 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) SetTo(v P
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2DeliveryTimeframe) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3499,10 +3636,10 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) SetTo(v
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2PreOrderPurchaseInd) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3562,10 +3699,10 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) SetTo(v Pay
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ReorderItemsInd) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3625,10 +3762,10 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) SetTo(v PaymentMeth
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipInd) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3688,10 +3825,10 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) SetTo(v Payment
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ShipNameInd) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3751,12 +3888,12 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) SetTo
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) IsNull() bool {
 	return o.Null
 }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2SuspiciousAccActivity) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3816,10 +3953,10 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) SetTo(
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2ThreeDsReqAuthMethod) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3879,10 +4016,10 @@ func (o *OptNilPaymentMethodCardWith3DSecureCardTds2Type) SetTo(v PaymentMethodC
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2Type) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilPaymentMethodCardWith3DSecureCardTds2Type) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -3903,6 +4040,69 @@ func (o OptNilPaymentMethodCardWith3DSecureCardTds2Type) Get() (v PaymentMethodC
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilPaymentMethodCardWith3DSecureCardTds2Type) Or(d PaymentMethodCardWith3DSecureCardTds2Type) PaymentMethodCardWith3DSecureCardTds2Type {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilPaymentPaypayResponseRedirectType returns new OptNilPaymentPaypayResponseRedirectType with value set to v.
+func NewOptNilPaymentPaypayResponseRedirectType(v PaymentPaypayResponseRedirectType) OptNilPaymentPaypayResponseRedirectType {
+	return OptNilPaymentPaypayResponseRedirectType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilPaymentPaypayResponseRedirectType is optional nullable PaymentPaypayResponseRedirectType.
+type OptNilPaymentPaypayResponseRedirectType struct {
+	Value PaymentPaypayResponseRedirectType
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilPaymentPaypayResponseRedirectType was set.
+func (o OptNilPaymentPaypayResponseRedirectType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilPaymentPaypayResponseRedirectType) Reset() {
+	var v PaymentPaypayResponseRedirectType
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilPaymentPaypayResponseRedirectType) SetTo(v PaymentPaypayResponseRedirectType) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilPaymentPaypayResponseRedirectType) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilPaymentPaypayResponseRedirectType) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v PaymentPaypayResponseRedirectType
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilPaymentPaypayResponseRedirectType) Get() (v PaymentPaypayResponseRedirectType, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilPaymentPaypayResponseRedirectType) Or(d PaymentPaypayResponseRedirectType) PaymentPaypayResponseRedirectType {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -3942,10 +4142,10 @@ func (o *OptNilString) SetTo(v string) {
 	o.Value = v
 }
 
-// IsSet returns true if value is Null.
+// IsNull returns true if value is Null.
 func (o OptNilString) IsNull() bool { return o.Null }
 
-// SetNull sets value to null.
+// SetToNull sets value to null.
 func (o *OptNilString) SetToNull() {
 	o.Set = true
 	o.Null = true
@@ -4288,6 +4488,144 @@ func (o OptPaymentCancelCardResponseStatus) Get() (v PaymentCancelCardResponseSt
 
 // Or returns value if set, or given parameter if does not.
 func (o OptPaymentCancelCardResponseStatus) Or(d PaymentCancelCardResponseStatus) PaymentCancelCardResponseStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentCancelPaypayResponseJobCode returns new OptPaymentCancelPaypayResponseJobCode with value set to v.
+func NewOptPaymentCancelPaypayResponseJobCode(v PaymentCancelPaypayResponseJobCode) OptPaymentCancelPaypayResponseJobCode {
+	return OptPaymentCancelPaypayResponseJobCode{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentCancelPaypayResponseJobCode is optional PaymentCancelPaypayResponseJobCode.
+type OptPaymentCancelPaypayResponseJobCode struct {
+	Value PaymentCancelPaypayResponseJobCode
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentCancelPaypayResponseJobCode was set.
+func (o OptPaymentCancelPaypayResponseJobCode) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentCancelPaypayResponseJobCode) Reset() {
+	var v PaymentCancelPaypayResponseJobCode
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentCancelPaypayResponseJobCode) SetTo(v PaymentCancelPaypayResponseJobCode) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentCancelPaypayResponseJobCode) Get() (v PaymentCancelPaypayResponseJobCode, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentCancelPaypayResponseJobCode) Or(d PaymentCancelPaypayResponseJobCode) PaymentCancelPaypayResponseJobCode {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentCancelPaypayResponsePayType returns new OptPaymentCancelPaypayResponsePayType with value set to v.
+func NewOptPaymentCancelPaypayResponsePayType(v PaymentCancelPaypayResponsePayType) OptPaymentCancelPaypayResponsePayType {
+	return OptPaymentCancelPaypayResponsePayType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentCancelPaypayResponsePayType is optional PaymentCancelPaypayResponsePayType.
+type OptPaymentCancelPaypayResponsePayType struct {
+	Value PaymentCancelPaypayResponsePayType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentCancelPaypayResponsePayType was set.
+func (o OptPaymentCancelPaypayResponsePayType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentCancelPaypayResponsePayType) Reset() {
+	var v PaymentCancelPaypayResponsePayType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentCancelPaypayResponsePayType) SetTo(v PaymentCancelPaypayResponsePayType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentCancelPaypayResponsePayType) Get() (v PaymentCancelPaypayResponsePayType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentCancelPaypayResponsePayType) Or(d PaymentCancelPaypayResponsePayType) PaymentCancelPaypayResponsePayType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentCancelPaypayResponseStatus returns new OptPaymentCancelPaypayResponseStatus with value set to v.
+func NewOptPaymentCancelPaypayResponseStatus(v PaymentCancelPaypayResponseStatus) OptPaymentCancelPaypayResponseStatus {
+	return OptPaymentCancelPaypayResponseStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentCancelPaypayResponseStatus is optional PaymentCancelPaypayResponseStatus.
+type OptPaymentCancelPaypayResponseStatus struct {
+	Value PaymentCancelPaypayResponseStatus
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentCancelPaypayResponseStatus was set.
+func (o OptPaymentCancelPaypayResponseStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentCancelPaypayResponseStatus) Reset() {
+	var v PaymentCancelPaypayResponseStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentCancelPaypayResponseStatus) SetTo(v PaymentCancelPaypayResponseStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentCancelPaypayResponseStatus) Get() (v PaymentCancelPaypayResponseStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentCancelPaypayResponseStatus) Or(d PaymentCancelPaypayResponseStatus) PaymentCancelPaypayResponseStatus {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -5076,6 +5414,190 @@ func (o OptPaymentDoCardWithout3DSecureMethod) Or(d PaymentDoCardWithout3DSecure
 	return d
 }
 
+// NewOptPaymentDoPaypayRedirectType returns new OptPaymentDoPaypayRedirectType with value set to v.
+func NewOptPaymentDoPaypayRedirectType(v PaymentDoPaypayRedirectType) OptPaymentDoPaypayRedirectType {
+	return OptPaymentDoPaypayRedirectType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentDoPaypayRedirectType is optional PaymentDoPaypayRedirectType.
+type OptPaymentDoPaypayRedirectType struct {
+	Value PaymentDoPaypayRedirectType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentDoPaypayRedirectType was set.
+func (o OptPaymentDoPaypayRedirectType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentDoPaypayRedirectType) Reset() {
+	var v PaymentDoPaypayRedirectType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentDoPaypayRedirectType) SetTo(v PaymentDoPaypayRedirectType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentDoPaypayRedirectType) Get() (v PaymentDoPaypayRedirectType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentDoPaypayRedirectType) Or(d PaymentDoPaypayRedirectType) PaymentDoPaypayRedirectType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentDoPaypayResponseJobCode returns new OptPaymentDoPaypayResponseJobCode with value set to v.
+func NewOptPaymentDoPaypayResponseJobCode(v PaymentDoPaypayResponseJobCode) OptPaymentDoPaypayResponseJobCode {
+	return OptPaymentDoPaypayResponseJobCode{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentDoPaypayResponseJobCode is optional PaymentDoPaypayResponseJobCode.
+type OptPaymentDoPaypayResponseJobCode struct {
+	Value PaymentDoPaypayResponseJobCode
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentDoPaypayResponseJobCode was set.
+func (o OptPaymentDoPaypayResponseJobCode) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentDoPaypayResponseJobCode) Reset() {
+	var v PaymentDoPaypayResponseJobCode
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentDoPaypayResponseJobCode) SetTo(v PaymentDoPaypayResponseJobCode) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentDoPaypayResponseJobCode) Get() (v PaymentDoPaypayResponseJobCode, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentDoPaypayResponseJobCode) Or(d PaymentDoPaypayResponseJobCode) PaymentDoPaypayResponseJobCode {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentDoPaypayResponsePayType returns new OptPaymentDoPaypayResponsePayType with value set to v.
+func NewOptPaymentDoPaypayResponsePayType(v PaymentDoPaypayResponsePayType) OptPaymentDoPaypayResponsePayType {
+	return OptPaymentDoPaypayResponsePayType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentDoPaypayResponsePayType is optional PaymentDoPaypayResponsePayType.
+type OptPaymentDoPaypayResponsePayType struct {
+	Value PaymentDoPaypayResponsePayType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentDoPaypayResponsePayType was set.
+func (o OptPaymentDoPaypayResponsePayType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentDoPaypayResponsePayType) Reset() {
+	var v PaymentDoPaypayResponsePayType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentDoPaypayResponsePayType) SetTo(v PaymentDoPaypayResponsePayType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentDoPaypayResponsePayType) Get() (v PaymentDoPaypayResponsePayType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentDoPaypayResponsePayType) Or(d PaymentDoPaypayResponsePayType) PaymentDoPaypayResponsePayType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentDoPaypayResponseStatus returns new OptPaymentDoPaypayResponseStatus with value set to v.
+func NewOptPaymentDoPaypayResponseStatus(v PaymentDoPaypayResponseStatus) OptPaymentDoPaypayResponseStatus {
+	return OptPaymentDoPaypayResponseStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentDoPaypayResponseStatus is optional PaymentDoPaypayResponseStatus.
+type OptPaymentDoPaypayResponseStatus struct {
+	Value PaymentDoPaypayResponseStatus
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentDoPaypayResponseStatus was set.
+func (o OptPaymentDoPaypayResponseStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentDoPaypayResponseStatus) Reset() {
+	var v PaymentDoPaypayResponseStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentDoPaypayResponseStatus) SetTo(v PaymentDoPaypayResponseStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentDoPaypayResponseStatus) Get() (v PaymentDoPaypayResponseStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentDoPaypayResponseStatus) Or(d PaymentDoPaypayResponseStatus) PaymentDoPaypayResponseStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptPaymentMethodCardResponseCard returns new OptPaymentMethodCardResponseCard with value set to v.
 func NewOptPaymentMethodCardResponseCard(v PaymentMethodCardResponseCard) OptPaymentMethodCardResponseCard {
 	return OptPaymentMethodCardResponseCard{
@@ -5668,6 +6190,144 @@ func (o OptPaymentMethodDirectDebitResponseStatus) Get() (v PaymentMethodDirectD
 
 // Or returns value if set, or given parameter if does not.
 func (o OptPaymentMethodDirectDebitResponseStatus) Or(d PaymentMethodDirectDebitResponseStatus) PaymentMethodDirectDebitResponseStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentPaypayResponseJobCode returns new OptPaymentPaypayResponseJobCode with value set to v.
+func NewOptPaymentPaypayResponseJobCode(v PaymentPaypayResponseJobCode) OptPaymentPaypayResponseJobCode {
+	return OptPaymentPaypayResponseJobCode{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentPaypayResponseJobCode is optional PaymentPaypayResponseJobCode.
+type OptPaymentPaypayResponseJobCode struct {
+	Value PaymentPaypayResponseJobCode
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentPaypayResponseJobCode was set.
+func (o OptPaymentPaypayResponseJobCode) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentPaypayResponseJobCode) Reset() {
+	var v PaymentPaypayResponseJobCode
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentPaypayResponseJobCode) SetTo(v PaymentPaypayResponseJobCode) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentPaypayResponseJobCode) Get() (v PaymentPaypayResponseJobCode, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentPaypayResponseJobCode) Or(d PaymentPaypayResponseJobCode) PaymentPaypayResponseJobCode {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentPaypayResponsePayType returns new OptPaymentPaypayResponsePayType with value set to v.
+func NewOptPaymentPaypayResponsePayType(v PaymentPaypayResponsePayType) OptPaymentPaypayResponsePayType {
+	return OptPaymentPaypayResponsePayType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentPaypayResponsePayType is optional PaymentPaypayResponsePayType.
+type OptPaymentPaypayResponsePayType struct {
+	Value PaymentPaypayResponsePayType
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentPaypayResponsePayType was set.
+func (o OptPaymentPaypayResponsePayType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentPaypayResponsePayType) Reset() {
+	var v PaymentPaypayResponsePayType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentPaypayResponsePayType) SetTo(v PaymentPaypayResponsePayType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentPaypayResponsePayType) Get() (v PaymentPaypayResponsePayType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentPaypayResponsePayType) Or(d PaymentPaypayResponsePayType) PaymentPaypayResponsePayType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptPaymentPaypayResponseStatus returns new OptPaymentPaypayResponseStatus with value set to v.
+func NewOptPaymentPaypayResponseStatus(v PaymentPaypayResponseStatus) OptPaymentPaypayResponseStatus {
+	return OptPaymentPaypayResponseStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptPaymentPaypayResponseStatus is optional PaymentPaypayResponseStatus.
+type OptPaymentPaypayResponseStatus struct {
+	Value PaymentPaypayResponseStatus
+	Set   bool
+}
+
+// IsSet returns true if OptPaymentPaypayResponseStatus was set.
+func (o OptPaymentPaypayResponseStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptPaymentPaypayResponseStatus) Reset() {
+	var v PaymentPaypayResponseStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptPaymentPaypayResponseStatus) SetTo(v PaymentPaypayResponseStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptPaymentPaypayResponseStatus) Get() (v PaymentPaypayResponseStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptPaymentPaypayResponseStatus) Or(d PaymentPaypayResponseStatus) PaymentPaypayResponseStatus {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -7546,6 +8206,662 @@ func (s *PaymentCancelCardResponseTdsType) UnmarshalText(data []byte) error {
 		return nil
 	case PaymentCancelCardResponseTdsType2:
 		*s = PaymentCancelCardResponseTdsType2
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentCancelPaypay
+type PaymentCancelPaypay struct {
+	PayType           PaymentCancelPaypayPayType `json:"pay_type"`
+	AccessID          string                     `json:"access_id"`
+	CancelDescription OptNilString               `json:"cancel_description"`
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentCancelPaypay) GetPayType() PaymentCancelPaypayPayType {
+	return s.PayType
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentCancelPaypay) GetAccessID() string {
+	return s.AccessID
+}
+
+// GetCancelDescription returns the value of CancelDescription.
+func (s *PaymentCancelPaypay) GetCancelDescription() OptNilString {
+	return s.CancelDescription
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentCancelPaypay) SetPayType(val PaymentCancelPaypayPayType) {
+	s.PayType = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentCancelPaypay) SetAccessID(val string) {
+	s.AccessID = val
+}
+
+// SetCancelDescription sets the value of CancelDescription.
+func (s *PaymentCancelPaypay) SetCancelDescription(val OptNilString) {
+	s.CancelDescription = val
+}
+
+type PaymentCancelPaypayPayType string
+
+const (
+	PaymentCancelPaypayPayTypePaypay PaymentCancelPaypayPayType = "Paypay"
+)
+
+// AllValues returns all PaymentCancelPaypayPayType values.
+func (PaymentCancelPaypayPayType) AllValues() []PaymentCancelPaypayPayType {
+	return []PaymentCancelPaypayPayType{
+		PaymentCancelPaypayPayTypePaypay,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCancelPaypayPayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCancelPaypayPayTypePaypay:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCancelPaypayPayType) UnmarshalText(data []byte) error {
+	switch PaymentCancelPaypayPayType(data) {
+	case PaymentCancelPaypayPayTypePaypay:
+		*s = PaymentCancelPaypayPayTypePaypay
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentCancelPaypayResponse
+type PaymentCancelPaypayResponse struct {
+	ShopID             OptString                                     `json:"shop_id"`
+	ID                 OptString                                     `json:"id"`
+	AccessID           OptString                                     `json:"access_id"`
+	Amount             OptInt                                        `json:"amount"`
+	Tax                OptInt                                        `json:"tax"`
+	TotalAmount        OptInt                                        `json:"total_amount"`
+	ClientField1       OptNilString                                  `json:"client_field_1"`
+	ClientField2       OptNilString                                  `json:"client_field_2"`
+	ClientField3       OptNilString                                  `json:"client_field_3"`
+	ProcessDate        OptString                                     `json:"process_date"`
+	CustomerID         OptNilString                                  `json:"customer_id"`
+	CustomerGroupID    OptNilString                                  `json:"customer_group_id"`
+	ErrorCode          OptNilString                                  `json:"error_code"`
+	Created            OptNilString                                  `json:"created"`
+	Updated            OptNilString                                  `json:"updated"`
+	PayType            OptPaymentCancelPaypayResponsePayType         `json:"pay_type"`
+	JobCode            OptPaymentCancelPaypayResponseJobCode         `json:"job_code"`
+	Status             OptPaymentCancelPaypayResponseStatus          `json:"status"`
+	CodeURL            OptNilString                                  `json:"code_url"`
+	CodeExpiryDate     OptNilString                                  `json:"code_expiry_date"`
+	RedirectURL        OptNilString                                  `json:"redirect_url"`
+	RedirectType       OptNilPaymentCancelPaypayResponseRedirectType `json:"redirect_type"`
+	AuthMaxDate        OptNilString                                  `json:"auth_max_date"`
+	OrderDescription   OptNilString                                  `json:"order_description"`
+	CaptureDescription OptNilString                                  `json:"capture_description"`
+	UpdateDescription  OptNilString                                  `json:"update_description"`
+	CancelDescription  OptNilString                                  `json:"cancel_description"`
+	StoreID            OptNilString                                  `json:"store_id"`
+	CodeID             OptNilString                                  `json:"code_id"`
+	PaymentID          OptNilString                                  `json:"payment_id"`
+	PaypayResultCode   OptNilString                                  `json:"paypay_result_code"`
+	MerchantPaymentID  OptNilString                                  `json:"merchant_payment_id"`
+	MerchantCaptureID  OptNilString                                  `json:"merchant_capture_id"`
+	MerchantUpdateID   OptNilString                                  `json:"merchant_update_id"`
+	MerchantRefundID   OptNilString                                  `json:"merchant_refund_id"`
+	PaymentDate        OptNilString                                  `json:"payment_date"`
+}
+
+// GetShopID returns the value of ShopID.
+func (s *PaymentCancelPaypayResponse) GetShopID() OptString {
+	return s.ShopID
+}
+
+// GetID returns the value of ID.
+func (s *PaymentCancelPaypayResponse) GetID() OptString {
+	return s.ID
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentCancelPaypayResponse) GetAccessID() OptString {
+	return s.AccessID
+}
+
+// GetAmount returns the value of Amount.
+func (s *PaymentCancelPaypayResponse) GetAmount() OptInt {
+	return s.Amount
+}
+
+// GetTax returns the value of Tax.
+func (s *PaymentCancelPaypayResponse) GetTax() OptInt {
+	return s.Tax
+}
+
+// GetTotalAmount returns the value of TotalAmount.
+func (s *PaymentCancelPaypayResponse) GetTotalAmount() OptInt {
+	return s.TotalAmount
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentCancelPaypayResponse) GetClientField1() OptNilString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentCancelPaypayResponse) GetClientField2() OptNilString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentCancelPaypayResponse) GetClientField3() OptNilString {
+	return s.ClientField3
+}
+
+// GetProcessDate returns the value of ProcessDate.
+func (s *PaymentCancelPaypayResponse) GetProcessDate() OptString {
+	return s.ProcessDate
+}
+
+// GetCustomerID returns the value of CustomerID.
+func (s *PaymentCancelPaypayResponse) GetCustomerID() OptNilString {
+	return s.CustomerID
+}
+
+// GetCustomerGroupID returns the value of CustomerGroupID.
+func (s *PaymentCancelPaypayResponse) GetCustomerGroupID() OptNilString {
+	return s.CustomerGroupID
+}
+
+// GetErrorCode returns the value of ErrorCode.
+func (s *PaymentCancelPaypayResponse) GetErrorCode() OptNilString {
+	return s.ErrorCode
+}
+
+// GetCreated returns the value of Created.
+func (s *PaymentCancelPaypayResponse) GetCreated() OptNilString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *PaymentCancelPaypayResponse) GetUpdated() OptNilString {
+	return s.Updated
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentCancelPaypayResponse) GetPayType() OptPaymentCancelPaypayResponsePayType {
+	return s.PayType
+}
+
+// GetJobCode returns the value of JobCode.
+func (s *PaymentCancelPaypayResponse) GetJobCode() OptPaymentCancelPaypayResponseJobCode {
+	return s.JobCode
+}
+
+// GetStatus returns the value of Status.
+func (s *PaymentCancelPaypayResponse) GetStatus() OptPaymentCancelPaypayResponseStatus {
+	return s.Status
+}
+
+// GetCodeURL returns the value of CodeURL.
+func (s *PaymentCancelPaypayResponse) GetCodeURL() OptNilString {
+	return s.CodeURL
+}
+
+// GetCodeExpiryDate returns the value of CodeExpiryDate.
+func (s *PaymentCancelPaypayResponse) GetCodeExpiryDate() OptNilString {
+	return s.CodeExpiryDate
+}
+
+// GetRedirectURL returns the value of RedirectURL.
+func (s *PaymentCancelPaypayResponse) GetRedirectURL() OptNilString {
+	return s.RedirectURL
+}
+
+// GetRedirectType returns the value of RedirectType.
+func (s *PaymentCancelPaypayResponse) GetRedirectType() OptNilPaymentCancelPaypayResponseRedirectType {
+	return s.RedirectType
+}
+
+// GetAuthMaxDate returns the value of AuthMaxDate.
+func (s *PaymentCancelPaypayResponse) GetAuthMaxDate() OptNilString {
+	return s.AuthMaxDate
+}
+
+// GetOrderDescription returns the value of OrderDescription.
+func (s *PaymentCancelPaypayResponse) GetOrderDescription() OptNilString {
+	return s.OrderDescription
+}
+
+// GetCaptureDescription returns the value of CaptureDescription.
+func (s *PaymentCancelPaypayResponse) GetCaptureDescription() OptNilString {
+	return s.CaptureDescription
+}
+
+// GetUpdateDescription returns the value of UpdateDescription.
+func (s *PaymentCancelPaypayResponse) GetUpdateDescription() OptNilString {
+	return s.UpdateDescription
+}
+
+// GetCancelDescription returns the value of CancelDescription.
+func (s *PaymentCancelPaypayResponse) GetCancelDescription() OptNilString {
+	return s.CancelDescription
+}
+
+// GetStoreID returns the value of StoreID.
+func (s *PaymentCancelPaypayResponse) GetStoreID() OptNilString {
+	return s.StoreID
+}
+
+// GetCodeID returns the value of CodeID.
+func (s *PaymentCancelPaypayResponse) GetCodeID() OptNilString {
+	return s.CodeID
+}
+
+// GetPaymentID returns the value of PaymentID.
+func (s *PaymentCancelPaypayResponse) GetPaymentID() OptNilString {
+	return s.PaymentID
+}
+
+// GetPaypayResultCode returns the value of PaypayResultCode.
+func (s *PaymentCancelPaypayResponse) GetPaypayResultCode() OptNilString {
+	return s.PaypayResultCode
+}
+
+// GetMerchantPaymentID returns the value of MerchantPaymentID.
+func (s *PaymentCancelPaypayResponse) GetMerchantPaymentID() OptNilString {
+	return s.MerchantPaymentID
+}
+
+// GetMerchantCaptureID returns the value of MerchantCaptureID.
+func (s *PaymentCancelPaypayResponse) GetMerchantCaptureID() OptNilString {
+	return s.MerchantCaptureID
+}
+
+// GetMerchantUpdateID returns the value of MerchantUpdateID.
+func (s *PaymentCancelPaypayResponse) GetMerchantUpdateID() OptNilString {
+	return s.MerchantUpdateID
+}
+
+// GetMerchantRefundID returns the value of MerchantRefundID.
+func (s *PaymentCancelPaypayResponse) GetMerchantRefundID() OptNilString {
+	return s.MerchantRefundID
+}
+
+// GetPaymentDate returns the value of PaymentDate.
+func (s *PaymentCancelPaypayResponse) GetPaymentDate() OptNilString {
+	return s.PaymentDate
+}
+
+// SetShopID sets the value of ShopID.
+func (s *PaymentCancelPaypayResponse) SetShopID(val OptString) {
+	s.ShopID = val
+}
+
+// SetID sets the value of ID.
+func (s *PaymentCancelPaypayResponse) SetID(val OptString) {
+	s.ID = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentCancelPaypayResponse) SetAccessID(val OptString) {
+	s.AccessID = val
+}
+
+// SetAmount sets the value of Amount.
+func (s *PaymentCancelPaypayResponse) SetAmount(val OptInt) {
+	s.Amount = val
+}
+
+// SetTax sets the value of Tax.
+func (s *PaymentCancelPaypayResponse) SetTax(val OptInt) {
+	s.Tax = val
+}
+
+// SetTotalAmount sets the value of TotalAmount.
+func (s *PaymentCancelPaypayResponse) SetTotalAmount(val OptInt) {
+	s.TotalAmount = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentCancelPaypayResponse) SetClientField1(val OptNilString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentCancelPaypayResponse) SetClientField2(val OptNilString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentCancelPaypayResponse) SetClientField3(val OptNilString) {
+	s.ClientField3 = val
+}
+
+// SetProcessDate sets the value of ProcessDate.
+func (s *PaymentCancelPaypayResponse) SetProcessDate(val OptString) {
+	s.ProcessDate = val
+}
+
+// SetCustomerID sets the value of CustomerID.
+func (s *PaymentCancelPaypayResponse) SetCustomerID(val OptNilString) {
+	s.CustomerID = val
+}
+
+// SetCustomerGroupID sets the value of CustomerGroupID.
+func (s *PaymentCancelPaypayResponse) SetCustomerGroupID(val OptNilString) {
+	s.CustomerGroupID = val
+}
+
+// SetErrorCode sets the value of ErrorCode.
+func (s *PaymentCancelPaypayResponse) SetErrorCode(val OptNilString) {
+	s.ErrorCode = val
+}
+
+// SetCreated sets the value of Created.
+func (s *PaymentCancelPaypayResponse) SetCreated(val OptNilString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *PaymentCancelPaypayResponse) SetUpdated(val OptNilString) {
+	s.Updated = val
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentCancelPaypayResponse) SetPayType(val OptPaymentCancelPaypayResponsePayType) {
+	s.PayType = val
+}
+
+// SetJobCode sets the value of JobCode.
+func (s *PaymentCancelPaypayResponse) SetJobCode(val OptPaymentCancelPaypayResponseJobCode) {
+	s.JobCode = val
+}
+
+// SetStatus sets the value of Status.
+func (s *PaymentCancelPaypayResponse) SetStatus(val OptPaymentCancelPaypayResponseStatus) {
+	s.Status = val
+}
+
+// SetCodeURL sets the value of CodeURL.
+func (s *PaymentCancelPaypayResponse) SetCodeURL(val OptNilString) {
+	s.CodeURL = val
+}
+
+// SetCodeExpiryDate sets the value of CodeExpiryDate.
+func (s *PaymentCancelPaypayResponse) SetCodeExpiryDate(val OptNilString) {
+	s.CodeExpiryDate = val
+}
+
+// SetRedirectURL sets the value of RedirectURL.
+func (s *PaymentCancelPaypayResponse) SetRedirectURL(val OptNilString) {
+	s.RedirectURL = val
+}
+
+// SetRedirectType sets the value of RedirectType.
+func (s *PaymentCancelPaypayResponse) SetRedirectType(val OptNilPaymentCancelPaypayResponseRedirectType) {
+	s.RedirectType = val
+}
+
+// SetAuthMaxDate sets the value of AuthMaxDate.
+func (s *PaymentCancelPaypayResponse) SetAuthMaxDate(val OptNilString) {
+	s.AuthMaxDate = val
+}
+
+// SetOrderDescription sets the value of OrderDescription.
+func (s *PaymentCancelPaypayResponse) SetOrderDescription(val OptNilString) {
+	s.OrderDescription = val
+}
+
+// SetCaptureDescription sets the value of CaptureDescription.
+func (s *PaymentCancelPaypayResponse) SetCaptureDescription(val OptNilString) {
+	s.CaptureDescription = val
+}
+
+// SetUpdateDescription sets the value of UpdateDescription.
+func (s *PaymentCancelPaypayResponse) SetUpdateDescription(val OptNilString) {
+	s.UpdateDescription = val
+}
+
+// SetCancelDescription sets the value of CancelDescription.
+func (s *PaymentCancelPaypayResponse) SetCancelDescription(val OptNilString) {
+	s.CancelDescription = val
+}
+
+// SetStoreID sets the value of StoreID.
+func (s *PaymentCancelPaypayResponse) SetStoreID(val OptNilString) {
+	s.StoreID = val
+}
+
+// SetCodeID sets the value of CodeID.
+func (s *PaymentCancelPaypayResponse) SetCodeID(val OptNilString) {
+	s.CodeID = val
+}
+
+// SetPaymentID sets the value of PaymentID.
+func (s *PaymentCancelPaypayResponse) SetPaymentID(val OptNilString) {
+	s.PaymentID = val
+}
+
+// SetPaypayResultCode sets the value of PaypayResultCode.
+func (s *PaymentCancelPaypayResponse) SetPaypayResultCode(val OptNilString) {
+	s.PaypayResultCode = val
+}
+
+// SetMerchantPaymentID sets the value of MerchantPaymentID.
+func (s *PaymentCancelPaypayResponse) SetMerchantPaymentID(val OptNilString) {
+	s.MerchantPaymentID = val
+}
+
+// SetMerchantCaptureID sets the value of MerchantCaptureID.
+func (s *PaymentCancelPaypayResponse) SetMerchantCaptureID(val OptNilString) {
+	s.MerchantCaptureID = val
+}
+
+// SetMerchantUpdateID sets the value of MerchantUpdateID.
+func (s *PaymentCancelPaypayResponse) SetMerchantUpdateID(val OptNilString) {
+	s.MerchantUpdateID = val
+}
+
+// SetMerchantRefundID sets the value of MerchantRefundID.
+func (s *PaymentCancelPaypayResponse) SetMerchantRefundID(val OptNilString) {
+	s.MerchantRefundID = val
+}
+
+// SetPaymentDate sets the value of PaymentDate.
+func (s *PaymentCancelPaypayResponse) SetPaymentDate(val OptNilString) {
+	s.PaymentDate = val
+}
+
+type PaymentCancelPaypayResponseJobCode string
+
+const (
+	PaymentCancelPaypayResponseJobCodeAUTH    PaymentCancelPaypayResponseJobCode = "AUTH"
+	PaymentCancelPaypayResponseJobCodeCAPTURE PaymentCancelPaypayResponseJobCode = "CAPTURE"
+)
+
+// AllValues returns all PaymentCancelPaypayResponseJobCode values.
+func (PaymentCancelPaypayResponseJobCode) AllValues() []PaymentCancelPaypayResponseJobCode {
+	return []PaymentCancelPaypayResponseJobCode{
+		PaymentCancelPaypayResponseJobCodeAUTH,
+		PaymentCancelPaypayResponseJobCodeCAPTURE,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCancelPaypayResponseJobCode) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCancelPaypayResponseJobCodeAUTH:
+		return []byte(s), nil
+	case PaymentCancelPaypayResponseJobCodeCAPTURE:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCancelPaypayResponseJobCode) UnmarshalText(data []byte) error {
+	switch PaymentCancelPaypayResponseJobCode(data) {
+	case PaymentCancelPaypayResponseJobCodeAUTH:
+		*s = PaymentCancelPaypayResponseJobCodeAUTH
+		return nil
+	case PaymentCancelPaypayResponseJobCodeCAPTURE:
+		*s = PaymentCancelPaypayResponseJobCodeCAPTURE
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCancelPaypayResponsePayType string
+
+const (
+	PaymentCancelPaypayResponsePayTypePaypay PaymentCancelPaypayResponsePayType = "Paypay"
+)
+
+// AllValues returns all PaymentCancelPaypayResponsePayType values.
+func (PaymentCancelPaypayResponsePayType) AllValues() []PaymentCancelPaypayResponsePayType {
+	return []PaymentCancelPaypayResponsePayType{
+		PaymentCancelPaypayResponsePayTypePaypay,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCancelPaypayResponsePayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCancelPaypayResponsePayTypePaypay:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCancelPaypayResponsePayType) UnmarshalText(data []byte) error {
+	switch PaymentCancelPaypayResponsePayType(data) {
+	case PaymentCancelPaypayResponsePayTypePaypay:
+		*s = PaymentCancelPaypayResponsePayTypePaypay
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCancelPaypayResponseRedirectType string
+
+const (
+	PaymentCancelPaypayResponseRedirectType1 PaymentCancelPaypayResponseRedirectType = "1"
+	PaymentCancelPaypayResponseRedirectType2 PaymentCancelPaypayResponseRedirectType = "2"
+)
+
+// AllValues returns all PaymentCancelPaypayResponseRedirectType values.
+func (PaymentCancelPaypayResponseRedirectType) AllValues() []PaymentCancelPaypayResponseRedirectType {
+	return []PaymentCancelPaypayResponseRedirectType{
+		PaymentCancelPaypayResponseRedirectType1,
+		PaymentCancelPaypayResponseRedirectType2,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCancelPaypayResponseRedirectType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCancelPaypayResponseRedirectType1:
+		return []byte(s), nil
+	case PaymentCancelPaypayResponseRedirectType2:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCancelPaypayResponseRedirectType) UnmarshalText(data []byte) error {
+	switch PaymentCancelPaypayResponseRedirectType(data) {
+	case PaymentCancelPaypayResponseRedirectType1:
+		*s = PaymentCancelPaypayResponseRedirectType1
+		return nil
+	case PaymentCancelPaypayResponseRedirectType2:
+		*s = PaymentCancelPaypayResponseRedirectType2
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentCancelPaypayResponseStatus string
+
+const (
+	PaymentCancelPaypayResponseStatusUNPROCESSED             PaymentCancelPaypayResponseStatus = "UNPROCESSED"
+	PaymentCancelPaypayResponseStatusAWAITINGCUSTOMERPAYMENT PaymentCancelPaypayResponseStatus = "AWAITING_CUSTOMER_PAYMENT"
+	PaymentCancelPaypayResponseStatusAUTHORIZED              PaymentCancelPaypayResponseStatus = "AUTHORIZED"
+	PaymentCancelPaypayResponseStatusCAPTURED                PaymentCancelPaypayResponseStatus = "CAPTURED"
+	PaymentCancelPaypayResponseStatusCANCELED                PaymentCancelPaypayResponseStatus = "CANCELED"
+	PaymentCancelPaypayResponseStatusEXPIRED                 PaymentCancelPaypayResponseStatus = "EXPIRED"
+)
+
+// AllValues returns all PaymentCancelPaypayResponseStatus values.
+func (PaymentCancelPaypayResponseStatus) AllValues() []PaymentCancelPaypayResponseStatus {
+	return []PaymentCancelPaypayResponseStatus{
+		PaymentCancelPaypayResponseStatusUNPROCESSED,
+		PaymentCancelPaypayResponseStatusAWAITINGCUSTOMERPAYMENT,
+		PaymentCancelPaypayResponseStatusAUTHORIZED,
+		PaymentCancelPaypayResponseStatusCAPTURED,
+		PaymentCancelPaypayResponseStatusCANCELED,
+		PaymentCancelPaypayResponseStatusEXPIRED,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCancelPaypayResponseStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCancelPaypayResponseStatusUNPROCESSED:
+		return []byte(s), nil
+	case PaymentCancelPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		return []byte(s), nil
+	case PaymentCancelPaypayResponseStatusAUTHORIZED:
+		return []byte(s), nil
+	case PaymentCancelPaypayResponseStatusCAPTURED:
+		return []byte(s), nil
+	case PaymentCancelPaypayResponseStatusCANCELED:
+		return []byte(s), nil
+	case PaymentCancelPaypayResponseStatusEXPIRED:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCancelPaypayResponseStatus) UnmarshalText(data []byte) error {
+	switch PaymentCancelPaypayResponseStatus(data) {
+	case PaymentCancelPaypayResponseStatusUNPROCESSED:
+		*s = PaymentCancelPaypayResponseStatusUNPROCESSED
+		return nil
+	case PaymentCancelPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		*s = PaymentCancelPaypayResponseStatusAWAITINGCUSTOMERPAYMENT
+		return nil
+	case PaymentCancelPaypayResponseStatusAUTHORIZED:
+		*s = PaymentCancelPaypayResponseStatusAUTHORIZED
+		return nil
+	case PaymentCancelPaypayResponseStatusCAPTURED:
+		*s = PaymentCancelPaypayResponseStatusCAPTURED
+		return nil
+	case PaymentCancelPaypayResponseStatusCANCELED:
+		*s = PaymentCancelPaypayResponseStatusCANCELED
+		return nil
+	case PaymentCancelPaypayResponseStatusEXPIRED:
+		*s = PaymentCancelPaypayResponseStatusEXPIRED
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
@@ -12538,6 +13854,736 @@ func (s *PaymentDoCardWithout3DSecurePayType) UnmarshalText(data []byte) error {
 	}
 }
 
+// Ref: #/components/schemas/paymentDoPaypay
+type PaymentDoPaypay struct {
+	PayType      PaymentDoPaypayPayType         `json:"pay_type"`
+	AccessID     string                         `json:"access_id"`
+	CustomerID   OptString                      `json:"customer_id"`
+	RedirectURL  string                         `json:"redirect_url"`
+	RedirectType OptPaymentDoPaypayRedirectType `json:"redirect_type"`
+	UserAgent    OptString                      `json:"user_agent"`
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentDoPaypay) GetPayType() PaymentDoPaypayPayType {
+	return s.PayType
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentDoPaypay) GetAccessID() string {
+	return s.AccessID
+}
+
+// GetCustomerID returns the value of CustomerID.
+func (s *PaymentDoPaypay) GetCustomerID() OptString {
+	return s.CustomerID
+}
+
+// GetRedirectURL returns the value of RedirectURL.
+func (s *PaymentDoPaypay) GetRedirectURL() string {
+	return s.RedirectURL
+}
+
+// GetRedirectType returns the value of RedirectType.
+func (s *PaymentDoPaypay) GetRedirectType() OptPaymentDoPaypayRedirectType {
+	return s.RedirectType
+}
+
+// GetUserAgent returns the value of UserAgent.
+func (s *PaymentDoPaypay) GetUserAgent() OptString {
+	return s.UserAgent
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentDoPaypay) SetPayType(val PaymentDoPaypayPayType) {
+	s.PayType = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentDoPaypay) SetAccessID(val string) {
+	s.AccessID = val
+}
+
+// SetCustomerID sets the value of CustomerID.
+func (s *PaymentDoPaypay) SetCustomerID(val OptString) {
+	s.CustomerID = val
+}
+
+// SetRedirectURL sets the value of RedirectURL.
+func (s *PaymentDoPaypay) SetRedirectURL(val string) {
+	s.RedirectURL = val
+}
+
+// SetRedirectType sets the value of RedirectType.
+func (s *PaymentDoPaypay) SetRedirectType(val OptPaymentDoPaypayRedirectType) {
+	s.RedirectType = val
+}
+
+// SetUserAgent sets the value of UserAgent.
+func (s *PaymentDoPaypay) SetUserAgent(val OptString) {
+	s.UserAgent = val
+}
+
+type PaymentDoPaypayPayType string
+
+const (
+	PaymentDoPaypayPayTypePaypay PaymentDoPaypayPayType = "Paypay"
+)
+
+// AllValues returns all PaymentDoPaypayPayType values.
+func (PaymentDoPaypayPayType) AllValues() []PaymentDoPaypayPayType {
+	return []PaymentDoPaypayPayType{
+		PaymentDoPaypayPayTypePaypay,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentDoPaypayPayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentDoPaypayPayTypePaypay:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentDoPaypayPayType) UnmarshalText(data []byte) error {
+	switch PaymentDoPaypayPayType(data) {
+	case PaymentDoPaypayPayTypePaypay:
+		*s = PaymentDoPaypayPayTypePaypay
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentDoPaypayRedirectType string
+
+const (
+	PaymentDoPaypayRedirectType1 PaymentDoPaypayRedirectType = "1"
+	PaymentDoPaypayRedirectType2 PaymentDoPaypayRedirectType = "2"
+)
+
+// AllValues returns all PaymentDoPaypayRedirectType values.
+func (PaymentDoPaypayRedirectType) AllValues() []PaymentDoPaypayRedirectType {
+	return []PaymentDoPaypayRedirectType{
+		PaymentDoPaypayRedirectType1,
+		PaymentDoPaypayRedirectType2,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentDoPaypayRedirectType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentDoPaypayRedirectType1:
+		return []byte(s), nil
+	case PaymentDoPaypayRedirectType2:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentDoPaypayRedirectType) UnmarshalText(data []byte) error {
+	switch PaymentDoPaypayRedirectType(data) {
+	case PaymentDoPaypayRedirectType1:
+		*s = PaymentDoPaypayRedirectType1
+		return nil
+	case PaymentDoPaypayRedirectType2:
+		*s = PaymentDoPaypayRedirectType2
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentDoPaypayResponse
+type PaymentDoPaypayResponse struct {
+	ShopID             OptString                                 `json:"shop_id"`
+	ID                 OptString                                 `json:"id"`
+	AccessID           OptString                                 `json:"access_id"`
+	Amount             OptInt                                    `json:"amount"`
+	Tax                OptInt                                    `json:"tax"`
+	TotalAmount        OptInt                                    `json:"total_amount"`
+	ClientField1       OptNilString                              `json:"client_field_1"`
+	ClientField2       OptNilString                              `json:"client_field_2"`
+	ClientField3       OptNilString                              `json:"client_field_3"`
+	ProcessDate        OptString                                 `json:"process_date"`
+	CustomerID         OptNilString                              `json:"customer_id"`
+	CustomerGroupID    OptNilString                              `json:"customer_group_id"`
+	ErrorCode          OptNilString                              `json:"error_code"`
+	Created            OptNilString                              `json:"created"`
+	Updated            OptNilString                              `json:"updated"`
+	PayType            OptPaymentDoPaypayResponsePayType         `json:"pay_type"`
+	JobCode            OptPaymentDoPaypayResponseJobCode         `json:"job_code"`
+	Status             OptPaymentDoPaypayResponseStatus          `json:"status"`
+	CodeURL            OptNilString                              `json:"code_url"`
+	CodeExpiryDate     OptNilString                              `json:"code_expiry_date"`
+	RedirectURL        OptNilString                              `json:"redirect_url"`
+	RedirectType       OptNilPaymentDoPaypayResponseRedirectType `json:"redirect_type"`
+	AuthMaxDate        OptNilString                              `json:"auth_max_date"`
+	OrderDescription   OptNilString                              `json:"order_description"`
+	CaptureDescription OptNilString                              `json:"capture_description"`
+	UpdateDescription  OptNilString                              `json:"update_description"`
+	CancelDescription  OptNilString                              `json:"cancel_description"`
+	StoreID            OptNilString                              `json:"store_id"`
+	CodeID             OptNilString                              `json:"code_id"`
+	PaymentID          OptNilString                              `json:"payment_id"`
+	PaypayResultCode   OptNilString                              `json:"paypay_result_code"`
+	MerchantPaymentID  OptNilString                              `json:"merchant_payment_id"`
+	MerchantCaptureID  OptNilString                              `json:"merchant_capture_id"`
+	MerchantUpdateID   OptNilString                              `json:"merchant_update_id"`
+	MerchantRefundID   OptNilString                              `json:"merchant_refund_id"`
+	PaymentDate        OptNilString                              `json:"payment_date"`
+}
+
+// GetShopID returns the value of ShopID.
+func (s *PaymentDoPaypayResponse) GetShopID() OptString {
+	return s.ShopID
+}
+
+// GetID returns the value of ID.
+func (s *PaymentDoPaypayResponse) GetID() OptString {
+	return s.ID
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentDoPaypayResponse) GetAccessID() OptString {
+	return s.AccessID
+}
+
+// GetAmount returns the value of Amount.
+func (s *PaymentDoPaypayResponse) GetAmount() OptInt {
+	return s.Amount
+}
+
+// GetTax returns the value of Tax.
+func (s *PaymentDoPaypayResponse) GetTax() OptInt {
+	return s.Tax
+}
+
+// GetTotalAmount returns the value of TotalAmount.
+func (s *PaymentDoPaypayResponse) GetTotalAmount() OptInt {
+	return s.TotalAmount
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentDoPaypayResponse) GetClientField1() OptNilString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentDoPaypayResponse) GetClientField2() OptNilString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentDoPaypayResponse) GetClientField3() OptNilString {
+	return s.ClientField3
+}
+
+// GetProcessDate returns the value of ProcessDate.
+func (s *PaymentDoPaypayResponse) GetProcessDate() OptString {
+	return s.ProcessDate
+}
+
+// GetCustomerID returns the value of CustomerID.
+func (s *PaymentDoPaypayResponse) GetCustomerID() OptNilString {
+	return s.CustomerID
+}
+
+// GetCustomerGroupID returns the value of CustomerGroupID.
+func (s *PaymentDoPaypayResponse) GetCustomerGroupID() OptNilString {
+	return s.CustomerGroupID
+}
+
+// GetErrorCode returns the value of ErrorCode.
+func (s *PaymentDoPaypayResponse) GetErrorCode() OptNilString {
+	return s.ErrorCode
+}
+
+// GetCreated returns the value of Created.
+func (s *PaymentDoPaypayResponse) GetCreated() OptNilString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *PaymentDoPaypayResponse) GetUpdated() OptNilString {
+	return s.Updated
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentDoPaypayResponse) GetPayType() OptPaymentDoPaypayResponsePayType {
+	return s.PayType
+}
+
+// GetJobCode returns the value of JobCode.
+func (s *PaymentDoPaypayResponse) GetJobCode() OptPaymentDoPaypayResponseJobCode {
+	return s.JobCode
+}
+
+// GetStatus returns the value of Status.
+func (s *PaymentDoPaypayResponse) GetStatus() OptPaymentDoPaypayResponseStatus {
+	return s.Status
+}
+
+// GetCodeURL returns the value of CodeURL.
+func (s *PaymentDoPaypayResponse) GetCodeURL() OptNilString {
+	return s.CodeURL
+}
+
+// GetCodeExpiryDate returns the value of CodeExpiryDate.
+func (s *PaymentDoPaypayResponse) GetCodeExpiryDate() OptNilString {
+	return s.CodeExpiryDate
+}
+
+// GetRedirectURL returns the value of RedirectURL.
+func (s *PaymentDoPaypayResponse) GetRedirectURL() OptNilString {
+	return s.RedirectURL
+}
+
+// GetRedirectType returns the value of RedirectType.
+func (s *PaymentDoPaypayResponse) GetRedirectType() OptNilPaymentDoPaypayResponseRedirectType {
+	return s.RedirectType
+}
+
+// GetAuthMaxDate returns the value of AuthMaxDate.
+func (s *PaymentDoPaypayResponse) GetAuthMaxDate() OptNilString {
+	return s.AuthMaxDate
+}
+
+// GetOrderDescription returns the value of OrderDescription.
+func (s *PaymentDoPaypayResponse) GetOrderDescription() OptNilString {
+	return s.OrderDescription
+}
+
+// GetCaptureDescription returns the value of CaptureDescription.
+func (s *PaymentDoPaypayResponse) GetCaptureDescription() OptNilString {
+	return s.CaptureDescription
+}
+
+// GetUpdateDescription returns the value of UpdateDescription.
+func (s *PaymentDoPaypayResponse) GetUpdateDescription() OptNilString {
+	return s.UpdateDescription
+}
+
+// GetCancelDescription returns the value of CancelDescription.
+func (s *PaymentDoPaypayResponse) GetCancelDescription() OptNilString {
+	return s.CancelDescription
+}
+
+// GetStoreID returns the value of StoreID.
+func (s *PaymentDoPaypayResponse) GetStoreID() OptNilString {
+	return s.StoreID
+}
+
+// GetCodeID returns the value of CodeID.
+func (s *PaymentDoPaypayResponse) GetCodeID() OptNilString {
+	return s.CodeID
+}
+
+// GetPaymentID returns the value of PaymentID.
+func (s *PaymentDoPaypayResponse) GetPaymentID() OptNilString {
+	return s.PaymentID
+}
+
+// GetPaypayResultCode returns the value of PaypayResultCode.
+func (s *PaymentDoPaypayResponse) GetPaypayResultCode() OptNilString {
+	return s.PaypayResultCode
+}
+
+// GetMerchantPaymentID returns the value of MerchantPaymentID.
+func (s *PaymentDoPaypayResponse) GetMerchantPaymentID() OptNilString {
+	return s.MerchantPaymentID
+}
+
+// GetMerchantCaptureID returns the value of MerchantCaptureID.
+func (s *PaymentDoPaypayResponse) GetMerchantCaptureID() OptNilString {
+	return s.MerchantCaptureID
+}
+
+// GetMerchantUpdateID returns the value of MerchantUpdateID.
+func (s *PaymentDoPaypayResponse) GetMerchantUpdateID() OptNilString {
+	return s.MerchantUpdateID
+}
+
+// GetMerchantRefundID returns the value of MerchantRefundID.
+func (s *PaymentDoPaypayResponse) GetMerchantRefundID() OptNilString {
+	return s.MerchantRefundID
+}
+
+// GetPaymentDate returns the value of PaymentDate.
+func (s *PaymentDoPaypayResponse) GetPaymentDate() OptNilString {
+	return s.PaymentDate
+}
+
+// SetShopID sets the value of ShopID.
+func (s *PaymentDoPaypayResponse) SetShopID(val OptString) {
+	s.ShopID = val
+}
+
+// SetID sets the value of ID.
+func (s *PaymentDoPaypayResponse) SetID(val OptString) {
+	s.ID = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentDoPaypayResponse) SetAccessID(val OptString) {
+	s.AccessID = val
+}
+
+// SetAmount sets the value of Amount.
+func (s *PaymentDoPaypayResponse) SetAmount(val OptInt) {
+	s.Amount = val
+}
+
+// SetTax sets the value of Tax.
+func (s *PaymentDoPaypayResponse) SetTax(val OptInt) {
+	s.Tax = val
+}
+
+// SetTotalAmount sets the value of TotalAmount.
+func (s *PaymentDoPaypayResponse) SetTotalAmount(val OptInt) {
+	s.TotalAmount = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentDoPaypayResponse) SetClientField1(val OptNilString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentDoPaypayResponse) SetClientField2(val OptNilString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentDoPaypayResponse) SetClientField3(val OptNilString) {
+	s.ClientField3 = val
+}
+
+// SetProcessDate sets the value of ProcessDate.
+func (s *PaymentDoPaypayResponse) SetProcessDate(val OptString) {
+	s.ProcessDate = val
+}
+
+// SetCustomerID sets the value of CustomerID.
+func (s *PaymentDoPaypayResponse) SetCustomerID(val OptNilString) {
+	s.CustomerID = val
+}
+
+// SetCustomerGroupID sets the value of CustomerGroupID.
+func (s *PaymentDoPaypayResponse) SetCustomerGroupID(val OptNilString) {
+	s.CustomerGroupID = val
+}
+
+// SetErrorCode sets the value of ErrorCode.
+func (s *PaymentDoPaypayResponse) SetErrorCode(val OptNilString) {
+	s.ErrorCode = val
+}
+
+// SetCreated sets the value of Created.
+func (s *PaymentDoPaypayResponse) SetCreated(val OptNilString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *PaymentDoPaypayResponse) SetUpdated(val OptNilString) {
+	s.Updated = val
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentDoPaypayResponse) SetPayType(val OptPaymentDoPaypayResponsePayType) {
+	s.PayType = val
+}
+
+// SetJobCode sets the value of JobCode.
+func (s *PaymentDoPaypayResponse) SetJobCode(val OptPaymentDoPaypayResponseJobCode) {
+	s.JobCode = val
+}
+
+// SetStatus sets the value of Status.
+func (s *PaymentDoPaypayResponse) SetStatus(val OptPaymentDoPaypayResponseStatus) {
+	s.Status = val
+}
+
+// SetCodeURL sets the value of CodeURL.
+func (s *PaymentDoPaypayResponse) SetCodeURL(val OptNilString) {
+	s.CodeURL = val
+}
+
+// SetCodeExpiryDate sets the value of CodeExpiryDate.
+func (s *PaymentDoPaypayResponse) SetCodeExpiryDate(val OptNilString) {
+	s.CodeExpiryDate = val
+}
+
+// SetRedirectURL sets the value of RedirectURL.
+func (s *PaymentDoPaypayResponse) SetRedirectURL(val OptNilString) {
+	s.RedirectURL = val
+}
+
+// SetRedirectType sets the value of RedirectType.
+func (s *PaymentDoPaypayResponse) SetRedirectType(val OptNilPaymentDoPaypayResponseRedirectType) {
+	s.RedirectType = val
+}
+
+// SetAuthMaxDate sets the value of AuthMaxDate.
+func (s *PaymentDoPaypayResponse) SetAuthMaxDate(val OptNilString) {
+	s.AuthMaxDate = val
+}
+
+// SetOrderDescription sets the value of OrderDescription.
+func (s *PaymentDoPaypayResponse) SetOrderDescription(val OptNilString) {
+	s.OrderDescription = val
+}
+
+// SetCaptureDescription sets the value of CaptureDescription.
+func (s *PaymentDoPaypayResponse) SetCaptureDescription(val OptNilString) {
+	s.CaptureDescription = val
+}
+
+// SetUpdateDescription sets the value of UpdateDescription.
+func (s *PaymentDoPaypayResponse) SetUpdateDescription(val OptNilString) {
+	s.UpdateDescription = val
+}
+
+// SetCancelDescription sets the value of CancelDescription.
+func (s *PaymentDoPaypayResponse) SetCancelDescription(val OptNilString) {
+	s.CancelDescription = val
+}
+
+// SetStoreID sets the value of StoreID.
+func (s *PaymentDoPaypayResponse) SetStoreID(val OptNilString) {
+	s.StoreID = val
+}
+
+// SetCodeID sets the value of CodeID.
+func (s *PaymentDoPaypayResponse) SetCodeID(val OptNilString) {
+	s.CodeID = val
+}
+
+// SetPaymentID sets the value of PaymentID.
+func (s *PaymentDoPaypayResponse) SetPaymentID(val OptNilString) {
+	s.PaymentID = val
+}
+
+// SetPaypayResultCode sets the value of PaypayResultCode.
+func (s *PaymentDoPaypayResponse) SetPaypayResultCode(val OptNilString) {
+	s.PaypayResultCode = val
+}
+
+// SetMerchantPaymentID sets the value of MerchantPaymentID.
+func (s *PaymentDoPaypayResponse) SetMerchantPaymentID(val OptNilString) {
+	s.MerchantPaymentID = val
+}
+
+// SetMerchantCaptureID sets the value of MerchantCaptureID.
+func (s *PaymentDoPaypayResponse) SetMerchantCaptureID(val OptNilString) {
+	s.MerchantCaptureID = val
+}
+
+// SetMerchantUpdateID sets the value of MerchantUpdateID.
+func (s *PaymentDoPaypayResponse) SetMerchantUpdateID(val OptNilString) {
+	s.MerchantUpdateID = val
+}
+
+// SetMerchantRefundID sets the value of MerchantRefundID.
+func (s *PaymentDoPaypayResponse) SetMerchantRefundID(val OptNilString) {
+	s.MerchantRefundID = val
+}
+
+// SetPaymentDate sets the value of PaymentDate.
+func (s *PaymentDoPaypayResponse) SetPaymentDate(val OptNilString) {
+	s.PaymentDate = val
+}
+
+type PaymentDoPaypayResponseJobCode string
+
+const (
+	PaymentDoPaypayResponseJobCodeAUTH    PaymentDoPaypayResponseJobCode = "AUTH"
+	PaymentDoPaypayResponseJobCodeCAPTURE PaymentDoPaypayResponseJobCode = "CAPTURE"
+)
+
+// AllValues returns all PaymentDoPaypayResponseJobCode values.
+func (PaymentDoPaypayResponseJobCode) AllValues() []PaymentDoPaypayResponseJobCode {
+	return []PaymentDoPaypayResponseJobCode{
+		PaymentDoPaypayResponseJobCodeAUTH,
+		PaymentDoPaypayResponseJobCodeCAPTURE,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentDoPaypayResponseJobCode) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentDoPaypayResponseJobCodeAUTH:
+		return []byte(s), nil
+	case PaymentDoPaypayResponseJobCodeCAPTURE:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentDoPaypayResponseJobCode) UnmarshalText(data []byte) error {
+	switch PaymentDoPaypayResponseJobCode(data) {
+	case PaymentDoPaypayResponseJobCodeAUTH:
+		*s = PaymentDoPaypayResponseJobCodeAUTH
+		return nil
+	case PaymentDoPaypayResponseJobCodeCAPTURE:
+		*s = PaymentDoPaypayResponseJobCodeCAPTURE
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentDoPaypayResponsePayType string
+
+const (
+	PaymentDoPaypayResponsePayTypePaypay PaymentDoPaypayResponsePayType = "Paypay"
+)
+
+// AllValues returns all PaymentDoPaypayResponsePayType values.
+func (PaymentDoPaypayResponsePayType) AllValues() []PaymentDoPaypayResponsePayType {
+	return []PaymentDoPaypayResponsePayType{
+		PaymentDoPaypayResponsePayTypePaypay,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentDoPaypayResponsePayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentDoPaypayResponsePayTypePaypay:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentDoPaypayResponsePayType) UnmarshalText(data []byte) error {
+	switch PaymentDoPaypayResponsePayType(data) {
+	case PaymentDoPaypayResponsePayTypePaypay:
+		*s = PaymentDoPaypayResponsePayTypePaypay
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentDoPaypayResponseRedirectType string
+
+const (
+	PaymentDoPaypayResponseRedirectType1 PaymentDoPaypayResponseRedirectType = "1"
+	PaymentDoPaypayResponseRedirectType2 PaymentDoPaypayResponseRedirectType = "2"
+)
+
+// AllValues returns all PaymentDoPaypayResponseRedirectType values.
+func (PaymentDoPaypayResponseRedirectType) AllValues() []PaymentDoPaypayResponseRedirectType {
+	return []PaymentDoPaypayResponseRedirectType{
+		PaymentDoPaypayResponseRedirectType1,
+		PaymentDoPaypayResponseRedirectType2,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentDoPaypayResponseRedirectType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentDoPaypayResponseRedirectType1:
+		return []byte(s), nil
+	case PaymentDoPaypayResponseRedirectType2:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentDoPaypayResponseRedirectType) UnmarshalText(data []byte) error {
+	switch PaymentDoPaypayResponseRedirectType(data) {
+	case PaymentDoPaypayResponseRedirectType1:
+		*s = PaymentDoPaypayResponseRedirectType1
+		return nil
+	case PaymentDoPaypayResponseRedirectType2:
+		*s = PaymentDoPaypayResponseRedirectType2
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentDoPaypayResponseStatus string
+
+const (
+	PaymentDoPaypayResponseStatusUNPROCESSED             PaymentDoPaypayResponseStatus = "UNPROCESSED"
+	PaymentDoPaypayResponseStatusAWAITINGCUSTOMERPAYMENT PaymentDoPaypayResponseStatus = "AWAITING_CUSTOMER_PAYMENT"
+	PaymentDoPaypayResponseStatusAUTHORIZED              PaymentDoPaypayResponseStatus = "AUTHORIZED"
+	PaymentDoPaypayResponseStatusCAPTURED                PaymentDoPaypayResponseStatus = "CAPTURED"
+	PaymentDoPaypayResponseStatusCANCELED                PaymentDoPaypayResponseStatus = "CANCELED"
+	PaymentDoPaypayResponseStatusEXPIRED                 PaymentDoPaypayResponseStatus = "EXPIRED"
+)
+
+// AllValues returns all PaymentDoPaypayResponseStatus values.
+func (PaymentDoPaypayResponseStatus) AllValues() []PaymentDoPaypayResponseStatus {
+	return []PaymentDoPaypayResponseStatus{
+		PaymentDoPaypayResponseStatusUNPROCESSED,
+		PaymentDoPaypayResponseStatusAWAITINGCUSTOMERPAYMENT,
+		PaymentDoPaypayResponseStatusAUTHORIZED,
+		PaymentDoPaypayResponseStatusCAPTURED,
+		PaymentDoPaypayResponseStatusCANCELED,
+		PaymentDoPaypayResponseStatusEXPIRED,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentDoPaypayResponseStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentDoPaypayResponseStatusUNPROCESSED:
+		return []byte(s), nil
+	case PaymentDoPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		return []byte(s), nil
+	case PaymentDoPaypayResponseStatusAUTHORIZED:
+		return []byte(s), nil
+	case PaymentDoPaypayResponseStatusCAPTURED:
+		return []byte(s), nil
+	case PaymentDoPaypayResponseStatusCANCELED:
+		return []byte(s), nil
+	case PaymentDoPaypayResponseStatusEXPIRED:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentDoPaypayResponseStatus) UnmarshalText(data []byte) error {
+	switch PaymentDoPaypayResponseStatus(data) {
+	case PaymentDoPaypayResponseStatusUNPROCESSED:
+		*s = PaymentDoPaypayResponseStatusUNPROCESSED
+		return nil
+	case PaymentDoPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		*s = PaymentDoPaypayResponseStatusAWAITINGCUSTOMERPAYMENT
+		return nil
+	case PaymentDoPaypayResponseStatusAUTHORIZED:
+		*s = PaymentDoPaypayResponseStatusAUTHORIZED
+		return nil
+	case PaymentDoPaypayResponseStatusCAPTURED:
+		*s = PaymentDoPaypayResponseStatusCAPTURED
+		return nil
+	case PaymentDoPaypayResponseStatusCANCELED:
+		*s = PaymentDoPaypayResponseStatusCANCELED
+		return nil
+	case PaymentDoPaypayResponseStatusEXPIRED:
+		*s = PaymentDoPaypayResponseStatusEXPIRED
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 // Ref: #/components/schemas/paymentMethodCardResponse
 type PaymentMethodCardResponse struct {
 	ID                 string                                  `json:"id"`
@@ -15470,6 +17516,780 @@ func (s *PaymentMethodDirectDebitResponseStatus) UnmarshalText(data []byte) erro
 	}
 }
 
+// Ref: #/components/schemas/paymentPaypay
+type PaymentPaypay struct {
+	PayType          PaymentPaypayPayType `json:"pay_type"`
+	ID               OptString            `json:"id"`
+	JobCode          PaymentPaypayJobCode `json:"job_code"`
+	Amount           string               `json:"amount"`
+	Tax              OptString            `json:"tax"`
+	ClientField1     OptNilString         `json:"client_field_1"`
+	ClientField2     OptNilString         `json:"client_field_2"`
+	ClientField3     OptNilString         `json:"client_field_3"`
+	OrderDescription OptNilString         `json:"order_description"`
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentPaypay) GetPayType() PaymentPaypayPayType {
+	return s.PayType
+}
+
+// GetID returns the value of ID.
+func (s *PaymentPaypay) GetID() OptString {
+	return s.ID
+}
+
+// GetJobCode returns the value of JobCode.
+func (s *PaymentPaypay) GetJobCode() PaymentPaypayJobCode {
+	return s.JobCode
+}
+
+// GetAmount returns the value of Amount.
+func (s *PaymentPaypay) GetAmount() string {
+	return s.Amount
+}
+
+// GetTax returns the value of Tax.
+func (s *PaymentPaypay) GetTax() OptString {
+	return s.Tax
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentPaypay) GetClientField1() OptNilString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentPaypay) GetClientField2() OptNilString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentPaypay) GetClientField3() OptNilString {
+	return s.ClientField3
+}
+
+// GetOrderDescription returns the value of OrderDescription.
+func (s *PaymentPaypay) GetOrderDescription() OptNilString {
+	return s.OrderDescription
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentPaypay) SetPayType(val PaymentPaypayPayType) {
+	s.PayType = val
+}
+
+// SetID sets the value of ID.
+func (s *PaymentPaypay) SetID(val OptString) {
+	s.ID = val
+}
+
+// SetJobCode sets the value of JobCode.
+func (s *PaymentPaypay) SetJobCode(val PaymentPaypayJobCode) {
+	s.JobCode = val
+}
+
+// SetAmount sets the value of Amount.
+func (s *PaymentPaypay) SetAmount(val string) {
+	s.Amount = val
+}
+
+// SetTax sets the value of Tax.
+func (s *PaymentPaypay) SetTax(val OptString) {
+	s.Tax = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentPaypay) SetClientField1(val OptNilString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentPaypay) SetClientField2(val OptNilString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentPaypay) SetClientField3(val OptNilString) {
+	s.ClientField3 = val
+}
+
+// SetOrderDescription sets the value of OrderDescription.
+func (s *PaymentPaypay) SetOrderDescription(val OptNilString) {
+	s.OrderDescription = val
+}
+
+type PaymentPaypayJobCode string
+
+const (
+	PaymentPaypayJobCodeAUTH    PaymentPaypayJobCode = "AUTH"
+	PaymentPaypayJobCodeCAPTURE PaymentPaypayJobCode = "CAPTURE"
+)
+
+// AllValues returns all PaymentPaypayJobCode values.
+func (PaymentPaypayJobCode) AllValues() []PaymentPaypayJobCode {
+	return []PaymentPaypayJobCode{
+		PaymentPaypayJobCodeAUTH,
+		PaymentPaypayJobCodeCAPTURE,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentPaypayJobCode) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentPaypayJobCodeAUTH:
+		return []byte(s), nil
+	case PaymentPaypayJobCodeCAPTURE:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentPaypayJobCode) UnmarshalText(data []byte) error {
+	switch PaymentPaypayJobCode(data) {
+	case PaymentPaypayJobCodeAUTH:
+		*s = PaymentPaypayJobCodeAUTH
+		return nil
+	case PaymentPaypayJobCodeCAPTURE:
+		*s = PaymentPaypayJobCodeCAPTURE
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentPaypayPayType string
+
+const (
+	PaymentPaypayPayTypePaypay PaymentPaypayPayType = "Paypay"
+)
+
+// AllValues returns all PaymentPaypayPayType values.
+func (PaymentPaypayPayType) AllValues() []PaymentPaypayPayType {
+	return []PaymentPaypayPayType{
+		PaymentPaypayPayTypePaypay,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentPaypayPayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentPaypayPayTypePaypay:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentPaypayPayType) UnmarshalText(data []byte) error {
+	switch PaymentPaypayPayType(data) {
+	case PaymentPaypayPayTypePaypay:
+		*s = PaymentPaypayPayTypePaypay
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/paymentPaypayResponse
+type PaymentPaypayResponse struct {
+	ShopID             OptString                               `json:"shop_id"`
+	ID                 OptString                               `json:"id"`
+	AccessID           OptString                               `json:"access_id"`
+	Amount             OptInt                                  `json:"amount"`
+	Tax                OptInt                                  `json:"tax"`
+	TotalAmount        OptInt                                  `json:"total_amount"`
+	ClientField1       OptNilString                            `json:"client_field_1"`
+	ClientField2       OptNilString                            `json:"client_field_2"`
+	ClientField3       OptNilString                            `json:"client_field_3"`
+	ProcessDate        OptString                               `json:"process_date"`
+	CustomerID         OptNilString                            `json:"customer_id"`
+	CustomerGroupID    OptNilString                            `json:"customer_group_id"`
+	ErrorCode          OptNilString                            `json:"error_code"`
+	Created            OptNilString                            `json:"created"`
+	Updated            OptNilString                            `json:"updated"`
+	PayType            OptPaymentPaypayResponsePayType         `json:"pay_type"`
+	JobCode            OptPaymentPaypayResponseJobCode         `json:"job_code"`
+	Status             OptPaymentPaypayResponseStatus          `json:"status"`
+	CodeURL            OptNilString                            `json:"code_url"`
+	CodeExpiryDate     OptNilString                            `json:"code_expiry_date"`
+	RedirectURL        OptNilString                            `json:"redirect_url"`
+	RedirectType       OptNilPaymentPaypayResponseRedirectType `json:"redirect_type"`
+	AuthMaxDate        OptNilString                            `json:"auth_max_date"`
+	OrderDescription   OptNilString                            `json:"order_description"`
+	CaptureDescription OptNilString                            `json:"capture_description"`
+	UpdateDescription  OptNilString                            `json:"update_description"`
+	CancelDescription  OptNilString                            `json:"cancel_description"`
+	StoreID            OptNilString                            `json:"store_id"`
+	CodeID             OptNilString                            `json:"code_id"`
+	PaymentID          OptNilString                            `json:"payment_id"`
+	PaypayResultCode   OptNilString                            `json:"paypay_result_code"`
+	MerchantPaymentID  OptNilString                            `json:"merchant_payment_id"`
+	MerchantCaptureID  OptNilString                            `json:"merchant_capture_id"`
+	MerchantUpdateID   OptNilString                            `json:"merchant_update_id"`
+	MerchantRevertID   OptNilString                            `json:"merchant_revert_id"`
+	MerchantRefundID   OptNilString                            `json:"merchant_refund_id"`
+	PaymentDate        OptNilString                            `json:"payment_date"`
+}
+
+// GetShopID returns the value of ShopID.
+func (s *PaymentPaypayResponse) GetShopID() OptString {
+	return s.ShopID
+}
+
+// GetID returns the value of ID.
+func (s *PaymentPaypayResponse) GetID() OptString {
+	return s.ID
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentPaypayResponse) GetAccessID() OptString {
+	return s.AccessID
+}
+
+// GetAmount returns the value of Amount.
+func (s *PaymentPaypayResponse) GetAmount() OptInt {
+	return s.Amount
+}
+
+// GetTax returns the value of Tax.
+func (s *PaymentPaypayResponse) GetTax() OptInt {
+	return s.Tax
+}
+
+// GetTotalAmount returns the value of TotalAmount.
+func (s *PaymentPaypayResponse) GetTotalAmount() OptInt {
+	return s.TotalAmount
+}
+
+// GetClientField1 returns the value of ClientField1.
+func (s *PaymentPaypayResponse) GetClientField1() OptNilString {
+	return s.ClientField1
+}
+
+// GetClientField2 returns the value of ClientField2.
+func (s *PaymentPaypayResponse) GetClientField2() OptNilString {
+	return s.ClientField2
+}
+
+// GetClientField3 returns the value of ClientField3.
+func (s *PaymentPaypayResponse) GetClientField3() OptNilString {
+	return s.ClientField3
+}
+
+// GetProcessDate returns the value of ProcessDate.
+func (s *PaymentPaypayResponse) GetProcessDate() OptString {
+	return s.ProcessDate
+}
+
+// GetCustomerID returns the value of CustomerID.
+func (s *PaymentPaypayResponse) GetCustomerID() OptNilString {
+	return s.CustomerID
+}
+
+// GetCustomerGroupID returns the value of CustomerGroupID.
+func (s *PaymentPaypayResponse) GetCustomerGroupID() OptNilString {
+	return s.CustomerGroupID
+}
+
+// GetErrorCode returns the value of ErrorCode.
+func (s *PaymentPaypayResponse) GetErrorCode() OptNilString {
+	return s.ErrorCode
+}
+
+// GetCreated returns the value of Created.
+func (s *PaymentPaypayResponse) GetCreated() OptNilString {
+	return s.Created
+}
+
+// GetUpdated returns the value of Updated.
+func (s *PaymentPaypayResponse) GetUpdated() OptNilString {
+	return s.Updated
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentPaypayResponse) GetPayType() OptPaymentPaypayResponsePayType {
+	return s.PayType
+}
+
+// GetJobCode returns the value of JobCode.
+func (s *PaymentPaypayResponse) GetJobCode() OptPaymentPaypayResponseJobCode {
+	return s.JobCode
+}
+
+// GetStatus returns the value of Status.
+func (s *PaymentPaypayResponse) GetStatus() OptPaymentPaypayResponseStatus {
+	return s.Status
+}
+
+// GetCodeURL returns the value of CodeURL.
+func (s *PaymentPaypayResponse) GetCodeURL() OptNilString {
+	return s.CodeURL
+}
+
+// GetCodeExpiryDate returns the value of CodeExpiryDate.
+func (s *PaymentPaypayResponse) GetCodeExpiryDate() OptNilString {
+	return s.CodeExpiryDate
+}
+
+// GetRedirectURL returns the value of RedirectURL.
+func (s *PaymentPaypayResponse) GetRedirectURL() OptNilString {
+	return s.RedirectURL
+}
+
+// GetRedirectType returns the value of RedirectType.
+func (s *PaymentPaypayResponse) GetRedirectType() OptNilPaymentPaypayResponseRedirectType {
+	return s.RedirectType
+}
+
+// GetAuthMaxDate returns the value of AuthMaxDate.
+func (s *PaymentPaypayResponse) GetAuthMaxDate() OptNilString {
+	return s.AuthMaxDate
+}
+
+// GetOrderDescription returns the value of OrderDescription.
+func (s *PaymentPaypayResponse) GetOrderDescription() OptNilString {
+	return s.OrderDescription
+}
+
+// GetCaptureDescription returns the value of CaptureDescription.
+func (s *PaymentPaypayResponse) GetCaptureDescription() OptNilString {
+	return s.CaptureDescription
+}
+
+// GetUpdateDescription returns the value of UpdateDescription.
+func (s *PaymentPaypayResponse) GetUpdateDescription() OptNilString {
+	return s.UpdateDescription
+}
+
+// GetCancelDescription returns the value of CancelDescription.
+func (s *PaymentPaypayResponse) GetCancelDescription() OptNilString {
+	return s.CancelDescription
+}
+
+// GetStoreID returns the value of StoreID.
+func (s *PaymentPaypayResponse) GetStoreID() OptNilString {
+	return s.StoreID
+}
+
+// GetCodeID returns the value of CodeID.
+func (s *PaymentPaypayResponse) GetCodeID() OptNilString {
+	return s.CodeID
+}
+
+// GetPaymentID returns the value of PaymentID.
+func (s *PaymentPaypayResponse) GetPaymentID() OptNilString {
+	return s.PaymentID
+}
+
+// GetPaypayResultCode returns the value of PaypayResultCode.
+func (s *PaymentPaypayResponse) GetPaypayResultCode() OptNilString {
+	return s.PaypayResultCode
+}
+
+// GetMerchantPaymentID returns the value of MerchantPaymentID.
+func (s *PaymentPaypayResponse) GetMerchantPaymentID() OptNilString {
+	return s.MerchantPaymentID
+}
+
+// GetMerchantCaptureID returns the value of MerchantCaptureID.
+func (s *PaymentPaypayResponse) GetMerchantCaptureID() OptNilString {
+	return s.MerchantCaptureID
+}
+
+// GetMerchantUpdateID returns the value of MerchantUpdateID.
+func (s *PaymentPaypayResponse) GetMerchantUpdateID() OptNilString {
+	return s.MerchantUpdateID
+}
+
+// GetMerchantRevertID returns the value of MerchantRevertID.
+func (s *PaymentPaypayResponse) GetMerchantRevertID() OptNilString {
+	return s.MerchantRevertID
+}
+
+// GetMerchantRefundID returns the value of MerchantRefundID.
+func (s *PaymentPaypayResponse) GetMerchantRefundID() OptNilString {
+	return s.MerchantRefundID
+}
+
+// GetPaymentDate returns the value of PaymentDate.
+func (s *PaymentPaypayResponse) GetPaymentDate() OptNilString {
+	return s.PaymentDate
+}
+
+// SetShopID sets the value of ShopID.
+func (s *PaymentPaypayResponse) SetShopID(val OptString) {
+	s.ShopID = val
+}
+
+// SetID sets the value of ID.
+func (s *PaymentPaypayResponse) SetID(val OptString) {
+	s.ID = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentPaypayResponse) SetAccessID(val OptString) {
+	s.AccessID = val
+}
+
+// SetAmount sets the value of Amount.
+func (s *PaymentPaypayResponse) SetAmount(val OptInt) {
+	s.Amount = val
+}
+
+// SetTax sets the value of Tax.
+func (s *PaymentPaypayResponse) SetTax(val OptInt) {
+	s.Tax = val
+}
+
+// SetTotalAmount sets the value of TotalAmount.
+func (s *PaymentPaypayResponse) SetTotalAmount(val OptInt) {
+	s.TotalAmount = val
+}
+
+// SetClientField1 sets the value of ClientField1.
+func (s *PaymentPaypayResponse) SetClientField1(val OptNilString) {
+	s.ClientField1 = val
+}
+
+// SetClientField2 sets the value of ClientField2.
+func (s *PaymentPaypayResponse) SetClientField2(val OptNilString) {
+	s.ClientField2 = val
+}
+
+// SetClientField3 sets the value of ClientField3.
+func (s *PaymentPaypayResponse) SetClientField3(val OptNilString) {
+	s.ClientField3 = val
+}
+
+// SetProcessDate sets the value of ProcessDate.
+func (s *PaymentPaypayResponse) SetProcessDate(val OptString) {
+	s.ProcessDate = val
+}
+
+// SetCustomerID sets the value of CustomerID.
+func (s *PaymentPaypayResponse) SetCustomerID(val OptNilString) {
+	s.CustomerID = val
+}
+
+// SetCustomerGroupID sets the value of CustomerGroupID.
+func (s *PaymentPaypayResponse) SetCustomerGroupID(val OptNilString) {
+	s.CustomerGroupID = val
+}
+
+// SetErrorCode sets the value of ErrorCode.
+func (s *PaymentPaypayResponse) SetErrorCode(val OptNilString) {
+	s.ErrorCode = val
+}
+
+// SetCreated sets the value of Created.
+func (s *PaymentPaypayResponse) SetCreated(val OptNilString) {
+	s.Created = val
+}
+
+// SetUpdated sets the value of Updated.
+func (s *PaymentPaypayResponse) SetUpdated(val OptNilString) {
+	s.Updated = val
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentPaypayResponse) SetPayType(val OptPaymentPaypayResponsePayType) {
+	s.PayType = val
+}
+
+// SetJobCode sets the value of JobCode.
+func (s *PaymentPaypayResponse) SetJobCode(val OptPaymentPaypayResponseJobCode) {
+	s.JobCode = val
+}
+
+// SetStatus sets the value of Status.
+func (s *PaymentPaypayResponse) SetStatus(val OptPaymentPaypayResponseStatus) {
+	s.Status = val
+}
+
+// SetCodeURL sets the value of CodeURL.
+func (s *PaymentPaypayResponse) SetCodeURL(val OptNilString) {
+	s.CodeURL = val
+}
+
+// SetCodeExpiryDate sets the value of CodeExpiryDate.
+func (s *PaymentPaypayResponse) SetCodeExpiryDate(val OptNilString) {
+	s.CodeExpiryDate = val
+}
+
+// SetRedirectURL sets the value of RedirectURL.
+func (s *PaymentPaypayResponse) SetRedirectURL(val OptNilString) {
+	s.RedirectURL = val
+}
+
+// SetRedirectType sets the value of RedirectType.
+func (s *PaymentPaypayResponse) SetRedirectType(val OptNilPaymentPaypayResponseRedirectType) {
+	s.RedirectType = val
+}
+
+// SetAuthMaxDate sets the value of AuthMaxDate.
+func (s *PaymentPaypayResponse) SetAuthMaxDate(val OptNilString) {
+	s.AuthMaxDate = val
+}
+
+// SetOrderDescription sets the value of OrderDescription.
+func (s *PaymentPaypayResponse) SetOrderDescription(val OptNilString) {
+	s.OrderDescription = val
+}
+
+// SetCaptureDescription sets the value of CaptureDescription.
+func (s *PaymentPaypayResponse) SetCaptureDescription(val OptNilString) {
+	s.CaptureDescription = val
+}
+
+// SetUpdateDescription sets the value of UpdateDescription.
+func (s *PaymentPaypayResponse) SetUpdateDescription(val OptNilString) {
+	s.UpdateDescription = val
+}
+
+// SetCancelDescription sets the value of CancelDescription.
+func (s *PaymentPaypayResponse) SetCancelDescription(val OptNilString) {
+	s.CancelDescription = val
+}
+
+// SetStoreID sets the value of StoreID.
+func (s *PaymentPaypayResponse) SetStoreID(val OptNilString) {
+	s.StoreID = val
+}
+
+// SetCodeID sets the value of CodeID.
+func (s *PaymentPaypayResponse) SetCodeID(val OptNilString) {
+	s.CodeID = val
+}
+
+// SetPaymentID sets the value of PaymentID.
+func (s *PaymentPaypayResponse) SetPaymentID(val OptNilString) {
+	s.PaymentID = val
+}
+
+// SetPaypayResultCode sets the value of PaypayResultCode.
+func (s *PaymentPaypayResponse) SetPaypayResultCode(val OptNilString) {
+	s.PaypayResultCode = val
+}
+
+// SetMerchantPaymentID sets the value of MerchantPaymentID.
+func (s *PaymentPaypayResponse) SetMerchantPaymentID(val OptNilString) {
+	s.MerchantPaymentID = val
+}
+
+// SetMerchantCaptureID sets the value of MerchantCaptureID.
+func (s *PaymentPaypayResponse) SetMerchantCaptureID(val OptNilString) {
+	s.MerchantCaptureID = val
+}
+
+// SetMerchantUpdateID sets the value of MerchantUpdateID.
+func (s *PaymentPaypayResponse) SetMerchantUpdateID(val OptNilString) {
+	s.MerchantUpdateID = val
+}
+
+// SetMerchantRevertID sets the value of MerchantRevertID.
+func (s *PaymentPaypayResponse) SetMerchantRevertID(val OptNilString) {
+	s.MerchantRevertID = val
+}
+
+// SetMerchantRefundID sets the value of MerchantRefundID.
+func (s *PaymentPaypayResponse) SetMerchantRefundID(val OptNilString) {
+	s.MerchantRefundID = val
+}
+
+// SetPaymentDate sets the value of PaymentDate.
+func (s *PaymentPaypayResponse) SetPaymentDate(val OptNilString) {
+	s.PaymentDate = val
+}
+
+type PaymentPaypayResponseJobCode string
+
+const (
+	PaymentPaypayResponseJobCodeAUTH    PaymentPaypayResponseJobCode = "AUTH"
+	PaymentPaypayResponseJobCodeCAPTURE PaymentPaypayResponseJobCode = "CAPTURE"
+)
+
+// AllValues returns all PaymentPaypayResponseJobCode values.
+func (PaymentPaypayResponseJobCode) AllValues() []PaymentPaypayResponseJobCode {
+	return []PaymentPaypayResponseJobCode{
+		PaymentPaypayResponseJobCodeAUTH,
+		PaymentPaypayResponseJobCodeCAPTURE,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentPaypayResponseJobCode) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentPaypayResponseJobCodeAUTH:
+		return []byte(s), nil
+	case PaymentPaypayResponseJobCodeCAPTURE:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentPaypayResponseJobCode) UnmarshalText(data []byte) error {
+	switch PaymentPaypayResponseJobCode(data) {
+	case PaymentPaypayResponseJobCodeAUTH:
+		*s = PaymentPaypayResponseJobCodeAUTH
+		return nil
+	case PaymentPaypayResponseJobCodeCAPTURE:
+		*s = PaymentPaypayResponseJobCodeCAPTURE
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentPaypayResponsePayType string
+
+const (
+	PaymentPaypayResponsePayTypePaypay PaymentPaypayResponsePayType = "Paypay"
+)
+
+// AllValues returns all PaymentPaypayResponsePayType values.
+func (PaymentPaypayResponsePayType) AllValues() []PaymentPaypayResponsePayType {
+	return []PaymentPaypayResponsePayType{
+		PaymentPaypayResponsePayTypePaypay,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentPaypayResponsePayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentPaypayResponsePayTypePaypay:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentPaypayResponsePayType) UnmarshalText(data []byte) error {
+	switch PaymentPaypayResponsePayType(data) {
+	case PaymentPaypayResponsePayTypePaypay:
+		*s = PaymentPaypayResponsePayTypePaypay
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentPaypayResponseRedirectType string
+
+const (
+	PaymentPaypayResponseRedirectType1 PaymentPaypayResponseRedirectType = "1"
+	PaymentPaypayResponseRedirectType2 PaymentPaypayResponseRedirectType = "2"
+)
+
+// AllValues returns all PaymentPaypayResponseRedirectType values.
+func (PaymentPaypayResponseRedirectType) AllValues() []PaymentPaypayResponseRedirectType {
+	return []PaymentPaypayResponseRedirectType{
+		PaymentPaypayResponseRedirectType1,
+		PaymentPaypayResponseRedirectType2,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentPaypayResponseRedirectType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentPaypayResponseRedirectType1:
+		return []byte(s), nil
+	case PaymentPaypayResponseRedirectType2:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentPaypayResponseRedirectType) UnmarshalText(data []byte) error {
+	switch PaymentPaypayResponseRedirectType(data) {
+	case PaymentPaypayResponseRedirectType1:
+		*s = PaymentPaypayResponseRedirectType1
+		return nil
+	case PaymentPaypayResponseRedirectType2:
+		*s = PaymentPaypayResponseRedirectType2
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type PaymentPaypayResponseStatus string
+
+const (
+	PaymentPaypayResponseStatusUNPROCESSED             PaymentPaypayResponseStatus = "UNPROCESSED"
+	PaymentPaypayResponseStatusAWAITINGCUSTOMERPAYMENT PaymentPaypayResponseStatus = "AWAITING_CUSTOMER_PAYMENT"
+	PaymentPaypayResponseStatusAUTHORIZED              PaymentPaypayResponseStatus = "AUTHORIZED"
+	PaymentPaypayResponseStatusCAPTURED                PaymentPaypayResponseStatus = "CAPTURED"
+	PaymentPaypayResponseStatusCANCELED                PaymentPaypayResponseStatus = "CANCELED"
+	PaymentPaypayResponseStatusEXPIRED                 PaymentPaypayResponseStatus = "EXPIRED"
+)
+
+// AllValues returns all PaymentPaypayResponseStatus values.
+func (PaymentPaypayResponseStatus) AllValues() []PaymentPaypayResponseStatus {
+	return []PaymentPaypayResponseStatus{
+		PaymentPaypayResponseStatusUNPROCESSED,
+		PaymentPaypayResponseStatusAWAITINGCUSTOMERPAYMENT,
+		PaymentPaypayResponseStatusAUTHORIZED,
+		PaymentPaypayResponseStatusCAPTURED,
+		PaymentPaypayResponseStatusCANCELED,
+		PaymentPaypayResponseStatusEXPIRED,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentPaypayResponseStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentPaypayResponseStatusUNPROCESSED:
+		return []byte(s), nil
+	case PaymentPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		return []byte(s), nil
+	case PaymentPaypayResponseStatusAUTHORIZED:
+		return []byte(s), nil
+	case PaymentPaypayResponseStatusCAPTURED:
+		return []byte(s), nil
+	case PaymentPaypayResponseStatusCANCELED:
+		return []byte(s), nil
+	case PaymentPaypayResponseStatusEXPIRED:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentPaypayResponseStatus) UnmarshalText(data []byte) error {
+	switch PaymentPaypayResponseStatus(data) {
+	case PaymentPaypayResponseStatusUNPROCESSED:
+		*s = PaymentPaypayResponseStatusUNPROCESSED
+		return nil
+	case PaymentPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		*s = PaymentPaypayResponseStatusAWAITINGCUSTOMERPAYMENT
+		return nil
+	case PaymentPaypayResponseStatusAUTHORIZED:
+		*s = PaymentPaypayResponseStatusAUTHORIZED
+		return nil
+	case PaymentPaypayResponseStatusCAPTURED:
+		*s = PaymentPaypayResponseStatusCAPTURED
+		return nil
+	case PaymentPaypayResponseStatusCANCELED:
+		*s = PaymentPaypayResponseStatusCANCELED
+		return nil
+	case PaymentPaypayResponseStatusEXPIRED:
+		*s = PaymentPaypayResponseStatusEXPIRED
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 type PaymentsGetBadRequest struct {
 	Errors []PaymentsGetBadRequestErrorsItem `json:"errors"`
 }
@@ -16109,8 +18929,9 @@ func NewPaymentAuthCardPaymentsIDAuthPutReq(v PaymentAuthCard) PaymentsIDAuthPut
 
 // PaymentsIDCancelPutOK represents sum type.
 type PaymentsIDCancelPutOK struct {
-	Type                      PaymentsIDCancelPutOKType // switch on this field
-	PaymentCancelCardResponse PaymentCancelCardResponse
+	Type                        PaymentsIDCancelPutOKType // switch on this field
+	PaymentCancelCardResponse   PaymentCancelCardResponse
+	PaymentCancelPaypayResponse PaymentCancelPaypayResponse
 }
 
 // PaymentsIDCancelPutOKType is oneOf type of PaymentsIDCancelPutOK.
@@ -16118,12 +18939,18 @@ type PaymentsIDCancelPutOKType string
 
 // Possible values for PaymentsIDCancelPutOKType.
 const (
-	PaymentCancelCardResponsePaymentsIDCancelPutOK PaymentsIDCancelPutOKType = "PaymentCancelCardResponse"
+	PaymentCancelCardResponsePaymentsIDCancelPutOK   PaymentsIDCancelPutOKType = "PaymentCancelCardResponse"
+	PaymentCancelPaypayResponsePaymentsIDCancelPutOK PaymentsIDCancelPutOKType = "PaymentCancelPaypayResponse"
 )
 
 // IsPaymentCancelCardResponse reports whether PaymentsIDCancelPutOK is PaymentCancelCardResponse.
 func (s PaymentsIDCancelPutOK) IsPaymentCancelCardResponse() bool {
 	return s.Type == PaymentCancelCardResponsePaymentsIDCancelPutOK
+}
+
+// IsPaymentCancelPaypayResponse reports whether PaymentsIDCancelPutOK is PaymentCancelPaypayResponse.
+func (s PaymentsIDCancelPutOK) IsPaymentCancelPaypayResponse() bool {
+	return s.Type == PaymentCancelPaypayResponsePaymentsIDCancelPutOK
 }
 
 // SetPaymentCancelCardResponse sets PaymentsIDCancelPutOK to PaymentCancelCardResponse.
@@ -16147,12 +18974,34 @@ func NewPaymentCancelCardResponsePaymentsIDCancelPutOK(v PaymentCancelCardRespon
 	return s
 }
 
+// SetPaymentCancelPaypayResponse sets PaymentsIDCancelPutOK to PaymentCancelPaypayResponse.
+func (s *PaymentsIDCancelPutOK) SetPaymentCancelPaypayResponse(v PaymentCancelPaypayResponse) {
+	s.Type = PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+	s.PaymentCancelPaypayResponse = v
+}
+
+// GetPaymentCancelPaypayResponse returns PaymentCancelPaypayResponse and true boolean if PaymentsIDCancelPutOK is PaymentCancelPaypayResponse.
+func (s PaymentsIDCancelPutOK) GetPaymentCancelPaypayResponse() (v PaymentCancelPaypayResponse, ok bool) {
+	if !s.IsPaymentCancelPaypayResponse() {
+		return v, false
+	}
+	return s.PaymentCancelPaypayResponse, true
+}
+
+// NewPaymentCancelPaypayResponsePaymentsIDCancelPutOK returns new PaymentsIDCancelPutOK from PaymentCancelPaypayResponse.
+func NewPaymentCancelPaypayResponsePaymentsIDCancelPutOK(v PaymentCancelPaypayResponse) PaymentsIDCancelPutOK {
+	var s PaymentsIDCancelPutOK
+	s.SetPaymentCancelPaypayResponse(v)
+	return s
+}
+
 func (*PaymentsIDCancelPutOK) paymentsIDCancelPutRes() {}
 
 // PaymentsIDCancelPutReq represents sum type.
 type PaymentsIDCancelPutReq struct {
-	Type              PaymentsIDCancelPutReqType // switch on this field
-	PaymentCancelCard PaymentCancelCard
+	Type                PaymentsIDCancelPutReqType // switch on this field
+	PaymentCancelCard   PaymentCancelCard
+	PaymentCancelPaypay PaymentCancelPaypay
 }
 
 // PaymentsIDCancelPutReqType is oneOf type of PaymentsIDCancelPutReq.
@@ -16160,12 +19009,18 @@ type PaymentsIDCancelPutReqType string
 
 // Possible values for PaymentsIDCancelPutReqType.
 const (
-	PaymentCancelCardPaymentsIDCancelPutReq PaymentsIDCancelPutReqType = "PaymentCancelCard"
+	PaymentCancelCardPaymentsIDCancelPutReq   PaymentsIDCancelPutReqType = "PaymentCancelCard"
+	PaymentCancelPaypayPaymentsIDCancelPutReq PaymentsIDCancelPutReqType = "PaymentCancelPaypay"
 )
 
 // IsPaymentCancelCard reports whether PaymentsIDCancelPutReq is PaymentCancelCard.
 func (s PaymentsIDCancelPutReq) IsPaymentCancelCard() bool {
 	return s.Type == PaymentCancelCardPaymentsIDCancelPutReq
+}
+
+// IsPaymentCancelPaypay reports whether PaymentsIDCancelPutReq is PaymentCancelPaypay.
+func (s PaymentsIDCancelPutReq) IsPaymentCancelPaypay() bool {
+	return s.Type == PaymentCancelPaypayPaymentsIDCancelPutReq
 }
 
 // SetPaymentCancelCard sets PaymentsIDCancelPutReq to PaymentCancelCard.
@@ -16186,6 +19041,27 @@ func (s PaymentsIDCancelPutReq) GetPaymentCancelCard() (v PaymentCancelCard, ok 
 func NewPaymentCancelCardPaymentsIDCancelPutReq(v PaymentCancelCard) PaymentsIDCancelPutReq {
 	var s PaymentsIDCancelPutReq
 	s.SetPaymentCancelCard(v)
+	return s
+}
+
+// SetPaymentCancelPaypay sets PaymentsIDCancelPutReq to PaymentCancelPaypay.
+func (s *PaymentsIDCancelPutReq) SetPaymentCancelPaypay(v PaymentCancelPaypay) {
+	s.Type = PaymentCancelPaypayPaymentsIDCancelPutReq
+	s.PaymentCancelPaypay = v
+}
+
+// GetPaymentCancelPaypay returns PaymentCancelPaypay and true boolean if PaymentsIDCancelPutReq is PaymentCancelPaypay.
+func (s PaymentsIDCancelPutReq) GetPaymentCancelPaypay() (v PaymentCancelPaypay, ok bool) {
+	if !s.IsPaymentCancelPaypay() {
+		return v, false
+	}
+	return s.PaymentCancelPaypay, true
+}
+
+// NewPaymentCancelPaypayPaymentsIDCancelPutReq returns new PaymentsIDCancelPutReq from PaymentCancelPaypay.
+func NewPaymentCancelPaypayPaymentsIDCancelPutReq(v PaymentCancelPaypay) PaymentsIDCancelPutReq {
+	var s PaymentsIDCancelPutReq
+	s.SetPaymentCancelPaypay(v)
 	return s
 }
 
@@ -16273,8 +19149,9 @@ func NewPaymentCaptureCardPaymentsIDCapturePutReq(v PaymentCaptureCard) Payments
 
 // PaymentsIDGetOK represents sum type.
 type PaymentsIDGetOK struct {
-	Type                PaymentsIDGetOKType // switch on this field
-	PaymentCardResponse PaymentCardResponse
+	Type                  PaymentsIDGetOKType // switch on this field
+	PaymentCardResponse   PaymentCardResponse
+	PaymentPaypayResponse PaymentPaypayResponse
 }
 
 // PaymentsIDGetOKType is oneOf type of PaymentsIDGetOK.
@@ -16282,12 +19159,18 @@ type PaymentsIDGetOKType string
 
 // Possible values for PaymentsIDGetOKType.
 const (
-	PaymentCardResponsePaymentsIDGetOK PaymentsIDGetOKType = "PaymentCardResponse"
+	PaymentCardResponsePaymentsIDGetOK   PaymentsIDGetOKType = "PaymentCardResponse"
+	PaymentPaypayResponsePaymentsIDGetOK PaymentsIDGetOKType = "PaymentPaypayResponse"
 )
 
 // IsPaymentCardResponse reports whether PaymentsIDGetOK is PaymentCardResponse.
 func (s PaymentsIDGetOK) IsPaymentCardResponse() bool {
 	return s.Type == PaymentCardResponsePaymentsIDGetOK
+}
+
+// IsPaymentPaypayResponse reports whether PaymentsIDGetOK is PaymentPaypayResponse.
+func (s PaymentsIDGetOK) IsPaymentPaypayResponse() bool {
+	return s.Type == PaymentPaypayResponsePaymentsIDGetOK
 }
 
 // SetPaymentCardResponse sets PaymentsIDGetOK to PaymentCardResponse.
@@ -16311,12 +19194,34 @@ func NewPaymentCardResponsePaymentsIDGetOK(v PaymentCardResponse) PaymentsIDGetO
 	return s
 }
 
+// SetPaymentPaypayResponse sets PaymentsIDGetOK to PaymentPaypayResponse.
+func (s *PaymentsIDGetOK) SetPaymentPaypayResponse(v PaymentPaypayResponse) {
+	s.Type = PaymentPaypayResponsePaymentsIDGetOK
+	s.PaymentPaypayResponse = v
+}
+
+// GetPaymentPaypayResponse returns PaymentPaypayResponse and true boolean if PaymentsIDGetOK is PaymentPaypayResponse.
+func (s PaymentsIDGetOK) GetPaymentPaypayResponse() (v PaymentPaypayResponse, ok bool) {
+	if !s.IsPaymentPaypayResponse() {
+		return v, false
+	}
+	return s.PaymentPaypayResponse, true
+}
+
+// NewPaymentPaypayResponsePaymentsIDGetOK returns new PaymentsIDGetOK from PaymentPaypayResponse.
+func NewPaymentPaypayResponsePaymentsIDGetOK(v PaymentPaypayResponse) PaymentsIDGetOK {
+	var s PaymentsIDGetOK
+	s.SetPaymentPaypayResponse(v)
+	return s
+}
+
 func (*PaymentsIDGetOK) paymentsIDGetRes() {}
 
 // PaymentsIDPutOK represents sum type.
 type PaymentsIDPutOK struct {
-	Type                  PaymentsIDPutOKType // switch on this field
-	PaymentDoCardResponse PaymentDoCardResponse
+	Type                    PaymentsIDPutOKType // switch on this field
+	PaymentDoCardResponse   PaymentDoCardResponse
+	PaymentDoPaypayResponse PaymentDoPaypayResponse
 }
 
 // PaymentsIDPutOKType is oneOf type of PaymentsIDPutOK.
@@ -16324,12 +19229,18 @@ type PaymentsIDPutOKType string
 
 // Possible values for PaymentsIDPutOKType.
 const (
-	PaymentDoCardResponsePaymentsIDPutOK PaymentsIDPutOKType = "PaymentDoCardResponse"
+	PaymentDoCardResponsePaymentsIDPutOK   PaymentsIDPutOKType = "PaymentDoCardResponse"
+	PaymentDoPaypayResponsePaymentsIDPutOK PaymentsIDPutOKType = "PaymentDoPaypayResponse"
 )
 
 // IsPaymentDoCardResponse reports whether PaymentsIDPutOK is PaymentDoCardResponse.
 func (s PaymentsIDPutOK) IsPaymentDoCardResponse() bool {
 	return s.Type == PaymentDoCardResponsePaymentsIDPutOK
+}
+
+// IsPaymentDoPaypayResponse reports whether PaymentsIDPutOK is PaymentDoPaypayResponse.
+func (s PaymentsIDPutOK) IsPaymentDoPaypayResponse() bool {
+	return s.Type == PaymentDoPaypayResponsePaymentsIDPutOK
 }
 
 // SetPaymentDoCardResponse sets PaymentsIDPutOK to PaymentDoCardResponse.
@@ -16353,6 +19264,27 @@ func NewPaymentDoCardResponsePaymentsIDPutOK(v PaymentDoCardResponse) PaymentsID
 	return s
 }
 
+// SetPaymentDoPaypayResponse sets PaymentsIDPutOK to PaymentDoPaypayResponse.
+func (s *PaymentsIDPutOK) SetPaymentDoPaypayResponse(v PaymentDoPaypayResponse) {
+	s.Type = PaymentDoPaypayResponsePaymentsIDPutOK
+	s.PaymentDoPaypayResponse = v
+}
+
+// GetPaymentDoPaypayResponse returns PaymentDoPaypayResponse and true boolean if PaymentsIDPutOK is PaymentDoPaypayResponse.
+func (s PaymentsIDPutOK) GetPaymentDoPaypayResponse() (v PaymentDoPaypayResponse, ok bool) {
+	if !s.IsPaymentDoPaypayResponse() {
+		return v, false
+	}
+	return s.PaymentDoPaypayResponse, true
+}
+
+// NewPaymentDoPaypayResponsePaymentsIDPutOK returns new PaymentsIDPutOK from PaymentDoPaypayResponse.
+func NewPaymentDoPaypayResponsePaymentsIDPutOK(v PaymentDoPaypayResponse) PaymentsIDPutOK {
+	var s PaymentsIDPutOK
+	s.SetPaymentDoPaypayResponse(v)
+	return s
+}
+
 func (*PaymentsIDPutOK) paymentsIDPutRes() {}
 
 // PaymentsIDPutReq represents sum type.
@@ -16360,6 +19292,7 @@ type PaymentsIDPutReq struct {
 	Type                         PaymentsIDPutReqType // switch on this field
 	PaymentDoCardWith3DSecure    PaymentDoCardWith3DSecure
 	PaymentDoCardWithout3DSecure PaymentDoCardWithout3DSecure
+	PaymentDoPaypay              PaymentDoPaypay
 }
 
 // PaymentsIDPutReqType is oneOf type of PaymentsIDPutReq.
@@ -16369,6 +19302,7 @@ type PaymentsIDPutReqType string
 const (
 	PaymentDoCardWith3DSecurePaymentsIDPutReq    PaymentsIDPutReqType = "PaymentDoCardWith3DSecure"
 	PaymentDoCardWithout3DSecurePaymentsIDPutReq PaymentsIDPutReqType = "PaymentDoCardWithout3DSecure"
+	PaymentDoPaypayPaymentsIDPutReq              PaymentsIDPutReqType = "PaymentDoPaypay"
 )
 
 // IsPaymentDoCardWith3DSecure reports whether PaymentsIDPutReq is PaymentDoCardWith3DSecure.
@@ -16380,6 +19314,9 @@ func (s PaymentsIDPutReq) IsPaymentDoCardWith3DSecure() bool {
 func (s PaymentsIDPutReq) IsPaymentDoCardWithout3DSecure() bool {
 	return s.Type == PaymentDoCardWithout3DSecurePaymentsIDPutReq
 }
+
+// IsPaymentDoPaypay reports whether PaymentsIDPutReq is PaymentDoPaypay.
+func (s PaymentsIDPutReq) IsPaymentDoPaypay() bool { return s.Type == PaymentDoPaypayPaymentsIDPutReq }
 
 // SetPaymentDoCardWith3DSecure sets PaymentsIDPutReq to PaymentDoCardWith3DSecure.
 func (s *PaymentsIDPutReq) SetPaymentDoCardWith3DSecure(v PaymentDoCardWith3DSecure) {
@@ -16423,11 +19360,33 @@ func NewPaymentDoCardWithout3DSecurePaymentsIDPutReq(v PaymentDoCardWithout3DSec
 	return s
 }
 
+// SetPaymentDoPaypay sets PaymentsIDPutReq to PaymentDoPaypay.
+func (s *PaymentsIDPutReq) SetPaymentDoPaypay(v PaymentDoPaypay) {
+	s.Type = PaymentDoPaypayPaymentsIDPutReq
+	s.PaymentDoPaypay = v
+}
+
+// GetPaymentDoPaypay returns PaymentDoPaypay and true boolean if PaymentsIDPutReq is PaymentDoPaypay.
+func (s PaymentsIDPutReq) GetPaymentDoPaypay() (v PaymentDoPaypay, ok bool) {
+	if !s.IsPaymentDoPaypay() {
+		return v, false
+	}
+	return s.PaymentDoPaypay, true
+}
+
+// NewPaymentDoPaypayPaymentsIDPutReq returns new PaymentsIDPutReq from PaymentDoPaypay.
+func NewPaymentDoPaypayPaymentsIDPutReq(v PaymentDoPaypay) PaymentsIDPutReq {
+	var s PaymentsIDPutReq
+	s.SetPaymentDoPaypay(v)
+	return s
+}
+
 // PaymentsPostOK represents sum type.
 type PaymentsPostOK struct {
 	Type                       PaymentsPostOKType // switch on this field
 	PaymentCardResponse        PaymentCardResponse
 	PaymentDirectdebitResponse PaymentDirectdebitResponse
+	PaymentPaypayResponse      PaymentPaypayResponse
 }
 
 // PaymentsPostOKType is oneOf type of PaymentsPostOK.
@@ -16437,6 +19396,7 @@ type PaymentsPostOKType string
 const (
 	PaymentCardResponsePaymentsPostOK        PaymentsPostOKType = "PaymentCardResponse"
 	PaymentDirectdebitResponsePaymentsPostOK PaymentsPostOKType = "PaymentDirectdebitResponse"
+	PaymentPaypayResponsePaymentsPostOK      PaymentsPostOKType = "PaymentPaypayResponse"
 )
 
 // IsPaymentCardResponse reports whether PaymentsPostOK is PaymentCardResponse.
@@ -16447,6 +19407,11 @@ func (s PaymentsPostOK) IsPaymentCardResponse() bool {
 // IsPaymentDirectdebitResponse reports whether PaymentsPostOK is PaymentDirectdebitResponse.
 func (s PaymentsPostOK) IsPaymentDirectdebitResponse() bool {
 	return s.Type == PaymentDirectdebitResponsePaymentsPostOK
+}
+
+// IsPaymentPaypayResponse reports whether PaymentsPostOK is PaymentPaypayResponse.
+func (s PaymentsPostOK) IsPaymentPaypayResponse() bool {
+	return s.Type == PaymentPaypayResponsePaymentsPostOK
 }
 
 // SetPaymentCardResponse sets PaymentsPostOK to PaymentCardResponse.
@@ -16491,6 +19456,27 @@ func NewPaymentDirectdebitResponsePaymentsPostOK(v PaymentDirectdebitResponse) P
 	return s
 }
 
+// SetPaymentPaypayResponse sets PaymentsPostOK to PaymentPaypayResponse.
+func (s *PaymentsPostOK) SetPaymentPaypayResponse(v PaymentPaypayResponse) {
+	s.Type = PaymentPaypayResponsePaymentsPostOK
+	s.PaymentPaypayResponse = v
+}
+
+// GetPaymentPaypayResponse returns PaymentPaypayResponse and true boolean if PaymentsPostOK is PaymentPaypayResponse.
+func (s PaymentsPostOK) GetPaymentPaypayResponse() (v PaymentPaypayResponse, ok bool) {
+	if !s.IsPaymentPaypayResponse() {
+		return v, false
+	}
+	return s.PaymentPaypayResponse, true
+}
+
+// NewPaymentPaypayResponsePaymentsPostOK returns new PaymentsPostOK from PaymentPaypayResponse.
+func NewPaymentPaypayResponsePaymentsPostOK(v PaymentPaypayResponse) PaymentsPostOK {
+	var s PaymentsPostOK
+	s.SetPaymentPaypayResponse(v)
+	return s
+}
+
 func (*PaymentsPostOK) paymentsPostRes() {}
 
 // PaymentsPostReq represents sum type.
@@ -16498,6 +19484,7 @@ type PaymentsPostReq struct {
 	Type               PaymentsPostReqType // switch on this field
 	PaymentCard        PaymentCard
 	PaymentDirectdebit PaymentDirectdebit
+	PaymentPaypay      PaymentPaypay
 }
 
 // PaymentsPostReqType is oneOf type of PaymentsPostReq.
@@ -16507,6 +19494,7 @@ type PaymentsPostReqType string
 const (
 	PaymentCardPaymentsPostReq        PaymentsPostReqType = "PaymentCard"
 	PaymentDirectdebitPaymentsPostReq PaymentsPostReqType = "PaymentDirectdebit"
+	PaymentPaypayPaymentsPostReq      PaymentsPostReqType = "PaymentPaypay"
 )
 
 // IsPaymentCard reports whether PaymentsPostReq is PaymentCard.
@@ -16516,6 +19504,9 @@ func (s PaymentsPostReq) IsPaymentCard() bool { return s.Type == PaymentCardPaym
 func (s PaymentsPostReq) IsPaymentDirectdebit() bool {
 	return s.Type == PaymentDirectdebitPaymentsPostReq
 }
+
+// IsPaymentPaypay reports whether PaymentsPostReq is PaymentPaypay.
+func (s PaymentsPostReq) IsPaymentPaypay() bool { return s.Type == PaymentPaypayPaymentsPostReq }
 
 // SetPaymentCard sets PaymentsPostReq to PaymentCard.
 func (s *PaymentsPostReq) SetPaymentCard(v PaymentCard) {
@@ -16556,5 +19547,26 @@ func (s PaymentsPostReq) GetPaymentDirectdebit() (v PaymentDirectdebit, ok bool)
 func NewPaymentDirectdebitPaymentsPostReq(v PaymentDirectdebit) PaymentsPostReq {
 	var s PaymentsPostReq
 	s.SetPaymentDirectdebit(v)
+	return s
+}
+
+// SetPaymentPaypay sets PaymentsPostReq to PaymentPaypay.
+func (s *PaymentsPostReq) SetPaymentPaypay(v PaymentPaypay) {
+	s.Type = PaymentPaypayPaymentsPostReq
+	s.PaymentPaypay = v
+}
+
+// GetPaymentPaypay returns PaymentPaypay and true boolean if PaymentsPostReq is PaymentPaypay.
+func (s PaymentsPostReq) GetPaymentPaypay() (v PaymentPaypay, ok bool) {
+	if !s.IsPaymentPaypay() {
+		return v, false
+	}
+	return s.PaymentPaypay, true
+}
+
+// NewPaymentPaypayPaymentsPostReq returns new PaymentsPostReq from PaymentPaypay.
+func NewPaymentPaypayPaymentsPostReq(v PaymentPaypay) PaymentsPostReq {
+	var s PaymentsPostReq
+	s.SetPaymentPaypay(v)
 	return s
 }
