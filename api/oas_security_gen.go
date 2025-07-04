@@ -15,7 +15,7 @@ import (
 // SecurityHandler is handler for security parameters.
 type SecurityHandler interface {
 	// HandleBearerAuth handles BearerAuth security.
-	HandleBearerAuth(ctx context.Context, operationName string, t BearerAuth) (context.Context, error)
+	HandleBearerAuth(ctx context.Context, operationName OperationName, t BearerAuth) (context.Context, error)
 }
 
 func findAuthorization(h http.Header, prefix string) (string, bool) {
@@ -33,13 +33,32 @@ func findAuthorization(h http.Header, prefix string) (string, bool) {
 	return "", false
 }
 
-func (s *Server) securityBearerAuth(ctx context.Context, operationName string, req *http.Request) (context.Context, bool, error) {
+var operationRolesBearerAuth = map[string][]string{
+	CustomersCustomerIDCardsIDDeleteOperation:                       []string{},
+	CustomersCustomerIDCardsIDGetOperation:                          []string{},
+	CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOperation: []string{},
+	CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOperation:    []string{},
+	CustomersCustomerIDPaymentMethodsPostOperation:                  []string{},
+	CustomersIDDeleteOperation:                                      []string{},
+	CustomersIDGetOperation:                                         []string{},
+	CustomersPostOperation:                                          []string{},
+	PaymentsGetOperation:                                            []string{},
+	PaymentsIDAuthPutOperation:                                      []string{},
+	PaymentsIDCancelPutOperation:                                    []string{},
+	PaymentsIDCapturePutOperation:                                   []string{},
+	PaymentsIDGetOperation:                                          []string{},
+	PaymentsIDPutOperation:                                          []string{},
+	PaymentsPostOperation:                                           []string{},
+}
+
+func (s *Server) securityBearerAuth(ctx context.Context, operationName OperationName, req *http.Request) (context.Context, bool, error) {
 	var t BearerAuth
 	token, ok := findAuthorization(req.Header, "Bearer")
 	if !ok {
 		return ctx, false, nil
 	}
 	t.Token = token
+	t.Roles = operationRolesBearerAuth[operationName]
 	rctx, err := s.sec.HandleBearerAuth(ctx, operationName, t)
 	if errors.Is(err, ogenerrors.ErrSkipServerSecurity) {
 		return nil, false, nil
@@ -52,10 +71,10 @@ func (s *Server) securityBearerAuth(ctx context.Context, operationName string, r
 // SecuritySource is provider of security values (tokens, passwords, etc.).
 type SecuritySource interface {
 	// BearerAuth provides BearerAuth security value.
-	BearerAuth(ctx context.Context, operationName string) (BearerAuth, error)
+	BearerAuth(ctx context.Context, operationName OperationName) (BearerAuth, error)
 }
 
-func (s *Client) securityBearerAuth(ctx context.Context, operationName string, req *http.Request) error {
+func (s *Client) securityBearerAuth(ctx context.Context, operationName OperationName, req *http.Request) error {
 	t, err := s.sec.BearerAuth(ctx, operationName)
 	if err != nil {
 		return errors.Wrap(err, "security source \"BearerAuth\"")

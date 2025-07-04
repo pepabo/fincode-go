@@ -285,6 +285,7 @@ paths:
               oneOf:
                 - $ref: '#/components/schemas/paymentCard'
                 - $ref: '#/components/schemas/paymentDirectdebit'
+                - $ref: '#/components/schemas/paymentPaypay'
       responses:
         '200':
           description: OK
@@ -294,6 +295,7 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/paymentCardResponse'
                   - $ref: '#/components/schemas/paymentDirectdebitResponse'
+                  - $ref: '#/components/schemas/paymentPaypayResponse'
         '400':
           description: Bad Request
           content:
@@ -329,6 +331,7 @@ paths:
               schema:
                 oneOf:
                   - $ref: '#/components/schemas/paymentCardResponse'
+                  - $ref: '#/components/schemas/paymentPaypayResponse'
         '400':
           description: Bad Request
           content:
@@ -351,6 +354,7 @@ paths:
               oneOf:
                 - $ref: '#/components/schemas/paymentDoCardWith3DSecure'
                 - $ref: '#/components/schemas/paymentDoCardWithout3DSecure'
+                - $ref: '#/components/schemas/paymentDoPaypay'
       responses:
         '200':
           description: OK
@@ -358,7 +362,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/paymentDoCardResponse'
+                  - $ref: '#/components/schemas/paymentDoCardResponse'
+                  - $ref: '#/components/schemas/paymentDoPaypayResponse'
         '400':
           description: Bad Request
           content:
@@ -380,6 +385,7 @@ paths:
             schema:
               oneOf:
                 - $ref: '#/components/schemas/paymentCancelCard'
+                - $ref: '#/components/schemas/paymentCancelPaypay'
       responses:
         '200':
           description: OK
@@ -387,7 +393,8 @@ paths:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/paymentCancelCardResponse'
+                  - $ref: '#/components/schemas/paymentCancelCardResponse'
+                  - $ref: '#/components/schemas/paymentCancelPaypayResponse'
         '400':
           description: Bad Request
           content:
@@ -416,7 +423,7 @@ paths:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/paymentAuthCardResponse'
+                  - $ref: '#/components/schemas/paymentAuthCardResponse'
         '400':
           description: Bad Request
           content:
@@ -445,7 +452,7 @@ paths:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/paymentCaptureCardResponse'
+                  - $ref: '#/components/schemas/paymentCaptureCardResponse'
         '400':
           description: Bad Request
           content:
@@ -972,6 +979,40 @@ components:
           type: string
           nullable: true
         client_field_3:
+          type: string
+          nullable: true
+    paymentPaypay:
+      type: object
+      required:
+        - pay_type
+        - job_code
+        - amount
+      properties:
+        pay_type:
+          type: string
+          enum:
+            - Paypay
+        id:
+          type: string
+        job_code:
+          type: string
+          enum:
+            - 'AUTH'
+            - 'CAPTURE'
+        amount:
+          type: string
+        tax:
+          type: string
+        client_field_1:
+          type: string
+          nullable: true
+        client_field_2:
+          type: string
+          nullable: true
+        client_field_3:
+          type: string
+          nullable: true
+        order_description:
           type: string
           nullable: true
     paymentMethodCardWith3DSecure:
@@ -1517,6 +1558,30 @@ components:
             - '18'
             - '20'
             - '24'
+    paymentDoPaypay:
+      type: object
+      required:
+        - pay_type
+        - access_id
+        - redirect_url
+      properties:
+        pay_type:
+          type: string
+          enum:
+            - Paypay
+        access_id:
+          type: string
+        customer_id:
+          type: string
+        redirect_url:
+          type: string
+        redirect_type:
+          type: string
+          enum:
+            - '1'
+            - '2'
+        user_agent:
+          type: string
     paymentCardResponse:
       type: object
       properties:
@@ -1745,6 +1810,131 @@ components:
           nullable: true
           pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
         updated:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+    paymentPaypayResponse:
+      type: object
+      properties:
+        shop_id:
+          type: string
+        id:
+          type: string
+        access_id:
+          type: string
+        amount:
+          type: integer
+        tax:
+          type: integer
+        total_amount:
+          type: integer
+        client_field_1:
+          type: string
+          nullable: true
+        client_field_2:
+          type: string
+          nullable: true
+        client_field_3:
+          type: string
+          nullable: true
+        process_date:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        customer_id:
+          type: string
+          nullable: true
+        customer_group_id:
+          type: string
+          nullable: true
+        error_code:
+          type: string
+          nullable: true
+        created:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        updated:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        pay_type:
+          type: string
+          enum:
+            - Paypay
+        job_code:
+          type: string
+          enum:
+            - AUTH
+            - CAPTURE
+        status:
+          type: string
+          enum:
+            - UNPROCESSED
+            - AWAITING_CUSTOMER_PAYMENT
+            - AUTHORIZED
+            - CAPTURED
+            - CANCELED
+            - EXPIRED
+        code_url:
+          type: string
+          nullable: true
+        code_expiry_date:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        redirect_url:
+          type: string
+          nullable: true
+        redirect_type:
+          type: string
+          nullable: true
+          enum:
+            - '1'
+            - '2'
+        auth_max_date:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2})$'
+        order_description:
+          type: string
+          nullable: true
+        capture_description:
+          type: string
+          nullable: true
+        update_description:
+          type: string
+          nullable: true
+        cancel_description:
+          type: string
+          nullable: true
+        store_id:
+          type: string
+          nullable: true
+        code_id:
+          type: string
+          nullable: true
+        payment_id:
+          type: string
+          nullable: true
+        paypay_result_code:
+          type: string
+          nullable: true
+        merchant_payment_id:
+          type: string
+          nullable: true
+        merchant_capture_id:
+          type: string
+          nullable: true
+        merchant_update_id:
+          type: string
+          nullable: true
+        merchant_revert_id:
+          type: string
+          nullable: true
+        merchant_refund_id:
+          type: string
+          nullable: true
+        payment_date:
           type: string
           nullable: true
           pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
@@ -2120,6 +2310,128 @@ components:
         acs_url:
           type: string
           nullable: true
+    paymentDoPaypayResponse:
+      type: object
+      properties:
+        shop_id:
+          type: string
+        id:
+          type: string
+        access_id:
+          type: string
+        amount:
+          type: integer
+        tax:
+          type: integer
+        total_amount:
+          type: integer
+        client_field_1:
+          type: string
+          nullable: true
+        client_field_2:
+          type: string
+          nullable: true
+        client_field_3:
+          type: string
+          nullable: true
+        process_date:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        customer_id:
+          type: string
+          nullable: true
+        customer_group_id:
+          type: string
+          nullable: true
+        error_code:
+          type: string
+          nullable: true
+        created:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        updated:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        pay_type:
+          type: string
+          enum:
+            - Paypay
+        job_code:
+          type: string
+          enum:
+            - AUTH
+            - CAPTURE
+        status:
+          type: string
+          enum:
+            - UNPROCESSED
+            - AWAITING_CUSTOMER_PAYMENT
+            - AUTHORIZED
+            - CAPTURED
+            - CANCELED
+            - EXPIRED
+        code_url:
+          type: string
+          nullable: true
+        code_expiry_date:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        redirect_url:
+          type: string
+          nullable: true
+        redirect_type:
+          type: string
+          nullable: true
+          enum:
+            - '1'
+            - '2'
+        auth_max_date:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2})$'
+        order_description:
+          type: string
+          nullable: true
+        capture_description:
+          type: string
+          nullable: true
+        update_description:
+          type: string
+          nullable: true
+        cancel_description:
+          type: string
+          nullable: true
+        store_id:
+          type: string
+          nullable: true
+        code_id:
+          type: string
+          nullable: true
+        payment_id:
+          type: string
+          nullable: true
+        paypay_result_code:
+          type: string
+          nullable: true
+        merchant_payment_id:
+          type: string
+          nullable: true
+        merchant_capture_id:
+          type: string
+          nullable: true
+        merchant_update_id:
+          type: string
+          nullable: true
+        merchant_refund_id:
+          type: string
+          nullable: true
+        payment_date:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
     paymentCancelCard:
       type: object
       required:
@@ -2132,6 +2444,21 @@ components:
             - Card
         access_id:
           type: string
+    paymentCancelPaypay:
+      type: object
+      required:
+        - pay_type
+        - access_id
+      properties:
+        pay_type:
+          type: string
+          enum:
+            - Paypay
+        access_id:
+          type: string
+        cancel_description:
+          type: string
+          nullable: true
     paymentCancelCardResponse:
       type: object
       properties:
@@ -2270,6 +2597,128 @@ components:
           nullable: true
           pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
         updated:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+    paymentCancelPaypayResponse:
+      type: object
+      properties:
+        shop_id:
+          type: string
+        id:
+          type: string
+        access_id:
+          type: string
+        amount:
+          type: integer
+        tax:
+          type: integer
+        total_amount:
+          type: integer
+        client_field_1:
+          type: string
+          nullable: true
+        client_field_2:
+          type: string
+          nullable: true
+        client_field_3:
+          type: string
+          nullable: true
+        process_date:
+          type: string
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        customer_id:
+          type: string
+          nullable: true
+        customer_group_id:
+          type: string
+          nullable: true
+        error_code:
+          type: string
+          nullable: true
+        created:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        updated:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        pay_type:
+          type: string
+          enum:
+            - Paypay
+        job_code:
+          type: string
+          enum:
+            - AUTH
+            - CAPTURE
+        status:
+          type: string
+          enum:
+            - UNPROCESSED
+            - AWAITING_CUSTOMER_PAYMENT
+            - AUTHORIZED
+            - CAPTURED
+            - CANCELED
+            - EXPIRED
+        code_url:
+          type: string
+          nullable: true
+        code_expiry_date:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'
+        redirect_url:
+          type: string
+          nullable: true
+        redirect_type:
+          type: string
+          nullable: true
+          enum:
+            - '1'
+            - '2'
+        auth_max_date:
+          type: string
+          nullable: true
+          pattern: '^(\d{4})/(\d{2})/(\d{2})$'
+        order_description:
+          type: string
+          nullable: true
+        capture_description:
+          type: string
+          nullable: true
+        update_description:
+          type: string
+          nullable: true
+        cancel_description:
+          type: string
+          nullable: true
+        store_id:
+          type: string
+          nullable: true
+        code_id:
+          type: string
+          nullable: true
+        payment_id:
+          type: string
+          nullable: true
+        paypay_result_code:
+          type: string
+          nullable: true
+        merchant_payment_id:
+          type: string
+          nullable: true
+        merchant_capture_id:
+          type: string
+          nullable: true
+        merchant_update_id:
+          type: string
+          nullable: true
+        merchant_refund_id:
+          type: string
+          nullable: true
+        payment_date:
           type: string
           nullable: true
           pattern: '^(\d{4})/(\d{2})/(\d{2}) (\d{2}):(\d{2}):(\d{2}).(\d{3})$'

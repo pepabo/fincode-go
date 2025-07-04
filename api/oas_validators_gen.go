@@ -24,7 +24,7 @@ func (s *CustomersCustomerIDCardsIDGetOK) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -50,7 +50,7 @@ func (s *CustomersCustomerIDCardsIDGetOK) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -88,7 +88,7 @@ func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) Validate() error
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -114,7 +114,7 @@ func (s *CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOK) Validate() error
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -191,7 +191,7 @@ func (s *CustomersIDGetOK) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -217,7 +217,7 @@ func (s *CustomersIDGetOK) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -255,7 +255,7 @@ func (s *CustomersPostOK) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -281,7 +281,7 @@ func (s *CustomersPostOK) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -477,7 +477,7 @@ func (s *PaymentAuthCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -619,7 +619,7 @@ func (s *PaymentAuthCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -645,7 +645,7 @@ func (s *PaymentAuthCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -844,7 +844,7 @@ func (s *PaymentCancelCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -986,7 +986,7 @@ func (s *PaymentCancelCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1012,7 +1012,7 @@ func (s *PaymentCancelCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1121,6 +1121,328 @@ func (s PaymentCancelCardResponseTdsType) Validate() error {
 	case "0":
 		return nil
 	case "2":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentCancelPaypay) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.PayType.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentCancelPaypayPayType) Validate() error {
+	switch s {
+	case "Paypay":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentCancelPaypayResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.ProcessDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "process_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Created.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "created",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Updated.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "updated",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.PayType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.JobCode.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "job_code",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Status.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.CodeExpiryDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "code_expiry_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.RedirectType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "redirect_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.AuthMaxDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "auth_max_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.PaymentDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "payment_date",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentCancelPaypayResponseJobCode) Validate() error {
+	switch s {
+	case "AUTH":
+		return nil
+	case "CAPTURE":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentCancelPaypayResponsePayType) Validate() error {
+	switch s {
+	case "Paypay":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentCancelPaypayResponseRedirectType) Validate() error {
+	switch s {
+	case "1":
+		return nil
+	case "2":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentCancelPaypayResponseStatus) Validate() error {
+	switch s {
+	case "UNPROCESSED":
+		return nil
+	case "AWAITING_CUSTOMER_PAYMENT":
+		return nil
+	case "AUTHORIZED":
+		return nil
+	case "CAPTURED":
+		return nil
+	case "CANCELED":
+		return nil
+	case "EXPIRED":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
@@ -1285,7 +1607,7 @@ func (s *PaymentCaptureCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1427,7 +1749,7 @@ func (s *PaymentCaptureCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1453,7 +1775,7 @@ func (s *PaymentCaptureCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1714,7 +2036,7 @@ func (s *PaymentCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1856,7 +2178,7 @@ func (s *PaymentCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -1882,7 +2204,7 @@ func (s *PaymentCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -2107,7 +2429,7 @@ func (s *PaymentDirectdebitResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -2151,7 +2473,7 @@ func (s *PaymentDirectdebitResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -2177,7 +2499,7 @@ func (s *PaymentDirectdebitResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -2304,7 +2626,7 @@ func (s *PaymentDoCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -2446,7 +2768,7 @@ func (s *PaymentDoCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -2472,7 +2794,7 @@ func (s *PaymentDoCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -3057,6 +3379,357 @@ func (s PaymentDoCardWithout3DSecurePayType) Validate() error {
 	}
 }
 
+func (s *PaymentDoPaypay) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.PayType.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.RedirectType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "redirect_type",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentDoPaypayPayType) Validate() error {
+	switch s {
+	case "Paypay":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentDoPaypayRedirectType) Validate() error {
+	switch s {
+	case "1":
+		return nil
+	case "2":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentDoPaypayResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.ProcessDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "process_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Created.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "created",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Updated.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "updated",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.PayType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.JobCode.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "job_code",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Status.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.CodeExpiryDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "code_expiry_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.RedirectType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "redirect_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.AuthMaxDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "auth_max_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.PaymentDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "payment_date",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentDoPaypayResponseJobCode) Validate() error {
+	switch s {
+	case "AUTH":
+		return nil
+	case "CAPTURE":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentDoPaypayResponsePayType) Validate() error {
+	switch s {
+	case "Paypay":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentDoPaypayResponseRedirectType) Validate() error {
+	switch s {
+	case "1":
+		return nil
+	case "2":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentDoPaypayResponseStatus) Validate() error {
+	switch s {
+	case "UNPROCESSED":
+		return nil
+	case "AWAITING_CUSTOMER_PAYMENT":
+		return nil
+	case "AUTHORIZED":
+		return nil
+	case "CAPTURED":
+		return nil
+	case "CANCELED":
+		return nil
+	case "EXPIRED":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *PaymentMethodCardResponse) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -3084,7 +3757,7 @@ func (s *PaymentMethodCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -3146,7 +3819,7 @@ func (s *PaymentMethodCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -3172,7 +3845,7 @@ func (s *PaymentMethodCardResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -3939,7 +4612,7 @@ func (s *PaymentMethodDirectDebitResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -4001,7 +4674,7 @@ func (s *PaymentMethodDirectDebitResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -4027,7 +4700,7 @@ func (s *PaymentMethodDirectDebitResponse) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -4101,7 +4774,7 @@ func (s *PaymentMethodDirectDebitResponseDirectdebit) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -4127,7 +4800,7 @@ func (s *PaymentMethodDirectDebitResponseDirectdebit) Validate() error {
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -4295,7 +4968,7 @@ func (s *PaymentMethodDirectDebitResponseDirectdebitPaperApplication) Validate()
 					MaxLengthSet: false,
 					Email:        false,
 					Hostname:     false,
-					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2})[^\r\n\u2028\u2029](\\d{3})$"],
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
 				}).Validate(string(value)); err != nil {
 					return errors.Wrap(err, "string")
 				}
@@ -4352,6 +5025,350 @@ func (s PaymentMethodDirectDebitResponseStatus) Validate() error {
 	}
 }
 
+func (s *PaymentPaypay) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.PayType.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.JobCode.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "job_code",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentPaypayJobCode) Validate() error {
+	switch s {
+	case "AUTH":
+		return nil
+	case "CAPTURE":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentPaypayPayType) Validate() error {
+	switch s {
+	case "Paypay":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *PaymentPaypayResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.ProcessDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "process_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Created.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "created",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Updated.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "updated",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.PayType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.JobCode.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "job_code",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.Status.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.CodeExpiryDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "code_expiry_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.RedirectType.Get(); ok {
+			if err := func() error {
+				if err := value.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "redirect_type",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.AuthMaxDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "auth_max_date",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.PaymentDate.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^(\\d{4})/(\\d{2})/(\\d{2}) (\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "payment_date",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentPaypayResponseJobCode) Validate() error {
+	switch s {
+	case "AUTH":
+		return nil
+	case "CAPTURE":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentPaypayResponsePayType) Validate() error {
+	switch s {
+	case "Paypay":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentPaypayResponseRedirectType) Validate() error {
+	switch s {
+	case "1":
+		return nil
+	case "2":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s PaymentPaypayResponseStatus) Validate() error {
+	switch s {
+	case "UNPROCESSED":
+		return nil
+	case "AWAITING_CUSTOMER_PAYMENT":
+		return nil
+	case "AUTHORIZED":
+		return nil
+	case "CAPTURED":
+		return nil
+	case "CANCELED":
+		return nil
+	case "EXPIRED":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s PaymentsIDAuthPutOK) Validate() error {
 	switch s.Type {
 	case PaymentAuthCardResponsePaymentsIDAuthPutOK:
@@ -4383,6 +5400,11 @@ func (s PaymentsIDCancelPutOK) Validate() error {
 			return err
 		}
 		return nil
+	case PaymentCancelPaypayResponsePaymentsIDCancelPutOK:
+		if err := s.PaymentCancelPaypayResponse.Validate(); err != nil {
+			return err
+		}
+		return nil
 	default:
 		return errors.Errorf("invalid type %q", s.Type)
 	}
@@ -4392,6 +5414,11 @@ func (s PaymentsIDCancelPutReq) Validate() error {
 	switch s.Type {
 	case PaymentCancelCardPaymentsIDCancelPutReq:
 		if err := s.PaymentCancelCard.Validate(); err != nil {
+			return err
+		}
+		return nil
+	case PaymentCancelPaypayPaymentsIDCancelPutReq:
+		if err := s.PaymentCancelPaypay.Validate(); err != nil {
 			return err
 		}
 		return nil
@@ -4431,6 +5458,11 @@ func (s PaymentsIDGetOK) Validate() error {
 			return err
 		}
 		return nil
+	case PaymentPaypayResponsePaymentsIDGetOK:
+		if err := s.PaymentPaypayResponse.Validate(); err != nil {
+			return err
+		}
+		return nil
 	default:
 		return errors.Errorf("invalid type %q", s.Type)
 	}
@@ -4440,6 +5472,11 @@ func (s PaymentsIDPutOK) Validate() error {
 	switch s.Type {
 	case PaymentDoCardResponsePaymentsIDPutOK:
 		if err := s.PaymentDoCardResponse.Validate(); err != nil {
+			return err
+		}
+		return nil
+	case PaymentDoPaypayResponsePaymentsIDPutOK:
+		if err := s.PaymentDoPaypayResponse.Validate(); err != nil {
 			return err
 		}
 		return nil
@@ -4460,6 +5497,11 @@ func (s PaymentsIDPutReq) Validate() error {
 			return err
 		}
 		return nil
+	case PaymentDoPaypayPaymentsIDPutReq:
+		if err := s.PaymentDoPaypay.Validate(); err != nil {
+			return err
+		}
+		return nil
 	default:
 		return errors.Errorf("invalid type %q", s.Type)
 	}
@@ -4477,6 +5519,11 @@ func (s PaymentsPostOK) Validate() error {
 			return err
 		}
 		return nil
+	case PaymentPaypayResponsePaymentsPostOK:
+		if err := s.PaymentPaypayResponse.Validate(); err != nil {
+			return err
+		}
+		return nil
 	default:
 		return errors.Errorf("invalid type %q", s.Type)
 	}
@@ -4491,6 +5538,11 @@ func (s PaymentsPostReq) Validate() error {
 		return nil
 	case PaymentDirectdebitPaymentsPostReq:
 		if err := s.PaymentDirectdebit.Validate(); err != nil {
+			return err
+		}
+		return nil
+	case PaymentPaypayPaymentsPostReq:
+		if err := s.PaymentPaypay.Validate(); err != nil {
 			return err
 		}
 		return nil

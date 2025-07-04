@@ -12,7 +12,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/metric"
-	semconv "go.opentelemetry.io/otel/semconv/v1.19.0"
+	semconv "go.opentelemetry.io/otel/semconv/v1.26.0"
 	"go.opentelemetry.io/otel/trace"
 
 	"github.com/ogen-go/ogen/conv"
@@ -20,6 +20,11 @@ import (
 	"github.com/ogen-go/ogen/ogenerrors"
 	"github.com/ogen-go/ogen/uri"
 )
+
+func trimTrailingSlashes(u *url.URL) {
+	u.Path = strings.TrimRight(u.Path, "/")
+	u.RawPath = strings.TrimRight(u.RawPath, "/")
+}
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
@@ -96,11 +101,6 @@ var _ Handler = struct {
 	*Client
 }{}
 
-func trimTrailingSlashes(u *url.URL) {
-	u.Path = strings.TrimRight(u.Path, "/")
-	u.RawPath = strings.TrimRight(u.RawPath, "/")
-}
-
 // NewClient initializes new Client defined by OAS.
 func NewClient(serverURL string, sec SecuritySource, opts ...ClientOption) (*Client, error) {
 	u, err := url.Parse(serverURL)
@@ -145,7 +145,7 @@ func (c *Client) CustomersCustomerIDCardsIDDelete(ctx context.Context, params Cu
 
 func (c *Client) sendCustomersCustomerIDCardsIDDelete(ctx context.Context, params CustomersCustomerIDCardsIDDeleteParams) (res CustomersCustomerIDCardsIDDeleteRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRequestMethodKey.String("DELETE"),
 		semconv.HTTPRouteKey.String("/customers/{customer_id}/cards/{id}"),
 	}
 
@@ -154,14 +154,14 @@ func (c *Client) sendCustomersCustomerIDCardsIDDelete(ctx context.Context, param
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDCardsIDDelete",
+	ctx, span := c.cfg.Tracer.Start(ctx, CustomersCustomerIDCardsIDDeleteOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -230,7 +230,7 @@ func (c *Client) sendCustomersCustomerIDCardsIDDelete(ctx context.Context, param
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDCardsIDDelete", r); {
+			switch err := c.securityBearerAuth(ctx, CustomersCustomerIDCardsIDDeleteOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -284,7 +284,7 @@ func (c *Client) CustomersCustomerIDCardsIDGet(ctx context.Context, params Custo
 
 func (c *Client) sendCustomersCustomerIDCardsIDGet(ctx context.Context, params CustomersCustomerIDCardsIDGetParams) (res CustomersCustomerIDCardsIDGetRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRequestMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/customers/{customer_id}/cards/{id}"),
 	}
 
@@ -293,14 +293,14 @@ func (c *Client) sendCustomersCustomerIDCardsIDGet(ctx context.Context, params C
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDCardsIDGet",
+	ctx, span := c.cfg.Tracer.Start(ctx, CustomersCustomerIDCardsIDGetOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -369,7 +369,7 @@ func (c *Client) sendCustomersCustomerIDCardsIDGet(ctx context.Context, params C
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDCardsIDGet", r); {
+			switch err := c.securityBearerAuth(ctx, CustomersCustomerIDCardsIDGetOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -423,7 +423,7 @@ func (c *Client) CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx cont
 
 func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteParams) (res CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRequestMethodKey.String("DELETE"),
 		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods/{payment_method_id}"),
 	}
 
@@ -432,14 +432,14 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx 
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete",
+	ctx, span := c.cfg.Tracer.Start(ctx, CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -508,7 +508,7 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDDelete(ctx 
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDDelete", r); {
+			switch err := c.securityBearerAuth(ctx, CustomersCustomerIDPaymentMethodsPaymentMethodIDDeleteOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -562,7 +562,7 @@ func (c *Client) CustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context
 
 func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx context.Context, params CustomersCustomerIDPaymentMethodsPaymentMethodIDGetParams) (res CustomersCustomerIDPaymentMethodsPaymentMethodIDGetRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRequestMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods/{payment_method_id}"),
 	}
 
@@ -571,14 +571,14 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx con
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet",
+	ctx, span := c.cfg.Tracer.Start(ctx, CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -647,7 +647,7 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPaymentMethodIDGet(ctx con
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPaymentMethodIDGet", r); {
+			switch err := c.securityBearerAuth(ctx, CustomersCustomerIDPaymentMethodsPaymentMethodIDGetOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -701,7 +701,7 @@ func (c *Client) CustomersCustomerIDPaymentMethodsPost(ctx context.Context, requ
 
 func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, request CustomersCustomerIDPaymentMethodsPostReq, params CustomersCustomerIDPaymentMethodsPostParams) (res CustomersCustomerIDPaymentMethodsPostRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRequestMethodKey.String("POST"),
 		semconv.HTTPRouteKey.String("/customers/{customer_id}/payment_methods"),
 	}
 
@@ -710,14 +710,14 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, 
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersCustomerIDPaymentMethodsPost",
+	ctx, span := c.cfg.Tracer.Start(ctx, CustomersCustomerIDPaymentMethodsPostOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -771,7 +771,7 @@ func (c *Client) sendCustomersCustomerIDPaymentMethodsPost(ctx context.Context, 
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersCustomerIDPaymentMethodsPost", r); {
+			switch err := c.securityBearerAuth(ctx, CustomersCustomerIDPaymentMethodsPostOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -825,7 +825,7 @@ func (c *Client) CustomersIDDelete(ctx context.Context, params CustomersIDDelete
 
 func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDeleteParams) (res CustomersIDDeleteRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("DELETE"),
+		semconv.HTTPRequestMethodKey.String("DELETE"),
 		semconv.HTTPRouteKey.String("/customers/{id}"),
 	}
 
@@ -834,14 +834,14 @@ func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDe
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersIDDelete",
+	ctx, span := c.cfg.Tracer.Start(ctx, CustomersIDDeleteOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -891,7 +891,7 @@ func (c *Client) sendCustomersIDDelete(ctx context.Context, params CustomersIDDe
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersIDDelete", r); {
+			switch err := c.securityBearerAuth(ctx, CustomersIDDeleteOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -945,7 +945,7 @@ func (c *Client) CustomersIDGet(ctx context.Context, params CustomersIDGetParams
 
 func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetParams) (res CustomersIDGetRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRequestMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/customers/{id}"),
 	}
 
@@ -954,14 +954,14 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersIDGet",
+	ctx, span := c.cfg.Tracer.Start(ctx, CustomersIDGetOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1011,7 +1011,7 @@ func (c *Client) sendCustomersIDGet(ctx context.Context, params CustomersIDGetPa
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersIDGet", r); {
+			switch err := c.securityBearerAuth(ctx, CustomersIDGetOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -1065,7 +1065,7 @@ func (c *Client) CustomersPost(ctx context.Context, request *CustomersPostReq) (
 
 func (c *Client) sendCustomersPost(ctx context.Context, request *CustomersPostReq) (res CustomersPostRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRequestMethodKey.String("POST"),
 		semconv.HTTPRouteKey.String("/customers"),
 	}
 
@@ -1074,14 +1074,14 @@ func (c *Client) sendCustomersPost(ctx context.Context, request *CustomersPostRe
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "CustomersPost",
+	ctx, span := c.cfg.Tracer.Start(ctx, CustomersPostOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1116,7 +1116,7 @@ func (c *Client) sendCustomersPost(ctx context.Context, request *CustomersPostRe
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "CustomersPost", r); {
+			switch err := c.securityBearerAuth(ctx, CustomersPostOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -1170,7 +1170,7 @@ func (c *Client) PaymentsGet(ctx context.Context, params PaymentsGetParams) (Pay
 
 func (c *Client) sendPaymentsGet(ctx context.Context, params PaymentsGetParams) (res PaymentsGetRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRequestMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/payments"),
 	}
 
@@ -1179,14 +1179,14 @@ func (c *Client) sendPaymentsGet(ctx context.Context, params PaymentsGetParams) 
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsGet",
+	ctx, span := c.cfg.Tracer.Start(ctx, PaymentsGetOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1525,7 +1525,7 @@ func (c *Client) sendPaymentsGet(ctx context.Context, params PaymentsGetParams) 
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsGet", r); {
+			switch err := c.securityBearerAuth(ctx, PaymentsGetOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -1579,7 +1579,7 @@ func (c *Client) PaymentsIDAuthPut(ctx context.Context, request PaymentsIDAuthPu
 
 func (c *Client) sendPaymentsIDAuthPut(ctx context.Context, request PaymentsIDAuthPutReq, params PaymentsIDAuthPutParams) (res PaymentsIDAuthPutRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRequestMethodKey.String("PUT"),
 		semconv.HTTPRouteKey.String("/payments/{id}/auth"),
 	}
 
@@ -1588,14 +1588,14 @@ func (c *Client) sendPaymentsIDAuthPut(ctx context.Context, request PaymentsIDAu
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsIDAuthPut",
+	ctx, span := c.cfg.Tracer.Start(ctx, PaymentsIDAuthPutOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1649,7 +1649,7 @@ func (c *Client) sendPaymentsIDAuthPut(ctx context.Context, request PaymentsIDAu
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsIDAuthPut", r); {
+			switch err := c.securityBearerAuth(ctx, PaymentsIDAuthPutOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -1703,7 +1703,7 @@ func (c *Client) PaymentsIDCancelPut(ctx context.Context, request PaymentsIDCanc
 
 func (c *Client) sendPaymentsIDCancelPut(ctx context.Context, request PaymentsIDCancelPutReq, params PaymentsIDCancelPutParams) (res PaymentsIDCancelPutRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRequestMethodKey.String("PUT"),
 		semconv.HTTPRouteKey.String("/payments/{id}/cancel"),
 	}
 
@@ -1712,14 +1712,14 @@ func (c *Client) sendPaymentsIDCancelPut(ctx context.Context, request PaymentsID
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsIDCancelPut",
+	ctx, span := c.cfg.Tracer.Start(ctx, PaymentsIDCancelPutOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1773,7 +1773,7 @@ func (c *Client) sendPaymentsIDCancelPut(ctx context.Context, request PaymentsID
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsIDCancelPut", r); {
+			switch err := c.securityBearerAuth(ctx, PaymentsIDCancelPutOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -1827,7 +1827,7 @@ func (c *Client) PaymentsIDCapturePut(ctx context.Context, request PaymentsIDCap
 
 func (c *Client) sendPaymentsIDCapturePut(ctx context.Context, request PaymentsIDCapturePutReq, params PaymentsIDCapturePutParams) (res PaymentsIDCapturePutRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRequestMethodKey.String("PUT"),
 		semconv.HTTPRouteKey.String("/payments/{id}/capture"),
 	}
 
@@ -1836,14 +1836,14 @@ func (c *Client) sendPaymentsIDCapturePut(ctx context.Context, request PaymentsI
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsIDCapturePut",
+	ctx, span := c.cfg.Tracer.Start(ctx, PaymentsIDCapturePutOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -1897,7 +1897,7 @@ func (c *Client) sendPaymentsIDCapturePut(ctx context.Context, request PaymentsI
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsIDCapturePut", r); {
+			switch err := c.securityBearerAuth(ctx, PaymentsIDCapturePutOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -1951,7 +1951,7 @@ func (c *Client) PaymentsIDGet(ctx context.Context, params PaymentsIDGetParams) 
 
 func (c *Client) sendPaymentsIDGet(ctx context.Context, params PaymentsIDGetParams) (res PaymentsIDGetRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("GET"),
+		semconv.HTTPRequestMethodKey.String("GET"),
 		semconv.HTTPRouteKey.String("/payments/{id}"),
 	}
 
@@ -1960,14 +1960,14 @@ func (c *Client) sendPaymentsIDGet(ctx context.Context, params PaymentsIDGetPara
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsIDGet",
+	ctx, span := c.cfg.Tracer.Start(ctx, PaymentsIDGetOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -2035,7 +2035,7 @@ func (c *Client) sendPaymentsIDGet(ctx context.Context, params PaymentsIDGetPara
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsIDGet", r); {
+			switch err := c.securityBearerAuth(ctx, PaymentsIDGetOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -2089,7 +2089,7 @@ func (c *Client) PaymentsIDPut(ctx context.Context, request PaymentsIDPutReq, pa
 
 func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq, params PaymentsIDPutParams) (res PaymentsIDPutRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("PUT"),
+		semconv.HTTPRequestMethodKey.String("PUT"),
 		semconv.HTTPRouteKey.String("/payments/{id}"),
 	}
 
@@ -2098,14 +2098,14 @@ func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsIDPut",
+	ctx, span := c.cfg.Tracer.Start(ctx, PaymentsIDPutOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -2158,7 +2158,7 @@ func (c *Client) sendPaymentsIDPut(ctx context.Context, request PaymentsIDPutReq
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsIDPut", r); {
+			switch err := c.securityBearerAuth(ctx, PaymentsIDPutOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
@@ -2212,7 +2212,7 @@ func (c *Client) PaymentsPost(ctx context.Context, request PaymentsPostReq) (Pay
 
 func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) (res PaymentsPostRes, err error) {
 	otelAttrs := []attribute.KeyValue{
-		semconv.HTTPMethodKey.String("POST"),
+		semconv.HTTPRequestMethodKey.String("POST"),
 		semconv.HTTPRouteKey.String("/payments"),
 	}
 
@@ -2221,14 +2221,14 @@ func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) 
 	defer func() {
 		// Use floating point division here for higher precision (instead of Millisecond method).
 		elapsedDuration := time.Since(startTime)
-		c.duration.Record(ctx, float64(float64(elapsedDuration)/float64(time.Millisecond)), metric.WithAttributes(otelAttrs...))
+		c.duration.Record(ctx, float64(elapsedDuration)/float64(time.Millisecond), metric.WithAttributes(otelAttrs...))
 	}()
 
 	// Increment request counter.
 	c.requests.Add(ctx, 1, metric.WithAttributes(otelAttrs...))
 
 	// Start a span for this request.
-	ctx, span := c.cfg.Tracer.Start(ctx, "PaymentsPost",
+	ctx, span := c.cfg.Tracer.Start(ctx, PaymentsPostOperation,
 		trace.WithAttributes(otelAttrs...),
 		clientSpanKind,
 	)
@@ -2263,7 +2263,7 @@ func (c *Client) sendPaymentsPost(ctx context.Context, request PaymentsPostReq) 
 		var satisfied bitset
 		{
 			stage = "Security:BearerAuth"
-			switch err := c.securityBearerAuth(ctx, "PaymentsPost", r); {
+			switch err := c.securityBearerAuth(ctx, PaymentsPostOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):

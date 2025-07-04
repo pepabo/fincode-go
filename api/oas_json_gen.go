@@ -2748,6 +2748,55 @@ func (s *OptNilPaymentCancelCardResponseTdsType) UnmarshalJSON(data []byte) erro
 	return s.Decode(d)
 }
 
+// Encode encodes PaymentCancelPaypayResponseRedirectType as json.
+func (o OptNilPaymentCancelPaypayResponseRedirectType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentCancelPaypayResponseRedirectType from json.
+func (o *OptNilPaymentCancelPaypayResponseRedirectType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilPaymentCancelPaypayResponseRedirectType to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v PaymentCancelPaypayResponseRedirectType
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilPaymentCancelPaypayResponseRedirectType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilPaymentCancelPaypayResponseRedirectType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes PaymentCaptureCardResponseMethod as json.
 func (o OptNilPaymentCaptureCardResponseMethod) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -3875,6 +3924,55 @@ func (s *OptNilPaymentDoCardWithout3DSecurePayTimes) UnmarshalJSON(data []byte) 
 	return s.Decode(d)
 }
 
+// Encode encodes PaymentDoPaypayResponseRedirectType as json.
+func (o OptNilPaymentDoPaypayResponseRedirectType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentDoPaypayResponseRedirectType from json.
+func (o *OptNilPaymentDoPaypayResponseRedirectType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilPaymentDoPaypayResponseRedirectType to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v PaymentDoPaypayResponseRedirectType
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilPaymentDoPaypayResponseRedirectType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilPaymentDoPaypayResponseRedirectType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes PaymentMethodCardResponseCardTds2Status as json.
 func (o OptNilPaymentMethodCardResponseCardTds2Status) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -4463,6 +4561,55 @@ func (s *OptNilPaymentMethodCardWith3DSecureCardTds2Type) UnmarshalJSON(data []b
 	return s.Decode(d)
 }
 
+// Encode encodes PaymentPaypayResponseRedirectType as json.
+func (o OptNilPaymentPaypayResponseRedirectType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentPaypayResponseRedirectType from json.
+func (o *OptNilPaymentPaypayResponseRedirectType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilPaymentPaypayResponseRedirectType to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v PaymentPaypayResponseRedirectType
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilPaymentPaypayResponseRedirectType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilPaymentPaypayResponseRedirectType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes string as json.
 func (o OptNilString) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -4741,6 +4888,105 @@ func (s OptPaymentCancelCardResponseStatus) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptPaymentCancelCardResponseStatus) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCancelPaypayResponseJobCode as json.
+func (o OptPaymentCancelPaypayResponseJobCode) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentCancelPaypayResponseJobCode from json.
+func (o *OptPaymentCancelPaypayResponseJobCode) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentCancelPaypayResponseJobCode to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentCancelPaypayResponseJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentCancelPaypayResponseJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCancelPaypayResponsePayType as json.
+func (o OptPaymentCancelPaypayResponsePayType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentCancelPaypayResponsePayType from json.
+func (o *OptPaymentCancelPaypayResponsePayType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentCancelPaypayResponsePayType to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentCancelPaypayResponsePayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentCancelPaypayResponsePayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCancelPaypayResponseStatus as json.
+func (o OptPaymentCancelPaypayResponseStatus) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentCancelPaypayResponseStatus from json.
+func (o *OptPaymentCancelPaypayResponseStatus) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentCancelPaypayResponseStatus to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentCancelPaypayResponseStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentCancelPaypayResponseStatus) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -5306,6 +5552,138 @@ func (s *OptPaymentDoCardWithout3DSecureMethod) UnmarshalJSON(data []byte) error
 	return s.Decode(d)
 }
 
+// Encode encodes PaymentDoPaypayRedirectType as json.
+func (o OptPaymentDoPaypayRedirectType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentDoPaypayRedirectType from json.
+func (o *OptPaymentDoPaypayRedirectType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentDoPaypayRedirectType to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentDoPaypayRedirectType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentDoPaypayRedirectType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayResponseJobCode as json.
+func (o OptPaymentDoPaypayResponseJobCode) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentDoPaypayResponseJobCode from json.
+func (o *OptPaymentDoPaypayResponseJobCode) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentDoPaypayResponseJobCode to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentDoPaypayResponseJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentDoPaypayResponseJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayResponsePayType as json.
+func (o OptPaymentDoPaypayResponsePayType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentDoPaypayResponsePayType from json.
+func (o *OptPaymentDoPaypayResponsePayType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentDoPaypayResponsePayType to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentDoPaypayResponsePayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentDoPaypayResponsePayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayResponseStatus as json.
+func (o OptPaymentDoPaypayResponseStatus) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentDoPaypayResponseStatus from json.
+func (o *OptPaymentDoPaypayResponseStatus) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentDoPaypayResponseStatus to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentDoPaypayResponseStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentDoPaypayResponseStatus) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes PaymentMethodCardResponseCard as json.
 func (o OptPaymentMethodCardResponseCard) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -5731,6 +6109,105 @@ func (s OptPaymentMethodDirectDebitResponseStatus) MarshalJSON() ([]byte, error)
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptPaymentMethodDirectDebitResponseStatus) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayResponseJobCode as json.
+func (o OptPaymentPaypayResponseJobCode) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentPaypayResponseJobCode from json.
+func (o *OptPaymentPaypayResponseJobCode) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentPaypayResponseJobCode to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentPaypayResponseJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentPaypayResponseJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayResponsePayType as json.
+func (o OptPaymentPaypayResponsePayType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentPaypayResponsePayType from json.
+func (o *OptPaymentPaypayResponsePayType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentPaypayResponsePayType to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentPaypayResponsePayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentPaypayResponsePayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayResponseStatus as json.
+func (o OptPaymentPaypayResponseStatus) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentPaypayResponseStatus from json.
+func (o *OptPaymentPaypayResponseStatus) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentPaypayResponseStatus to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentPaypayResponseStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentPaypayResponseStatus) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -8202,6 +8679,996 @@ func (s PaymentCancelCardResponseTdsType) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *PaymentCancelCardResponseTdsType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentCancelPaypay) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentCancelPaypay) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("pay_type")
+		s.PayType.Encode(e)
+	}
+	{
+		e.FieldStart("access_id")
+		e.Str(s.AccessID)
+	}
+	{
+		if s.CancelDescription.Set {
+			e.FieldStart("cancel_description")
+			s.CancelDescription.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentCancelPaypay = [3]string{
+	0: "pay_type",
+	1: "access_id",
+	2: "cancel_description",
+}
+
+// Decode decodes PaymentCancelPaypay from json.
+func (s *PaymentCancelPaypay) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCancelPaypay to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "pay_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "access_id":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.AccessID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "cancel_description":
+			if err := func() error {
+				s.CancelDescription.Reset()
+				if err := s.CancelDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"cancel_description\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentCancelPaypay")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfPaymentCancelPaypay) {
+					name = jsonFieldsNameOfPaymentCancelPaypay[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentCancelPaypay) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCancelPaypay) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCancelPaypayPayType as json.
+func (s PaymentCancelPaypayPayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentCancelPaypayPayType from json.
+func (s *PaymentCancelPaypayPayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCancelPaypayPayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentCancelPaypayPayType(v) {
+	case PaymentCancelPaypayPayTypePaypay:
+		*s = PaymentCancelPaypayPayTypePaypay
+	default:
+		*s = PaymentCancelPaypayPayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentCancelPaypayPayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCancelPaypayPayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentCancelPaypayResponse) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentCancelPaypayResponse) encodeFields(e *jx.Encoder) {
+	{
+		if s.ShopID.Set {
+			e.FieldStart("shop_id")
+			s.ShopID.Encode(e)
+		}
+	}
+	{
+		if s.ID.Set {
+			e.FieldStart("id")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		if s.AccessID.Set {
+			e.FieldStart("access_id")
+			s.AccessID.Encode(e)
+		}
+	}
+	{
+		if s.Amount.Set {
+			e.FieldStart("amount")
+			s.Amount.Encode(e)
+		}
+	}
+	{
+		if s.Tax.Set {
+			e.FieldStart("tax")
+			s.Tax.Encode(e)
+		}
+	}
+	{
+		if s.TotalAmount.Set {
+			e.FieldStart("total_amount")
+			s.TotalAmount.Encode(e)
+		}
+	}
+	{
+		if s.ClientField1.Set {
+			e.FieldStart("client_field_1")
+			s.ClientField1.Encode(e)
+		}
+	}
+	{
+		if s.ClientField2.Set {
+			e.FieldStart("client_field_2")
+			s.ClientField2.Encode(e)
+		}
+	}
+	{
+		if s.ClientField3.Set {
+			e.FieldStart("client_field_3")
+			s.ClientField3.Encode(e)
+		}
+	}
+	{
+		if s.ProcessDate.Set {
+			e.FieldStart("process_date")
+			s.ProcessDate.Encode(e)
+		}
+	}
+	{
+		if s.CustomerID.Set {
+			e.FieldStart("customer_id")
+			s.CustomerID.Encode(e)
+		}
+	}
+	{
+		if s.CustomerGroupID.Set {
+			e.FieldStart("customer_group_id")
+			s.CustomerGroupID.Encode(e)
+		}
+	}
+	{
+		if s.ErrorCode.Set {
+			e.FieldStart("error_code")
+			s.ErrorCode.Encode(e)
+		}
+	}
+	{
+		if s.Created.Set {
+			e.FieldStart("created")
+			s.Created.Encode(e)
+		}
+	}
+	{
+		if s.Updated.Set {
+			e.FieldStart("updated")
+			s.Updated.Encode(e)
+		}
+	}
+	{
+		if s.PayType.Set {
+			e.FieldStart("pay_type")
+			s.PayType.Encode(e)
+		}
+	}
+	{
+		if s.JobCode.Set {
+			e.FieldStart("job_code")
+			s.JobCode.Encode(e)
+		}
+	}
+	{
+		if s.Status.Set {
+			e.FieldStart("status")
+			s.Status.Encode(e)
+		}
+	}
+	{
+		if s.CodeURL.Set {
+			e.FieldStart("code_url")
+			s.CodeURL.Encode(e)
+		}
+	}
+	{
+		if s.CodeExpiryDate.Set {
+			e.FieldStart("code_expiry_date")
+			s.CodeExpiryDate.Encode(e)
+		}
+	}
+	{
+		if s.RedirectURL.Set {
+			e.FieldStart("redirect_url")
+			s.RedirectURL.Encode(e)
+		}
+	}
+	{
+		if s.RedirectType.Set {
+			e.FieldStart("redirect_type")
+			s.RedirectType.Encode(e)
+		}
+	}
+	{
+		if s.AuthMaxDate.Set {
+			e.FieldStart("auth_max_date")
+			s.AuthMaxDate.Encode(e)
+		}
+	}
+	{
+		if s.OrderDescription.Set {
+			e.FieldStart("order_description")
+			s.OrderDescription.Encode(e)
+		}
+	}
+	{
+		if s.CaptureDescription.Set {
+			e.FieldStart("capture_description")
+			s.CaptureDescription.Encode(e)
+		}
+	}
+	{
+		if s.UpdateDescription.Set {
+			e.FieldStart("update_description")
+			s.UpdateDescription.Encode(e)
+		}
+	}
+	{
+		if s.CancelDescription.Set {
+			e.FieldStart("cancel_description")
+			s.CancelDescription.Encode(e)
+		}
+	}
+	{
+		if s.StoreID.Set {
+			e.FieldStart("store_id")
+			s.StoreID.Encode(e)
+		}
+	}
+	{
+		if s.CodeID.Set {
+			e.FieldStart("code_id")
+			s.CodeID.Encode(e)
+		}
+	}
+	{
+		if s.PaymentID.Set {
+			e.FieldStart("payment_id")
+			s.PaymentID.Encode(e)
+		}
+	}
+	{
+		if s.PaypayResultCode.Set {
+			e.FieldStart("paypay_result_code")
+			s.PaypayResultCode.Encode(e)
+		}
+	}
+	{
+		if s.MerchantPaymentID.Set {
+			e.FieldStart("merchant_payment_id")
+			s.MerchantPaymentID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantCaptureID.Set {
+			e.FieldStart("merchant_capture_id")
+			s.MerchantCaptureID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantUpdateID.Set {
+			e.FieldStart("merchant_update_id")
+			s.MerchantUpdateID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantRefundID.Set {
+			e.FieldStart("merchant_refund_id")
+			s.MerchantRefundID.Encode(e)
+		}
+	}
+	{
+		if s.PaymentDate.Set {
+			e.FieldStart("payment_date")
+			s.PaymentDate.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentCancelPaypayResponse = [36]string{
+	0:  "shop_id",
+	1:  "id",
+	2:  "access_id",
+	3:  "amount",
+	4:  "tax",
+	5:  "total_amount",
+	6:  "client_field_1",
+	7:  "client_field_2",
+	8:  "client_field_3",
+	9:  "process_date",
+	10: "customer_id",
+	11: "customer_group_id",
+	12: "error_code",
+	13: "created",
+	14: "updated",
+	15: "pay_type",
+	16: "job_code",
+	17: "status",
+	18: "code_url",
+	19: "code_expiry_date",
+	20: "redirect_url",
+	21: "redirect_type",
+	22: "auth_max_date",
+	23: "order_description",
+	24: "capture_description",
+	25: "update_description",
+	26: "cancel_description",
+	27: "store_id",
+	28: "code_id",
+	29: "payment_id",
+	30: "paypay_result_code",
+	31: "merchant_payment_id",
+	32: "merchant_capture_id",
+	33: "merchant_update_id",
+	34: "merchant_refund_id",
+	35: "payment_date",
+}
+
+// Decode decodes PaymentCancelPaypayResponse from json.
+func (s *PaymentCancelPaypayResponse) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCancelPaypayResponse to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "shop_id":
+			if err := func() error {
+				s.ShopID.Reset()
+				if err := s.ShopID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"shop_id\"")
+			}
+		case "id":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"id\"")
+			}
+		case "access_id":
+			if err := func() error {
+				s.AccessID.Reset()
+				if err := s.AccessID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "amount":
+			if err := func() error {
+				s.Amount.Reset()
+				if err := s.Amount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"amount\"")
+			}
+		case "tax":
+			if err := func() error {
+				s.Tax.Reset()
+				if err := s.Tax.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tax\"")
+			}
+		case "total_amount":
+			if err := func() error {
+				s.TotalAmount.Reset()
+				if err := s.TotalAmount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"total_amount\"")
+			}
+		case "client_field_1":
+			if err := func() error {
+				s.ClientField1.Reset()
+				if err := s.ClientField1.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_1\"")
+			}
+		case "client_field_2":
+			if err := func() error {
+				s.ClientField2.Reset()
+				if err := s.ClientField2.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_2\"")
+			}
+		case "client_field_3":
+			if err := func() error {
+				s.ClientField3.Reset()
+				if err := s.ClientField3.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_3\"")
+			}
+		case "process_date":
+			if err := func() error {
+				s.ProcessDate.Reset()
+				if err := s.ProcessDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"process_date\"")
+			}
+		case "customer_id":
+			if err := func() error {
+				s.CustomerID.Reset()
+				if err := s.CustomerID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_id\"")
+			}
+		case "customer_group_id":
+			if err := func() error {
+				s.CustomerGroupID.Reset()
+				if err := s.CustomerGroupID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_group_id\"")
+			}
+		case "error_code":
+			if err := func() error {
+				s.ErrorCode.Reset()
+				if err := s.ErrorCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_code\"")
+			}
+		case "created":
+			if err := func() error {
+				s.Created.Reset()
+				if err := s.Created.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"created\"")
+			}
+		case "updated":
+			if err := func() error {
+				s.Updated.Reset()
+				if err := s.Updated.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"updated\"")
+			}
+		case "pay_type":
+			if err := func() error {
+				s.PayType.Reset()
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "job_code":
+			if err := func() error {
+				s.JobCode.Reset()
+				if err := s.JobCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"job_code\"")
+			}
+		case "status":
+			if err := func() error {
+				s.Status.Reset()
+				if err := s.Status.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"status\"")
+			}
+		case "code_url":
+			if err := func() error {
+				s.CodeURL.Reset()
+				if err := s.CodeURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_url\"")
+			}
+		case "code_expiry_date":
+			if err := func() error {
+				s.CodeExpiryDate.Reset()
+				if err := s.CodeExpiryDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_expiry_date\"")
+			}
+		case "redirect_url":
+			if err := func() error {
+				s.RedirectURL.Reset()
+				if err := s.RedirectURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"redirect_url\"")
+			}
+		case "redirect_type":
+			if err := func() error {
+				s.RedirectType.Reset()
+				if err := s.RedirectType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"redirect_type\"")
+			}
+		case "auth_max_date":
+			if err := func() error {
+				s.AuthMaxDate.Reset()
+				if err := s.AuthMaxDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"auth_max_date\"")
+			}
+		case "order_description":
+			if err := func() error {
+				s.OrderDescription.Reset()
+				if err := s.OrderDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"order_description\"")
+			}
+		case "capture_description":
+			if err := func() error {
+				s.CaptureDescription.Reset()
+				if err := s.CaptureDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"capture_description\"")
+			}
+		case "update_description":
+			if err := func() error {
+				s.UpdateDescription.Reset()
+				if err := s.UpdateDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"update_description\"")
+			}
+		case "cancel_description":
+			if err := func() error {
+				s.CancelDescription.Reset()
+				if err := s.CancelDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"cancel_description\"")
+			}
+		case "store_id":
+			if err := func() error {
+				s.StoreID.Reset()
+				if err := s.StoreID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"store_id\"")
+			}
+		case "code_id":
+			if err := func() error {
+				s.CodeID.Reset()
+				if err := s.CodeID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_id\"")
+			}
+		case "payment_id":
+			if err := func() error {
+				s.PaymentID.Reset()
+				if err := s.PaymentID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"payment_id\"")
+			}
+		case "paypay_result_code":
+			if err := func() error {
+				s.PaypayResultCode.Reset()
+				if err := s.PaypayResultCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"paypay_result_code\"")
+			}
+		case "merchant_payment_id":
+			if err := func() error {
+				s.MerchantPaymentID.Reset()
+				if err := s.MerchantPaymentID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_payment_id\"")
+			}
+		case "merchant_capture_id":
+			if err := func() error {
+				s.MerchantCaptureID.Reset()
+				if err := s.MerchantCaptureID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_capture_id\"")
+			}
+		case "merchant_update_id":
+			if err := func() error {
+				s.MerchantUpdateID.Reset()
+				if err := s.MerchantUpdateID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_update_id\"")
+			}
+		case "merchant_refund_id":
+			if err := func() error {
+				s.MerchantRefundID.Reset()
+				if err := s.MerchantRefundID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_refund_id\"")
+			}
+		case "payment_date":
+			if err := func() error {
+				s.PaymentDate.Reset()
+				if err := s.PaymentDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"payment_date\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentCancelPaypayResponse")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentCancelPaypayResponse) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCancelPaypayResponse) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCancelPaypayResponseJobCode as json.
+func (s PaymentCancelPaypayResponseJobCode) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentCancelPaypayResponseJobCode from json.
+func (s *PaymentCancelPaypayResponseJobCode) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCancelPaypayResponseJobCode to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentCancelPaypayResponseJobCode(v) {
+	case PaymentCancelPaypayResponseJobCodeAUTH:
+		*s = PaymentCancelPaypayResponseJobCodeAUTH
+	case PaymentCancelPaypayResponseJobCodeCAPTURE:
+		*s = PaymentCancelPaypayResponseJobCodeCAPTURE
+	default:
+		*s = PaymentCancelPaypayResponseJobCode(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentCancelPaypayResponseJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCancelPaypayResponseJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCancelPaypayResponsePayType as json.
+func (s PaymentCancelPaypayResponsePayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentCancelPaypayResponsePayType from json.
+func (s *PaymentCancelPaypayResponsePayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCancelPaypayResponsePayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentCancelPaypayResponsePayType(v) {
+	case PaymentCancelPaypayResponsePayTypePaypay:
+		*s = PaymentCancelPaypayResponsePayTypePaypay
+	default:
+		*s = PaymentCancelPaypayResponsePayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentCancelPaypayResponsePayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCancelPaypayResponsePayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCancelPaypayResponseRedirectType as json.
+func (s PaymentCancelPaypayResponseRedirectType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentCancelPaypayResponseRedirectType from json.
+func (s *PaymentCancelPaypayResponseRedirectType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCancelPaypayResponseRedirectType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentCancelPaypayResponseRedirectType(v) {
+	case PaymentCancelPaypayResponseRedirectType1:
+		*s = PaymentCancelPaypayResponseRedirectType1
+	case PaymentCancelPaypayResponseRedirectType2:
+		*s = PaymentCancelPaypayResponseRedirectType2
+	default:
+		*s = PaymentCancelPaypayResponseRedirectType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentCancelPaypayResponseRedirectType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCancelPaypayResponseRedirectType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCancelPaypayResponseStatus as json.
+func (s PaymentCancelPaypayResponseStatus) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentCancelPaypayResponseStatus from json.
+func (s *PaymentCancelPaypayResponseStatus) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCancelPaypayResponseStatus to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentCancelPaypayResponseStatus(v) {
+	case PaymentCancelPaypayResponseStatusUNPROCESSED:
+		*s = PaymentCancelPaypayResponseStatusUNPROCESSED
+	case PaymentCancelPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		*s = PaymentCancelPaypayResponseStatusAWAITINGCUSTOMERPAYMENT
+	case PaymentCancelPaypayResponseStatusAUTHORIZED:
+		*s = PaymentCancelPaypayResponseStatusAUTHORIZED
+	case PaymentCancelPaypayResponseStatusCAPTURED:
+		*s = PaymentCancelPaypayResponseStatusCAPTURED
+	case PaymentCancelPaypayResponseStatusCANCELED:
+		*s = PaymentCancelPaypayResponseStatusCANCELED
+	case PaymentCancelPaypayResponseStatusEXPIRED:
+		*s = PaymentCancelPaypayResponseStatusEXPIRED
+	default:
+		*s = PaymentCancelPaypayResponseStatus(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentCancelPaypayResponseStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCancelPaypayResponseStatus) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -14739,6 +16206,1087 @@ func (s *PaymentDoCardWithout3DSecurePayType) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *PaymentDoPaypay) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentDoPaypay) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("pay_type")
+		s.PayType.Encode(e)
+	}
+	{
+		e.FieldStart("access_id")
+		e.Str(s.AccessID)
+	}
+	{
+		if s.CustomerID.Set {
+			e.FieldStart("customer_id")
+			s.CustomerID.Encode(e)
+		}
+	}
+	{
+		e.FieldStart("redirect_url")
+		e.Str(s.RedirectURL)
+	}
+	{
+		if s.RedirectType.Set {
+			e.FieldStart("redirect_type")
+			s.RedirectType.Encode(e)
+		}
+	}
+	{
+		if s.UserAgent.Set {
+			e.FieldStart("user_agent")
+			s.UserAgent.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentDoPaypay = [6]string{
+	0: "pay_type",
+	1: "access_id",
+	2: "customer_id",
+	3: "redirect_url",
+	4: "redirect_type",
+	5: "user_agent",
+}
+
+// Decode decodes PaymentDoPaypay from json.
+func (s *PaymentDoPaypay) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentDoPaypay to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "pay_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "access_id":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.AccessID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "customer_id":
+			if err := func() error {
+				s.CustomerID.Reset()
+				if err := s.CustomerID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_id\"")
+			}
+		case "redirect_url":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				v, err := d.Str()
+				s.RedirectURL = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"redirect_url\"")
+			}
+		case "redirect_type":
+			if err := func() error {
+				s.RedirectType.Reset()
+				if err := s.RedirectType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"redirect_type\"")
+			}
+		case "user_agent":
+			if err := func() error {
+				s.UserAgent.Reset()
+				if err := s.UserAgent.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"user_agent\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentDoPaypay")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00001011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfPaymentDoPaypay) {
+					name = jsonFieldsNameOfPaymentDoPaypay[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentDoPaypay) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentDoPaypay) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayPayType as json.
+func (s PaymentDoPaypayPayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentDoPaypayPayType from json.
+func (s *PaymentDoPaypayPayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentDoPaypayPayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentDoPaypayPayType(v) {
+	case PaymentDoPaypayPayTypePaypay:
+		*s = PaymentDoPaypayPayTypePaypay
+	default:
+		*s = PaymentDoPaypayPayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentDoPaypayPayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentDoPaypayPayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayRedirectType as json.
+func (s PaymentDoPaypayRedirectType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentDoPaypayRedirectType from json.
+func (s *PaymentDoPaypayRedirectType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentDoPaypayRedirectType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentDoPaypayRedirectType(v) {
+	case PaymentDoPaypayRedirectType1:
+		*s = PaymentDoPaypayRedirectType1
+	case PaymentDoPaypayRedirectType2:
+		*s = PaymentDoPaypayRedirectType2
+	default:
+		*s = PaymentDoPaypayRedirectType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentDoPaypayRedirectType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentDoPaypayRedirectType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentDoPaypayResponse) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentDoPaypayResponse) encodeFields(e *jx.Encoder) {
+	{
+		if s.ShopID.Set {
+			e.FieldStart("shop_id")
+			s.ShopID.Encode(e)
+		}
+	}
+	{
+		if s.ID.Set {
+			e.FieldStart("id")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		if s.AccessID.Set {
+			e.FieldStart("access_id")
+			s.AccessID.Encode(e)
+		}
+	}
+	{
+		if s.Amount.Set {
+			e.FieldStart("amount")
+			s.Amount.Encode(e)
+		}
+	}
+	{
+		if s.Tax.Set {
+			e.FieldStart("tax")
+			s.Tax.Encode(e)
+		}
+	}
+	{
+		if s.TotalAmount.Set {
+			e.FieldStart("total_amount")
+			s.TotalAmount.Encode(e)
+		}
+	}
+	{
+		if s.ClientField1.Set {
+			e.FieldStart("client_field_1")
+			s.ClientField1.Encode(e)
+		}
+	}
+	{
+		if s.ClientField2.Set {
+			e.FieldStart("client_field_2")
+			s.ClientField2.Encode(e)
+		}
+	}
+	{
+		if s.ClientField3.Set {
+			e.FieldStart("client_field_3")
+			s.ClientField3.Encode(e)
+		}
+	}
+	{
+		if s.ProcessDate.Set {
+			e.FieldStart("process_date")
+			s.ProcessDate.Encode(e)
+		}
+	}
+	{
+		if s.CustomerID.Set {
+			e.FieldStart("customer_id")
+			s.CustomerID.Encode(e)
+		}
+	}
+	{
+		if s.CustomerGroupID.Set {
+			e.FieldStart("customer_group_id")
+			s.CustomerGroupID.Encode(e)
+		}
+	}
+	{
+		if s.ErrorCode.Set {
+			e.FieldStart("error_code")
+			s.ErrorCode.Encode(e)
+		}
+	}
+	{
+		if s.Created.Set {
+			e.FieldStart("created")
+			s.Created.Encode(e)
+		}
+	}
+	{
+		if s.Updated.Set {
+			e.FieldStart("updated")
+			s.Updated.Encode(e)
+		}
+	}
+	{
+		if s.PayType.Set {
+			e.FieldStart("pay_type")
+			s.PayType.Encode(e)
+		}
+	}
+	{
+		if s.JobCode.Set {
+			e.FieldStart("job_code")
+			s.JobCode.Encode(e)
+		}
+	}
+	{
+		if s.Status.Set {
+			e.FieldStart("status")
+			s.Status.Encode(e)
+		}
+	}
+	{
+		if s.CodeURL.Set {
+			e.FieldStart("code_url")
+			s.CodeURL.Encode(e)
+		}
+	}
+	{
+		if s.CodeExpiryDate.Set {
+			e.FieldStart("code_expiry_date")
+			s.CodeExpiryDate.Encode(e)
+		}
+	}
+	{
+		if s.RedirectURL.Set {
+			e.FieldStart("redirect_url")
+			s.RedirectURL.Encode(e)
+		}
+	}
+	{
+		if s.RedirectType.Set {
+			e.FieldStart("redirect_type")
+			s.RedirectType.Encode(e)
+		}
+	}
+	{
+		if s.AuthMaxDate.Set {
+			e.FieldStart("auth_max_date")
+			s.AuthMaxDate.Encode(e)
+		}
+	}
+	{
+		if s.OrderDescription.Set {
+			e.FieldStart("order_description")
+			s.OrderDescription.Encode(e)
+		}
+	}
+	{
+		if s.CaptureDescription.Set {
+			e.FieldStart("capture_description")
+			s.CaptureDescription.Encode(e)
+		}
+	}
+	{
+		if s.UpdateDescription.Set {
+			e.FieldStart("update_description")
+			s.UpdateDescription.Encode(e)
+		}
+	}
+	{
+		if s.CancelDescription.Set {
+			e.FieldStart("cancel_description")
+			s.CancelDescription.Encode(e)
+		}
+	}
+	{
+		if s.StoreID.Set {
+			e.FieldStart("store_id")
+			s.StoreID.Encode(e)
+		}
+	}
+	{
+		if s.CodeID.Set {
+			e.FieldStart("code_id")
+			s.CodeID.Encode(e)
+		}
+	}
+	{
+		if s.PaymentID.Set {
+			e.FieldStart("payment_id")
+			s.PaymentID.Encode(e)
+		}
+	}
+	{
+		if s.PaypayResultCode.Set {
+			e.FieldStart("paypay_result_code")
+			s.PaypayResultCode.Encode(e)
+		}
+	}
+	{
+		if s.MerchantPaymentID.Set {
+			e.FieldStart("merchant_payment_id")
+			s.MerchantPaymentID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantCaptureID.Set {
+			e.FieldStart("merchant_capture_id")
+			s.MerchantCaptureID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantUpdateID.Set {
+			e.FieldStart("merchant_update_id")
+			s.MerchantUpdateID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantRefundID.Set {
+			e.FieldStart("merchant_refund_id")
+			s.MerchantRefundID.Encode(e)
+		}
+	}
+	{
+		if s.PaymentDate.Set {
+			e.FieldStart("payment_date")
+			s.PaymentDate.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentDoPaypayResponse = [36]string{
+	0:  "shop_id",
+	1:  "id",
+	2:  "access_id",
+	3:  "amount",
+	4:  "tax",
+	5:  "total_amount",
+	6:  "client_field_1",
+	7:  "client_field_2",
+	8:  "client_field_3",
+	9:  "process_date",
+	10: "customer_id",
+	11: "customer_group_id",
+	12: "error_code",
+	13: "created",
+	14: "updated",
+	15: "pay_type",
+	16: "job_code",
+	17: "status",
+	18: "code_url",
+	19: "code_expiry_date",
+	20: "redirect_url",
+	21: "redirect_type",
+	22: "auth_max_date",
+	23: "order_description",
+	24: "capture_description",
+	25: "update_description",
+	26: "cancel_description",
+	27: "store_id",
+	28: "code_id",
+	29: "payment_id",
+	30: "paypay_result_code",
+	31: "merchant_payment_id",
+	32: "merchant_capture_id",
+	33: "merchant_update_id",
+	34: "merchant_refund_id",
+	35: "payment_date",
+}
+
+// Decode decodes PaymentDoPaypayResponse from json.
+func (s *PaymentDoPaypayResponse) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentDoPaypayResponse to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "shop_id":
+			if err := func() error {
+				s.ShopID.Reset()
+				if err := s.ShopID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"shop_id\"")
+			}
+		case "id":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"id\"")
+			}
+		case "access_id":
+			if err := func() error {
+				s.AccessID.Reset()
+				if err := s.AccessID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "amount":
+			if err := func() error {
+				s.Amount.Reset()
+				if err := s.Amount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"amount\"")
+			}
+		case "tax":
+			if err := func() error {
+				s.Tax.Reset()
+				if err := s.Tax.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tax\"")
+			}
+		case "total_amount":
+			if err := func() error {
+				s.TotalAmount.Reset()
+				if err := s.TotalAmount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"total_amount\"")
+			}
+		case "client_field_1":
+			if err := func() error {
+				s.ClientField1.Reset()
+				if err := s.ClientField1.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_1\"")
+			}
+		case "client_field_2":
+			if err := func() error {
+				s.ClientField2.Reset()
+				if err := s.ClientField2.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_2\"")
+			}
+		case "client_field_3":
+			if err := func() error {
+				s.ClientField3.Reset()
+				if err := s.ClientField3.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_3\"")
+			}
+		case "process_date":
+			if err := func() error {
+				s.ProcessDate.Reset()
+				if err := s.ProcessDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"process_date\"")
+			}
+		case "customer_id":
+			if err := func() error {
+				s.CustomerID.Reset()
+				if err := s.CustomerID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_id\"")
+			}
+		case "customer_group_id":
+			if err := func() error {
+				s.CustomerGroupID.Reset()
+				if err := s.CustomerGroupID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_group_id\"")
+			}
+		case "error_code":
+			if err := func() error {
+				s.ErrorCode.Reset()
+				if err := s.ErrorCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_code\"")
+			}
+		case "created":
+			if err := func() error {
+				s.Created.Reset()
+				if err := s.Created.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"created\"")
+			}
+		case "updated":
+			if err := func() error {
+				s.Updated.Reset()
+				if err := s.Updated.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"updated\"")
+			}
+		case "pay_type":
+			if err := func() error {
+				s.PayType.Reset()
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "job_code":
+			if err := func() error {
+				s.JobCode.Reset()
+				if err := s.JobCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"job_code\"")
+			}
+		case "status":
+			if err := func() error {
+				s.Status.Reset()
+				if err := s.Status.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"status\"")
+			}
+		case "code_url":
+			if err := func() error {
+				s.CodeURL.Reset()
+				if err := s.CodeURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_url\"")
+			}
+		case "code_expiry_date":
+			if err := func() error {
+				s.CodeExpiryDate.Reset()
+				if err := s.CodeExpiryDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_expiry_date\"")
+			}
+		case "redirect_url":
+			if err := func() error {
+				s.RedirectURL.Reset()
+				if err := s.RedirectURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"redirect_url\"")
+			}
+		case "redirect_type":
+			if err := func() error {
+				s.RedirectType.Reset()
+				if err := s.RedirectType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"redirect_type\"")
+			}
+		case "auth_max_date":
+			if err := func() error {
+				s.AuthMaxDate.Reset()
+				if err := s.AuthMaxDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"auth_max_date\"")
+			}
+		case "order_description":
+			if err := func() error {
+				s.OrderDescription.Reset()
+				if err := s.OrderDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"order_description\"")
+			}
+		case "capture_description":
+			if err := func() error {
+				s.CaptureDescription.Reset()
+				if err := s.CaptureDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"capture_description\"")
+			}
+		case "update_description":
+			if err := func() error {
+				s.UpdateDescription.Reset()
+				if err := s.UpdateDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"update_description\"")
+			}
+		case "cancel_description":
+			if err := func() error {
+				s.CancelDescription.Reset()
+				if err := s.CancelDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"cancel_description\"")
+			}
+		case "store_id":
+			if err := func() error {
+				s.StoreID.Reset()
+				if err := s.StoreID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"store_id\"")
+			}
+		case "code_id":
+			if err := func() error {
+				s.CodeID.Reset()
+				if err := s.CodeID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_id\"")
+			}
+		case "payment_id":
+			if err := func() error {
+				s.PaymentID.Reset()
+				if err := s.PaymentID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"payment_id\"")
+			}
+		case "paypay_result_code":
+			if err := func() error {
+				s.PaypayResultCode.Reset()
+				if err := s.PaypayResultCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"paypay_result_code\"")
+			}
+		case "merchant_payment_id":
+			if err := func() error {
+				s.MerchantPaymentID.Reset()
+				if err := s.MerchantPaymentID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_payment_id\"")
+			}
+		case "merchant_capture_id":
+			if err := func() error {
+				s.MerchantCaptureID.Reset()
+				if err := s.MerchantCaptureID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_capture_id\"")
+			}
+		case "merchant_update_id":
+			if err := func() error {
+				s.MerchantUpdateID.Reset()
+				if err := s.MerchantUpdateID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_update_id\"")
+			}
+		case "merchant_refund_id":
+			if err := func() error {
+				s.MerchantRefundID.Reset()
+				if err := s.MerchantRefundID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_refund_id\"")
+			}
+		case "payment_date":
+			if err := func() error {
+				s.PaymentDate.Reset()
+				if err := s.PaymentDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"payment_date\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentDoPaypayResponse")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentDoPaypayResponse) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentDoPaypayResponse) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayResponseJobCode as json.
+func (s PaymentDoPaypayResponseJobCode) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentDoPaypayResponseJobCode from json.
+func (s *PaymentDoPaypayResponseJobCode) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentDoPaypayResponseJobCode to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentDoPaypayResponseJobCode(v) {
+	case PaymentDoPaypayResponseJobCodeAUTH:
+		*s = PaymentDoPaypayResponseJobCodeAUTH
+	case PaymentDoPaypayResponseJobCodeCAPTURE:
+		*s = PaymentDoPaypayResponseJobCodeCAPTURE
+	default:
+		*s = PaymentDoPaypayResponseJobCode(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentDoPaypayResponseJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentDoPaypayResponseJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayResponsePayType as json.
+func (s PaymentDoPaypayResponsePayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentDoPaypayResponsePayType from json.
+func (s *PaymentDoPaypayResponsePayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentDoPaypayResponsePayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentDoPaypayResponsePayType(v) {
+	case PaymentDoPaypayResponsePayTypePaypay:
+		*s = PaymentDoPaypayResponsePayTypePaypay
+	default:
+		*s = PaymentDoPaypayResponsePayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentDoPaypayResponsePayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentDoPaypayResponsePayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayResponseRedirectType as json.
+func (s PaymentDoPaypayResponseRedirectType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentDoPaypayResponseRedirectType from json.
+func (s *PaymentDoPaypayResponseRedirectType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentDoPaypayResponseRedirectType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentDoPaypayResponseRedirectType(v) {
+	case PaymentDoPaypayResponseRedirectType1:
+		*s = PaymentDoPaypayResponseRedirectType1
+	case PaymentDoPaypayResponseRedirectType2:
+		*s = PaymentDoPaypayResponseRedirectType2
+	default:
+		*s = PaymentDoPaypayResponseRedirectType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentDoPaypayResponseRedirectType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentDoPaypayResponseRedirectType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentDoPaypayResponseStatus as json.
+func (s PaymentDoPaypayResponseStatus) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentDoPaypayResponseStatus from json.
+func (s *PaymentDoPaypayResponseStatus) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentDoPaypayResponseStatus to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentDoPaypayResponseStatus(v) {
+	case PaymentDoPaypayResponseStatusUNPROCESSED:
+		*s = PaymentDoPaypayResponseStatusUNPROCESSED
+	case PaymentDoPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		*s = PaymentDoPaypayResponseStatusAWAITINGCUSTOMERPAYMENT
+	case PaymentDoPaypayResponseStatusAUTHORIZED:
+		*s = PaymentDoPaypayResponseStatusAUTHORIZED
+	case PaymentDoPaypayResponseStatusCAPTURED:
+		*s = PaymentDoPaypayResponseStatusCAPTURED
+	case PaymentDoPaypayResponseStatusCANCELED:
+		*s = PaymentDoPaypayResponseStatusCANCELED
+	case PaymentDoPaypayResponseStatusEXPIRED:
+		*s = PaymentDoPaypayResponseStatusEXPIRED
+	default:
+		*s = PaymentDoPaypayResponseStatus(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentDoPaypayResponseStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentDoPaypayResponseStatus) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *PaymentMethodCardResponse) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -19021,6 +21569,1154 @@ func (s *PaymentMethodDirectDebitResponseStatus) UnmarshalJSON(data []byte) erro
 }
 
 // Encode implements json.Marshaler.
+func (s *PaymentPaypay) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentPaypay) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("pay_type")
+		s.PayType.Encode(e)
+	}
+	{
+		if s.ID.Set {
+			e.FieldStart("id")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		e.FieldStart("job_code")
+		s.JobCode.Encode(e)
+	}
+	{
+		e.FieldStart("amount")
+		e.Str(s.Amount)
+	}
+	{
+		if s.Tax.Set {
+			e.FieldStart("tax")
+			s.Tax.Encode(e)
+		}
+	}
+	{
+		if s.ClientField1.Set {
+			e.FieldStart("client_field_1")
+			s.ClientField1.Encode(e)
+		}
+	}
+	{
+		if s.ClientField2.Set {
+			e.FieldStart("client_field_2")
+			s.ClientField2.Encode(e)
+		}
+	}
+	{
+		if s.ClientField3.Set {
+			e.FieldStart("client_field_3")
+			s.ClientField3.Encode(e)
+		}
+	}
+	{
+		if s.OrderDescription.Set {
+			e.FieldStart("order_description")
+			s.OrderDescription.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentPaypay = [9]string{
+	0: "pay_type",
+	1: "id",
+	2: "job_code",
+	3: "amount",
+	4: "tax",
+	5: "client_field_1",
+	6: "client_field_2",
+	7: "client_field_3",
+	8: "order_description",
+}
+
+// Decode decodes PaymentPaypay from json.
+func (s *PaymentPaypay) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentPaypay to nil")
+	}
+	var requiredBitSet [2]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "pay_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "id":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"id\"")
+			}
+		case "job_code":
+			requiredBitSet[0] |= 1 << 2
+			if err := func() error {
+				if err := s.JobCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"job_code\"")
+			}
+		case "amount":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				v, err := d.Str()
+				s.Amount = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"amount\"")
+			}
+		case "tax":
+			if err := func() error {
+				s.Tax.Reset()
+				if err := s.Tax.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tax\"")
+			}
+		case "client_field_1":
+			if err := func() error {
+				s.ClientField1.Reset()
+				if err := s.ClientField1.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_1\"")
+			}
+		case "client_field_2":
+			if err := func() error {
+				s.ClientField2.Reset()
+				if err := s.ClientField2.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_2\"")
+			}
+		case "client_field_3":
+			if err := func() error {
+				s.ClientField3.Reset()
+				if err := s.ClientField3.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_3\"")
+			}
+		case "order_description":
+			if err := func() error {
+				s.OrderDescription.Reset()
+				if err := s.OrderDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"order_description\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentPaypay")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [2]uint8{
+		0b00001101,
+		0b00000000,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfPaymentPaypay) {
+					name = jsonFieldsNameOfPaymentPaypay[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentPaypay) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentPaypay) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayJobCode as json.
+func (s PaymentPaypayJobCode) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentPaypayJobCode from json.
+func (s *PaymentPaypayJobCode) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentPaypayJobCode to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentPaypayJobCode(v) {
+	case PaymentPaypayJobCodeAUTH:
+		*s = PaymentPaypayJobCodeAUTH
+	case PaymentPaypayJobCodeCAPTURE:
+		*s = PaymentPaypayJobCodeCAPTURE
+	default:
+		*s = PaymentPaypayJobCode(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentPaypayJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentPaypayJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayPayType as json.
+func (s PaymentPaypayPayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentPaypayPayType from json.
+func (s *PaymentPaypayPayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentPaypayPayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentPaypayPayType(v) {
+	case PaymentPaypayPayTypePaypay:
+		*s = PaymentPaypayPayTypePaypay
+	default:
+		*s = PaymentPaypayPayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentPaypayPayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentPaypayPayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentPaypayResponse) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentPaypayResponse) encodeFields(e *jx.Encoder) {
+	{
+		if s.ShopID.Set {
+			e.FieldStart("shop_id")
+			s.ShopID.Encode(e)
+		}
+	}
+	{
+		if s.ID.Set {
+			e.FieldStart("id")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		if s.AccessID.Set {
+			e.FieldStart("access_id")
+			s.AccessID.Encode(e)
+		}
+	}
+	{
+		if s.Amount.Set {
+			e.FieldStart("amount")
+			s.Amount.Encode(e)
+		}
+	}
+	{
+		if s.Tax.Set {
+			e.FieldStart("tax")
+			s.Tax.Encode(e)
+		}
+	}
+	{
+		if s.TotalAmount.Set {
+			e.FieldStart("total_amount")
+			s.TotalAmount.Encode(e)
+		}
+	}
+	{
+		if s.ClientField1.Set {
+			e.FieldStart("client_field_1")
+			s.ClientField1.Encode(e)
+		}
+	}
+	{
+		if s.ClientField2.Set {
+			e.FieldStart("client_field_2")
+			s.ClientField2.Encode(e)
+		}
+	}
+	{
+		if s.ClientField3.Set {
+			e.FieldStart("client_field_3")
+			s.ClientField3.Encode(e)
+		}
+	}
+	{
+		if s.ProcessDate.Set {
+			e.FieldStart("process_date")
+			s.ProcessDate.Encode(e)
+		}
+	}
+	{
+		if s.CustomerID.Set {
+			e.FieldStart("customer_id")
+			s.CustomerID.Encode(e)
+		}
+	}
+	{
+		if s.CustomerGroupID.Set {
+			e.FieldStart("customer_group_id")
+			s.CustomerGroupID.Encode(e)
+		}
+	}
+	{
+		if s.ErrorCode.Set {
+			e.FieldStart("error_code")
+			s.ErrorCode.Encode(e)
+		}
+	}
+	{
+		if s.Created.Set {
+			e.FieldStart("created")
+			s.Created.Encode(e)
+		}
+	}
+	{
+		if s.Updated.Set {
+			e.FieldStart("updated")
+			s.Updated.Encode(e)
+		}
+	}
+	{
+		if s.PayType.Set {
+			e.FieldStart("pay_type")
+			s.PayType.Encode(e)
+		}
+	}
+	{
+		if s.JobCode.Set {
+			e.FieldStart("job_code")
+			s.JobCode.Encode(e)
+		}
+	}
+	{
+		if s.Status.Set {
+			e.FieldStart("status")
+			s.Status.Encode(e)
+		}
+	}
+	{
+		if s.CodeURL.Set {
+			e.FieldStart("code_url")
+			s.CodeURL.Encode(e)
+		}
+	}
+	{
+		if s.CodeExpiryDate.Set {
+			e.FieldStart("code_expiry_date")
+			s.CodeExpiryDate.Encode(e)
+		}
+	}
+	{
+		if s.RedirectURL.Set {
+			e.FieldStart("redirect_url")
+			s.RedirectURL.Encode(e)
+		}
+	}
+	{
+		if s.RedirectType.Set {
+			e.FieldStart("redirect_type")
+			s.RedirectType.Encode(e)
+		}
+	}
+	{
+		if s.AuthMaxDate.Set {
+			e.FieldStart("auth_max_date")
+			s.AuthMaxDate.Encode(e)
+		}
+	}
+	{
+		if s.OrderDescription.Set {
+			e.FieldStart("order_description")
+			s.OrderDescription.Encode(e)
+		}
+	}
+	{
+		if s.CaptureDescription.Set {
+			e.FieldStart("capture_description")
+			s.CaptureDescription.Encode(e)
+		}
+	}
+	{
+		if s.UpdateDescription.Set {
+			e.FieldStart("update_description")
+			s.UpdateDescription.Encode(e)
+		}
+	}
+	{
+		if s.CancelDescription.Set {
+			e.FieldStart("cancel_description")
+			s.CancelDescription.Encode(e)
+		}
+	}
+	{
+		if s.StoreID.Set {
+			e.FieldStart("store_id")
+			s.StoreID.Encode(e)
+		}
+	}
+	{
+		if s.CodeID.Set {
+			e.FieldStart("code_id")
+			s.CodeID.Encode(e)
+		}
+	}
+	{
+		if s.PaymentID.Set {
+			e.FieldStart("payment_id")
+			s.PaymentID.Encode(e)
+		}
+	}
+	{
+		if s.PaypayResultCode.Set {
+			e.FieldStart("paypay_result_code")
+			s.PaypayResultCode.Encode(e)
+		}
+	}
+	{
+		if s.MerchantPaymentID.Set {
+			e.FieldStart("merchant_payment_id")
+			s.MerchantPaymentID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantCaptureID.Set {
+			e.FieldStart("merchant_capture_id")
+			s.MerchantCaptureID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantUpdateID.Set {
+			e.FieldStart("merchant_update_id")
+			s.MerchantUpdateID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantRevertID.Set {
+			e.FieldStart("merchant_revert_id")
+			s.MerchantRevertID.Encode(e)
+		}
+	}
+	{
+		if s.MerchantRefundID.Set {
+			e.FieldStart("merchant_refund_id")
+			s.MerchantRefundID.Encode(e)
+		}
+	}
+	{
+		if s.PaymentDate.Set {
+			e.FieldStart("payment_date")
+			s.PaymentDate.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentPaypayResponse = [37]string{
+	0:  "shop_id",
+	1:  "id",
+	2:  "access_id",
+	3:  "amount",
+	4:  "tax",
+	5:  "total_amount",
+	6:  "client_field_1",
+	7:  "client_field_2",
+	8:  "client_field_3",
+	9:  "process_date",
+	10: "customer_id",
+	11: "customer_group_id",
+	12: "error_code",
+	13: "created",
+	14: "updated",
+	15: "pay_type",
+	16: "job_code",
+	17: "status",
+	18: "code_url",
+	19: "code_expiry_date",
+	20: "redirect_url",
+	21: "redirect_type",
+	22: "auth_max_date",
+	23: "order_description",
+	24: "capture_description",
+	25: "update_description",
+	26: "cancel_description",
+	27: "store_id",
+	28: "code_id",
+	29: "payment_id",
+	30: "paypay_result_code",
+	31: "merchant_payment_id",
+	32: "merchant_capture_id",
+	33: "merchant_update_id",
+	34: "merchant_revert_id",
+	35: "merchant_refund_id",
+	36: "payment_date",
+}
+
+// Decode decodes PaymentPaypayResponse from json.
+func (s *PaymentPaypayResponse) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentPaypayResponse to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "shop_id":
+			if err := func() error {
+				s.ShopID.Reset()
+				if err := s.ShopID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"shop_id\"")
+			}
+		case "id":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"id\"")
+			}
+		case "access_id":
+			if err := func() error {
+				s.AccessID.Reset()
+				if err := s.AccessID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "amount":
+			if err := func() error {
+				s.Amount.Reset()
+				if err := s.Amount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"amount\"")
+			}
+		case "tax":
+			if err := func() error {
+				s.Tax.Reset()
+				if err := s.Tax.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tax\"")
+			}
+		case "total_amount":
+			if err := func() error {
+				s.TotalAmount.Reset()
+				if err := s.TotalAmount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"total_amount\"")
+			}
+		case "client_field_1":
+			if err := func() error {
+				s.ClientField1.Reset()
+				if err := s.ClientField1.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_1\"")
+			}
+		case "client_field_2":
+			if err := func() error {
+				s.ClientField2.Reset()
+				if err := s.ClientField2.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_2\"")
+			}
+		case "client_field_3":
+			if err := func() error {
+				s.ClientField3.Reset()
+				if err := s.ClientField3.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_3\"")
+			}
+		case "process_date":
+			if err := func() error {
+				s.ProcessDate.Reset()
+				if err := s.ProcessDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"process_date\"")
+			}
+		case "customer_id":
+			if err := func() error {
+				s.CustomerID.Reset()
+				if err := s.CustomerID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_id\"")
+			}
+		case "customer_group_id":
+			if err := func() error {
+				s.CustomerGroupID.Reset()
+				if err := s.CustomerGroupID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_group_id\"")
+			}
+		case "error_code":
+			if err := func() error {
+				s.ErrorCode.Reset()
+				if err := s.ErrorCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_code\"")
+			}
+		case "created":
+			if err := func() error {
+				s.Created.Reset()
+				if err := s.Created.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"created\"")
+			}
+		case "updated":
+			if err := func() error {
+				s.Updated.Reset()
+				if err := s.Updated.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"updated\"")
+			}
+		case "pay_type":
+			if err := func() error {
+				s.PayType.Reset()
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "job_code":
+			if err := func() error {
+				s.JobCode.Reset()
+				if err := s.JobCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"job_code\"")
+			}
+		case "status":
+			if err := func() error {
+				s.Status.Reset()
+				if err := s.Status.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"status\"")
+			}
+		case "code_url":
+			if err := func() error {
+				s.CodeURL.Reset()
+				if err := s.CodeURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_url\"")
+			}
+		case "code_expiry_date":
+			if err := func() error {
+				s.CodeExpiryDate.Reset()
+				if err := s.CodeExpiryDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_expiry_date\"")
+			}
+		case "redirect_url":
+			if err := func() error {
+				s.RedirectURL.Reset()
+				if err := s.RedirectURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"redirect_url\"")
+			}
+		case "redirect_type":
+			if err := func() error {
+				s.RedirectType.Reset()
+				if err := s.RedirectType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"redirect_type\"")
+			}
+		case "auth_max_date":
+			if err := func() error {
+				s.AuthMaxDate.Reset()
+				if err := s.AuthMaxDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"auth_max_date\"")
+			}
+		case "order_description":
+			if err := func() error {
+				s.OrderDescription.Reset()
+				if err := s.OrderDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"order_description\"")
+			}
+		case "capture_description":
+			if err := func() error {
+				s.CaptureDescription.Reset()
+				if err := s.CaptureDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"capture_description\"")
+			}
+		case "update_description":
+			if err := func() error {
+				s.UpdateDescription.Reset()
+				if err := s.UpdateDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"update_description\"")
+			}
+		case "cancel_description":
+			if err := func() error {
+				s.CancelDescription.Reset()
+				if err := s.CancelDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"cancel_description\"")
+			}
+		case "store_id":
+			if err := func() error {
+				s.StoreID.Reset()
+				if err := s.StoreID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"store_id\"")
+			}
+		case "code_id":
+			if err := func() error {
+				s.CodeID.Reset()
+				if err := s.CodeID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"code_id\"")
+			}
+		case "payment_id":
+			if err := func() error {
+				s.PaymentID.Reset()
+				if err := s.PaymentID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"payment_id\"")
+			}
+		case "paypay_result_code":
+			if err := func() error {
+				s.PaypayResultCode.Reset()
+				if err := s.PaypayResultCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"paypay_result_code\"")
+			}
+		case "merchant_payment_id":
+			if err := func() error {
+				s.MerchantPaymentID.Reset()
+				if err := s.MerchantPaymentID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_payment_id\"")
+			}
+		case "merchant_capture_id":
+			if err := func() error {
+				s.MerchantCaptureID.Reset()
+				if err := s.MerchantCaptureID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_capture_id\"")
+			}
+		case "merchant_update_id":
+			if err := func() error {
+				s.MerchantUpdateID.Reset()
+				if err := s.MerchantUpdateID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_update_id\"")
+			}
+		case "merchant_revert_id":
+			if err := func() error {
+				s.MerchantRevertID.Reset()
+				if err := s.MerchantRevertID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_revert_id\"")
+			}
+		case "merchant_refund_id":
+			if err := func() error {
+				s.MerchantRefundID.Reset()
+				if err := s.MerchantRefundID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_refund_id\"")
+			}
+		case "payment_date":
+			if err := func() error {
+				s.PaymentDate.Reset()
+				if err := s.PaymentDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"payment_date\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentPaypayResponse")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentPaypayResponse) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentPaypayResponse) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayResponseJobCode as json.
+func (s PaymentPaypayResponseJobCode) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentPaypayResponseJobCode from json.
+func (s *PaymentPaypayResponseJobCode) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentPaypayResponseJobCode to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentPaypayResponseJobCode(v) {
+	case PaymentPaypayResponseJobCodeAUTH:
+		*s = PaymentPaypayResponseJobCodeAUTH
+	case PaymentPaypayResponseJobCodeCAPTURE:
+		*s = PaymentPaypayResponseJobCodeCAPTURE
+	default:
+		*s = PaymentPaypayResponseJobCode(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentPaypayResponseJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentPaypayResponseJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayResponsePayType as json.
+func (s PaymentPaypayResponsePayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentPaypayResponsePayType from json.
+func (s *PaymentPaypayResponsePayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentPaypayResponsePayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentPaypayResponsePayType(v) {
+	case PaymentPaypayResponsePayTypePaypay:
+		*s = PaymentPaypayResponsePayTypePaypay
+	default:
+		*s = PaymentPaypayResponsePayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentPaypayResponsePayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentPaypayResponsePayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayResponseRedirectType as json.
+func (s PaymentPaypayResponseRedirectType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentPaypayResponseRedirectType from json.
+func (s *PaymentPaypayResponseRedirectType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentPaypayResponseRedirectType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentPaypayResponseRedirectType(v) {
+	case PaymentPaypayResponseRedirectType1:
+		*s = PaymentPaypayResponseRedirectType1
+	case PaymentPaypayResponseRedirectType2:
+		*s = PaymentPaypayResponseRedirectType2
+	default:
+		*s = PaymentPaypayResponseRedirectType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentPaypayResponseRedirectType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentPaypayResponseRedirectType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentPaypayResponseStatus as json.
+func (s PaymentPaypayResponseStatus) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentPaypayResponseStatus from json.
+func (s *PaymentPaypayResponseStatus) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentPaypayResponseStatus to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentPaypayResponseStatus(v) {
+	case PaymentPaypayResponseStatusUNPROCESSED:
+		*s = PaymentPaypayResponseStatusUNPROCESSED
+	case PaymentPaypayResponseStatusAWAITINGCUSTOMERPAYMENT:
+		*s = PaymentPaypayResponseStatusAWAITINGCUSTOMERPAYMENT
+	case PaymentPaypayResponseStatusAUTHORIZED:
+		*s = PaymentPaypayResponseStatusAUTHORIZED
+	case PaymentPaypayResponseStatusCAPTURED:
+		*s = PaymentPaypayResponseStatusCAPTURED
+	case PaymentPaypayResponseStatusCANCELED:
+		*s = PaymentPaypayResponseStatusCANCELED
+	case PaymentPaypayResponseStatusEXPIRED:
+		*s = PaymentPaypayResponseStatusEXPIRED
+	default:
+		*s = PaymentPaypayResponseStatus(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentPaypayResponseStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentPaypayResponseStatus) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *PaymentsGetBadRequest) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -20142,6 +23838,17 @@ func (s PaymentsIDCancelPutOK) Encode(e *jx.Encoder) {
 	switch s.Type {
 	case PaymentCancelCardResponsePaymentsIDCancelPutOK:
 		s.PaymentCancelCardResponse.Encode(e)
+	case PaymentCancelPaypayResponsePaymentsIDCancelPutOK:
+		s.PaymentCancelPaypayResponse.Encode(e)
+	}
+}
+
+func (s PaymentsIDCancelPutOK) encodeFields(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentCancelCardResponsePaymentsIDCancelPutOK:
+		s.PaymentCancelCardResponse.encodeFields(e)
+	case PaymentCancelPaypayResponsePaymentsIDCancelPutOK:
+		s.PaymentCancelPaypayResponse.encodeFields(e)
 	}
 }
 
@@ -20150,15 +23857,331 @@ func (s *PaymentsIDCancelPutOK) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode PaymentsIDCancelPutOK to nil")
 	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Object:
+	// Sum type fields.
+	if typ := d.Next(); typ != jx.Object {
+		return errors.Errorf("unexpected json type %q", typ)
+	}
+
+	var found bool
+	if err := d.Capture(func(d *jx.Decoder) error {
+		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
+			switch string(key) {
+			case "item_code":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_no":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_id":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "expire":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "holder_name":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_no_hash":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "method":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "pay_times":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "forward":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "issuer":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "transaction_id":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "approve":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds_type":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_type":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_ret_url":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_status":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_name":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "send_url":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "subscription_id":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "brand":
+				match := PaymentCancelCardResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_url":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_expiry_date":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_url":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_type":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "order_description":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "capture_description":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "update_description":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "cancel_description":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "store_id":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_id":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_id":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "paypay_result_code":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_payment_id":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_capture_id":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_update_id":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_refund_id":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_date":
+				match := PaymentCancelPaypayResponsePaymentsIDCancelPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			}
+			return d.Skip()
+		})
+	}); err != nil {
+		return errors.Wrap(err, "capture")
+	}
+	if !found {
+		return errors.New("unable to detect sum type variant")
+	}
+	switch s.Type {
+	case PaymentCancelCardResponsePaymentsIDCancelPutOK:
 		if err := s.PaymentCancelCardResponse.Decode(d); err != nil {
 			return err
 		}
-		s.Type = PaymentCancelCardResponsePaymentsIDCancelPutOK
+	case PaymentCancelPaypayResponsePaymentsIDCancelPutOK:
+		if err := s.PaymentCancelPaypayResponse.Decode(d); err != nil {
+			return err
+		}
 	default:
-		return errors.Errorf("unexpected json type %q", t)
+		return errors.Errorf("inferred invalid type: %s", s.Type)
 	}
 	return nil
 }
@@ -20181,6 +24204,17 @@ func (s PaymentsIDCancelPutReq) Encode(e *jx.Encoder) {
 	switch s.Type {
 	case PaymentCancelCardPaymentsIDCancelPutReq:
 		s.PaymentCancelCard.Encode(e)
+	case PaymentCancelPaypayPaymentsIDCancelPutReq:
+		s.PaymentCancelPaypay.Encode(e)
+	}
+}
+
+func (s PaymentsIDCancelPutReq) encodeFields(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentCancelCardPaymentsIDCancelPutReq:
+		s.PaymentCancelCard.encodeFields(e)
+	case PaymentCancelPaypayPaymentsIDCancelPutReq:
+		s.PaymentCancelPaypay.encodeFields(e)
 	}
 }
 
@@ -20189,15 +24223,43 @@ func (s *PaymentsIDCancelPutReq) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode PaymentsIDCancelPutReq to nil")
 	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Object:
+	// Sum type fields.
+	if typ := d.Next(); typ != jx.Object {
+		return errors.Errorf("unexpected json type %q", typ)
+	}
+
+	var found bool
+	if err := d.Capture(func(d *jx.Decoder) error {
+		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
+			switch string(key) {
+			case "cancel_description":
+				match := PaymentCancelPaypayPaymentsIDCancelPutReq
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			}
+			return d.Skip()
+		})
+	}); err != nil {
+		return errors.Wrap(err, "capture")
+	}
+	if !found {
+		s.Type = PaymentCancelCardPaymentsIDCancelPutReq
+	}
+	switch s.Type {
+	case PaymentCancelCardPaymentsIDCancelPutReq:
 		if err := s.PaymentCancelCard.Decode(d); err != nil {
 			return err
 		}
-		s.Type = PaymentCancelCardPaymentsIDCancelPutReq
+	case PaymentCancelPaypayPaymentsIDCancelPutReq:
+		if err := s.PaymentCancelPaypay.Decode(d); err != nil {
+			return err
+		}
 	default:
-		return errors.Errorf("unexpected json type %q", t)
+		return errors.Errorf("inferred invalid type: %s", s.Type)
 	}
 	return nil
 }
@@ -20298,6 +24360,17 @@ func (s PaymentsIDGetOK) Encode(e *jx.Encoder) {
 	switch s.Type {
 	case PaymentCardResponsePaymentsIDGetOK:
 		s.PaymentCardResponse.Encode(e)
+	case PaymentPaypayResponsePaymentsIDGetOK:
+		s.PaymentPaypayResponse.Encode(e)
+	}
+}
+
+func (s PaymentsIDGetOK) encodeFields(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentCardResponsePaymentsIDGetOK:
+		s.PaymentCardResponse.encodeFields(e)
+	case PaymentPaypayResponsePaymentsIDGetOK:
+		s.PaymentPaypayResponse.encodeFields(e)
 	}
 }
 
@@ -20306,15 +24379,331 @@ func (s *PaymentsIDGetOK) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode PaymentsIDGetOK to nil")
 	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Object:
+	// Sum type fields.
+	if typ := d.Next(); typ != jx.Object {
+		return errors.Errorf("unexpected json type %q", typ)
+	}
+
+	var found bool
+	if err := d.Capture(func(d *jx.Decoder) error {
+		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
+			switch string(key) {
+			case "item_code":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_no":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_id":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "expire":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "holder_name":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_no_hash":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "method":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "pay_times":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "forward":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "issuer":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "transaction_id":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "approve":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds_type":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_type":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_ret_url":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_status":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_name":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "send_url":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "brand":
+				match := PaymentCardResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_url":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_expiry_date":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_url":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_type":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "order_description":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "capture_description":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "update_description":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "cancel_description":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "store_id":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_id":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_id":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "paypay_result_code":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_payment_id":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_capture_id":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_update_id":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_revert_id":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_refund_id":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_date":
+				match := PaymentPaypayResponsePaymentsIDGetOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			}
+			return d.Skip()
+		})
+	}); err != nil {
+		return errors.Wrap(err, "capture")
+	}
+	if !found {
+		return errors.New("unable to detect sum type variant")
+	}
+	switch s.Type {
+	case PaymentCardResponsePaymentsIDGetOK:
 		if err := s.PaymentCardResponse.Decode(d); err != nil {
 			return err
 		}
-		s.Type = PaymentCardResponsePaymentsIDGetOK
+	case PaymentPaypayResponsePaymentsIDGetOK:
+		if err := s.PaymentPaypayResponse.Decode(d); err != nil {
+			return err
+		}
 	default:
-		return errors.Errorf("unexpected json type %q", t)
+		return errors.Errorf("inferred invalid type: %s", s.Type)
 	}
 	return nil
 }
@@ -20337,6 +24726,17 @@ func (s PaymentsIDPutOK) Encode(e *jx.Encoder) {
 	switch s.Type {
 	case PaymentDoCardResponsePaymentsIDPutOK:
 		s.PaymentDoCardResponse.Encode(e)
+	case PaymentDoPaypayResponsePaymentsIDPutOK:
+		s.PaymentDoPaypayResponse.Encode(e)
+	}
+}
+
+func (s PaymentsIDPutOK) encodeFields(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentDoCardResponsePaymentsIDPutOK:
+		s.PaymentDoCardResponse.encodeFields(e)
+	case PaymentDoPaypayResponsePaymentsIDPutOK:
+		s.PaymentDoPaypayResponse.encodeFields(e)
 	}
 }
 
@@ -20345,15 +24745,347 @@ func (s *PaymentsIDPutOK) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode PaymentsIDPutOK to nil")
 	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Object:
+	// Sum type fields.
+	if typ := d.Next(); typ != jx.Object {
+		return errors.Errorf("unexpected json type %q", typ)
+	}
+
+	var found bool
+	if err := d.Capture(func(d *jx.Decoder) error {
+		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
+			switch string(key) {
+			case "item_code":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_no":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_id":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "expire":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "holder_name":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_no_hash":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "method":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "pay_times":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "forward":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "issuer":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "transaction_id":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "approve":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds_type":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_type":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_ret_url":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_status":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_name":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "send_url":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "subscription_id":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "brand":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "acs":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "acs_url":
+				match := PaymentDoCardResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_url":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_expiry_date":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_url":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_type":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "order_description":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "capture_description":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "update_description":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "cancel_description":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "store_id":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_id":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_id":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "paypay_result_code":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_payment_id":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_capture_id":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_update_id":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_refund_id":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_date":
+				match := PaymentDoPaypayResponsePaymentsIDPutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			}
+			return d.Skip()
+		})
+	}); err != nil {
+		return errors.Wrap(err, "capture")
+	}
+	if !found {
+		return errors.New("unable to detect sum type variant")
+	}
+	switch s.Type {
+	case PaymentDoCardResponsePaymentsIDPutOK:
 		if err := s.PaymentDoCardResponse.Decode(d); err != nil {
 			return err
 		}
-		s.Type = PaymentDoCardResponsePaymentsIDPutOK
+	case PaymentDoPaypayResponsePaymentsIDPutOK:
+		if err := s.PaymentDoPaypayResponse.Decode(d); err != nil {
+			return err
+		}
 	default:
-		return errors.Errorf("unexpected json type %q", t)
+		return errors.Errorf("inferred invalid type: %s", s.Type)
 	}
 	return nil
 }
@@ -20378,6 +25110,8 @@ func (s PaymentsIDPutReq) Encode(e *jx.Encoder) {
 		s.PaymentDoCardWith3DSecure.Encode(e)
 	case PaymentDoCardWithout3DSecurePaymentsIDPutReq:
 		s.PaymentDoCardWithout3DSecure.Encode(e)
+	case PaymentDoPaypayPaymentsIDPutReq:
+		s.PaymentDoPaypay.Encode(e)
 	}
 }
 
@@ -20387,6 +25121,8 @@ func (s PaymentsIDPutReq) encodeFields(e *jx.Encoder) {
 		s.PaymentDoCardWith3DSecure.encodeFields(e)
 	case PaymentDoCardWithout3DSecurePaymentsIDPutReq:
 		s.PaymentDoCardWithout3DSecure.encodeFields(e)
+	case PaymentDoPaypayPaymentsIDPutReq:
+		s.PaymentDoPaypay.encodeFields(e)
 	}
 }
 
@@ -20788,6 +25524,30 @@ func (s *PaymentsIDPutReq) Decode(d *jx.Decoder) error {
 				}
 				found = true
 				s.Type = match
+			case "redirect_url":
+				match := PaymentDoPaypayPaymentsIDPutReq
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_type":
+				match := PaymentDoPaypayPaymentsIDPutReq
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "user_agent":
+				match := PaymentDoPaypayPaymentsIDPutReq
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
 			}
 			return d.Skip()
 		})
@@ -20804,6 +25564,10 @@ func (s *PaymentsIDPutReq) Decode(d *jx.Decoder) error {
 		}
 	case PaymentDoCardWithout3DSecurePaymentsIDPutReq:
 		if err := s.PaymentDoCardWithout3DSecure.Decode(d); err != nil {
+			return err
+		}
+	case PaymentDoPaypayPaymentsIDPutReq:
+		if err := s.PaymentDoPaypay.Decode(d); err != nil {
 			return err
 		}
 	default:
@@ -20832,6 +25596,8 @@ func (s PaymentsPostOK) Encode(e *jx.Encoder) {
 		s.PaymentCardResponse.Encode(e)
 	case PaymentDirectdebitResponsePaymentsPostOK:
 		s.PaymentDirectdebitResponse.Encode(e)
+	case PaymentPaypayResponsePaymentsPostOK:
+		s.PaymentPaypayResponse.Encode(e)
 	}
 }
 
@@ -20841,6 +25607,8 @@ func (s PaymentsPostOK) encodeFields(e *jx.Encoder) {
 		s.PaymentCardResponse.encodeFields(e)
 	case PaymentDirectdebitResponsePaymentsPostOK:
 		s.PaymentDirectdebitResponse.encodeFields(e)
+	case PaymentPaypayResponsePaymentsPostOK:
+		s.PaymentPaypayResponse.encodeFields(e)
 	}
 }
 
@@ -20858,14 +25626,6 @@ func (s *PaymentsPostOK) Decode(d *jx.Decoder) error {
 	if err := d.Capture(func(d *jx.Decoder) error {
 		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
 			switch string(key) {
-			case "job_code":
-				match := PaymentCardResponsePaymentsPostOK
-				if found && s.Type != match {
-					s.Type = ""
-					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
-				}
-				found = true
-				s.Type = match
 			case "item_code":
 				match := PaymentCardResponsePaymentsPostOK
 				if found && s.Type != match {
@@ -20955,14 +25715,6 @@ func (s *PaymentsPostOK) Decode(d *jx.Decoder) error {
 				found = true
 				s.Type = match
 			case "approve":
-				match := PaymentCardResponsePaymentsPostOK
-				if found && s.Type != match {
-					s.Type = ""
-					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
-				}
-				found = true
-				s.Type = match
-			case "auth_max_date":
 				match := PaymentCardResponsePaymentsPostOK
 				if found && s.Type != match {
 					s.Type = ""
@@ -21114,6 +25866,150 @@ func (s *PaymentsPostOK) Decode(d *jx.Decoder) error {
 				}
 				found = true
 				s.Type = match
+			case "code_url":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_expiry_date":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_url":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_type":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "order_description":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "capture_description":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "update_description":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "cancel_description":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "store_id":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_id":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_id":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "paypay_result_code":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_payment_id":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_capture_id":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_update_id":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_revert_id":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_refund_id":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_date":
+				match := PaymentPaypayResponsePaymentsPostOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
 			}
 			return d.Skip()
 		})
@@ -21130,6 +26026,10 @@ func (s *PaymentsPostOK) Decode(d *jx.Decoder) error {
 		}
 	case PaymentDirectdebitResponsePaymentsPostOK:
 		if err := s.PaymentDirectdebitResponse.Decode(d); err != nil {
+			return err
+		}
+	case PaymentPaypayResponsePaymentsPostOK:
+		if err := s.PaymentPaypayResponse.Decode(d); err != nil {
 			return err
 		}
 	default:
@@ -21158,6 +26058,8 @@ func (s PaymentsPostReq) Encode(e *jx.Encoder) {
 		s.PaymentCard.Encode(e)
 	case PaymentDirectdebitPaymentsPostReq:
 		s.PaymentDirectdebit.Encode(e)
+	case PaymentPaypayPaymentsPostReq:
+		s.PaymentPaypay.Encode(e)
 	}
 }
 
@@ -21167,6 +26069,8 @@ func (s PaymentsPostReq) encodeFields(e *jx.Encoder) {
 		s.PaymentCard.encodeFields(e)
 	case PaymentDirectdebitPaymentsPostReq:
 		s.PaymentDirectdebit.encodeFields(e)
+	case PaymentPaypayPaymentsPostReq:
+		s.PaymentPaypay.encodeFields(e)
 	}
 }
 
@@ -21184,14 +26088,6 @@ func (s *PaymentsPostReq) Decode(d *jx.Decoder) error {
 	if err := d.Capture(func(d *jx.Decoder) error {
 		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
 			switch string(key) {
-			case "job_code":
-				match := PaymentCardPaymentsPostReq
-				if found && s.Type != match {
-					s.Type = ""
-					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
-				}
-				found = true
-				s.Type = match
 			case "tds_type":
 				match := PaymentCardPaymentsPostReq
 				if found && s.Type != match {
@@ -21232,6 +26128,14 @@ func (s *PaymentsPostReq) Decode(d *jx.Decoder) error {
 				}
 				found = true
 				s.Type = match
+			case "order_description":
+				match := PaymentPaypayPaymentsPostReq
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
 			}
 			return d.Skip()
 		})
@@ -21248,6 +26152,10 @@ func (s *PaymentsPostReq) Decode(d *jx.Decoder) error {
 		}
 	case PaymentDirectdebitPaymentsPostReq:
 		if err := s.PaymentDirectdebit.Decode(d); err != nil {
+			return err
+		}
+	case PaymentPaypayPaymentsPostReq:
+		if err := s.PaymentPaypay.Decode(d); err != nil {
 			return err
 		}
 	default:
