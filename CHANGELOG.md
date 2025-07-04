@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.10](https://github.com/pepabo/fincode-go/compare/v0.1.9...v0.1.10) - 2025-07-04
+### Other Changes
+- Add PayPay schema Objects by @nacal in https://github.com/pepabo/fincode-go/pull/30
+
 ## [v0.1.9](https://github.com/pepabo/fincode-go/compare/v0.1.8...v0.1.9) - 2024-06-27
 ### New Features 🎉
 - Add WithHTTPClient option by @k1LoW in https://github.com/pepabo/fincode-go/pull/25
