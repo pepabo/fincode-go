@@ -10958,6 +10958,172 @@ func (s *PaymentCaptureCardResponseTdsType) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *PaymentCapturePaypay) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentCapturePaypay) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("pay_type")
+		s.PayType.Encode(e)
+	}
+	{
+		e.FieldStart("access_id")
+		e.Str(s.AccessID)
+	}
+	{
+		if s.CaptureDescription.Set {
+			e.FieldStart("capture_description")
+			s.CaptureDescription.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentCapturePaypay = [3]string{
+	0: "pay_type",
+	1: "access_id",
+	2: "capture_description",
+}
+
+// Decode decodes PaymentCapturePaypay from json.
+func (s *PaymentCapturePaypay) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCapturePaypay to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "pay_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "access_id":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.AccessID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "capture_description":
+			if err := func() error {
+				s.CaptureDescription.Reset()
+				if err := s.CaptureDescription.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"capture_description\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentCapturePaypay")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000011,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfPaymentCapturePaypay) {
+					name = jsonFieldsNameOfPaymentCapturePaypay[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentCapturePaypay) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCapturePaypay) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentCapturePaypayPayType as json.
+func (s PaymentCapturePaypayPayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentCapturePaypayPayType from json.
+func (s *PaymentCapturePaypayPayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentCapturePaypayPayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentCapturePaypayPayType(v) {
+	case PaymentCapturePaypayPayTypePaypay:
+		*s = PaymentCapturePaypayPayTypePaypay
+	default:
+		*s = PaymentCapturePaypayPayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentCapturePaypayPayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentCapturePaypayPayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *PaymentCard) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -24282,6 +24448,17 @@ func (s PaymentsIDCapturePutOK) Encode(e *jx.Encoder) {
 	switch s.Type {
 	case PaymentCaptureCardResponsePaymentsIDCapturePutOK:
 		s.PaymentCaptureCardResponse.Encode(e)
+	case PaymentPaypayResponsePaymentsIDCapturePutOK:
+		s.PaymentPaypayResponse.Encode(e)
+	}
+}
+
+func (s PaymentsIDCapturePutOK) encodeFields(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentCaptureCardResponsePaymentsIDCapturePutOK:
+		s.PaymentCaptureCardResponse.encodeFields(e)
+	case PaymentPaypayResponsePaymentsIDCapturePutOK:
+		s.PaymentPaypayResponse.encodeFields(e)
 	}
 }
 
@@ -24290,15 +24467,339 @@ func (s *PaymentsIDCapturePutOK) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode PaymentsIDCapturePutOK to nil")
 	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Object:
+	// Sum type fields.
+	if typ := d.Next(); typ != jx.Object {
+		return errors.Errorf("unexpected json type %q", typ)
+	}
+
+	var found bool
+	if err := d.Capture(func(d *jx.Decoder) error {
+		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
+			switch string(key) {
+			case "item_code":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_no":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_id":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "expire":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "holder_name":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "card_no_hash":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "method":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "pay_times":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "forward":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "issuer":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "transaction_id":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "approve":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds_type":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_type":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_ret_url":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "tds2_status":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_name":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "send_url":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "subscription_id":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "brand":
+				match := PaymentCaptureCardResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_url":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_expiry_date":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_url":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "redirect_type":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "order_description":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "capture_description":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "update_description":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "cancel_description":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "store_id":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "code_id":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_id":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "paypay_result_code":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_payment_id":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_capture_id":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_update_id":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_revert_id":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "merchant_refund_id":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "payment_date":
+				match := PaymentPaypayResponsePaymentsIDCapturePutOK
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			}
+			return d.Skip()
+		})
+	}); err != nil {
+		return errors.Wrap(err, "capture")
+	}
+	if !found {
+		return errors.New("unable to detect sum type variant")
+	}
+	switch s.Type {
+	case PaymentCaptureCardResponsePaymentsIDCapturePutOK:
 		if err := s.PaymentCaptureCardResponse.Decode(d); err != nil {
 			return err
 		}
-		s.Type = PaymentCaptureCardResponsePaymentsIDCapturePutOK
+	case PaymentPaypayResponsePaymentsIDCapturePutOK:
+		if err := s.PaymentPaypayResponse.Decode(d); err != nil {
+			return err
+		}
 	default:
-		return errors.Errorf("unexpected json type %q", t)
+		return errors.Errorf("inferred invalid type: %s", s.Type)
 	}
 	return nil
 }
@@ -24321,6 +24822,17 @@ func (s PaymentsIDCapturePutReq) Encode(e *jx.Encoder) {
 	switch s.Type {
 	case PaymentCaptureCardPaymentsIDCapturePutReq:
 		s.PaymentCaptureCard.Encode(e)
+	case PaymentCapturePaypayPaymentsIDCapturePutReq:
+		s.PaymentCapturePaypay.Encode(e)
+	}
+}
+
+func (s PaymentsIDCapturePutReq) encodeFields(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentCaptureCardPaymentsIDCapturePutReq:
+		s.PaymentCaptureCard.encodeFields(e)
+	case PaymentCapturePaypayPaymentsIDCapturePutReq:
+		s.PaymentCapturePaypay.encodeFields(e)
 	}
 }
 
@@ -24329,15 +24841,59 @@ func (s *PaymentsIDCapturePutReq) Decode(d *jx.Decoder) error {
 	if s == nil {
 		return errors.New("invalid: unable to decode PaymentsIDCapturePutReq to nil")
 	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Object:
+	// Sum type fields.
+	if typ := d.Next(); typ != jx.Object {
+		return errors.Errorf("unexpected json type %q", typ)
+	}
+
+	var found bool
+	if err := d.Capture(func(d *jx.Decoder) error {
+		return d.ObjBytes(func(d *jx.Decoder, key []byte) error {
+			switch string(key) {
+			case "method":
+				match := PaymentCaptureCardPaymentsIDCapturePutReq
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "pay_times":
+				match := PaymentCaptureCardPaymentsIDCapturePutReq
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			case "capture_description":
+				match := PaymentCapturePaypayPaymentsIDCapturePutReq
+				if found && s.Type != match {
+					s.Type = ""
+					return errors.Errorf("multiple oneOf matches: (%v, %v)", s.Type, match)
+				}
+				found = true
+				s.Type = match
+			}
+			return d.Skip()
+		})
+	}); err != nil {
+		return errors.Wrap(err, "capture")
+	}
+	if !found {
+		return errors.New("unable to detect sum type variant")
+	}
+	switch s.Type {
+	case PaymentCaptureCardPaymentsIDCapturePutReq:
 		if err := s.PaymentCaptureCard.Decode(d); err != nil {
 			return err
 		}
-		s.Type = PaymentCaptureCardPaymentsIDCapturePutReq
+	case PaymentCapturePaypayPaymentsIDCapturePutReq:
+		if err := s.PaymentCapturePaypay.Decode(d); err != nil {
+			return err
+		}
 	default:
-		return errors.Errorf("unexpected json type %q", t)
+		return errors.Errorf("inferred invalid type: %s", s.Type)
 	}
 	return nil
 }

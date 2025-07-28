@@ -445,6 +445,7 @@ paths:
             schema:
               oneOf:
                 - $ref: '#/components/schemas/paymentCaptureCard'
+                - $ref: '#/components/schemas/paymentCapturePaypay'
       responses:
         '200':
           description: OK
@@ -453,6 +454,7 @@ paths:
               schema:
                 oneOf:
                   - $ref: '#/components/schemas/paymentCaptureCardResponse'
+                  - $ref: '#/components/schemas/paymentPaypayResponse'
         '400':
           description: Bad Request
           content:
@@ -2924,6 +2926,21 @@ components:
             - '18'
             - '20'
             - '24'
+    paymentCapturePaypay:
+      type: object
+      required:
+        - pay_type
+        - access_id
+      properties:
+        pay_type:
+          type: string
+          enum:
+            - Paypay
+        access_id:
+          type: string
+        capture_description:
+          type: string
+          nullable: true
     paymentCaptureCardResponse:
       type: object
       properties:

@@ -9864,6 +9864,77 @@ func (s *PaymentCaptureCardResponseTdsType) UnmarshalText(data []byte) error {
 	}
 }
 
+// Ref: #/components/schemas/paymentCapturePaypay
+type PaymentCapturePaypay struct {
+	PayType            PaymentCapturePaypayPayType `json:"pay_type"`
+	AccessID           string                      `json:"access_id"`
+	CaptureDescription OptNilString                `json:"capture_description"`
+}
+
+// GetPayType returns the value of PayType.
+func (s *PaymentCapturePaypay) GetPayType() PaymentCapturePaypayPayType {
+	return s.PayType
+}
+
+// GetAccessID returns the value of AccessID.
+func (s *PaymentCapturePaypay) GetAccessID() string {
+	return s.AccessID
+}
+
+// GetCaptureDescription returns the value of CaptureDescription.
+func (s *PaymentCapturePaypay) GetCaptureDescription() OptNilString {
+	return s.CaptureDescription
+}
+
+// SetPayType sets the value of PayType.
+func (s *PaymentCapturePaypay) SetPayType(val PaymentCapturePaypayPayType) {
+	s.PayType = val
+}
+
+// SetAccessID sets the value of AccessID.
+func (s *PaymentCapturePaypay) SetAccessID(val string) {
+	s.AccessID = val
+}
+
+// SetCaptureDescription sets the value of CaptureDescription.
+func (s *PaymentCapturePaypay) SetCaptureDescription(val OptNilString) {
+	s.CaptureDescription = val
+}
+
+type PaymentCapturePaypayPayType string
+
+const (
+	PaymentCapturePaypayPayTypePaypay PaymentCapturePaypayPayType = "Paypay"
+)
+
+// AllValues returns all PaymentCapturePaypayPayType values.
+func (PaymentCapturePaypayPayType) AllValues() []PaymentCapturePaypayPayType {
+	return []PaymentCapturePaypayPayType{
+		PaymentCapturePaypayPayTypePaypay,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s PaymentCapturePaypayPayType) MarshalText() ([]byte, error) {
+	switch s {
+	case PaymentCapturePaypayPayTypePaypay:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *PaymentCapturePaypayPayType) UnmarshalText(data []byte) error {
+	switch PaymentCapturePaypayPayType(data) {
+	case PaymentCapturePaypayPayTypePaypay:
+		*s = PaymentCapturePaypayPayTypePaypay
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 // Ref: #/components/schemas/paymentCard
 type PaymentCard struct {
 	PayType        PaymentCardPayType        `json:"pay_type"`
@@ -19069,6 +19140,7 @@ func NewPaymentCancelPaypayPaymentsIDCancelPutReq(v PaymentCancelPaypay) Payment
 type PaymentsIDCapturePutOK struct {
 	Type                       PaymentsIDCapturePutOKType // switch on this field
 	PaymentCaptureCardResponse PaymentCaptureCardResponse
+	PaymentPaypayResponse      PaymentPaypayResponse
 }
 
 // PaymentsIDCapturePutOKType is oneOf type of PaymentsIDCapturePutOK.
@@ -19077,11 +19149,17 @@ type PaymentsIDCapturePutOKType string
 // Possible values for PaymentsIDCapturePutOKType.
 const (
 	PaymentCaptureCardResponsePaymentsIDCapturePutOK PaymentsIDCapturePutOKType = "PaymentCaptureCardResponse"
+	PaymentPaypayResponsePaymentsIDCapturePutOK      PaymentsIDCapturePutOKType = "PaymentPaypayResponse"
 )
 
 // IsPaymentCaptureCardResponse reports whether PaymentsIDCapturePutOK is PaymentCaptureCardResponse.
 func (s PaymentsIDCapturePutOK) IsPaymentCaptureCardResponse() bool {
 	return s.Type == PaymentCaptureCardResponsePaymentsIDCapturePutOK
+}
+
+// IsPaymentPaypayResponse reports whether PaymentsIDCapturePutOK is PaymentPaypayResponse.
+func (s PaymentsIDCapturePutOK) IsPaymentPaypayResponse() bool {
+	return s.Type == PaymentPaypayResponsePaymentsIDCapturePutOK
 }
 
 // SetPaymentCaptureCardResponse sets PaymentsIDCapturePutOK to PaymentCaptureCardResponse.
@@ -19105,12 +19183,34 @@ func NewPaymentCaptureCardResponsePaymentsIDCapturePutOK(v PaymentCaptureCardRes
 	return s
 }
 
+// SetPaymentPaypayResponse sets PaymentsIDCapturePutOK to PaymentPaypayResponse.
+func (s *PaymentsIDCapturePutOK) SetPaymentPaypayResponse(v PaymentPaypayResponse) {
+	s.Type = PaymentPaypayResponsePaymentsIDCapturePutOK
+	s.PaymentPaypayResponse = v
+}
+
+// GetPaymentPaypayResponse returns PaymentPaypayResponse and true boolean if PaymentsIDCapturePutOK is PaymentPaypayResponse.
+func (s PaymentsIDCapturePutOK) GetPaymentPaypayResponse() (v PaymentPaypayResponse, ok bool) {
+	if !s.IsPaymentPaypayResponse() {
+		return v, false
+	}
+	return s.PaymentPaypayResponse, true
+}
+
+// NewPaymentPaypayResponsePaymentsIDCapturePutOK returns new PaymentsIDCapturePutOK from PaymentPaypayResponse.
+func NewPaymentPaypayResponsePaymentsIDCapturePutOK(v PaymentPaypayResponse) PaymentsIDCapturePutOK {
+	var s PaymentsIDCapturePutOK
+	s.SetPaymentPaypayResponse(v)
+	return s
+}
+
 func (*PaymentsIDCapturePutOK) paymentsIDCapturePutRes() {}
 
 // PaymentsIDCapturePutReq represents sum type.
 type PaymentsIDCapturePutReq struct {
-	Type               PaymentsIDCapturePutReqType // switch on this field
-	PaymentCaptureCard PaymentCaptureCard
+	Type                 PaymentsIDCapturePutReqType // switch on this field
+	PaymentCaptureCard   PaymentCaptureCard
+	PaymentCapturePaypay PaymentCapturePaypay
 }
 
 // PaymentsIDCapturePutReqType is oneOf type of PaymentsIDCapturePutReq.
@@ -19118,12 +19218,18 @@ type PaymentsIDCapturePutReqType string
 
 // Possible values for PaymentsIDCapturePutReqType.
 const (
-	PaymentCaptureCardPaymentsIDCapturePutReq PaymentsIDCapturePutReqType = "PaymentCaptureCard"
+	PaymentCaptureCardPaymentsIDCapturePutReq   PaymentsIDCapturePutReqType = "PaymentCaptureCard"
+	PaymentCapturePaypayPaymentsIDCapturePutReq PaymentsIDCapturePutReqType = "PaymentCapturePaypay"
 )
 
 // IsPaymentCaptureCard reports whether PaymentsIDCapturePutReq is PaymentCaptureCard.
 func (s PaymentsIDCapturePutReq) IsPaymentCaptureCard() bool {
 	return s.Type == PaymentCaptureCardPaymentsIDCapturePutReq
+}
+
+// IsPaymentCapturePaypay reports whether PaymentsIDCapturePutReq is PaymentCapturePaypay.
+func (s PaymentsIDCapturePutReq) IsPaymentCapturePaypay() bool {
+	return s.Type == PaymentCapturePaypayPaymentsIDCapturePutReq
 }
 
 // SetPaymentCaptureCard sets PaymentsIDCapturePutReq to PaymentCaptureCard.
@@ -19144,6 +19250,27 @@ func (s PaymentsIDCapturePutReq) GetPaymentCaptureCard() (v PaymentCaptureCard, 
 func NewPaymentCaptureCardPaymentsIDCapturePutReq(v PaymentCaptureCard) PaymentsIDCapturePutReq {
 	var s PaymentsIDCapturePutReq
 	s.SetPaymentCaptureCard(v)
+	return s
+}
+
+// SetPaymentCapturePaypay sets PaymentsIDCapturePutReq to PaymentCapturePaypay.
+func (s *PaymentsIDCapturePutReq) SetPaymentCapturePaypay(v PaymentCapturePaypay) {
+	s.Type = PaymentCapturePaypayPaymentsIDCapturePutReq
+	s.PaymentCapturePaypay = v
+}
+
+// GetPaymentCapturePaypay returns PaymentCapturePaypay and true boolean if PaymentsIDCapturePutReq is PaymentCapturePaypay.
+func (s PaymentsIDCapturePutReq) GetPaymentCapturePaypay() (v PaymentCapturePaypay, ok bool) {
+	if !s.IsPaymentCapturePaypay() {
+		return v, false
+	}
+	return s.PaymentCapturePaypay, true
+}
+
+// NewPaymentCapturePaypayPaymentsIDCapturePutReq returns new PaymentsIDCapturePutReq from PaymentCapturePaypay.
+func NewPaymentCapturePaypayPaymentsIDCapturePutReq(v PaymentCapturePaypay) PaymentsIDCapturePutReq {
+	var s PaymentsIDCapturePutReq
+	s.SetPaymentCapturePaypay(v)
 	return s
 }
 
