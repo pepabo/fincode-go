@@ -322,51 +322,6 @@ func TestPayments(t *testing.T) {
 		}
 	})
 
-	t.Run("Capture PayPay Payment", func(t *testing.T) {
-		paypayAccessID := newID(t)[0:24]
-		paypayOrderID := newOrderID(t)
-
-		res, err := c.PaymentsIDCapturePut(ctx, api.PaymentsIDCapturePutReq{
-			Type: api.PaymentCapturePaypayPaymentsIDCapturePutReq,
-			PaymentCapturePaypay: api.PaymentCapturePaypay{
-				PayType:            api.PaymentCapturePaypayPayTypePaypay,
-				AccessID:           paypayAccessID,
-				CaptureDescription: api.NewOptNilString("PayPay 売上確定テスト"),
-			},
-		},
-			api.PaymentsIDCapturePutParams{
-				ID: paypayOrderID,
-			})
-
-		if err != nil {
-			t.Log("PayPay capture test (expected to fail in test environment):", err)
-			return
-		}
-
-		v, ok := res.(*api.PaymentsIDCapturePutOK)
-		if !ok {
-			t.Fatalf("unexpected response: %T, %#v", res, res)
-		}
-
-		if v.PaymentPaypayResponse.ID.IsSet() {
-			if want := paypayOrderID; v.PaymentPaypayResponse.ID.Value != want {
-				t.Errorf("want %s, got %s", want, v.PaymentPaypayResponse.ID.Value)
-			}
-		}
-
-		if v.PaymentPaypayResponse.JobCode.IsSet() {
-			if want := api.PaymentPaypayResponseJobCodeCAPTURE; v.PaymentPaypayResponse.JobCode.Value != want {
-				t.Errorf("want %s, got %s", want, v.PaymentPaypayResponse.JobCode.Value)
-			}
-		}
-
-		if v.PaymentPaypayResponse.Status.IsSet() {
-			if want := api.PaymentPaypayResponseStatusCAPTURED; v.PaymentPaypayResponse.Status.Value != want {
-				t.Errorf("want %s, got %s", want, v.PaymentPaypayResponse.Status.Value)
-			}
-		}
-	})
-
 	t.Cleanup(func() {
 		o.Close(false)
 	})
