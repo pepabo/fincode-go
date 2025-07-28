@@ -1890,6 +1890,38 @@ func (s PaymentCaptureCardResponseTdsType) Validate() error {
 	}
 }
 
+func (s *PaymentCapturePaypay) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.PayType.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "pay_type",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s PaymentCapturePaypayPayType) Validate() error {
+	switch s {
+	case "Paypay":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *PaymentCard) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -5434,6 +5466,11 @@ func (s PaymentsIDCapturePutOK) Validate() error {
 			return err
 		}
 		return nil
+	case PaymentPaypayResponsePaymentsIDCapturePutOK:
+		if err := s.PaymentPaypayResponse.Validate(); err != nil {
+			return err
+		}
+		return nil
 	default:
 		return errors.Errorf("invalid type %q", s.Type)
 	}
@@ -5443,6 +5480,11 @@ func (s PaymentsIDCapturePutReq) Validate() error {
 	switch s.Type {
 	case PaymentCaptureCardPaymentsIDCapturePutReq:
 		if err := s.PaymentCaptureCard.Validate(); err != nil {
+			return err
+		}
+		return nil
+	case PaymentCapturePaypayPaymentsIDCapturePutReq:
+		if err := s.PaymentCapturePaypay.Validate(); err != nil {
 			return err
 		}
 		return nil
