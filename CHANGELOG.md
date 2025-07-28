@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.11](https://github.com/pepabo/fincode-go/compare/v0.1.10...v0.1.11) - 2025-07-28
+### Other Changes
+- add paymentCapturePaypay schema by @nacal in https://github.com/pepabo/fincode-go/pull/32
+
 ## [v0.1.10](https://github.com/pepabo/fincode-go/compare/v0.1.9...v0.1.10) - 2025-07-04
 ### Other Changes
 - Add PayPay schema Objects by @nacal in https://github.com/pepabo/fincode-go/pull/30
