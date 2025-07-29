@@ -2655,6 +2655,7 @@ components:
           enum:
             - AUTH
             - CAPTURE
+            - CANCEL
         status:
           type: string
           enum:

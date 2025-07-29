@@ -9527,6 +9527,8 @@ func (s *PaymentCancelPaypayResponseJobCode) Decode(d *jx.Decoder) error {
 		*s = PaymentCancelPaypayResponseJobCodeAUTH
 	case PaymentCancelPaypayResponseJobCodeCAPTURE:
 		*s = PaymentCancelPaypayResponseJobCodeCAPTURE
+	case PaymentCancelPaypayResponseJobCodeCANCEL:
+		*s = PaymentCancelPaypayResponseJobCodeCANCEL
 	default:
 		*s = PaymentCancelPaypayResponseJobCode(v)
 	}

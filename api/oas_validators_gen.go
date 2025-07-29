@@ -1405,6 +1405,8 @@ func (s PaymentCancelPaypayResponseJobCode) Validate() error {
 		return nil
 	case "CAPTURE":
 		return nil
+	case "CANCEL":
+		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
 	}

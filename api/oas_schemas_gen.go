@@ -8688,6 +8688,7 @@ type PaymentCancelPaypayResponseJobCode string
 const (
 	PaymentCancelPaypayResponseJobCodeAUTH    PaymentCancelPaypayResponseJobCode = "AUTH"
 	PaymentCancelPaypayResponseJobCodeCAPTURE PaymentCancelPaypayResponseJobCode = "CAPTURE"
+	PaymentCancelPaypayResponseJobCodeCANCEL  PaymentCancelPaypayResponseJobCode = "CANCEL"
 )
 
 // AllValues returns all PaymentCancelPaypayResponseJobCode values.
@@ -8695,6 +8696,7 @@ func (PaymentCancelPaypayResponseJobCode) AllValues() []PaymentCancelPaypayRespo
 	return []PaymentCancelPaypayResponseJobCode{
 		PaymentCancelPaypayResponseJobCodeAUTH,
 		PaymentCancelPaypayResponseJobCodeCAPTURE,
+		PaymentCancelPaypayResponseJobCodeCANCEL,
 	}
 }
 
@@ -8704,6 +8706,8 @@ func (s PaymentCancelPaypayResponseJobCode) MarshalText() ([]byte, error) {
 	case PaymentCancelPaypayResponseJobCodeAUTH:
 		return []byte(s), nil
 	case PaymentCancelPaypayResponseJobCodeCAPTURE:
+		return []byte(s), nil
+	case PaymentCancelPaypayResponseJobCodeCANCEL:
 		return []byte(s), nil
 	default:
 		return nil, errors.Errorf("invalid value: %q", s)
@@ -8718,6 +8722,9 @@ func (s *PaymentCancelPaypayResponseJobCode) UnmarshalText(data []byte) error {
 		return nil
 	case PaymentCancelPaypayResponseJobCodeCAPTURE:
 		*s = PaymentCancelPaypayResponseJobCodeCAPTURE
+		return nil
+	case PaymentCancelPaypayResponseJobCodeCANCEL:
+		*s = PaymentCancelPaypayResponseJobCodeCANCEL
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
