@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.12](https://github.com/pepabo/fincode-go/compare/v0.1.11...v0.1.12) - 2025-07-29
+### Other Changes
+- add CANCEL job_code  to paymentCancelPaypayResponse by @nacal in https://github.com/pepabo/fincode-go/pull/34
+
 ## [v0.1.11](https://github.com/pepabo/fincode-go/compare/v0.1.10...v0.1.11) - 2025-07-28
 ### Other Changes
 - add paymentCapturePaypay schema by @nacal in https://github.com/pepabo/fincode-go/pull/32
