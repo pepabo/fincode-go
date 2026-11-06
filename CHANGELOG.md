@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.1.13](https://github.com/pepabo/fincode-go/compare/v0.1.12...v0.1.13) - 2026-11-06
+
+### Other Changes
+- ADD `PUT /payments/{id}/change` by @yoshihiro-shu in https://github.com/pepabo/fincode-go/pull/36
+
 ## [v0.1.12](https://github.com/pepabo/fincode-go/compare/v0.1.11...v0.1.12) - 2025-07-29
 ### Other Changes
 - add CANCEL job_code  to paymentCancelPaypayResponse by @nacal in https://github.com/pepabo/fincode-go/pull/34
