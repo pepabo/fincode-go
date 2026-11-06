@@ -46,6 +46,7 @@ var operationRolesBearerAuth = map[string][]string{
 	PaymentsIDAuthPutOperation:                                      []string{},
 	PaymentsIDCancelPutOperation:                                    []string{},
 	PaymentsIDCapturePutOperation:                                   []string{},
+	PaymentsIDChangePutOperation:                                    []string{},
 	PaymentsIDGetOperation:                                          []string{},
 	PaymentsIDPutOperation:                                          []string{},
 	PaymentsPostOperation:                                           []string{},

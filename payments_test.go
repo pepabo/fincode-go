@@ -146,6 +146,40 @@ func TestPayments(t *testing.T) {
 		t.Errorf("payment not found: %s", accessID)
 	})
 
+	t.Run("Change Payment Amount", func(t *testing.T) {
+		res, err := c.PaymentsIDChangePut(ctx, api.PaymentsIDChangePutReq{
+			Type: api.PaymentChangeCardPaymentsIDChangePutReq,
+			PaymentChangeCard: api.PaymentChangeCard{
+				PayType:  api.PaymentChangeCardPayTypeCard,
+				AccessID: accessID,
+				Amount:   "500",
+				Tax:      api.NewOptString("40"),
+				JobCode:  api.PaymentChangeCardJobCodeCAPTURE,
+			},
+		}, api.PaymentsIDChangePutParams{
+			ID: orderID,
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		v, ok := res.(*api.PaymentsIDChangePutOK)
+		if !ok {
+			t.Fatalf("unexpected response: %T, %#v", res, res)
+		}
+		if want := orderID; v.PaymentChangeCardResponse.ID.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentChangeCardResponse.ID.Value)
+		}
+		if want := 500; v.PaymentChangeCardResponse.Amount.Value != want {
+			t.Errorf("want %d, got %d", want, v.PaymentChangeCardResponse.Amount.Value)
+		}
+		if want := 540; v.PaymentChangeCardResponse.TotalAmount.Value != want {
+			t.Errorf("want %d, got %d", want, v.PaymentChangeCardResponse.TotalAmount.Value)
+		}
+		if want := api.PaymentChangeCardResponseStatusCAPTURED; v.PaymentChangeCardResponse.Status.Value != want {
+			t.Errorf("want %s, got %s", want, v.PaymentChangeCardResponse.Status.Value)
+		}
+	})
+
 	t.Run("Cancel Payment", func(t *testing.T) {
 		res, err := c.PaymentsIDCancelPut(ctx, api.PaymentsIDCancelPutReq{
 			Type: api.PaymentCancelCardPaymentsIDCancelPutReq,
