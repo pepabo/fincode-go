@@ -3238,6 +3238,202 @@ func (s *OptNilPaymentCardTds2Type) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes PaymentChangeCardResponseMethod as json.
+func (o OptNilPaymentChangeCardResponseMethod) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentChangeCardResponseMethod from json.
+func (o *OptNilPaymentChangeCardResponseMethod) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilPaymentChangeCardResponseMethod to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v PaymentChangeCardResponseMethod
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilPaymentChangeCardResponseMethod) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilPaymentChangeCardResponseMethod) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseTds2Status as json.
+func (o OptNilPaymentChangeCardResponseTds2Status) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentChangeCardResponseTds2Status from json.
+func (o *OptNilPaymentChangeCardResponseTds2Status) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilPaymentChangeCardResponseTds2Status to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v PaymentChangeCardResponseTds2Status
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilPaymentChangeCardResponseTds2Status) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilPaymentChangeCardResponseTds2Status) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseTds2Type as json.
+func (o OptNilPaymentChangeCardResponseTds2Type) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentChangeCardResponseTds2Type from json.
+func (o *OptNilPaymentChangeCardResponseTds2Type) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilPaymentChangeCardResponseTds2Type to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v PaymentChangeCardResponseTds2Type
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilPaymentChangeCardResponseTds2Type) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilPaymentChangeCardResponseTds2Type) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseTdsType as json.
+func (o OptNilPaymentChangeCardResponseTdsType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentChangeCardResponseTdsType from json.
+func (o *OptNilPaymentChangeCardResponseTdsType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilPaymentChangeCardResponseTdsType to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v PaymentChangeCardResponseTdsType
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilPaymentChangeCardResponseTdsType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilPaymentChangeCardResponseTdsType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes PaymentDoCardResponseMethod as json.
 func (o OptNilPaymentDoCardResponseMethod) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -5284,6 +5480,105 @@ func (s OptPaymentCardTdsType) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptPaymentCardTdsType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseJobCode as json.
+func (o OptPaymentChangeCardResponseJobCode) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentChangeCardResponseJobCode from json.
+func (o *OptPaymentChangeCardResponseJobCode) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentChangeCardResponseJobCode to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentChangeCardResponseJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentChangeCardResponseJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponsePayType as json.
+func (o OptPaymentChangeCardResponsePayType) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentChangeCardResponsePayType from json.
+func (o *OptPaymentChangeCardResponsePayType) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentChangeCardResponsePayType to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentChangeCardResponsePayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentChangeCardResponsePayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseStatus as json.
+func (o OptPaymentChangeCardResponseStatus) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes PaymentChangeCardResponseStatus from json.
+func (o *OptPaymentChangeCardResponseStatus) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptPaymentChangeCardResponseStatus to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptPaymentChangeCardResponseStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptPaymentChangeCardResponseStatus) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -12570,6 +12865,1251 @@ func (s PaymentCardTdsType) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *PaymentCardTdsType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentChangeCard) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentChangeCard) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("pay_type")
+		s.PayType.Encode(e)
+	}
+	{
+		e.FieldStart("access_id")
+		e.Str(s.AccessID)
+	}
+	{
+		e.FieldStart("amount")
+		e.Str(s.Amount)
+	}
+	{
+		if s.Tax.Set {
+			e.FieldStart("tax")
+			s.Tax.Encode(e)
+		}
+	}
+	{
+		e.FieldStart("job_code")
+		s.JobCode.Encode(e)
+	}
+}
+
+var jsonFieldsNameOfPaymentChangeCard = [5]string{
+	0: "pay_type",
+	1: "access_id",
+	2: "amount",
+	3: "tax",
+	4: "job_code",
+}
+
+// Decode decodes PaymentChangeCard from json.
+func (s *PaymentChangeCard) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCard to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "pay_type":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "access_id":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.AccessID = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "amount":
+			requiredBitSet[0] |= 1 << 2
+			if err := func() error {
+				v, err := d.Str()
+				s.Amount = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"amount\"")
+			}
+		case "tax":
+			if err := func() error {
+				s.Tax.Reset()
+				if err := s.Tax.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tax\"")
+			}
+		case "job_code":
+			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				if err := s.JobCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"job_code\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentChangeCard")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00010111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfPaymentChangeCard) {
+					name = jsonFieldsNameOfPaymentChangeCard[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentChangeCard) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCard) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardJobCode as json.
+func (s PaymentChangeCardJobCode) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardJobCode from json.
+func (s *PaymentChangeCardJobCode) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardJobCode to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardJobCode(v) {
+	case PaymentChangeCardJobCodeCHECK:
+		*s = PaymentChangeCardJobCodeCHECK
+	case PaymentChangeCardJobCodeAUTH:
+		*s = PaymentChangeCardJobCodeAUTH
+	case PaymentChangeCardJobCodeCAPTURE:
+		*s = PaymentChangeCardJobCodeCAPTURE
+	default:
+		*s = PaymentChangeCardJobCode(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardPayType as json.
+func (s PaymentChangeCardPayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardPayType from json.
+func (s *PaymentChangeCardPayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardPayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardPayType(v) {
+	case PaymentChangeCardPayTypeCard:
+		*s = PaymentChangeCardPayTypeCard
+	default:
+		*s = PaymentChangeCardPayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardPayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardPayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *PaymentChangeCardResponse) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *PaymentChangeCardResponse) encodeFields(e *jx.Encoder) {
+	{
+		if s.ShopID.Set {
+			e.FieldStart("shop_id")
+			s.ShopID.Encode(e)
+		}
+	}
+	{
+		if s.ID.Set {
+			e.FieldStart("id")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		if s.PayType.Set {
+			e.FieldStart("pay_type")
+			s.PayType.Encode(e)
+		}
+	}
+	{
+		if s.Status.Set {
+			e.FieldStart("status")
+			s.Status.Encode(e)
+		}
+	}
+	{
+		if s.AccessID.Set {
+			e.FieldStart("access_id")
+			s.AccessID.Encode(e)
+		}
+	}
+	{
+		if s.ProcessDate.Set {
+			e.FieldStart("process_date")
+			s.ProcessDate.Encode(e)
+		}
+	}
+	{
+		if s.JobCode.Set {
+			e.FieldStart("job_code")
+			s.JobCode.Encode(e)
+		}
+	}
+	{
+		if s.ItemCode.Set {
+			e.FieldStart("item_code")
+			s.ItemCode.Encode(e)
+		}
+	}
+	{
+		if s.Amount.Set {
+			e.FieldStart("amount")
+			s.Amount.Encode(e)
+		}
+	}
+	{
+		if s.Tax.Set {
+			e.FieldStart("tax")
+			s.Tax.Encode(e)
+		}
+	}
+	{
+		if s.TotalAmount.Set {
+			e.FieldStart("total_amount")
+			s.TotalAmount.Encode(e)
+		}
+	}
+	{
+		if s.CustomerGroupID.Set {
+			e.FieldStart("customer_group_id")
+			s.CustomerGroupID.Encode(e)
+		}
+	}
+	{
+		if s.CustomerID.Set {
+			e.FieldStart("customer_id")
+			s.CustomerID.Encode(e)
+		}
+	}
+	{
+		if s.CardNo.Set {
+			e.FieldStart("card_no")
+			s.CardNo.Encode(e)
+		}
+	}
+	{
+		if s.CardID.Set {
+			e.FieldStart("card_id")
+			s.CardID.Encode(e)
+		}
+	}
+	{
+		if s.Expire.Set {
+			e.FieldStart("expire")
+			s.Expire.Encode(e)
+		}
+	}
+	{
+		if s.HolderName.Set {
+			e.FieldStart("holder_name")
+			s.HolderName.Encode(e)
+		}
+	}
+	{
+		if s.CardNoHash.Set {
+			e.FieldStart("card_no_hash")
+			s.CardNoHash.Encode(e)
+		}
+	}
+	{
+		if s.Method.Set {
+			e.FieldStart("method")
+			s.Method.Encode(e)
+		}
+	}
+	{
+		if s.PayTimes.Set {
+			e.FieldStart("pay_times")
+			s.PayTimes.Encode(e)
+		}
+	}
+	{
+		if s.Forward.Set {
+			e.FieldStart("forward")
+			s.Forward.Encode(e)
+		}
+	}
+	{
+		if s.Issuer.Set {
+			e.FieldStart("issuer")
+			s.Issuer.Encode(e)
+		}
+	}
+	{
+		if s.TransactionID.Set {
+			e.FieldStart("transaction_id")
+			s.TransactionID.Encode(e)
+		}
+	}
+	{
+		if s.Approve.Set {
+			e.FieldStart("approve")
+			s.Approve.Encode(e)
+		}
+	}
+	{
+		if s.AuthMaxDate.Set {
+			e.FieldStart("auth_max_date")
+			s.AuthMaxDate.Encode(e)
+		}
+	}
+	{
+		if s.ClientField1.Set {
+			e.FieldStart("client_field_1")
+			s.ClientField1.Encode(e)
+		}
+	}
+	{
+		if s.ClientField2.Set {
+			e.FieldStart("client_field_2")
+			s.ClientField2.Encode(e)
+		}
+	}
+	{
+		if s.ClientField3.Set {
+			e.FieldStart("client_field_3")
+			s.ClientField3.Encode(e)
+		}
+	}
+	{
+		if s.TdsType.Set {
+			e.FieldStart("tds_type")
+			s.TdsType.Encode(e)
+		}
+	}
+	{
+		if s.Tds2Type.Set {
+			e.FieldStart("tds2_type")
+			s.Tds2Type.Encode(e)
+		}
+	}
+	{
+		if s.Tds2RetURL.Set {
+			e.FieldStart("tds2_ret_url")
+			s.Tds2RetURL.Encode(e)
+		}
+	}
+	{
+		if s.Tds2Status.Set {
+			e.FieldStart("tds2_status")
+			s.Tds2Status.Encode(e)
+		}
+	}
+	{
+		if s.MerchantName.Set {
+			e.FieldStart("merchant_name")
+			s.MerchantName.Encode(e)
+		}
+	}
+	{
+		if s.SendURL.Set {
+			e.FieldStart("send_url")
+			s.SendURL.Encode(e)
+		}
+	}
+	{
+		if s.SubscriptionID.Set {
+			e.FieldStart("subscription_id")
+			s.SubscriptionID.Encode(e)
+		}
+	}
+	{
+		if s.Brand.Set {
+			e.FieldStart("brand")
+			s.Brand.Encode(e)
+		}
+	}
+	{
+		if s.ErrorCode.Set {
+			e.FieldStart("error_code")
+			s.ErrorCode.Encode(e)
+		}
+	}
+	{
+		if s.Created.Set {
+			e.FieldStart("created")
+			s.Created.Encode(e)
+		}
+	}
+	{
+		if s.Updated.Set {
+			e.FieldStart("updated")
+			s.Updated.Encode(e)
+		}
+	}
+}
+
+var jsonFieldsNameOfPaymentChangeCardResponse = [39]string{
+	0:  "shop_id",
+	1:  "id",
+	2:  "pay_type",
+	3:  "status",
+	4:  "access_id",
+	5:  "process_date",
+	6:  "job_code",
+	7:  "item_code",
+	8:  "amount",
+	9:  "tax",
+	10: "total_amount",
+	11: "customer_group_id",
+	12: "customer_id",
+	13: "card_no",
+	14: "card_id",
+	15: "expire",
+	16: "holder_name",
+	17: "card_no_hash",
+	18: "method",
+	19: "pay_times",
+	20: "forward",
+	21: "issuer",
+	22: "transaction_id",
+	23: "approve",
+	24: "auth_max_date",
+	25: "client_field_1",
+	26: "client_field_2",
+	27: "client_field_3",
+	28: "tds_type",
+	29: "tds2_type",
+	30: "tds2_ret_url",
+	31: "tds2_status",
+	32: "merchant_name",
+	33: "send_url",
+	34: "subscription_id",
+	35: "brand",
+	36: "error_code",
+	37: "created",
+	38: "updated",
+}
+
+// Decode decodes PaymentChangeCardResponse from json.
+func (s *PaymentChangeCardResponse) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardResponse to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "shop_id":
+			if err := func() error {
+				s.ShopID.Reset()
+				if err := s.ShopID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"shop_id\"")
+			}
+		case "id":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"id\"")
+			}
+		case "pay_type":
+			if err := func() error {
+				s.PayType.Reset()
+				if err := s.PayType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_type\"")
+			}
+		case "status":
+			if err := func() error {
+				s.Status.Reset()
+				if err := s.Status.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"status\"")
+			}
+		case "access_id":
+			if err := func() error {
+				s.AccessID.Reset()
+				if err := s.AccessID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"access_id\"")
+			}
+		case "process_date":
+			if err := func() error {
+				s.ProcessDate.Reset()
+				if err := s.ProcessDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"process_date\"")
+			}
+		case "job_code":
+			if err := func() error {
+				s.JobCode.Reset()
+				if err := s.JobCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"job_code\"")
+			}
+		case "item_code":
+			if err := func() error {
+				s.ItemCode.Reset()
+				if err := s.ItemCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"item_code\"")
+			}
+		case "amount":
+			if err := func() error {
+				s.Amount.Reset()
+				if err := s.Amount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"amount\"")
+			}
+		case "tax":
+			if err := func() error {
+				s.Tax.Reset()
+				if err := s.Tax.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tax\"")
+			}
+		case "total_amount":
+			if err := func() error {
+				s.TotalAmount.Reset()
+				if err := s.TotalAmount.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"total_amount\"")
+			}
+		case "customer_group_id":
+			if err := func() error {
+				s.CustomerGroupID.Reset()
+				if err := s.CustomerGroupID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_group_id\"")
+			}
+		case "customer_id":
+			if err := func() error {
+				s.CustomerID.Reset()
+				if err := s.CustomerID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"customer_id\"")
+			}
+		case "card_no":
+			if err := func() error {
+				s.CardNo.Reset()
+				if err := s.CardNo.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_no\"")
+			}
+		case "card_id":
+			if err := func() error {
+				s.CardID.Reset()
+				if err := s.CardID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_id\"")
+			}
+		case "expire":
+			if err := func() error {
+				s.Expire.Reset()
+				if err := s.Expire.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"expire\"")
+			}
+		case "holder_name":
+			if err := func() error {
+				s.HolderName.Reset()
+				if err := s.HolderName.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"holder_name\"")
+			}
+		case "card_no_hash":
+			if err := func() error {
+				s.CardNoHash.Reset()
+				if err := s.CardNoHash.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"card_no_hash\"")
+			}
+		case "method":
+			if err := func() error {
+				s.Method.Reset()
+				if err := s.Method.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"method\"")
+			}
+		case "pay_times":
+			if err := func() error {
+				s.PayTimes.Reset()
+				if err := s.PayTimes.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"pay_times\"")
+			}
+		case "forward":
+			if err := func() error {
+				s.Forward.Reset()
+				if err := s.Forward.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"forward\"")
+			}
+		case "issuer":
+			if err := func() error {
+				s.Issuer.Reset()
+				if err := s.Issuer.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"issuer\"")
+			}
+		case "transaction_id":
+			if err := func() error {
+				s.TransactionID.Reset()
+				if err := s.TransactionID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"transaction_id\"")
+			}
+		case "approve":
+			if err := func() error {
+				s.Approve.Reset()
+				if err := s.Approve.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"approve\"")
+			}
+		case "auth_max_date":
+			if err := func() error {
+				s.AuthMaxDate.Reset()
+				if err := s.AuthMaxDate.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"auth_max_date\"")
+			}
+		case "client_field_1":
+			if err := func() error {
+				s.ClientField1.Reset()
+				if err := s.ClientField1.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_1\"")
+			}
+		case "client_field_2":
+			if err := func() error {
+				s.ClientField2.Reset()
+				if err := s.ClientField2.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_2\"")
+			}
+		case "client_field_3":
+			if err := func() error {
+				s.ClientField3.Reset()
+				if err := s.ClientField3.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"client_field_3\"")
+			}
+		case "tds_type":
+			if err := func() error {
+				s.TdsType.Reset()
+				if err := s.TdsType.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tds_type\"")
+			}
+		case "tds2_type":
+			if err := func() error {
+				s.Tds2Type.Reset()
+				if err := s.Tds2Type.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tds2_type\"")
+			}
+		case "tds2_ret_url":
+			if err := func() error {
+				s.Tds2RetURL.Reset()
+				if err := s.Tds2RetURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tds2_ret_url\"")
+			}
+		case "tds2_status":
+			if err := func() error {
+				s.Tds2Status.Reset()
+				if err := s.Tds2Status.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"tds2_status\"")
+			}
+		case "merchant_name":
+			if err := func() error {
+				s.MerchantName.Reset()
+				if err := s.MerchantName.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"merchant_name\"")
+			}
+		case "send_url":
+			if err := func() error {
+				s.SendURL.Reset()
+				if err := s.SendURL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"send_url\"")
+			}
+		case "subscription_id":
+			if err := func() error {
+				s.SubscriptionID.Reset()
+				if err := s.SubscriptionID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"subscription_id\"")
+			}
+		case "brand":
+			if err := func() error {
+				s.Brand.Reset()
+				if err := s.Brand.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"brand\"")
+			}
+		case "error_code":
+			if err := func() error {
+				s.ErrorCode.Reset()
+				if err := s.ErrorCode.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"error_code\"")
+			}
+		case "created":
+			if err := func() error {
+				s.Created.Reset()
+				if err := s.Created.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"created\"")
+			}
+		case "updated":
+			if err := func() error {
+				s.Updated.Reset()
+				if err := s.Updated.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"updated\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode PaymentChangeCardResponse")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *PaymentChangeCardResponse) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardResponse) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseJobCode as json.
+func (s PaymentChangeCardResponseJobCode) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardResponseJobCode from json.
+func (s *PaymentChangeCardResponseJobCode) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardResponseJobCode to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardResponseJobCode(v) {
+	case PaymentChangeCardResponseJobCodeCHECK:
+		*s = PaymentChangeCardResponseJobCodeCHECK
+	case PaymentChangeCardResponseJobCodeAUTH:
+		*s = PaymentChangeCardResponseJobCodeAUTH
+	case PaymentChangeCardResponseJobCodeCAPTURE:
+		*s = PaymentChangeCardResponseJobCodeCAPTURE
+	case PaymentChangeCardResponseJobCodeSALES:
+		*s = PaymentChangeCardResponseJobCodeSALES
+	case PaymentChangeCardResponseJobCodeCANCEL:
+		*s = PaymentChangeCardResponseJobCodeCANCEL
+	default:
+		*s = PaymentChangeCardResponseJobCode(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardResponseJobCode) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardResponseJobCode) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseMethod as json.
+func (s PaymentChangeCardResponseMethod) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardResponseMethod from json.
+func (s *PaymentChangeCardResponseMethod) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardResponseMethod to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardResponseMethod(v) {
+	case PaymentChangeCardResponseMethod1:
+		*s = PaymentChangeCardResponseMethod1
+	case PaymentChangeCardResponseMethod2:
+		*s = PaymentChangeCardResponseMethod2
+	case PaymentChangeCardResponseMethod5:
+		*s = PaymentChangeCardResponseMethod5
+	default:
+		*s = PaymentChangeCardResponseMethod(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardResponseMethod) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardResponseMethod) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponsePayType as json.
+func (s PaymentChangeCardResponsePayType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardResponsePayType from json.
+func (s *PaymentChangeCardResponsePayType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardResponsePayType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardResponsePayType(v) {
+	case PaymentChangeCardResponsePayTypeCard:
+		*s = PaymentChangeCardResponsePayTypeCard
+	default:
+		*s = PaymentChangeCardResponsePayType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardResponsePayType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardResponsePayType) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseStatus as json.
+func (s PaymentChangeCardResponseStatus) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardResponseStatus from json.
+func (s *PaymentChangeCardResponseStatus) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardResponseStatus to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardResponseStatus(v) {
+	case PaymentChangeCardResponseStatusUNPROCESSED:
+		*s = PaymentChangeCardResponseStatusUNPROCESSED
+	case PaymentChangeCardResponseStatusCHECKED:
+		*s = PaymentChangeCardResponseStatusCHECKED
+	case PaymentChangeCardResponseStatusAUTHORIZED:
+		*s = PaymentChangeCardResponseStatusAUTHORIZED
+	case PaymentChangeCardResponseStatusCAPTURED:
+		*s = PaymentChangeCardResponseStatusCAPTURED
+	case PaymentChangeCardResponseStatusCANCELED:
+		*s = PaymentChangeCardResponseStatusCANCELED
+	case PaymentChangeCardResponseStatusAUTHENTICATED:
+		*s = PaymentChangeCardResponseStatusAUTHENTICATED
+	default:
+		*s = PaymentChangeCardResponseStatus(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardResponseStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardResponseStatus) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseTds2Status as json.
+func (s PaymentChangeCardResponseTds2Status) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardResponseTds2Status from json.
+func (s *PaymentChangeCardResponseTds2Status) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardResponseTds2Status to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardResponseTds2Status(v) {
+	case PaymentChangeCardResponseTds2StatusAUTHENTICATING:
+		*s = PaymentChangeCardResponseTds2StatusAUTHENTICATING
+	case PaymentChangeCardResponseTds2StatusCHALLENGE:
+		*s = PaymentChangeCardResponseTds2StatusCHALLENGE
+	case PaymentChangeCardResponseTds2StatusAUTHENTICATED:
+		*s = PaymentChangeCardResponseTds2StatusAUTHENTICATED
+	default:
+		*s = PaymentChangeCardResponseTds2Status(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardResponseTds2Status) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardResponseTds2Status) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseTds2Type as json.
+func (s PaymentChangeCardResponseTds2Type) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardResponseTds2Type from json.
+func (s *PaymentChangeCardResponseTds2Type) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardResponseTds2Type to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardResponseTds2Type(v) {
+	case PaymentChangeCardResponseTds2Type2:
+		*s = PaymentChangeCardResponseTds2Type2
+	case PaymentChangeCardResponseTds2Type3:
+		*s = PaymentChangeCardResponseTds2Type3
+	default:
+		*s = PaymentChangeCardResponseTds2Type(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardResponseTds2Type) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardResponseTds2Type) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentChangeCardResponseTdsType as json.
+func (s PaymentChangeCardResponseTdsType) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes PaymentChangeCardResponseTdsType from json.
+func (s *PaymentChangeCardResponseTdsType) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentChangeCardResponseTdsType to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch PaymentChangeCardResponseTdsType(v) {
+	case PaymentChangeCardResponseTdsType0:
+		*s = PaymentChangeCardResponseTdsType0
+	case PaymentChangeCardResponseTdsType2:
+		*s = PaymentChangeCardResponseTdsType2
+	default:
+		*s = PaymentChangeCardResponseTdsType(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentChangeCardResponseTdsType) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentChangeCardResponseTdsType) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -24909,6 +26449,84 @@ func (s PaymentsIDCapturePutReq) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *PaymentsIDCapturePutReq) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentsIDChangePutOK as json.
+func (s PaymentsIDChangePutOK) Encode(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentChangeCardResponsePaymentsIDChangePutOK:
+		s.PaymentChangeCardResponse.Encode(e)
+	}
+}
+
+// Decode decodes PaymentsIDChangePutOK from json.
+func (s *PaymentsIDChangePutOK) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentsIDChangePutOK to nil")
+	}
+	// Sum type type_discriminator.
+	switch t := d.Next(); t {
+	case jx.Object:
+		if err := s.PaymentChangeCardResponse.Decode(d); err != nil {
+			return err
+		}
+		s.Type = PaymentChangeCardResponsePaymentsIDChangePutOK
+	default:
+		return errors.Errorf("unexpected json type %q", t)
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentsIDChangePutOK) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentsIDChangePutOK) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes PaymentsIDChangePutReq as json.
+func (s PaymentsIDChangePutReq) Encode(e *jx.Encoder) {
+	switch s.Type {
+	case PaymentChangeCardPaymentsIDChangePutReq:
+		s.PaymentChangeCard.Encode(e)
+	}
+}
+
+// Decode decodes PaymentsIDChangePutReq from json.
+func (s *PaymentsIDChangePutReq) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode PaymentsIDChangePutReq to nil")
+	}
+	// Sum type type_discriminator.
+	switch t := d.Next(); t {
+	case jx.Object:
+		if err := s.PaymentChangeCard.Decode(d); err != nil {
+			return err
+		}
+		s.Type = PaymentChangeCardPaymentsIDChangePutReq
+	default:
+		return errors.Errorf("unexpected json type %q", t)
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s PaymentsIDChangePutReq) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *PaymentsIDChangePutReq) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

@@ -81,6 +81,20 @@ func encodePaymentsIDCapturePutRequest(
 	return nil
 }
 
+func encodePaymentsIDChangePutRequest(
+	req PaymentsIDChangePutReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
 func encodePaymentsIDPutRequest(
 	req PaymentsIDPutReq,
 	r *http.Request,

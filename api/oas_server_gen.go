@@ -56,6 +56,10 @@ type Handler interface {
 	//
 	// PUT /payments/{id}/capture
 	PaymentsIDCapturePut(ctx context.Context, req PaymentsIDCapturePutReq, params PaymentsIDCapturePutParams) (PaymentsIDCapturePutRes, error)
+	// PaymentsIDChangePut implements PUT /payments/{id}/change operation.
+	//
+	// PUT /payments/{id}/change
+	PaymentsIDChangePut(ctx context.Context, req PaymentsIDChangePutReq, params PaymentsIDChangePutParams) (PaymentsIDChangePutRes, error)
 	// PaymentsIDGet implements GET /payments/{id} operation.
 	//
 	// GET /payments/{id}

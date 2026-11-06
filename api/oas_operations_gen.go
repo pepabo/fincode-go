@@ -18,6 +18,7 @@ const (
 	PaymentsIDAuthPutOperation                                      OperationName = "PaymentsIDAuthPut"
 	PaymentsIDCancelPutOperation                                    OperationName = "PaymentsIDCancelPut"
 	PaymentsIDCapturePutOperation                                   OperationName = "PaymentsIDCapturePut"
+	PaymentsIDChangePutOperation                                    OperationName = "PaymentsIDChangePut"
 	PaymentsIDGetOperation                                          OperationName = "PaymentsIDGet"
 	PaymentsIDPutOperation                                          OperationName = "PaymentsIDPut"
 	PaymentsPostOperation                                           OperationName = "PaymentsPost"

@@ -49,6 +49,10 @@ type PaymentsIDCapturePutRes interface {
 	paymentsIDCapturePutRes()
 }
 
+type PaymentsIDChangePutRes interface {
+	paymentsIDChangePutRes()
+}
+
 type PaymentsIDGetRes interface {
 	paymentsIDGetRes()
 }

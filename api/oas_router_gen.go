@@ -318,9 +318,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 								return
 							}
 
-						case 'c': // Prefix: "ca"
+						case 'c': // Prefix: "c"
 
-							if l := len("ca"); len(elem) >= l && elem[0:l] == "ca" {
+							if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
 								elem = elem[l:]
 							} else {
 								break
@@ -330,31 +330,67 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 								break
 							}
 							switch elem[0] {
-							case 'n': // Prefix: "ncel"
+							case 'a': // Prefix: "a"
 
-								if l := len("ncel"); len(elem) >= l && elem[0:l] == "ncel" {
+								if l := len("a"); len(elem) >= l && elem[0:l] == "a" {
 									elem = elem[l:]
 								} else {
 									break
 								}
 
 								if len(elem) == 0 {
-									// Leaf node.
-									switch r.Method {
-									case "PUT":
-										s.handlePaymentsIDCancelPutRequest([1]string{
-											args[0],
-										}, elemIsEscaped, w, r)
-									default:
-										s.notAllowed(w, r, "PUT")
+									break
+								}
+								switch elem[0] {
+								case 'n': // Prefix: "ncel"
+
+									if l := len("ncel"); len(elem) >= l && elem[0:l] == "ncel" {
+										elem = elem[l:]
+									} else {
+										break
 									}
 
-									return
+									if len(elem) == 0 {
+										// Leaf node.
+										switch r.Method {
+										case "PUT":
+											s.handlePaymentsIDCancelPutRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "PUT")
+										}
+
+										return
+									}
+
+								case 'p': // Prefix: "pture"
+
+									if l := len("pture"); len(elem) >= l && elem[0:l] == "pture" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch r.Method {
+										case "PUT":
+											s.handlePaymentsIDCapturePutRequest([1]string{
+												args[0],
+											}, elemIsEscaped, w, r)
+										default:
+											s.notAllowed(w, r, "PUT")
+										}
+
+										return
+									}
+
 								}
 
-							case 'p': // Prefix: "pture"
+							case 'h': // Prefix: "hange"
 
-								if l := len("pture"); len(elem) >= l && elem[0:l] == "pture" {
+								if l := len("hange"); len(elem) >= l && elem[0:l] == "hange" {
 									elem = elem[l:]
 								} else {
 									break
@@ -364,7 +400,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 									// Leaf node.
 									switch r.Method {
 									case "PUT":
-										s.handlePaymentsIDCapturePutRequest([1]string{
+										s.handlePaymentsIDChangePutRequest([1]string{
 											args[0],
 										}, elemIsEscaped, w, r)
 									default:
@@ -771,9 +807,9 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								}
 							}
 
-						case 'c': // Prefix: "ca"
+						case 'c': // Prefix: "c"
 
-							if l := len("ca"); len(elem) >= l && elem[0:l] == "ca" {
+							if l := len("c"); len(elem) >= l && elem[0:l] == "c" {
 								elem = elem[l:]
 							} else {
 								break
@@ -783,33 +819,71 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 								break
 							}
 							switch elem[0] {
-							case 'n': // Prefix: "ncel"
+							case 'a': // Prefix: "a"
 
-								if l := len("ncel"); len(elem) >= l && elem[0:l] == "ncel" {
+								if l := len("a"); len(elem) >= l && elem[0:l] == "a" {
 									elem = elem[l:]
 								} else {
 									break
 								}
 
 								if len(elem) == 0 {
-									// Leaf node.
-									switch method {
-									case "PUT":
-										r.name = PaymentsIDCancelPutOperation
-										r.summary = ""
-										r.operationID = ""
-										r.pathPattern = "/payments/{id}/cancel"
-										r.args = args
-										r.count = 1
-										return r, true
-									default:
-										return
+									break
+								}
+								switch elem[0] {
+								case 'n': // Prefix: "ncel"
+
+									if l := len("ncel"); len(elem) >= l && elem[0:l] == "ncel" {
+										elem = elem[l:]
+									} else {
+										break
 									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch method {
+										case "PUT":
+											r.name = PaymentsIDCancelPutOperation
+											r.summary = ""
+											r.operationID = ""
+											r.pathPattern = "/payments/{id}/cancel"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+
+								case 'p': // Prefix: "pture"
+
+									if l := len("pture"); len(elem) >= l && elem[0:l] == "pture" {
+										elem = elem[l:]
+									} else {
+										break
+									}
+
+									if len(elem) == 0 {
+										// Leaf node.
+										switch method {
+										case "PUT":
+											r.name = PaymentsIDCapturePutOperation
+											r.summary = ""
+											r.operationID = ""
+											r.pathPattern = "/payments/{id}/capture"
+											r.args = args
+											r.count = 1
+											return r, true
+										default:
+											return
+										}
+									}
+
 								}
 
-							case 'p': // Prefix: "pture"
+							case 'h': // Prefix: "hange"
 
-								if l := len("pture"); len(elem) >= l && elem[0:l] == "pture" {
+								if l := len("hange"); len(elem) >= l && elem[0:l] == "hange" {
 									elem = elem[l:]
 								} else {
 									break
@@ -819,10 +893,10 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 									// Leaf node.
 									switch method {
 									case "PUT":
-										r.name = PaymentsIDCapturePutOperation
+										r.name = PaymentsIDChangePutOperation
 										r.summary = ""
 										r.operationID = ""
-										r.pathPattern = "/payments/{id}/capture"
+										r.pathPattern = "/payments/{id}/change"
 										r.args = args
 										r.count = 1
 										return r, true

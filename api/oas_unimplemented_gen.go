@@ -97,6 +97,13 @@ func (UnimplementedHandler) PaymentsIDCapturePut(ctx context.Context, req Paymen
 	return r, ht.ErrNotImplemented
 }
 
+// PaymentsIDChangePut implements PUT /payments/{id}/change operation.
+//
+// PUT /payments/{id}/change
+func (UnimplementedHandler) PaymentsIDChangePut(ctx context.Context, req PaymentsIDChangePutReq, params PaymentsIDChangePutParams) (r PaymentsIDChangePutRes, _ error) {
+	return r, ht.ErrNotImplemented
+}
+
 // PaymentsIDGet implements GET /payments/{id} operation.
 //
 // GET /payments/{id}
